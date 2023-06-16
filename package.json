@@ -9,10 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@goorm-dev/gds-components": "^1.11.0-experimental-860r3wupt",
+    "@goorm-dev/gds-icons": "^1.11.0",
+    "@goorm-dev/gds-tables": "^1.11.0",
+    "@goorm-dev/gds-toastify": "^1.11.0",
+    "@tanstack/react-query": "^4.29.13",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.6",
     "next": "13.4.6",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "sass": "^1.63.4"
+  },
+  "devDependencies": {
+    "@tanstack/react-query-devtools": "^4.29.13"
   }
 }
