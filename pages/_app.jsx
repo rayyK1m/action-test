@@ -1,5 +1,8 @@
 import '@/styles/globals.css';
 
+import React from 'react';
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -19,7 +22,9 @@ export default function App({ Component, pageProps }) {
         <>
             <QueryClientProvider client={queryClient}>
                 <ReactQueryDevtools initialIsOpen={false} />
-                <Component {...pageProps} />
+                <ErrorBoundary>
+                    <Component {...pageProps}></Component>
+                </ErrorBoundary>
             </QueryClientProvider>
         </>
     );
