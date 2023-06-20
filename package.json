@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@goorm-dev/gds-components": "^1.11.0-experimental-860r3wupt",
+    "@goorm-dev/gds-components": "^1.11.0-experimental-860r3wupt.1",
     "@goorm-dev/gds-icons": "^1.11.0",
     "@goorm-dev/gds-tables": "^1.11.0",
     "@goorm-dev/gds-toastify": "^1.11.0",
