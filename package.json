@@ -23,6 +23,10 @@
     "sass": "^1.63.4"
   },
   "devDependencies": {
-    "@tanstack/react-query-devtools": "^4.29.13"
+    "@tanstack/react-query-devtools": "^4.29.13",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier": "^2.8.8"
   }
 }
