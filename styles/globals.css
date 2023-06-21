@@ -24,3 +24,7 @@ a:focus {
     outline: none;
     color: inherit;
 }
+
+body {
+    background-color: var(--white);
+}
