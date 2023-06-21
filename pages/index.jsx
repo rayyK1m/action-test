@@ -2,7 +2,6 @@ import Head from 'next/head';
 import cn from 'classnames';
 
 import { Button, DatePicker } from '@goorm-dev/gds-components';
-import { withSessionSsr } from '@/server/utils/auth';
 
 import styles from './Home.module.scss';
 
@@ -41,11 +40,3 @@ export default function Home({ userData }) {
         </>
     );
 }
-
-export const getServerSideProps = withSessionSsr(async (context) => {
-    return {
-        props: {
-            userData: context.req.session || null,
-        },
-    };
-});
