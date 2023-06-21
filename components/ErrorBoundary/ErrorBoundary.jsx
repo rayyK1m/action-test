@@ -1,12 +1,10 @@
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
-import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 
 import { Button } from '@goorm-dev/gds-components';
 import { WarningIcon, BackPageIcon } from '@goorm-dev/gds-icons';
 
 import styles from './ErrorBoundary.module.scss';
 
-// NOTE: 디자인팀에서 임시로 만들어 둔 UI, 추후 고도화하게 된다면 업데이트 필요
 const ErrorFallback = () => {
     const handleClick = () => {
         window.history.back();
@@ -42,28 +40,54 @@ const isExpectedError = (error) => {
 };
 
 /**
- * NOTE: 앱 최상단에 감싸서 공통의 에러 fallback UI를 보여주기 위해 사용, 페이지 전체에 에러 화면 표시
+ * react-error-boundary를 래핑한 컴포넌트
+ * react-query와 함께 사용하며 retry UI를 제공하기 위해서는 ErrorResetBoundary 사용 권장
+ *
+ * https://www.notion.so/goorm/react-query-43fdd8ffdc43427199e9cb946367ed1f?pvs=4
+ *
+ * 따로 정의하지 않은 props는 react-error-boundary와 동일
+ * @param {function} fallbackRender default: ErrorFallback
+ * @param {function} onError 예상치 못한 에러일 경우 실행되지 않고 상위 에러 바운더리로 에러를 던짐
  */
-const ErrorBoundary = ({ fallback = ErrorFallback, onReset, ...props }) => {
-    const { children } = props;
-    const { reset } = useQueryErrorResetBoundary(); // NOTE: react-query 사용 시, 에러 초기화 할 때 캐싱된 에러도 초기화해야 함
-    const handleError = (error, info) => {
-        if (!isExpectedError(error)) {
-            // TODO: 적절한 에러 로깅 처리 필요
-            console.error(error, info);
-        }
-    };
-
-    return (
-        <ReactErrorBoundary
-            fallbackRender={fallback}
-            onError={handleError}
-            onReset={typeof onReset === 'function' ? onReset : reset}
-            {...props}
-        >
-            {children}
-        </ReactErrorBoundary>
-    );
-};
+function ErrorBoundary({
+	children,
+	fallbackRender = ErrorFallback,
+	fallback = null,
+	onError = (error, info) => {
+		if (!isExpectedError(error)) {
+			// TODO: 적절한 에러 로깅 처리 필요
+			console.error(error, info);
+		}
+	},
+	onReset = null,
+	...props
+}) {
+	return (
+		/**
+		 * fallback UI props의 우선순위
+		 * 1. fallback={<CustomFallback />}
+		 * 2. fallbackRender={() => <CustomFallback />}
+		 * 3. FallbackComponent={CustomFallback} // 구조분해 할당이 되어 있지 않음
+		 *
+		 * ex1) <ErrorBoundary />
+		 * : defaultProps로 지정되어 있는 <ErrorFallback /> 렌더링 (fallbackRender)
+		 *
+		 * ex2) <ErrorBoundary fallbackRender={() => <MyFallback />} />
+		 * : <MyFallback /> 렌더링
+		 *
+		 * ex3) <ErrorBoundary fallback={<MyFallback />} />
+		 * : defaultProps로 fallbackRender가 지정되긴 하지만, fallback의 우선순위가 높으므로 <MyFallback /> 렌더링
+		 */
+		<ReactErrorBoundary
+			fallbackRender={fallbackRender}
+			fallback={fallback}
+			onError={onError}
+			onReset={onReset}
+			{...props}
+		>
+			{children}
+		</ReactErrorBoundary>
+	);
+}
 
 export default ErrorBoundary;
