@@ -2,10 +2,11 @@ import Head from 'next/head';
 import cn from 'classnames';
 
 import { Button, DatePicker } from '@goorm-dev/gds-components';
+import { withSessionSsr } from '@/server/utils/auth';
 
 import styles from './Home.module.scss';
 
-export default function Home() {
+export default function Home({ userData }) {
     return (
         <>
             <Head>
@@ -19,9 +20,32 @@ export default function Home() {
             >
                 <h1>GDS 테스트</h1>
 
+                <div>
+                    <div>
+                        {userData
+                            ? `${userData.name}으로 로그인 됨`
+                            : '로그인 안됨'}
+                    </div>
+                    <div>
+                        {userData ? (
+                            <a href="/logout">로그아웃</a>
+                        ) : (
+                            <a href="/login">로그인</a>
+                        )}
+                    </div>
+                </div>
+
                 <Button>버튼</Button>
                 <DatePicker />
             </main>
         </>
     );
 }
+
+export const getServerSideProps = withSessionSsr(async (context) => {
+    return {
+        props: {
+            userData: context.req.session || null,
+        },
+    };
+});

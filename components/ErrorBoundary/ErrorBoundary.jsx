@@ -50,44 +50,44 @@ const isExpectedError = (error) => {
  * @param {function} onError 예상치 못한 에러일 경우 실행되지 않고 상위 에러 바운더리로 에러를 던짐
  */
 function ErrorBoundary({
-	children,
-	fallbackRender = ErrorFallback,
-	fallback = null,
-	onError = (error, info) => {
-		if (!isExpectedError(error)) {
-			// TODO: 적절한 에러 로깅 처리 필요
-			console.error(error, info);
-		}
-	},
-	onReset = null,
-	...props
+    children,
+    fallbackRender = ErrorFallback,
+    fallback = null,
+    onError = (error, info) => {
+        if (!isExpectedError(error)) {
+            // TODO: 적절한 에러 로깅 처리 필요
+            console.error(error, info);
+        }
+    },
+    onReset = null,
+    ...props
 }) {
-	return (
-		/**
-		 * fallback UI props의 우선순위
-		 * 1. fallback={<CustomFallback />}
-		 * 2. fallbackRender={() => <CustomFallback />}
-		 * 3. FallbackComponent={CustomFallback} // 구조분해 할당이 되어 있지 않음
-		 *
-		 * ex1) <ErrorBoundary />
-		 * : defaultProps로 지정되어 있는 <ErrorFallback /> 렌더링 (fallbackRender)
-		 *
-		 * ex2) <ErrorBoundary fallbackRender={() => <MyFallback />} />
-		 * : <MyFallback /> 렌더링
-		 *
-		 * ex3) <ErrorBoundary fallback={<MyFallback />} />
-		 * : defaultProps로 fallbackRender가 지정되긴 하지만, fallback의 우선순위가 높으므로 <MyFallback /> 렌더링
-		 */
-		<ReactErrorBoundary
-			fallbackRender={fallbackRender}
-			fallback={fallback}
-			onError={onError}
-			onReset={onReset}
-			{...props}
-		>
-			{children}
-		</ReactErrorBoundary>
-	);
+    return (
+        /**
+         * fallback UI props의 우선순위
+         * 1. fallback={<CustomFallback />}
+         * 2. fallbackRender={() => <CustomFallback />}
+         * 3. FallbackComponent={CustomFallback} // 구조분해 할당이 되어 있지 않음
+         *
+         * ex1) <ErrorBoundary />
+         * : defaultProps로 지정되어 있는 <ErrorFallback /> 렌더링 (fallbackRender)
+         *
+         * ex2) <ErrorBoundary fallbackRender={() => <MyFallback />} />
+         * : <MyFallback /> 렌더링
+         *
+         * ex3) <ErrorBoundary fallback={<MyFallback />} />
+         * : defaultProps로 fallbackRender가 지정되긴 하지만, fallback의 우선순위가 높으므로 <MyFallback /> 렌더링
+         */
+        <ReactErrorBoundary
+            fallbackRender={fallbackRender}
+            fallback={fallback}
+            onError={onError}
+            onReset={onReset}
+            {...props}
+        >
+            {children}
+        </ReactErrorBoundary>
+    );
 }
 
 export default ErrorBoundary;
