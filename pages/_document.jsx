@@ -5,10 +5,7 @@ export default function Document() {
         <Html lang="ko">
             <Head>
                 <meta name="description" content="SW CAMP" />
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1"
-                />
+
                 <link rel="shortcut-icon" href="/favicon.ico" />
                 <link
                     id="goormstrap-stylesheet"
