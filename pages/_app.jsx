@@ -1,10 +1,17 @@
 import '@/styles/globals.css';
 
 import React from 'react';
-import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
+
+/**
+ * setting day.js
+ */
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 const queryClient = new QueryClient({
     defaultOptions: {

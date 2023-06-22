@@ -1,0 +1,27 @@
+@mixin contents-margin {
+    margin: 0.75rem 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.contents {
+    @include contents-margin;
+}
+
+.buttons {
+    @include contents-margin;
+    display: flex;
+    margin-top: auto;
+    margin-left: auto;
+}
+
+.image {
+    object-fit: cover;
+}
