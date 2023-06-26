@@ -1,5 +1,5 @@
 import { Container, Col } from '@goorm-dev/gds-components';
-import ApplyList from '@/view/apply/ApplyList/ApplyList.jsx';
+import ApplyList from '@/view/applications/ApplyList/ApplyList.jsx';
 
 export default function ApplyPage() {
     return (

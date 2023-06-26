@@ -1,0 +1,47 @@
+.divideRow {
+    display: flex;
+    flex-basis: 50%;
+    gap: 1rem;
+}
+
+.forms {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.checkForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.school {
+    display: flex;
+    align-items: center;
+}
+
+.schoolName {
+    width: 4rem;
+    font-size: 0.875rem;
+    vertical-align: center;
+}
+
+.schoolGrade {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.divider {
+    margin-right: 1rem;
+}
+
+.alert {
+    margin-top: 1rem;
+}

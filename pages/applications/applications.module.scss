@@ -1,0 +1,13 @@
+// apply 페이지 전체 적용..? 아마도
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+    background-color: var(--white);
+}
+
+.content {
+    width: 56.5rem;
+}

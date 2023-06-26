@@ -8,7 +8,7 @@ import {
     BasicPagination,
 } from '@goorm-dev/gds-components';
 
-import ListItem from '@/view/apply/ListItem/ListItem.jsx';
+import ListItem from '@/view/applications/ListItem/ListItem.jsx';
 import useToggle from '@/hooks/useToggle';
 
 import styles from './ApplyList.module.scss';

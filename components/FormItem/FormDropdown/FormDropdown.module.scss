@@ -1,0 +1,7 @@
+.button {
+    color: var(--gray-600);
+    width: 100%;
+}
+.button > div {
+    justify-content: space-between !important;
+}
