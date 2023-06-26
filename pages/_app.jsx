@@ -1,7 +1,12 @@
 import '@/styles/globals.css';
 
-import React from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import {
+    Hydrate,
+    QueryClient,
+    QueryClientProvider,
+} from '@tanstack/react-query';
+
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
@@ -13,25 +18,30 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 dayjs.locale('ko');
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: 0,
-            suspense: true,
-            useErrorBoundary: true,
-            refetchOnWindowFocus: false,
-        },
-    },
-});
-
 export default function App({ Component, pageProps }) {
+    const [queryClient] = useState(
+        () =>
+            new QueryClient({
+                defaultOptions: {
+                    queries: {
+                        retry: 0,
+                        suspense: true,
+                        useErrorBoundary: true,
+                        refetchOnWindowFocus: false,
+                    },
+                },
+            }),
+    );
+
     return (
         <>
             <QueryClientProvider client={queryClient}>
-                <ReactQueryDevtools initialIsOpen={false} />
-                <ErrorBoundary>
-                    <Component {...pageProps}></Component>
-                </ErrorBoundary>
+                <Hydrate state={pageProps.dehydratedState}>
+                    <ReactQueryDevtools initialIsOpen={false} />
+                    <ErrorBoundary>
+                        <Component {...pageProps}></Component>
+                    </ErrorBoundary>
+                </Hydrate>
             </QueryClientProvider>
         </>
     );

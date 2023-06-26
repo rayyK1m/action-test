@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { validateToken } from '@/server/libs/auth';
+import { QueryClient } from '@tanstack/react-query';
+import sessionKeys from '@/query-hooks/useSession/keys';
 
 /**
  * request 기준으로 인증 상태 확인 및 유저 데이터를 리턴하는 함수
@@ -71,8 +73,28 @@ export const withSessionSsr = (handler) => async (context) => {
         context.req.session = {
             id: userData.id,
             name: userData.name,
+            /** MOCK_DATA */
+            role: 'institution',
+            channelUrl: 'https://goormschool.goorm.io/',
         };
     }
 
     return handler(context);
 };
+
+export const withReactQuerySsr = (handler) =>
+    withSessionSsr(async (context) => {
+        const queryClient = new QueryClient();
+
+        switch (true) {
+            case !!context.req.session:
+                /** session 정보 세팅 */
+                await queryClient.prefetchQuery(
+                    sessionKeys.base(),
+                    () => context.req.session,
+                );
+        }
+
+        context.req.queryClient = queryClient;
+        return handler(context);
+    });
