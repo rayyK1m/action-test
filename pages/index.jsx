@@ -4,18 +4,23 @@ import { withReactQuerySsr } from '@/server/utils/auth';
 import { dehydrate } from '@tanstack/react-query';
 import useSession from '@/query-hooks/useSession';
 
+import Layout from '@/components/Layout/Layout';
+
 export default function MainPage() {
     const { data: userData } = useSession.GET();
-    console.log({ userData });
 
     return (
-        <>
+        <Layout>
             <Head>
                 <title>SW CAMP HOME</title>
             </Head>
-            <h1>HOME</h1>
-            <ProgramListContainer />
-        </>
+            <Layout.Header userData={userData} />
+            <Layout.Banner />
+            <Layout.Main>
+                <ProgramListContainer />
+            </Layout.Main>
+            <Layout.Footer />
+        </Layout>
     );
 }
 
