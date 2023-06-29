@@ -4,31 +4,9 @@ import Image from 'next/image';
 import dayjs from 'dayjs';
 
 import { Badge, Button } from '@goorm-dev/gds-components';
-import {
-    CheckCircleIcon,
-    ErrorCircleIcon,
-    TimeIcon,
-} from '@goorm-dev/gds-icons';
+import { STATUS_BADGE } from './ListItem.constants';
 
 import styles from './ListItem.module.scss';
-
-const STATUS_BADGE = {
-    ACCEPT: {
-        value: '승인',
-        icon: CheckCircleIcon,
-        color: 'primary',
-    },
-    REJECT: {
-        value: '거절',
-        icon: ErrorCircleIcon,
-        color: 'info',
-    },
-    IN_PROGRESS: {
-        value: '심사중',
-        icon: TimeIcon,
-        color: 'warning',
-    },
-};
 
 const PERIOD_FORMAT = 'MM월 DD일(ddd) HH:MM';
 function ListItem({ data }) {
@@ -63,7 +41,7 @@ function ListItem({ data }) {
                     leftIcon={STATUS_BADGE[approveStatus].icon}
                     className="mb-3"
                 >
-                    {STATUS_BADGE[approveStatus].value}
+                    {STATUS_BADGE[approveStatus].text}
                 </Badge>
                 <h5 className="mb-2">{name}</h5>
                 <div className="subtitle-2 mb-1">

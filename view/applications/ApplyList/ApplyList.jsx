@@ -10,6 +10,7 @@ import {
 
 import ListItem from '@/view/applications/ListItem/ListItem.jsx';
 import useToggle from '@/hooks/useToggle';
+import { DROPDOWN_MENU } from './ApplyList.constants';
 
 import styles from './ApplyList.module.scss';
 
@@ -30,7 +31,7 @@ const mockData = {
                 end: new Date('2023-06-06 13:00'),
             },
             channelIndex: 'goormschool',
-            approveStatus: 'ACCEPT', // 승인 상태 [거절, 심사중, 승인]
+            approveStatus: 2, // 승인 상태 [거절, 심사중, 승인]
         },
         {
             index: 'c_index2',
@@ -47,7 +48,7 @@ const mockData = {
                 end: new Date('2023-06-06 13:00'),
             },
             channelIndex: 'edu',
-            approveStatus: 'REJECT', // 승인 상태 [거절, 심사중, 승인]
+            approveStatus: 3, // 승인 상태 [거절, 심사중, 승인]
         },
         {
             index: 'c_index3',
@@ -64,58 +65,11 @@ const mockData = {
                 end: new Date('2023-06-06 13:00'),
             },
             channelIndex: 'goormscholl',
-            approveStatus: 'IN_PROGRESS', // 승인 상태 [거절, 심사중, 승인]
+            approveStatus: 1, // 승인 상태 [거절, 심사중, 승인]
         },
     ],
     campType: '방문형', // [방문형, 집합형] - 둘 중에 하나의 종류로만 캠프가 구성될 수 있으므로 BFF에서 함께 넘겨주면 됨
     totalCount: 6,
-};
-
-const DROPDOWN_MENU = {
-    방문형: [
-        {
-            index: 0,
-            key: 'ALL',
-            value: '전체',
-        },
-        {
-            index: 1,
-            key: 'IN_PROGRESS',
-            value: '심사중',
-        },
-        {
-            index: 2,
-            key: 'ACCEPT',
-            value: '승인',
-        },
-        {
-            index: 3,
-            key: 'REJECT',
-            value: '거절',
-        },
-    ],
-    집합형: [
-        {
-            index: 0,
-            key: 'ALL',
-            value: '전체',
-        },
-        {
-            index: 1,
-            key: 'ACCEPT',
-            value: '승인',
-        },
-        {
-            index: 2,
-            key: 'REJECT',
-            value: '거절',
-        },
-        {
-            index: 3,
-            key: 'CANCEL',
-            value: '캠프 취소',
-        },
-    ],
 };
 
 function ApplyList() {
@@ -135,7 +89,7 @@ function ApplyList() {
 
                 <ButtonDropdown isOpen={isOpen} toggle={toggle}>
                     <DropdownToggle size="lg" color="link" theme="light" caret>
-                        {DROPDOWN_MENU[campType][dropdownSelect].value}
+                        {DROPDOWN_MENU[campType][dropdownSelect].text}
                     </DropdownToggle>
 
                     <DropdownMenu>
@@ -144,7 +98,7 @@ function ApplyList() {
                                 key={item.index}
                                 onClick={() => setDropdownSelect(item.index)}
                             >
-                                {item.value}
+                                {item.text}
                             </DropdownItem>
                         ))}
                     </DropdownMenu>
