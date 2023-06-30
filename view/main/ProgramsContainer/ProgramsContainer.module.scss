@@ -1,0 +1,31 @@
+.dropdowns {
+    gap: 0.5rem;
+}
+.searchInput {
+    width: 21.4375rem; /* 343px -> 21.4375rem */
+}
+.navTabs .navLink {
+    color: var(--hint);
+}
+.navItem {
+    flex: 1;
+}
+.navLink {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.filterList {
+    border-top: 1px solid var(--gray-100);
+    border-bottom: 1px solid var(--gray-100);
+    padding: 0.75rem 1rem; /* 12px -> .75rem */
+}
+.filterDeleteBadge + .filterDeleteBadge {
+    margin-left: 0.5rem;
+}
+.filterDeleteButton {
+    width: 0.875rem /* 14px -> .875rem */;
+    height: 0.875rem /* 14px -> .875rem */;
+    cursor: pointer;
+    margin-left: 0.25rem;
+}

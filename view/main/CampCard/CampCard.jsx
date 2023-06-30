@@ -1,17 +1,37 @@
 import Image from 'next/image';
 import cn from 'classnames';
+import dayjs from 'dayjs';
+
+import { Badge } from '@goorm-dev/gds-components';
+import { PERIOD_FORMAT } from '@/constants/common';
+
+import { APPLY_STATUS } from '../CampCards/CampCards.constants';
+import { BADGE_INFO } from './CampCard.constant';
 
 import styles from './CampCard.module.scss';
 
-const DUMMY_IMAGE =
-    'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png';
+export default function CampCard({
+    name,
+    thumbnail,
+    applyType,
+    applyDate,
+    educationDate,
+}) {
+    /** Badge 관련 */
+    const { text: badgeText, color: badgeColor } = BADGE_INFO[applyType];
 
-const DUMMY_TITLE =
-    '프로그램 제목 최대 두줄 입니다. 두줄입니다. 프로그램 제목 최대 두줄 입니다. 프로그램 제목 최대 두줄 입니다. 두줄입니다. 프로그램 제목 최대 두줄 입니다.';
-const DUMMY_DATE_APPLY = '06월 08일(목) 11:00 - 06월 18일(일) 20:00';
-const DUMMY_DATE_EDUCATION = '06월 24일(토) 09:30 - 06월 25일(일) 16:00';
+    /** Date 관련 */
+    const { start: startApplyDate, end: endApplyDate } = applyDate || {};
+    const { start: startEducationDate, end: endEducationDate } =
+        educationDate || {};
 
-export default function CampCard() {
+    /** Date Format 관련 */
+    const formattedStartApply = dayjs(startApplyDate).format(PERIOD_FORMAT);
+    const formattedEndApply = dayjs(endApplyDate).format(PERIOD_FORMAT);
+    const formattedStartEducation =
+        dayjs(startEducationDate).format(PERIOD_FORMAT);
+    const formattedEndEducation = dayjs(endEducationDate).format(PERIOD_FORMAT);
+
     return (
         <div className={styles.container}>
             <div
@@ -20,18 +40,31 @@ export default function CampCard() {
                     'position-relative bg-gray-300 rounded mb-2',
                 )}
             >
-                <Image src={DUMMY_IMAGE} alt="캠프 썸네일" fill />
+                <Image src={thumbnail} alt="캠프 썸네일" fill />
+                <div className={cn(styles.dim, 'position-absolute')} />
+                <Badge
+                    color={badgeColor}
+                    className={cn(styles.badge, 'position-absolute')}
+                >
+                    {badgeText}
+                </Badge>
             </div>
 
-            <h6 className={cn('mb-2', styles.title)}>{DUMMY_TITLE}</h6>
+            <h6 className={cn('mb-2', styles.title)}>{name}</h6>
             <span className="d-flex mb-1">
                 <p className="text-hint mr-2">신청기간</p>
-                <p className="text-alternative"> {DUMMY_DATE_APPLY}</p>
+                <p className="text-alternative">
+                    {formattedStartApply} - {formattedEndApply}
+                </p>
             </span>
-            <span className="d-flex">
-                <p className="text-hint mr-2">교육기간</p>
-                <p className="text-alternative"> {DUMMY_DATE_EDUCATION}</p>
-            </span>
+            {applyType !== APPLY_STATUS.CLOSED && (
+                <span className="d-flex">
+                    <p className="text-hint mr-2">교육기간</p>
+                    <p className="text-alternative">
+                        {formattedStartEducation} - {formattedEndEducation}
+                    </p>
+                </span>
+            )}
         </div>
     );
 }

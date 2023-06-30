@@ -1,33 +1,48 @@
 import Head from 'next/head';
-import ProgramListContainer from '@/view/main/ProgramListContainer';
-import { withReactQuerySsr } from '@/server/utils/auth';
-import { dehydrate } from '@tanstack/react-query';
-import useSession from '@/query-hooks/useSession';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 
+import ProgramsContainer from '@/view/main/ProgramsContainer';
 import Layout from '@/components/Layout/Layout';
 
-export default function MainPage() {
-    const { data: userData } = useSession.GET();
+import { getPrograms, PROGRAMS_KEYS } from '@/query-hooks/usePrograms';
+import { CAMP_TYPE } from '@/constants/db';
 
+export const DEFAULT_QUERY = {
+    campType: CAMP_TYPE.방문형,
+    limit: 8,
+    page: 1,
+    category: '',
+    operateLocation: '',
+    search: '',
+};
+
+export const getServerSideProps = async () => {
+    const queryClient = new QueryClient();
+
+    await queryClient.prefetchQuery(
+        PROGRAMS_KEYS.detail({ ...DEFAULT_QUERY }),
+        () => getPrograms({ ...DEFAULT_QUERY }),
+    );
+
+    return {
+        props: {
+            dehydratedState: dehydrate(queryClient),
+        },
+    };
+};
+
+export default function MainPage() {
     return (
         <Layout>
             <Head>
                 <title>SW CAMP HOME</title>
             </Head>
-            <Layout.Header userData={userData} />
+            <Layout.Header />
             <Layout.Banner />
             <Layout.Main>
-                <ProgramListContainer />
+                <ProgramsContainer />
             </Layout.Main>
             <Layout.Footer />
         </Layout>
     );
 }
-
-export const getServerSideProps = withReactQuerySsr((context) => {
-    return {
-        props: {
-            dehydratedState: dehydrate(context.req.queryClient),
-        },
-    };
-});

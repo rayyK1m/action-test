@@ -13,6 +13,9 @@ const nextConfig = {
             },
         ],
     },
+    env: {
+        MAIN_HOST: process.env.NEXT_PUBLIC_MAIN_HOST,
+    },
 };
 
 module.exports = nextConfig;

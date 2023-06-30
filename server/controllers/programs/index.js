@@ -1,18 +1,29 @@
-import { withSessionRoute } from '@/server/utils/auth';
 import swcampSdk from '@/server/libs/swcamp';
 
-// NOTE: 아래 코드들은 모두 예시입니다
-const getProgram = withSessionRoute(async (req, res) => {
-    const userData = req.session;
-    const data = await swcampSdk.getProgram();
+const getPrograms = async (req, res) => {
+    const {
+        page = 1,
+        limit = 4,
+        search,
+        campType,
+        category,
+        operateLocation,
+    } = req.query;
 
-    return res.json({ results: true, userData: userData, data });
-});
+    const { items, total } = await swcampSdk.getPrograms({
+        page,
+        limit,
+        search,
+        campType,
+        category,
+        operateLocation,
+    });
 
-const createProgram = async (req, res) => {
-    await swcampSdk.createProgram();
-
-    return res.json({ results: true });
+    return res.json({ items, total });
 };
 
-export default { getProgram, createProgram };
+const getProgram = async (_, res) => {
+    return res.json({ item: [] });
+};
+
+export default { getPrograms, getProgram };

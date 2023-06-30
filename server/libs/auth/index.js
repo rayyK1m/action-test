@@ -59,6 +59,7 @@ export const revokeToken = async (userId, token) => {
         return isSuccess;
     } catch (error) {
         // TODO: 예상되는 에러 (토큰 만료등) 에러와 그렇지 않은 에러 구분 필요
+        console.error(error);
         throw error;
     }
 };

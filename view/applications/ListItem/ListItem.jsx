@@ -4,11 +4,11 @@ import Image from 'next/image';
 import dayjs from 'dayjs';
 
 import { Badge, Button } from '@goorm-dev/gds-components';
+import { PERIOD_FORMAT } from '@/constants/common';
 import { STATUS_BADGE } from './ListItem.constants';
 
 import styles from './ListItem.module.scss';
 
-const PERIOD_FORMAT = 'MM월 DD일(ddd) HH:MM';
 function ListItem({ data }) {
     const {
         uuid,

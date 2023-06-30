@@ -1,0 +1,12 @@
+@import '../../../styles/utils.scss';
+
+.container {
+    padding: 1.25rem; /* 20px -> 1.25rem */
+    border: 1px solid var(--gray-300, #e1e1e8);
+}
+.avatar {
+    margin-right: 0.75rem; /* 12px -> .75rem */
+}
+.title {
+    @include truncate(1);
+}

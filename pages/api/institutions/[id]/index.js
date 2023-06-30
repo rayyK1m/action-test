@@ -1,12 +1,11 @@
 import { createRouter } from 'next-connect';
 
-import programsCtrl from '@/server/controllers/programs';
+import institutionsCtrl from '@/server/controllers/institutions';
 import errorHandler from '@/server/utils/error/handler';
 
 const router = createRouter();
 
-router.get(programsCtrl.getProgram);
-router.post(programsCtrl.createProgram);
+router.get(institutionsCtrl.getInstitution);
 
 export default router.handler({
     onError: errorHandler,
