@@ -51,7 +51,7 @@ export const expireAllCookies = (redirectUrl) => {
     return res;
 };
 
-export const withSessionRoute = (handler) => async (req, res) => {
+export const withSessionRoute = (handler) => async (req, res, next) => {
     const { isAuthenticated, userData } = await checkAuthentication(req);
 
     if (isAuthenticated) {
@@ -61,7 +61,7 @@ export const withSessionRoute = (handler) => async (req, res) => {
         };
     }
 
-    return handler(req, res);
+    return handler(req, res, next);
 };
 
 export const withSessionSsr = (handler) => async (context) => {

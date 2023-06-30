@@ -1,8 +1,7 @@
-import { withSessionRoute } from '@/server/utils/auth';
 import awsS3Sdk from '@/server/libs/aws-s3';
+import validation from './validation';
 
 const getPresignedUrl = async (req, res) => {
-    // TODO: validate 추가 필요
     const { pathType, contentType } = req.query;
     const { url, path } = await awsS3Sdk.createPresignedUrl(
         pathType,
@@ -11,4 +10,4 @@ const getPresignedUrl = async (req, res) => {
     return res.json({ url, path });
 };
 
-export default { getPresignedUrl };
+export default { validation, getPresignedUrl };
