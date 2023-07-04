@@ -23,7 +23,7 @@ export const getServerSideProps = withSessionSsr(async (context) => {
 
     if (context.req?.session) {
         await queryClient.prefetchQuery(
-            sessionKeys.base(),
+            sessionKeys.all(),
             () => context.req.session,
         );
     }
