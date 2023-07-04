@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { PROGRAMS_KEYS } from './keys';
+import programsKeys from './keys';
 import { getPrograms } from './apis';
 
 const GET = (filters) => {
     return useQuery({
-        queryKey: PROGRAMS_KEYS.detail({ ...filters }),
+        queryKey: programsKeys.detail({ ...filters }),
         queryFn: () => getPrograms({ ...filters }),
     });
 };
@@ -14,5 +14,5 @@ const usePrograms = {
     GET,
 };
 
-export { getPrograms, PROGRAMS_KEYS };
+export { getPrograms, programsKeys };
 export default usePrograms;

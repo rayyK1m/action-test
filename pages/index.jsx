@@ -1,10 +1,12 @@
 import Head from 'next/head';
+import { withSessionSsr } from '@/server/utils/auth';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import useSession, { sessionKeys } from '@/query-hooks/useSession';
 
 import ProgramsContainer from '@/view/main/ProgramsContainer';
 import Layout from '@/components/Layout/Layout';
 
-import { getPrograms, PROGRAMS_KEYS } from '@/query-hooks/usePrograms';
+import { getPrograms, programsKeys } from '@/query-hooks/usePrograms';
 import { CAMP_TYPE } from '@/constants/db';
 
 export const DEFAULT_QUERY = {
@@ -16,11 +18,18 @@ export const DEFAULT_QUERY = {
     search: '',
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = withSessionSsr(async (context) => {
     const queryClient = new QueryClient();
 
+    if (context.req?.session) {
+        await queryClient.prefetchQuery(
+            sessionKeys.base(),
+            () => context.req.session,
+        );
+    }
+
     await queryClient.prefetchQuery(
-        PROGRAMS_KEYS.detail({ ...DEFAULT_QUERY }),
+        programsKeys.detail({ ...DEFAULT_QUERY }),
         () => getPrograms({ ...DEFAULT_QUERY }),
     );
 
@@ -29,15 +38,17 @@ export const getServerSideProps = async () => {
             dehydratedState: dehydrate(queryClient),
         },
     };
-};
+});
 
 export default function MainPage() {
+    const { data: userData } = useSession.GET();
+
     return (
         <Layout>
             <Head>
                 <title>SW CAMP HOME</title>
             </Head>
-            <Layout.Header />
+            <Layout.Header userData={userData} />
             <Layout.Banner />
             <Layout.Main>
                 <ProgramsContainer />

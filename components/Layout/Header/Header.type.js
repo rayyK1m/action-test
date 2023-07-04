@@ -1,5 +1,5 @@
 /**
- * @typedef {'student' | 'teacher' | 'institution' | 'foundation' | 'channelAdmin'} Role
+ * @typedef {'student' | 'teacher' | 'institution' | 'foundation'} Role
  *
  * @typedef {React.ComponentProps<'header'> & OnlyHeaderProps} HeaderProps
  *

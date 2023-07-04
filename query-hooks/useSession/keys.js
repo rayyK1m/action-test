@@ -1,3 +1,4 @@
-export default {
-    base: () => ['session'],
+const sessionKeys = {
+    all: () => ['session'],
 };
+export default sessionKeys;

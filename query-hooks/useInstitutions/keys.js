@@ -1,5 +1,7 @@
-export const INSTITUTIONS_KEYS = {
-    all: ['institutions'],
-    list: () => [...INSTITUTIONS_KEYS.all, 'list'],
-    detail: (filters) => [...INSTITUTIONS_KEYS.list(), { ...filters }],
+const institutionsKeys = {
+    all: () => ['institutions'],
+    list: () => [...institutionsKeys.all(), 'list'],
+    detail: (filters) => [...institutionsKeys.list(), { ...filters }],
 };
+
+export default institutionsKeys;

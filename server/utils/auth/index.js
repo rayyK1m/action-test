@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 import { validateToken } from '@/server/libs/auth';
-import { QueryClient } from '@tanstack/react-query';
-import sessionKeys from '@/query-hooks/useSession/keys';
 
 /**
  * request 기준으로 인증 상태 확인 및 유저 데이터를 리턴하는 함수
@@ -64,37 +62,33 @@ export const withSessionRoute = (handler) => async (req, res, next) => {
     return handler(req, res, next);
 };
 
-export const withSessionSsr = (handler) => async (context) => {
-    const { isAuthenticated, userData } = await checkAuthentication(
-        context.req,
-    );
+/**
+ * @typedef Session
+ * @property {string} id
+ * @property {string} name
+ * @property {'student' | 'teacher' | 'institution' | 'foundation'} role
+ */
 
-    if (isAuthenticated) {
-        context.req.session = {
-            id: userData.id,
-            name: userData.name,
-            /** MOCK_DATA */
-            role: 'institution',
-            channelUrl: 'https://goormschool.goorm.io/',
-        };
-    }
+/** @param {import('../types').CustomGetServerSideProps<{ session: Session }>} handler */
+export const withSessionSsr =
+    (handler) =>
+    /** @type {import('../types').CustomGetServerSideProps<{ session: Session }>} */
+    async (context) => {
+        const { isAuthenticated, userData } = await checkAuthentication(
+            context.req,
+        );
 
-    return handler(context);
-};
-
-export const withReactQuerySsr = (handler) =>
-    withSessionSsr(async (context) => {
-        const queryClient = new QueryClient();
-
-        switch (true) {
-            case !!context.req.session:
-                /** session 정보 세팅 */
-                await queryClient.prefetchQuery(
-                    sessionKeys.base(),
-                    () => context.req.session,
-                );
+        if (isAuthenticated) {
+            context.req.session = {
+                id: userData.id,
+                name: userData.name,
+                /** MOCK_DATA */
+                role: 'institution',
+                channelUrl: 'https://goormschool.goorm.io/',
+            };
         }
 
-        context.req.queryClient = queryClient;
         return handler(context);
-    });
+    };
+
+export default {};

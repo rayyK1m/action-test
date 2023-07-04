@@ -7,9 +7,15 @@ import sessionKeys from './keys';
  */
 const GET = () => {
     const queryClient = useQueryClient();
-    const data = queryClient.getQueryData(sessionKeys.base());
+    const data = queryClient.getQueryData(sessionKeys.all());
 
     return { data };
 };
 
-export default { GET };
+const useSession = {
+    GET,
+};
+
+export { sessionKeys };
+
+export default useSession;
