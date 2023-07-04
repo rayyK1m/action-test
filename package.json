@@ -32,6 +32,7 @@
         "react-dom": "18.2.0",
         "react-error-boundary": "^4.0.10",
         "react-hook-form": "^7.45.0",
+        "react-window": "^1.8.9",
         "sass": "^1.63.4",
         "uuid": "^9.0.0"
     },

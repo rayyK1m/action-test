@@ -1,0 +1,40 @@
+.inputWrapper {
+    position: relative;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.input {
+    width: 17rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    opacity: 1 !important; // reactstrap Input의 readonly opacity를 막기 위한 조치
+
+    &_focus {
+        border: 0.0625rem solid var(--blue-500);
+    }
+}
+
+.inputIcon {
+    position: absolute;
+    color: var(--gray-700);
+
+    &_md {
+        top: 0.5rem;
+        right: 0.75rem;
+        width: 1rem;
+        height: 1rem;
+    }
+    &_lg {
+        top: 0.625rem;
+        right: 1rem;
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+    &_sm {
+        top: 0.25rem;
+        right: 0.5rem;
+        width: 1rem;
+        height: 1rem;
+    }
+}

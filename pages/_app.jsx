@@ -15,8 +15,10 @@ import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
  * setting day.js
  */
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import 'dayjs/locale/ko';
 dayjs.locale('ko');
+dayjs.extend(customParseFormat);
 
 export default function App({ Component, pageProps }) {
     const [queryClient] = useState(
