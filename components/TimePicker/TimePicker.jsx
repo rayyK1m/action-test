@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import cn from 'classnames';
 import { VariableSizeList as List } from 'react-window';
 import dayjs from 'dayjs';
@@ -54,14 +54,43 @@ const ListContainer = ({ items, selectedItem, onClickItem }) => {
     );
 };
 
-function TimePicker({ size = 'lg', inputClassName, time, onChange }) {
+const TIME_FORMAT = 'hh:mm a';
+
+/**
+ * 
+ *
+ * @param {String} size  input size, [sm, md, lg] default = 'lg' 
+   @param {String} inputClassName
+   @param {String} inputProps
+   @param {Date} time 사용단에서의 자유로운 포맷팅을 위해 Date 객체 사용, dayjs 등의 라이브러리를 통해 time만 잘라서 사용 가능 
+   @param {Object} placeholderTime { ampm: String, hour: String, minute: String}
+   @param {Function} onChange 사용단에서 onChange={(time) => alert(time) } 과 같이 내려줄 수 있음
+
+ * @returns {Date} ex) Sun May 07 2023(-- 오늘 날짜 --) 18:00:00 GMT+0900 (한국 표준시))
+ */
+function TimePicker({
+    size = 'lg',
+    inputClassName,
+    inputProps,
+    time,
+    placeholderTime = { ampm: '오전', hour: '01', minute: '00' },
+    onChange,
+}) {
     const [isOpen, setIsOpen] = useState(false);
-    const [isDirty, setIsDirty] = useState(false);
-    const [innerTime, setInnerTime] = useState({
-        ampm: '오전',
-        hour: '01',
-        minute: '00',
-    });
+    const [isDirty, setIsDirty] = useState(time ? true : false);
+    const [innerTime, setInnerTime] = useState(placeholderTime);
+
+    useEffect(() => {
+        const convertedHour = dayjs(time).format('hh');
+        const convertedMinute = dayjs(time).format('mm');
+        const convertedAmpm = dayjs(time).format('a');
+
+        setInnerTime({
+            ampm: convertedAmpm,
+            hour: convertedHour,
+            minute: convertedMinute,
+        });
+    }, [time]);
 
     const toggle = useCallback((e) => {
         if (e.target?.role === 'menuitem') return;
@@ -84,7 +113,7 @@ function TimePicker({ size = 'lg', inputClassName, time, onChange }) {
         onChange(
             dayjs(
                 `${selectedTime.hour}:${selectedTime.minute} ${selectedTime.ampm}`,
-                'hh:mm a',
+                TIME_FORMAT,
                 'ko',
             ).format(),
         );
@@ -95,7 +124,7 @@ function TimePicker({ size = 'lg', inputClassName, time, onChange }) {
             <DropdownToggle tag="div" className={styles.inputWrapper}>
                 <Input
                     bsSize={size}
-                    placeholder="오전 01:00"
+                    placeholder={`${placeholderTime.ampm} ${placeholderTime.hour}:${placeholderTime.minute}`}
                     className={cn(
                         styles.input,
                         isOpen ? styles.input_focus : '',
@@ -107,6 +136,7 @@ function TimePicker({ size = 'lg', inputClassName, time, onChange }) {
                             : `${innerTime.ampm} ${innerTime.hour}:${innerTime.minute}`
                     }
                     readOnly
+                    {...inputProps}
                 />
                 <TimeIcon
                     className={cn(
@@ -125,17 +155,17 @@ function TimePicker({ size = 'lg', inputClassName, time, onChange }) {
                 <ListContainer
                     items={AMPM}
                     onClickItem={(value) => handleClickItem('ampm', value)}
-                    selectedItem={time.ampm}
+                    selectedItem={innerTime.ampm}
                 />
                 <ListContainer
                     items={HOURS}
                     onClickItem={(value) => handleClickItem('hour', value)}
-                    selectedItem={time.hour}
+                    selectedItem={innerTime.hour}
                 />
                 <ListContainer
                     items={MINUTES}
                     onClickItem={(value) => handleClickItem('minute', value)}
-                    selectedItem={time.minute}
+                    selectedItem={innerTime.minute}
                 />
             </DropdownMenu>
         </Dropdown>
