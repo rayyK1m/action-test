@@ -7,4 +7,15 @@
 
 .searchInput {
     width: 21.4375rem;
+
+    &_isLoading {
+        & > input {
+            pointer-events: none;
+            opacity: 0.32;
+        }
+    }
+}
+
+.programName {
+    font-weight: 400;
 }

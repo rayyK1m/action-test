@@ -4,7 +4,7 @@ message: |
 
   Quick Usage
   
-  - hygen react components [NAME] --path [PATH: string]
+  - hygen react component [NAME] --path [PATH: string]
   - hygen react query-hook [NAME] --path [PATH: string]
 
 

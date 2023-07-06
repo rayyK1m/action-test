@@ -7,10 +7,10 @@ import ProgramsContainer from '@/view/main/ProgramsContainer';
 import Layout from '@/components/Layout/Layout';
 
 import { getPrograms, programsKeys } from '@/query-hooks/usePrograms';
-import { CAMP_TYPE } from '@/constants/db';
+import { PROGRAM_DIVISION } from '@/constants/db';
 
 export const DEFAULT_QUERY = {
-    campType: CAMP_TYPE.방문형,
+    campType: PROGRAM_DIVISION.방문형,
     limit: 8,
     page: 1,
     category: '',

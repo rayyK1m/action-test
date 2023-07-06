@@ -16,9 +16,16 @@ import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
  */
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 import 'dayjs/locale/ko';
 dayjs.locale('ko');
-dayjs.extend(customParseFormat);
+dayjs.tz.setDefault('Asia/Seoul');
 
 export default function App({ Component, pageProps }) {
     const [queryClient] = useState(

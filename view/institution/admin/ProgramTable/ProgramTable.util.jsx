@@ -1,7 +1,11 @@
+import Link from 'next/link';
+
 import { cellHelper } from '@goorm-dev/gds-tables';
 import { Badge, Button } from '@goorm-dev/gds-components';
 import { SubmitModeIcon } from '@goorm-dev/gds-icons';
-import { CAMP_TYPE_BADGE, STATUS_TEXT } from './ProgramTable.constants';
+import { PROGRAM_DIVISION_BADGE, STATUS_TEXT } from './ProgramTable.constants';
+
+import styles from './ProgramTable.module.scss';
 
 export const getTableColoums = () => {
     const columns = [
@@ -12,7 +16,7 @@ export const getTableColoums = () => {
                 <div className="d-flex">
                     <Badge
                         size="sm"
-                        color={CAMP_TYPE_BADGE[value.camp].color}
+                        color={PROGRAM_DIVISION_BADGE[value.division].color}
                         className="mr-1"
                     >
                         {value.camp}
@@ -27,12 +31,19 @@ export const getTableColoums = () => {
         {
             accessorKey: 'name',
             header: <div>프로그램 명</div>,
-            cell: (info) => <div>{info.getValue()}</div>,
+            cell: cellHelper(({ value, rowData }) => (
+                <Link
+                    href={`/institution/admin/program/${rowData.id}`}
+                    className={styles.programName}
+                >
+                    {value}
+                </Link>
+            )),
             size: 640,
             enableSorting: true,
         },
         {
-            accessorKey: 'status',
+            accessorKey: 'reviewStatus',
             header: <div>승인 상태</div>,
             cell: (info) => {
                 const status = info.getValue();
@@ -58,7 +69,7 @@ export const getTableColoums = () => {
                 return (
                     <Button
                         color="link"
-                        onClick={() => alert(rowData.index)}
+                        onClick={() => alert(rowData.id)}
                         disabled={isInProgress}
                     >
                         신청자 관리
@@ -76,7 +87,7 @@ export const getTableColoums = () => {
                 return (
                     <Button
                         color="link"
-                        onClick={() => alert(rowData.index)}
+                        onClick={() => alert(rowData.id)}
                         disabled={isInProgress}
                     >
                         캠프 관리
@@ -94,7 +105,7 @@ export const getTableColoums = () => {
                 return (
                     <Button
                         color="link"
-                        onClick={() => alert(rowData.index)}
+                        onClick={() => alert(rowData.id)}
                         disabled={isInProgress}
                     >
                         콘텐츠 관리

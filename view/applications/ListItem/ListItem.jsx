@@ -1,29 +1,33 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import dayjs from 'dayjs';
 
 import { Badge, Button } from '@goorm-dev/gds-components';
-import { PERIOD_FORMAT } from '@/constants/common';
+import { CAMP_REVIEW_STATUS } from '@/constants/db';
+import { formatDate } from '@/utils';
 import { STATUS_BADGE } from './ListItem.constants';
 
 import styles from './ListItem.module.scss';
 
 function ListItem({ data }) {
     const {
-        uuid,
+        id,
         thumbnail,
         name,
         applyDate,
         educationDate,
         channelIndex,
-        approveStatus,
+        reviewStatus,
     } = data;
     const router = useRouter();
     const { start: applyStart, end: applyEnd } = applyDate;
     const { start: educationStart, end: educationEnd } = educationDate;
 
-    const disableChannelLink = approveStatus !== 'ACCEPT';
+    const formattedApplyStart = formatDate(applyStart);
+    const formattedApplyEnd = formatDate(applyEnd);
+    const formattedEducationStart = formatDate(educationStart);
+    const formattedEducationEnd = formatDate(educationEnd);
+    const disableChannelLink = reviewStatus !== CAMP_REVIEW_STATUS.승인.value;
     return (
         <div className={styles.container}>
             <Image
@@ -37,27 +41,23 @@ function ListItem({ data }) {
             <div className={styles.contents}>
                 <Badge
                     size="sm"
-                    color={STATUS_BADGE[approveStatus].color}
-                    leftIcon={STATUS_BADGE[approveStatus].icon}
+                    color={STATUS_BADGE[reviewStatus].color}
+                    leftIcon={STATUS_BADGE[reviewStatus].icon}
                     className="mb-3"
                 >
-                    {STATUS_BADGE[approveStatus].text}
+                    {STATUS_BADGE[reviewStatus].text}
                 </Badge>
                 <h5 className="mb-2">{name}</h5>
                 <div className="subtitle-2 mb-1">
                     <span className="text-gray-600">신청 기간</span>
                     <span className="text-gray-700 ml-2">
-                        {` ${dayjs(applyStart).format(PERIOD_FORMAT)} ~ ${dayjs(
-                            applyEnd,
-                        ).format(PERIOD_FORMAT)}`}
+                        {` ${formattedApplyStart} ~ ${formattedApplyEnd}`}
                     </span>
                 </div>
                 <div className="subtitle-2 text-gray-600 mb-0">
                     <span className="text-gray-600">교육 기간</span>
                     <span className="text-gray-700 ml-2">
-                        {` ${dayjs(educationStart).format(
-                            PERIOD_FORMAT,
-                        )} ~ ${dayjs(educationEnd).format(PERIOD_FORMAT)}`}
+                        {` ${formattedEducationStart} ~ ${formattedEducationEnd}`}
                     </span>
                 </div>
             </div>
@@ -68,7 +68,7 @@ function ListItem({ data }) {
                     color="link"
                     theme="light"
                     className="mr-1"
-                    onClick={() => router.push(`/application/detail/${uuid}`)}
+                    onClick={() => router.push(`/application/${id}`)}
                 >
                     신청 정보 확인
                 </Button>

@@ -2,7 +2,7 @@ import {
     PROGRAM_OPERATION_LOCATIONS,
     PROGRAM_CATEGORIES,
 } from '@/constants/db';
-import { CAMP_TYPE } from '@/constants/db';
+import { PROGRAM_DIVISION } from '@/constants/db';
 
 import { getRandomElement } from './utils';
 
@@ -15,7 +15,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
@@ -40,7 +40,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
@@ -65,7 +65,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
@@ -91,7 +91,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
@@ -116,7 +116,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
@@ -141,7 +141,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
@@ -167,7 +167,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
@@ -192,7 +192,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
@@ -217,7 +217,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
@@ -243,7 +243,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
@@ -268,7 +268,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
@@ -293,7 +293,7 @@ export const PROGRAMS = [
             'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
-            camp: getRandomElement(Object.values(CAMP_TYPE)),
+            camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
             duration: '장기',
         },
         category: getRandomElement(PROGRAM_CATEGORIES),

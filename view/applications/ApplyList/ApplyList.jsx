@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 import {
     ButtonDropdown,
@@ -8,78 +9,35 @@ import {
     BasicPagination,
 } from '@goorm-dev/gds-components';
 
-import ListItem from '@/view/applications/ListItem/ListItem.jsx';
 import useToggle from '@/hooks/useToggle';
+import useQueryParam from '@/hooks/useQueryParam';
+import uesCampTickets from '@/query-hooks/uesCampTickets';
+import GridContainer from '@/components/GridContainer';
+import ListItem from '@/view/applications/ListItem/ListItem.jsx';
 import { DROPDOWN_MENU } from './ApplyList.constants';
 
 import styles from './ApplyList.module.scss';
 
-const mockData = {
-    campList: [
-        {
-            index: 'c_index1',
-            uuid: 1,
-            thumbnail:
-                'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_usRUB_1677058347843/coverImage.jpg?_=1686883839484',
-            name: '제주교대 (신화월드) 상반기 새싹캠프 인공지능 올림픽',
-            applyDate: {
-                start: new Date('2023-06-06 13:00'),
-                end: new Date('2023-06-06 13:00'),
-            },
-            educationDate: {
-                start: new Date('2023-06-06 13:00'),
-                end: new Date('2023-06-06 13:00'),
-            },
-            channelIndex: 'goormschool',
-            approveStatus: 2, // 승인 상태 [거절, 심사중, 승인]
-        },
-        {
-            index: 'c_index2',
-            uuid: 2,
-            thumbnail:
-                'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_usRUB_1677058347843/coverImage.jpg?_=1686883839484',
-            name: '제주교대 (신화월드) 상반기 새싹캠프 인공지능 올림픽222',
-            applyDate: {
-                start: new Date('2023-06-06 13:00'),
-                end: new Date('2023-06-06 13:00'),
-            },
-            educationDate: {
-                start: new Date('2023-06-06 13:00'),
-                end: new Date('2023-06-06 13:00'),
-            },
-            channelIndex: 'edu',
-            approveStatus: 3, // 승인 상태 [거절, 심사중, 승인]
-        },
-        {
-            index: 'c_index3',
-            uuid: 3,
-            thumbnail:
-                'https://grm-project-template-bucket.s3.ap-northeast-2.amazonaws.com/lecture/lec_DJrMa_1659488541120/coverImage.png',
-            name: '제주교대 (신화월드) 상반기 새싹캠프 인공지능 올림픽333',
-            applyDate: {
-                start: new Date('2023-06-06 13:00'),
-                end: new Date('2023-06-06 13:00'),
-            },
-            educationDate: {
-                start: new Date('2023-06-06 13:00'),
-                end: new Date('2023-06-06 13:00'),
-            },
-            channelIndex: 'goormscholl',
-            approveStatus: 1, // 승인 상태 [거절, 심사중, 승인]
-        },
-    ],
-    campType: '방문형', // [방문형, 집합형] - 둘 중에 하나의 종류로만 캠프가 구성될 수 있으므로 BFF에서 함께 넘겨주면 됨
-    totalCount: 6,
-};
-
+const CURRENT_URL = '/applications';
 function ApplyList() {
-    const { campList, campType, totalCount } = mockData;
+    const router = useRouter();
     const [isOpen, toggle] = useToggle();
     const [dropdownSelect, setDropdownSelect] = useState(0);
-    const [page, setPage] = useState(1);
+
+    const page = useQueryParam({
+        key: 'page',
+        defaultValue: 1,
+    });
+
+    const {
+        data: { campTickets, campType, totalCount },
+    } = uesCampTickets.GET({
+        page,
+        ...(dropdownSelect !== 0 && { status: dropdownSelect }),
+    });
 
     return (
-        <div className={styles.container}>
+        <GridContainer colProps={{ xs: { size: 10, offset: 1 } }}>
             {/* header */}
             <div className="d-flex align-items-center justify-content-between mb-4">
                 <h6>
@@ -96,7 +54,19 @@ function ApplyList() {
                         {DROPDOWN_MENU[campType].map((item) => (
                             <DropdownItem
                                 key={item.index}
-                                onClick={() => setDropdownSelect(item.index)}
+                                onClick={() => {
+                                    setDropdownSelect(item.index);
+                                    router.push(
+                                        {
+                                            pathname: CURRENT_URL,
+                                            query: {
+                                                page: 1,
+                                            },
+                                        },
+                                        undefined,
+                                        { shallow: true },
+                                    );
+                                }}
                             >
                                 {item.text}
                             </DropdownItem>
@@ -107,7 +77,7 @@ function ApplyList() {
 
             {/* list content */}
             <div className={styles.item}>
-                {campList.map((camp) => (
+                {campTickets.map((camp) => (
                     <ListItem key={camp.index} data={camp} />
                 ))}
             </div>
@@ -118,12 +88,21 @@ function ApplyList() {
                     page={page}
                     pageCount={Math.ceil(totalCount / 5)}
                     limitCount={5}
-                    onPageChangeHandler={() => {
-                        setPage((prev) => (prev += 1));
+                    onPageChangeHandler={(selectedPage) => {
+                        router.push(
+                            {
+                                pathname: CURRENT_URL,
+                                query: {
+                                    page: selectedPage,
+                                },
+                            },
+                            undefined,
+                            { shallow: true },
+                        );
                     }}
                 />
             </div>
-        </div>
+        </GridContainer>
     );
 }
 

@@ -1,7 +1,7 @@
-import { CAMP_TYPE, PROGRAM_REVIEW_STATUS } from '@/constants/db';
+import { PROGRAM_DIVISION, PROGRAM_REVIEW_STATUS } from '@/constants/db';
 
 export const DROPDOWN_MENU = {
-    [CAMP_TYPE.방문형]: [
+    [PROGRAM_DIVISION.방문형]: [
         {
             index: 0,
             key: 'ALL',
@@ -23,7 +23,7 @@ export const DROPDOWN_MENU = {
             text: PROGRAM_REVIEW_STATUS.거절.text,
         },
     ],
-    [CAMP_TYPE.집합형]: [
+    [PROGRAM_DIVISION.집합형]: [
         {
             index: 0,
             key: 'ALL',

@@ -3,13 +3,13 @@ import {
     ErrorCircleIcon,
     TimeIcon,
 } from '@goorm-dev/gds-icons';
-import { CAMP_TYPE, PROGRAM_REVIEW_STATUS } from '@/constants/db';
+import { PROGRAM_DIVISION, PROGRAM_REVIEW_STATUS } from '@/constants/db';
 
-export const CAMP_TYPE_BADGE = {
-    [CAMP_TYPE.방문형]: {
+export const PROGRAM_DIVISION_BADGE = {
+    [PROGRAM_DIVISION.방문형]: {
         color: 'primary',
     },
-    [CAMP_TYPE.집합형]: {
+    [PROGRAM_DIVISION.집합형]: {
         color: 'success',
     },
 };

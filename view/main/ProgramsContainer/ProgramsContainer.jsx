@@ -16,7 +16,7 @@ import {
 import { CloseIcon, RefreshIcon } from '@goorm-dev/gds-icons';
 
 import GridContainer from '@/components/GridContainer';
-import { CAMP_TYPE } from '@/constants/db';
+import { PROGRAM_DIVISION } from '@/constants/db';
 import {
     PROGRAM_CATEGORIES,
     PROGRAM_OPERATION_LOCATIONS,
@@ -195,9 +195,9 @@ export default function ProgramsContainer() {
                     <NavItem className={styles.navItem}>
                         <NavLink
                             tag="span"
-                            data-id={CAMP_TYPE.방문형}
+                            data-id={PROGRAM_DIVISION.방문형}
                             className={styles.navLink}
-                            active={campType === CAMP_TYPE.방문형}
+                            active={campType === PROGRAM_DIVISION.방문형}
                             onClick={handleNavLink}
                         >
                             선생님용 (방문형)
@@ -206,9 +206,9 @@ export default function ProgramsContainer() {
                     <NavItem className={styles.navItem}>
                         <NavLink
                             tag="span"
-                            data-id={CAMP_TYPE.집합형}
+                            data-id={PROGRAM_DIVISION.집합형}
                             className={styles.navLink}
-                            active={campType === CAMP_TYPE.집합형}
+                            active={campType === PROGRAM_DIVISION.집합형}
                             onClick={handleNavLink}
                         >
                             학생용 (집합형)

@@ -4,16 +4,16 @@ to: "<%= locals.path ? `${path}/${h.changeCase.camelCase(name)}/index.js` : `que
 <%
  hookName = h.changeCase.camelCase(name)
 %>import { useQuery } from '@tanstack/react-query';
-import { EXAMPLE_KEYS } from './keys';
 import { fetchExample } from './apis';
+import exampleKeys from './keys';
 
 const GET = () => {
-    return useQuery({ queryKey: EXAMPLE_KEYS.all, queryFn: fetchExample });
+    return useQuery({ queryKey: exampleKeys.all, queryFn: fetchExample });
 };
 
 const <%= hookName %> = {
     GET,
 };
 
-export { fetchExample, EXAMPLE_KEYS };
+export { fetchExample, exampleKeys };
 export default <%= hookName %>;
