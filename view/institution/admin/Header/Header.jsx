@@ -8,11 +8,10 @@ import {
     DropdownItem,
     Button,
 } from '@goorm-dev/gds-components';
-import { OpenfileIcon, PlusIcon, InfoCircleIcon } from '@goorm-dev/gds-icons';
+import { OpenfileIcon, PlusIcon } from '@goorm-dev/gds-icons';
 
-import styles from './Header.module.scss';
 import useToggle from '@/hooks/useToggle';
-import CustomAlert from '@/components/CustomAlert/CustomAlert';
+import PageHeader from '@/components/PageHeader';
 import SubmitModal from '../SubmitModal/SubmitModal';
 
 function Header({ isSubmitted }) {
@@ -21,8 +20,8 @@ function Header({ isSubmitted }) {
 
     return (
         <>
-            <div className={styles.header}>
-                <header className="d-flex justify-content-between">
+            <PageHeader useHrTag={true}>
+                <PageHeader.Title>
                     <h3>프로그램 관리</h3>
 
                     <div className="d-flex">
@@ -76,15 +75,13 @@ function Header({ isSubmitted }) {
                             </DropdownMenu>
                         </Dropdown>
                     </div>
-                </header>
+                </PageHeader.Title>
 
-                <CustomAlert leftIcon={InfoCircleIcon} className="mb-0">
+                <PageHeader.Description>
                     프로그램 등록 후 재단의 승인을 받으면 신청자는 신청
                     페이지에서 해당 프로그램을 볼 수 있습니다.
-                </CustomAlert>
-
-                <hr width="100%" className="m-0" />
-            </div>
+                </PageHeader.Description>
+            </PageHeader>
 
             <SubmitModal
                 isOpen={isOpenModal}
