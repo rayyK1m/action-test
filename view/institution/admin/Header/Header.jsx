@@ -21,7 +21,7 @@ function Header({ isSubmitted }) {
     return (
         <>
             <PageHeader useHrTag={true}>
-                <PageHeader.Title>
+                <PageHeader.Title className="d-flex justify-content-between">
                     <h3>프로그램 관리</h3>
 
                     <div className="d-flex">
