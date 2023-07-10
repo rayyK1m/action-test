@@ -11,7 +11,7 @@ import {
 
 import useToggle from '@/hooks/useToggle';
 import useQueryParam from '@/hooks/useQueryParam';
-import uesCampTickets from '@/query-hooks/uesCampTickets';
+import { useGetCampTickets } from '@/query-hooks/uesCampTickets';
 import GridContainer from '@/components/GridContainer';
 import ListItem from '@/view/applications/ListItem/ListItem.jsx';
 import { DROPDOWN_MENU } from './ApplyList.constants';
@@ -31,7 +31,7 @@ function ApplyList() {
 
     const {
         data: { campTickets, campType, totalCount },
-    } = uesCampTickets.GET({
+    } = useGetCampTickets({
         page,
         ...(dropdownSelect !== 0 && { status: dropdownSelect }),
     });

@@ -110,7 +110,7 @@ const mockData = {
     campType: '방문형', // [방문형, 집합형] - 둘 중에 하나의 종류로만 캠프가 구성될 수 있으므로 BFF에서 함께 넘겨주면 됨
     totalCount: 6,
 };
-export const getCamptickets = async (query) => {
+const getCampTickets = async (query) => {
     await delay(2000);
     const queryString = qs.stringify(query, { skipNulls: true });
     const { data } = await axios.get(
@@ -129,3 +129,8 @@ export const getCamptickets = async (query) => {
         totalCount: filteredData.length,
     };
 };
+
+const campTicketsApis = {
+    getCampTickets,
+};
+export default campTicketsApis;

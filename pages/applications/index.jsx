@@ -2,7 +2,7 @@ import { QueryClient, dehydrate } from '@tanstack/react-query';
 
 import { withSessionSsr } from '@/server/utils/auth';
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
-import { getCamptickets, campTicketsKeys } from '@/query-hooks/uesCampTickets';
+import { campTicketsApis, campTicketsKeys } from '@/query-hooks/uesCampTickets';
 
 import ApplyList from '@/view/applications/ApplyList/ApplyList';
 import ApplyListLoading from '@/view/applications/ApplyList/ApplyList.loading';
@@ -40,8 +40,8 @@ export const getServerSideProps = withSessionSsr(async (context) => {
     const queryClient = new QueryClient();
 
     await queryClient.prefetchQuery(
-        campTicketsKeys.detail({ ...APPLICANTS_DEFAULT_QUERY }),
-        () => getCamptickets(APPLICANTS_DEFAULT_QUERY),
+        campTicketsKeys.itemsDetail({ ...APPLICANTS_DEFAULT_QUERY }),
+        () => campTicketsApis.getCampTickets(APPLICANTS_DEFAULT_QUERY),
     );
 
     const session = context.req.session;

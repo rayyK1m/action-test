@@ -3,5 +3,7 @@ to: "<%= locals.path ? `${path}/${h.changeCase.camelCase(name)}/apis.js` : `quer
 ---
 import axios from 'axios';
 
-export const fetchExample = async () => {}
-
+const exampleApis = {
+    getExample,
+};
+export default exampleApis;
