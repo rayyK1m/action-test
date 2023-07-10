@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    gap: 2rem;
+
+    & > * {
+        flex-grow: 1;
+        width: 100%;
+    }
+}

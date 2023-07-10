@@ -1,0 +1,22 @@
+.nav {
+    position: sticky;
+    top: 0;
+    background-color: var(--white);
+    z-index: 2;
+}
+
+.link {
+    &:focus {
+        // reactstrap 스타일 덮기 위해 important 사용했습니다.
+        color: var(--gray-700) !important;
+        border-color: transparent !important;
+    }
+
+    &_isActive {
+        &:focus {
+            // reactstrap 스타일 덮기 위해 important 사용했습니다.
+            color: #5094fa !important;
+            border-color: #5094fa !important;
+        }
+    }
+}
