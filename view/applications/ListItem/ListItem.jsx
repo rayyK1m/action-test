@@ -10,16 +10,13 @@ import { STATUS_BADGE } from './ListItem.constants';
 import styles from './ListItem.module.scss';
 
 function ListItem({ data }) {
+    const router = useRouter();
     const {
         id,
-        thumbnail,
-        name,
-        applyDate,
-        educationDate,
+        program: { thumbnail, name, applyDate, educationDate },
         channelIndex,
         reviewStatus,
     } = data;
-    const router = useRouter();
     const { start: applyStart, end: applyEnd } = applyDate;
     const { start: educationStart, end: educationEnd } = educationDate;
 

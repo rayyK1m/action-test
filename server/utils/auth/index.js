@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { validateToken } from '@/server/libs/auth';
+import authSdk from '@/server/libs/auth';
+import swcampSdk from '@/server/libs/swcamp';
 
 /**
  * request 기준으로 인증 상태 확인 및 유저 데이터를 리턴하는 함수
@@ -20,14 +21,32 @@ export const checkAuthentication = async (request) => {
         return { isAuthenticated: false };
     }
 
-    const { isValid, userData } = await validateToken(cookieValue);
+    const {
+        isValid,
+        userData: { id: userId },
+    } = await authSdk.validateToken(cookieValue);
 
     // 토큰이 유효하지 않을 경우
     if (!isValid) {
         return { isAuthenticated: false };
     }
 
-    return { isAuthenticated: true, userData, token: cookieValue };
+    const { swcampUserData, userData } = await swcampSdk.getUserInfo({
+        userId,
+    });
+
+    const sessionData = {
+        id: userData.id,
+        name: userData.name,
+        email: userData.email,
+        level: userData.level,
+        role: swcampUserData.role,
+        institutionId: swcampUserData.institutionId || null,
+        isInstitution: userData.isInstitution || false,
+        isTeacher: userData.isTeacher || false,
+    };
+
+    return { isAuthenticated: true, userData: sessionData, token: cookieValue };
 };
 
 /**
@@ -53,10 +72,7 @@ export const withSessionRoute = (handler) => async (req, res, next) => {
     const { isAuthenticated, userData } = await checkAuthentication(req);
 
     if (isAuthenticated) {
-        req.session = {
-            id: userData.id,
-            name: userData.name,
-        };
+        req.session = userData;
     }
 
     return handler(req, res, next);
@@ -79,13 +95,7 @@ export const withSessionSsr =
         );
 
         if (isAuthenticated) {
-            context.req.session = {
-                id: userData.id,
-                name: userData.name,
-                /** MOCK_DATA */
-                role: 'institution',
-                channelUrl: 'https://goormschool.goorm.io/',
-            };
+            context.req.session = userData;
         }
 
         return handler(context);

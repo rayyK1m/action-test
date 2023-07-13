@@ -6,7 +6,7 @@
  *  - isValid (boolean): 토큰의 유효성을 나타내는 값. 유효한 경우 true, 그렇지 않은 경우 false
  *  - userData (Object): 유효한 토큰인 경우 포함되는 사용자 데이터 객체
  */
-export const validateToken = async (token) => {
+const validateToken = async (token) => {
     const postData = JSON.stringify({
         user_data: true,
         token,
@@ -38,7 +38,7 @@ export const validateToken = async (token) => {
  * @param {string} token - 폐기할 토큰
  * @returns {boolean} - 토큰 폐기 성공 여부를 나타내는 값. 성공한 경우 true, 그렇지 않은 경우 false
  */
-export const revokeToken = async (userId, token) => {
+const revokeToken = async (userId, token) => {
     const postData = JSON.stringify({
         user_id: userId,
         token: token,
@@ -63,3 +63,9 @@ export const revokeToken = async (userId, token) => {
         throw error;
     }
 };
+
+const authSdk = {
+    validateToken,
+    revokeToken,
+};
+export default authSdk;

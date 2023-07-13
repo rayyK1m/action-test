@@ -77,8 +77,8 @@ function ApplyList() {
 
             {/* list content */}
             <div className={styles.item}>
-                {campTickets.map((camp) => (
-                    <ListItem key={camp.index} data={camp} />
+                {campTickets.map((campTicket) => (
+                    <ListItem key={campTicket.index} data={campTicket} />
                 ))}
             </div>
 

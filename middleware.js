@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { revokeToken } from '@/server/libs/auth';
+import authSdk from '@/server/libs/auth';
 import { expireAllCookies, checkAuthentication } from '@/server/utils/auth';
 
 export async function middleware(req) {
@@ -24,7 +24,7 @@ export async function middleware(req) {
             return NextResponse.redirect(`${process.env.MAIN_HOST}`);
         }
 
-        await revokeToken(userData.id, token);
+        await authSdk.revokeToken(userData.id, token);
         return expireAllCookies(`${process.env.MAIN_HOST}`);
     }
 

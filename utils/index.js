@@ -24,3 +24,26 @@ export const convertSort = (sort) => {
         return { id: sortId, desc: isDesc };
     });
 };
+
+/**
+ * Object에서 empty value를 제거한다.
+ * @param {Object} obj - empty value를 제거할 Object
+ * @returns {Object} - empty value가 제거된 Object
+ */
+export const removeEmptyValues = (obj) => {
+    if (typeof obj !== 'object' || obj === null) {
+        return obj;
+    }
+
+    if (Array.isArray(obj)) {
+        return obj.filter(Boolean).map(removeEmptyValues);
+    }
+
+    return Object.keys(obj).reduce((acc, key) => {
+        const value = obj[key];
+        if (value !== '' && value !== undefined && value !== null) {
+            acc[key] = removeEmptyValues(value);
+        }
+        return acc;
+    }, {});
+};

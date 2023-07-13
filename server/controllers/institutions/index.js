@@ -18,4 +18,5 @@ const getInstitution = async (_, res) => {
     return res.json({ item: [] });
 };
 
-export default { validation, getInstitutions, getInstitution };
+const institutionsCtrl = { getInstitutions, getInstitution };
+export default institutionsCtrl;

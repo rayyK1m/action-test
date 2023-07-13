@@ -51,4 +51,5 @@ const createPresignedUrl = async (pathType, contentType) => {
     return { url, path };
 };
 
-export default { PATH_TYPE, createPresignedUrl };
+const awsS3Sdk = { PATH_TYPE, createPresignedUrl };
+export default awsS3Sdk;

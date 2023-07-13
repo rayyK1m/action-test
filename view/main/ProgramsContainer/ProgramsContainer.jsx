@@ -1,4 +1,4 @@
-import { useState, Suspense } from 'react';
+import { useState } from 'react';
 import cn from 'classnames';
 
 import {
@@ -16,6 +16,7 @@ import {
 import { CloseIcon, RefreshIcon } from '@goorm-dev/gds-icons';
 
 import GridContainer from '@/components/GridContainer';
+import SSRSuspense from '@/components/SSRSuspense';
 import { PROGRAM_DIVISION } from '@/constants/db';
 import {
     PROGRAM_CATEGORIES,
@@ -218,7 +219,7 @@ export default function ProgramsContainer() {
             </section>
 
             <section>
-                <Suspense fallback={<CampCardsLoading />}>
+                <SSRSuspense fallback={<CampCardsLoading />}>
                     <CampCards
                         campType={campType}
                         page={page}
@@ -226,7 +227,7 @@ export default function ProgramsContainer() {
                         filterList={dropdowns}
                         searchValue={searchValue}
                     />
-                </Suspense>
+                </SSRSuspense>
             </section>
         </GridContainer>
     );

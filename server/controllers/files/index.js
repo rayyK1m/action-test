@@ -10,4 +10,5 @@ const getPresignedUrl = async (req, res) => {
     return res.json({ url, path });
 };
 
-export default { validation, getPresignedUrl };
+const filesCtrl = { validation, getPresignedUrl };
+export default filesCtrl;

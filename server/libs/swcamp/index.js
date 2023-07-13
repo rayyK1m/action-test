@@ -1,9 +1,10 @@
 import ExternalResponseError from '@/server/utils/error/ExternalResponseError';
 import axios from 'axios';
+import qs from 'qs';
 
 import { INSTITUTIONS } from '@/dummy/institution';
-import { PROGRAMS } from '@/dummy/programs';
-import { delay, paginateArray } from '@/dummy/utils';
+import { delay } from '@/dummy/utils';
+import { removeEmptyValues } from '@/utils';
 
 const DELAY_TIME = 1500;
 
@@ -14,45 +15,65 @@ const swcampInstance = axios.create({
     },
 });
 
+const getAuthHeader = (userId) => {
+    return { 'x-user-id': userId };
+};
+
 const getPrograms = async ({
     page,
     limit,
     search,
-    campType,
+    campType: division,
     category,
     operateLocation,
 }) => {
-    // TODO: 야래 코드는 mock 데이터 핸들링 코드입니다. 추후 API 연결 작업시 지워질 예정입니다.
+    const removedEmptyQuery = removeEmptyValues({
+        page,
+        limit,
+        search,
+        division,
+        category,
+        operateLocation,
+    });
+    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
 
-    await delay(DELAY_TIME);
+    try {
+        const { data } = await swcampInstance.get(
+            `/api/v1/programs/open?${queryString}`,
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
 
-    const data = PROGRAMS;
-    const filteredData = data.filter(
-        ({
-            name,
-            type,
-            category: originatlCategory,
-            operateLocation: originalOperateLocation,
-        }) => {
-            const isNameMatched = !search || name.includes(search);
-            const isCampTypeMatched = !campType || type.camp === campType;
-            const isCategoryMatched =
-                !category || originatlCategory === category;
-            const isOperateLocationMatched =
-                !operateLocation || originalOperateLocation === operateLocation;
-
-            return (
-                isNameMatched &&
-                isCampTypeMatched &&
-                isCategoryMatched &&
-                isOperateLocationMatched
-            );
+const getCampTickets = async ({ userId, page, limit, sort, reviewStatus }) => {
+    const queryString = qs.stringify(
+        {
+            page,
+            limit,
+            ...(sort && { sort }),
+            ...(reviewStatus && { reviewStatus }),
         },
+        { skipNulls: true },
     );
-    const paginatedData = paginateArray(filteredData, page, limit);
-    const newData = { items: paginatedData, total: filteredData.length };
-
-    return newData;
+    try {
+        const { data } = await swcampInstance.get(
+            `/api/v1/camp-tickets/my?${queryString}`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
 };
 
 const createProgram = async () => {
@@ -85,4 +106,26 @@ const getInstitutions = async ({ page, limit, search, active }) => {
 
     return newData;
 };
-export default { getInstitutions, getPrograms, createProgram };
+
+const getUserInfo = async ({ userId }) => {
+    try {
+        const { data } = await swcampInstance.get(`/api/v1/swcamp-users`, {
+            headers: { ...getAuthHeader(userId) },
+        });
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
+const swcampSdk = {
+    getInstitutions,
+    getCampTickets,
+    getPrograms,
+    createProgram,
+    getUserInfo,
+};
+export default swcampSdk;

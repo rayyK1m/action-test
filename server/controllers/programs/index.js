@@ -9,7 +9,6 @@ const getPrograms = async (req, res) => {
         category,
         operateLocation,
     } = req.query;
-
     const { items, total } = await swcampSdk.getPrograms({
         page,
         limit,
@@ -26,4 +25,5 @@ const getProgram = async (_, res) => {
     return res.json({ item: [] });
 };
 
-export default { getPrograms, getProgram };
+const programsCtrl = { getPrograms, getProgram };
+export default programsCtrl;
