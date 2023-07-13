@@ -1,4 +1,4 @@
-import { Button } from '@goorm-dev/gds-components';
+import { Button, Container, Col, Row, Form } from '@goorm-dev/gds-components';
 import { BackPageIcon } from '@goorm-dev/gds-icons';
 
 import ProgramInfoCard from '@/view/applications/ProgramInfoCard';
@@ -8,6 +8,7 @@ import {
 } from '@/view/applications/CampApplyForm';
 
 import styles from '../applications.module.scss';
+import { FormProvider, useForm } from 'react-hook-form';
 
 const mockData = {
     program: {
@@ -82,6 +83,8 @@ function CampInfoPage({
     // NOTE : 방문형 확인을 위해서는 mockData.camp_teacher로 변경
     camp = mockData.camp_student,
 }) {
+    const methods = useForm();
+
     const getCampForm = (campType) => {
         if (campType === '방문형') return TeacherApplyInfo;
         return StudentApplyInfo;
@@ -90,20 +93,24 @@ function CampInfoPage({
     const { title, contents } = getCampForm(program.type.camp);
 
     return (
-        <div className={styles.container}>
-            <div className={styles.content}>
-                <div className="d-flex align-items-center">
-                    <Button
-                        icon={<BackPageIcon />}
-                        className="mr-2"
-                        color="link"
-                    />
-                    <h3 className="d-inline mb-0">{title}</h3>
-                </div>
-                <ProgramInfoCard program={program} />
-                {contents({ program, user, camp })}
-            </div>
-        </div>
+        <Container className={styles.container}>
+            <Row>
+                <Col md={{ size: 8, offset: 2 }}>
+                    <div className="d-flex align-items-center">
+                        <Button
+                            icon={<BackPageIcon />}
+                            className="mr-2"
+                            color="link"
+                        />
+                        <h3 className="d-inline mb-0">{title}</h3>
+                    </div>
+                    <ProgramInfoCard program={program} />
+                    <FormProvider {...methods}>
+                        <Form>{contents({ program, user, camp })}</Form>
+                    </FormProvider>
+                </Col>
+            </Row>
+        </Container>
     );
 }
 

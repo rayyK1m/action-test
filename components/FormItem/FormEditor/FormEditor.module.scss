@@ -1,0 +1,12 @@
+.wrapper {
+    height: 14.375rem;
+    &_error {
+        height: 16rem;
+    }
+}
+.editor {
+    height: 10rem;
+    .ql-editor.ql-blank::before {
+        white-space: pre;
+    }
+}

@@ -3,7 +3,8 @@ import { Radio } from '@goorm-dev/gds-components';
 
 import styles from '../CampApplyForm.module.scss';
 import Divider from '@/components/Divider/Divider';
-import { LOCATION, SCHOOL } from '../CampApplyForm.constants';
+import { PROGRAM_OPERATION_LOCATIONS } from '@/constants/db';
+import { SCHOOL } from '../CampApplyForm.constants';
 
 // 집합형 프로그램 캠프 신청 폼
 
@@ -70,8 +71,9 @@ export const ApplyForm = ({ user, camp, isInfoPage }) => {
                 <FormDropdown
                     label="신청 지역"
                     placeholder={camp?.location || '지역 선택'}
-                    items={LOCATION}
+                    items={PROGRAM_OPERATION_LOCATIONS}
                     isRequired
+                    disabled={isInfoPage}
                 />
             </div>
             <FormInput

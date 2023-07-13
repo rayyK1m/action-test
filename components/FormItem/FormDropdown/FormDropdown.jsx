@@ -10,6 +10,7 @@ import { ChevronDownIcon } from '@goorm-dev/gds-icons';
 import styles from './FormDropdown.module.scss';
 import FormWrapper from '../FormWrapper';
 import useToggle from '@/hooks/useToggle';
+import cn from 'classnames';
 
 const FormDropdown = ({
     label,
@@ -17,29 +18,73 @@ const FormDropdown = ({
     placeholder,
     items,
     size,
+    disabled,
+    dropdownKey,
+    readOnly,
+    feedback,
+    invalid,
+    defaultValue,
+    onChange,
     ...props
 }) => {
     const [isOpen, toggle] = useToggle(false);
-    const [value, setValue] = useState(placeholder);
+    const [value, setValue] = useState(
+        defaultValue ? defaultValue : placeholder,
+    );
+
+    const handleclick = (item) => {
+        setValue(item);
+        onChange(item);
+    };
+
+    if (readOnly) {
+        <Button
+            icon={<ChevronDownIcon />}
+            color="select"
+            iconSide="right"
+            size={size}
+            className={styles.button}
+            disabled={disabled}
+            {...props}
+        >
+            {defaultValue}
+        </Button>;
+    }
 
     return (
-        <FormWrapper label={label} isRequired={isRequired}>
-            <UncontrolledDropdown isOpen={isOpen} toggle={toggle}>
-                <DropdownToggle data-toggle="dropdown" tag="div">
+        <FormWrapper label={label} isRequired={isRequired} feedback={feedback}>
+            <UncontrolledDropdown
+                isOpen={isOpen}
+                toggle={toggle}
+                disabled={disabled}
+            >
+                <DropdownToggle
+                    data-toggle="dropdown"
+                    tag="div"
+                    onClick={(e) => e.preventDefault()}
+                >
                     <Button
                         icon={<ChevronDownIcon />}
                         color="select"
                         iconSide="right"
                         size={size}
-                        className={styles.button}
+                        className={cn(
+                            styles.button,
+                            value === placeholder && styles.button_placeholder,
+                            invalid && styles.invalidButton,
+                        )}
+                        disabled={disabled}
                         {...props}
                     >
                         {value}
                     </Button>
                 </DropdownToggle>
                 <DropdownMenu>
-                    {items.map((item) => (
-                        <DropdownItem key={item} onClick={() => setValue(item)}>
+                    {items?.map((item) => (
+                        <DropdownItem
+                            key={item}
+                            onClick={() => handleclick(item)}
+                        >
                             {item}
                         </DropdownItem>
                     ))}
@@ -51,6 +96,7 @@ const FormDropdown = ({
 
 FormDropdown.defaultProps = {
     size: 'lg',
+    items: [],
 };
 
 export default FormDropdown;

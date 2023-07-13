@@ -4,7 +4,8 @@ import { Checkbox, Alert } from '@goorm-dev/gds-components';
 import { NoticeCircleIcon } from '@goorm-dev/gds-icons';
 import Divider from '@/components/Divider/Divider';
 
-import { LOCATION, SCHOOL } from '../CampApplyForm.constants';
+import { PROGRAM_OPERATION_LOCATIONS } from '@/constants/db';
+import { SCHOOL } from '../CampApplyForm.constants';
 
 import styles from '../CampApplyForm.module.scss';
 
@@ -72,7 +73,7 @@ export const ManagerForm = ({ user, manager, isInfoPage }) => {
                 <FormDropdown
                     label="신청 지역"
                     placeholder={manager?.school.location || '지역 선택'}
-                    items={LOCATION}
+                    items={PROGRAM_OPERATION_LOCATIONS}
                     isRequired
                 />
                 <FormInput

@@ -1,4 +1,4 @@
-import { DatePicker } from '@goorm-dev/gds-components/dist/cjs';
+import { DatePicker } from '@goorm-dev/gds-components';
 import FormWrapper from '../FormWrapper';
 
 const FormDatePicker = ({ label, isRequired, feedback, ...props }) => {

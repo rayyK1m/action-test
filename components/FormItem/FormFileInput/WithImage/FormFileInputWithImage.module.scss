@@ -1,0 +1,27 @@
+.thumbnailContainer {
+    width: 50%;
+    position: relative;
+    border: 1px solid var(--gray-800-transparent-8);
+    border-radius: 0.5rem;
+}
+
+.thumbnail {
+    width: 100%;
+    border-radius: 0.5rem;
+    padding-top: 52.36%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.fileInput {
+    width: 50%;
+}
+
+.disabledInput {
+    // NOTE : disabled props 없어서 직접 처리
+    > div button {
+        pointer-events: none;
+        opacity: 0.32;
+    }
+}

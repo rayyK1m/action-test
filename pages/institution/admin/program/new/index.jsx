@@ -1,16 +1,17 @@
-import React from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
+import ProgramApplyContainer from '@/view/institution/admin/program/ProgramApplyContainer';
 
-function ProgramNewPage() {
+function Page() {
     const router = useRouter();
     const { type } = router.query;
 
     return (
-        <div>
-            <h3> 프로그램 생성하기</h3>
-            {type}
-        </div>
+        <>
+            <Head>SW CAMP</Head>
+            <ProgramApplyContainer type={type} />
+        </>
     );
 }
 
-export default ProgramNewPage;
+export default Page;

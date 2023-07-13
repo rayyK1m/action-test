@@ -1,0 +1,74 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.forms {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.divideRow {
+    display: flex;
+    flex: 0 0 50%;
+    gap: 1rem;
+}
+
+.dropdown {
+    align-self: flex-end;
+    width: 100%;
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 50%;
+    gap: 0.5rem;
+
+    input:read-only {
+        opacity: 1;
+    }
+}
+
+.button,
+.typeButton {
+    width: 100%;
+    > div {
+        justify-content: space-between !important;
+    }
+}
+.button:disabled {
+    opacity: 1;
+}
+
+.textarea {
+    height: 6.5rem !important;
+}
+
+.checkForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.school {
+    display: flex;
+    align-items: center;
+}
+
+.schoolName {
+    width: 4rem;
+    font-size: 0.875rem;
+    vertical-align: center;
+}
+
+.schoolGrade {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.divider {
+    margin-right: 1rem;
+}

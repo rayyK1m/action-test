@@ -27,6 +27,9 @@ import 'dayjs/locale/ko';
 dayjs.locale('ko');
 dayjs.tz.setDefault('Asia/Seoul');
 
+/** setting react-quill editor */
+import 'react-quill/dist/quill.snow.css';
+
 export default function App({ Component, pageProps }) {
     const [queryClient] = useState(
         () =>

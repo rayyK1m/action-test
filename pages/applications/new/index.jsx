@@ -1,5 +1,5 @@
 import { useForm, FormProvider } from 'react-hook-form';
-import { Button, Form } from '@goorm-dev/gds-components';
+import { Button, Form, Container, Row, Col } from '@goorm-dev/gds-components';
 import { BackPageIcon } from '@goorm-dev/gds-icons';
 
 import ProgramInfoCard from '@/view/applications/ProgramInfoCard';
@@ -49,27 +49,29 @@ function CampApplicationPage({
     const { title, contents } = getCampForm(program.type.camp);
 
     return (
-        <div className={styles.container}>
-            <div className={styles.content}>
-                <div className="d-flex align-items-center">
-                    <Button
-                        icon={<BackPageIcon />}
-                        className="mr-2"
-                        color="link"
-                    />
-                    <h3 className="d-inline mb-0">{title}</h3>
-                </div>
-                <ProgramInfoCard program={program} />
-                <FormProvider {...methods}>
-                    <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                        {contents({ program, user })}
-                    </Form>
-                    <div className="d-flex justify-content-end">
-                        <Button size="xl">신청하기</Button>
+        <Container className={styles.container}>
+            <Row>
+                <Col md={{ size: 8, offset: 2 }}>
+                    <div className="d-flex align-items-center">
+                        <Button
+                            icon={<BackPageIcon />}
+                            className="mr-2"
+                            color="link"
+                        />
+                        <h3 className="d-inline mb-0">{title}</h3>
                     </div>
-                </FormProvider>
-            </div>
-        </div>
+                    <ProgramInfoCard program={program} />
+                    <FormProvider {...methods}>
+                        <Form onSubmit={methods.handleSubmit(onSubmit)}>
+                            {contents({ program, user })}
+                        </Form>
+                        <div className="d-flex justify-content-end">
+                            <Button size="xl">신청하기</Button>
+                        </div>
+                    </FormProvider>
+                </Col>
+            </Row>
+        </Container>
     );
 }
 
