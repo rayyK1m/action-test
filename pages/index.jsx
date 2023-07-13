@@ -9,7 +9,7 @@ import Layout from '@/components/Layout/Layout';
 import { getPrograms, programsKeys } from '@/query-hooks/usePrograms';
 import { PROGRAM_DIVISION } from '@/constants/db';
 
-export const DEFAULT_QUERY = {
+export const PROGRAMS_DEFAULT_QUERY = {
     campType: PROGRAM_DIVISION.방문형,
     limit: 8,
     page: 1,
@@ -29,8 +29,8 @@ export const getServerSideProps = withSessionSsr(async (context) => {
     }
 
     await queryClient.prefetchQuery(
-        programsKeys.detail({ ...DEFAULT_QUERY }),
-        () => getPrograms({ ...DEFAULT_QUERY }),
+        programsKeys.detail({ ...PROGRAMS_DEFAULT_QUERY }),
+        () => getPrograms({ ...PROGRAMS_DEFAULT_QUERY }),
     );
 
     return {

@@ -40,7 +40,13 @@ export default function CampCard({
                     'position-relative bg-gray-300 rounded mb-2',
                 )}
             >
-                <Image src={thumbnail} alt="캠프 썸네일" fill />
+                <Image
+                    src={thumbnail}
+                    alt="캠프 썸네일"
+                    fill
+                    priority
+                    sizes="500px"
+                />
                 <div className={cn(styles.dim, 'position-absolute')} />
                 <Badge
                     color={badgeColor}

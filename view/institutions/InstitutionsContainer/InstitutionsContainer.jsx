@@ -1,12 +1,17 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import cn from 'classnames';
 
 import { SearchInput, Checkbox } from '@goorm-dev/gds-components';
+
 import GridContainer from '@/components/GridContainer';
 
-import InstitutionsCards from '../InstitutionsCards';
+import { INSTITUTIONS_DEFAULT_QUERY } from '@/pages/institutions';
+
+import InstitutionCards from '../InstitutionCards';
+import InstitutionCardsLoading from '../InstitutionCards/InstitutionCards.loading';
 
 import styles from './InstitutionsContainer.module.scss';
+import InstitutionsCount from '../InstitutionsCount';
 
 function InstitutionsContainer() {
     /** 운영기관 검색 */
@@ -15,6 +20,9 @@ function InstitutionsContainer() {
 
     /** 신청 가능한 기관 체크 여부 */
     const [isCheckPossibleApply, setIsCheckPossibleApply] = useState(false);
+
+    /** Pagination 관련 */
+    const [page, setPage] = useState(INSTITUTIONS_DEFAULT_QUERY.page);
 
     return (
         <GridContainer className="d-flex flex-column">
@@ -35,21 +43,36 @@ function InstitutionsContainer() {
 
             <ul className="d-flex justify-content-between align-items-center mb-4">
                 <li className="d-flex">
-                    <h6 className="text-dark">전체 운영 기관</h6>
-                    <h6 className="text-primary ml-1">{123}</h6>
+                    <Suspense
+                        fallback={<h6 className="text-dark">전체 운영 기관</h6>}
+                    >
+                        <InstitutionsCount
+                            isCheckPossibleApply={isCheckPossibleApply}
+                            page={page}
+                            searchValue={searchValue}
+                        />
+                    </Suspense>
                 </li>
                 <li className="d-flex">
                     <Checkbox
                         value={isCheckPossibleApply}
-                        onChange={() =>
-                            setIsCheckPossibleApply((prev) => !prev)
-                        }
+                        onChange={() => {
+                            setIsCheckPossibleApply((prev) => !prev);
+                            setPage(INSTITUTIONS_DEFAULT_QUERY.page);
+                        }}
                     />
-                    <p>신청 가능한 프로그램 보기</p>
+                    <p>신청 가능한 기관 보기</p>
                 </li>
             </ul>
 
-            <InstitutionsCards />
+            <Suspense fallback={<InstitutionCardsLoading />}>
+                <InstitutionCards
+                    isCheckPossibleApply={isCheckPossibleApply}
+                    page={page}
+                    searchValue={searchValue}
+                    setPage={setPage}
+                />
+            </Suspense>
         </GridContainer>
     );
 }

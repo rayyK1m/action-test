@@ -5,7 +5,7 @@ import { INSTITUTIONS } from '@/dummy/institution';
 import { PROGRAMS } from '@/dummy/programs';
 import { delay, paginateArray } from '@/dummy/utils';
 
-const DELAY_TIME = 500;
+const DELAY_TIME = 1500;
 
 const swcampInstance = axios.create({
     baseURL: process.env.SWCAMP_API_HOST,
@@ -31,13 +31,23 @@ const getPrograms = async ({
         ({
             name,
             type,
-            category: dataCategory,
-            operateLocation: dataOperateLocation,
-        }) =>
-            (search ? name.includes(search) : true) &&
-            (campType ? type.camp === campType : true) &&
-            (category ? dataCategory === category : true) &&
-            (operateLocation ? dataOperateLocation === operateLocation : true),
+            category: originatlCategory,
+            operateLocation: originalOperateLocation,
+        }) => {
+            const isNameMatched = !search || name.includes(search);
+            const isCampTypeMatched = !campType || type.camp === campType;
+            const isCategoryMatched =
+                !category || originatlCategory === category;
+            const isOperateLocationMatched =
+                !operateLocation || originalOperateLocation === operateLocation;
+
+            return (
+                isNameMatched &&
+                isCampTypeMatched &&
+                isCategoryMatched &&
+                isOperateLocationMatched
+            );
+        },
     );
     const paginatedData = paginateArray(filteredData, page, limit);
     const newData = { items: paginatedData, total: filteredData.length };
@@ -58,11 +68,20 @@ const createProgram = async () => {
     }
 };
 
-const getInstitutions = async ({ page, limit, search }) => {
+const getInstitutions = async ({ page, limit, search, active }) => {
     // TODO: 야래 코드는 mock 데이터 핸들링 코드입니다. 추후 API 연결 작업시 지워질 예정입니다.
     await delay(DELAY_TIME);
+
     const data = INSTITUTIONS;
-    const newData = { items: data, total: 123 };
+    const filteredData = data.filter(({ programCount, name }) => {
+        const isSearchMatched = !search || name.includes(search);
+        const isActiveMatched = !active || programCount > 0;
+
+        return isSearchMatched && isActiveMatched;
+    });
+    const paginatedData = paginateArray(filteredData, page, limit);
+
+    const newData = { items: paginatedData, total: filteredData.length };
 
     return newData;
 };

@@ -21,7 +21,7 @@ import {
     PROGRAM_CATEGORIES,
     PROGRAM_OPERATION_LOCATIONS,
 } from '@/constants/db';
-import { DEFAULT_QUERY } from '@/pages';
+import { PROGRAMS_DEFAULT_QUERY } from '@/pages';
 
 import CampCards from '../CampCards';
 import CampCardsLoading from '../CampCards/CampCards.loading';
@@ -47,10 +47,10 @@ export default function ProgramsContainer() {
     const [searchValue, setSearchValue] = useState(''); // input onKeypress 'Enter' value
 
     /** 방문형, 집합형 선택 */
-    const [campType, setCampType] = useState(DEFAULT_QUERY.campType);
+    const [campType, setCampType] = useState(PROGRAMS_DEFAULT_QUERY.campType);
 
     /** Pagination 관련 */
-    const [page, setPage] = useState(DEFAULT_QUERY.page);
+    const [page, setPage] = useState(PROGRAMS_DEFAULT_QUERY.page);
 
     const handleDropdown = (e) => {
         const { type, value } = e.target.dataset;

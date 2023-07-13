@@ -10,9 +10,9 @@ const GET = (filters) => {
     });
 };
 
-const usePrograms = {
+const useInstitutions = {
     GET,
 };
 
 export { getInstitutions, institutionsKeys };
-export default usePrograms;
+export default useInstitutions;

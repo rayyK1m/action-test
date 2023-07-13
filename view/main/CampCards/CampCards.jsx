@@ -3,12 +3,13 @@ import { useState, useMemo } from 'react';
 import { Checkbox, BasicPagination } from '@goorm-dev/gds-components';
 
 import usePrograms from '@/query-hooks/usePrograms';
-import { DEFAULT_QUERY } from '@/pages';
+import { PROGRAMS_DEFAULT_QUERY } from '@/pages';
+import { PAGINATION_LIMI_COUNT } from '@/constants/common';
 
 import CampCardsEmpty from './CampCards.empty';
 import CampCard from '../CampCard';
 
-import { APPLY_STATUS, LIMIT_PAGE_NUM } from './CampCards.constants';
+import { APPLY_STATUS } from './CampCards.constants';
 import { DROP_DOWNS } from '../ProgramsContainer/ProgramsContainer.constants';
 
 import styles from './CampCards.module.scss';
@@ -33,7 +34,7 @@ function CampCards({ campType, filterList, searchValue, page, setPage }) {
     const {
         data: { items: programList, total: totalProgramCount },
     } = usePrograms.GET({
-        ...DEFAULT_QUERY,
+        ...PROGRAMS_DEFAULT_QUERY,
         campType,
         page,
         operateLocation: filterList[DROP_DOWNS.LOCATIONS],
@@ -102,11 +103,7 @@ function CampCards({ campType, filterList, searchValue, page, setPage }) {
             <div className={styles.campCardContainer}>
                 {extendedProgramList
                     /**
-                     * 팔터링1: 방문형 vs 집합형
-                     */
-                    .filter(({ type }) => type?.camp === campType)
-                    /**
-                     * 필터링2: 신청 가능 vs 신청 불가능
+                     * 필터링: 신청 가능 vs 신청 불가능
                      */
                     .filter(({ applyStatus }) =>
                         isCheckPossibleApply
@@ -115,7 +112,7 @@ function CampCards({ campType, filterList, searchValue, page, setPage }) {
                     )
                     .map(
                         ({
-                            uuid,
+                            id,
                             name,
                             thumbnail,
                             applyStatus,
@@ -123,7 +120,7 @@ function CampCards({ campType, filterList, searchValue, page, setPage }) {
                             educationDate,
                         }) => (
                             <CampCard
-                                key={uuid}
+                                key={id}
                                 name={name}
                                 thumbnail={thumbnail}
                                 applyType={applyStatus.type}
@@ -133,16 +130,16 @@ function CampCards({ campType, filterList, searchValue, page, setPage }) {
                         ),
                     )}
             </div>
-            {totalProgramCount > DEFAULT_QUERY.limit && (
+            {totalProgramCount > PROGRAMS_DEFAULT_QUERY.limit && (
                 <BasicPagination
                     size="md"
                     scrollMove={false}
                     page={page}
                     pageCount={Math.ceil(
-                        totalProgramCount / DEFAULT_QUERY.limit,
+                        totalProgramCount / PROGRAMS_DEFAULT_QUERY.limit,
                     )}
-                    limitCount={LIMIT_PAGE_NUM}
-                    className={styles.pagination}
+                    limitCount={PAGINATION_LIMI_COUNT}
+                    className="justify-content-center"
                     onPageChangeHandler={(page) => setPage(page * 1)}
                 />
             )}
