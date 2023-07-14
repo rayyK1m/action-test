@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 
 import { Checkbox, BasicPagination } from '@goorm-dev/gds-components';
 
-import usePrograms from '@/query-hooks/usePrograms';
+import { useGetPrograms } from '@/query-hooks/usePrograms';
 import { PROGRAMS_DEFAULT_QUERY } from '@/pages';
 import { PAGINATION_LIMI_COUNT } from '@/constants/common';
 
@@ -33,7 +33,7 @@ function CampCards({ campType, filterList, searchValue, page, setPage }) {
     /** query-hooks 포르그램 리스트 탐색 */
     const {
         data: { items: programList, total: totalProgramCount },
-    } = usePrograms.GET({
+    } = useGetPrograms({
         ...PROGRAMS_DEFAULT_QUERY,
         campType,
         page,

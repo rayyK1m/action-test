@@ -1,6 +1,7 @@
 const programsKeys = {
     all: () => ['programs'],
-    item: () => [...programsKeys.all(), 'item'],
+    list: () => [...programsKeys.all(), 'list'],
+    detail: (filters) => [...programsKeys.list(), { ...filters }],
 };
 
 export default programsKeys;

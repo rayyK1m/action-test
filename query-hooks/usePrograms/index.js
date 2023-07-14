@@ -3,12 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 import programsKeys from './keys';
 import programsApis from './apis';
 
-// const GET = (filters) => {
-//     return useQuery({
-//         queryKey: programsKeys.detail({ ...filters }),
-//         queryFn: () => getPrograms({ ...filters }),
-//     });
-// };
+const useGetPrograms = (filters) => {
+    return useQuery({
+        queryKey: programsKeys.detail({ ...filters }),
+        queryFn: () => programsApis.getPrograms({ ...filters }),
+    });
+};
 
 const useGetProgram = (filters) => {
     return useQuery({
@@ -17,4 +17,4 @@ const useGetProgram = (filters) => {
     });
 };
 
-export { useGetProgram, programsKeys, programsApis };
+export { useGetPrograms, useGetProgram, programsKeys, programsApis };

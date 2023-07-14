@@ -8,6 +8,7 @@ import Layout from '@/components/Layout/Layout';
 
 import { getPrograms, programsKeys } from '@/query-hooks/usePrograms';
 import { PROGRAM_DIVISION } from '@/constants/db';
+import SSRSuspense from '@/components/SSRSuspense';
 
 export const PROGRAMS_DEFAULT_QUERY = {
     campType: PROGRAM_DIVISION.방문형,
@@ -51,7 +52,9 @@ export default function MainPage() {
             <Layout.Header userData={userData} />
             <Layout.Banner />
             <Layout.Main>
-                <ProgramsContainer />
+                <SSRSuspense>
+                    <ProgramsContainer />
+                </SSRSuspense>
             </Layout.Main>
             <Layout.Footer />
         </Layout>
