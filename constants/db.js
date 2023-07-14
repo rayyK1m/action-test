@@ -7,17 +7,17 @@ export const PROGRAM_REVIEW_STATUS = {
     심사중: {
         text: '심사중',
         key: 'IN_PROGRESS',
-        value: 1,
+        value: 'IN_PROGRESS',
     },
     승인: {
         text: '승인',
         key: 'ACCEPT',
-        value: 2,
+        value: 'ACCEPT',
     },
     거절: {
         text: '거절',
         key: 'REJECT',
-        value: 3,
+        value: 'REJECT',
     },
 };
 
@@ -25,22 +25,22 @@ export const CAMP_REVIEW_STATUS = {
     심사중: {
         text: '심사중',
         key: 'IN_PROGRESS',
-        value: 1,
+        value: 'IN_PROGRESS',
     },
     승인: {
         text: '승인',
         key: 'ACCEPT',
-        value: 2,
+        value: 'ACCEPT',
     },
     거절: {
         text: '거절',
         key: 'REJECT',
-        value: 3,
+        value: 'REJECT',
     },
     취소: {
-        text: '캠프 취소',
+        text: '신청 취소',
         key: 'CANCEL',
-        value: 4,
+        value: 'CANCEL',
     },
 };
 

@@ -10,7 +10,7 @@ const MOCK_DATA = [
             duration: '장기',
         },
         name: '인간을 돕는 드론 에이전트',
-        reviewStatus: 1,
+        reviewStatus: 'IN_PROGRESS',
     },
     {
         id: 'prog_oUOrd_1687395960878',
@@ -19,7 +19,7 @@ const MOCK_DATA = [
             duration: '단기',
         },
         name: '카카오엔터프라이즈 2023 스프링 SW 캠프',
-        reviewStatus: 2,
+        reviewStatus: 'ACCEPT',
     },
     {
         id: 'prog_oUOrd_1687395960879',
@@ -28,7 +28,7 @@ const MOCK_DATA = [
             duration: '장기',
         },
         name: '제주교대(신화월드) 상반기 새싹캠프 인공지능 올림픽',
-        reviewStatus: 3,
+        reviewStatus: 'REJECT',
     },
     {
         id: 'prog_oUOrd_1687395960880',
@@ -37,7 +37,7 @@ const MOCK_DATA = [
             duration: '단기',
         },
         name: '카카오엔터프라이즈 2023 스프링 SW 캠프',
-        reviewStatus: 2,
+        reviewStatus: 'ACCEPT',
     },
     {
         id: 'prog_oUOrd_1687395960881',
@@ -46,7 +46,7 @@ const MOCK_DATA = [
             duration: '단기',
         },
         name: '카카오엔터프라이즈 2023 스프링 SW 캠프',
-        reviewStatus: 2,
+        reviewStatus: 'ACCEPT',
     },
     {
         id: 'prog_oUOrd_16873959608851',
@@ -55,11 +55,11 @@ const MOCK_DATA = [
             duration: '단기',
         },
         name: '카카오엔터프라이즈 2023 스프링 SW 캠프',
-        reviewStatus: 2,
+        reviewStatus: 'ACCEPT',
     },
     {
         institutionId: 'inst1',
-        reviewStatus: 1,
+        reviewStatus: 'IN_PROGRESS',
         name: 'program2 - inst1',
         type: {
             division: '집합형',

@@ -30,10 +30,12 @@ function ApplyList() {
     });
 
     const {
-        data: { campTickets, campType, totalCount },
+        data: { campTickets, totalCount },
     } = useGetCampTickets({
         page,
-        ...(dropdownSelect !== 0 && { status: dropdownSelect }),
+        ...(dropdownSelect !== 0 && {
+            reviewStatus: DROPDOWN_MENU[dropdownSelect].value,
+        }),
     });
 
     return (
@@ -47,15 +49,15 @@ function ApplyList() {
 
                 <ButtonDropdown isOpen={isOpen} toggle={toggle}>
                     <DropdownToggle size="lg" color="link" theme="light" caret>
-                        {DROPDOWN_MENU[campType][dropdownSelect].text}
+                        {DROPDOWN_MENU[dropdownSelect].text}
                     </DropdownToggle>
 
                     <DropdownMenu>
-                        {DROPDOWN_MENU[campType].map((item) => (
+                        {DROPDOWN_MENU.map((item, idx) => (
                             <DropdownItem
-                                key={item.index}
+                                key={item.key}
                                 onClick={() => {
-                                    setDropdownSelect(item.index);
+                                    setDropdownSelect(idx);
                                     router.push(
                                         {
                                             pathname: CURRENT_URL,
