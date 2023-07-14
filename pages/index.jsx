@@ -3,7 +3,7 @@ import { withSessionSsr } from '@/server/utils/auth';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
 
-import ProgramsContainer from '@/view/main/ProgramsContainer';
+import ProgramsContainer from '@/view/components/ProgramsContainer';
 import Layout from '@/components/Layout/Layout';
 
 import { getPrograms, programsKeys } from '@/query-hooks/usePrograms';

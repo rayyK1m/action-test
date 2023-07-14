@@ -10,3 +10,11 @@ export const getInstitutions = async (query) => {
 
     return data;
 };
+
+export const getInstitution = async (institutionId) => {
+    const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/institutions/${institutionId}`,
+    );
+
+    return data;
+};

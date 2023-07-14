@@ -24,8 +24,6 @@ function InstitutionCards({
         active: isCheckPossibleApply,
     });
 
-    console.log(items);
-
     return (
         <>
             <div className={styles.container}>
