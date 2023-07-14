@@ -11,8 +11,8 @@ export const PROGRAM_REVIEW_STATUS = {
     },
     승인: {
         text: '승인',
-        key: 'ACCEPT',
-        value: 'ACCEPT',
+        key: 'APPROVE',
+        value: 'APPROVE',
     },
     거절: {
         text: '거절',
@@ -29,8 +29,8 @@ export const CAMP_REVIEW_STATUS = {
     },
     승인: {
         text: '승인',
-        key: 'ACCEPT',
-        value: 'ACCEPT',
+        key: 'APPROVE',
+        value: 'APPROVE',
     },
     거절: {
         text: '거절',
