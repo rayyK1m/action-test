@@ -4,6 +4,7 @@ import FormWrapper from './FormWrapper';
 import FormFileInput from './FormFileInput';
 import FormButtonToggleGroup from './FormButtonToggleGroup';
 import FormEditor from './FormEditor';
+import FormDatePicker from './FormDatePicker/FormDatePicker';
 
 export {
     FormDropdown,
@@ -12,4 +13,5 @@ export {
     FormFileInput,
     FormButtonToggleGroup,
     FormEditor,
+    FormDatePicker,
 };

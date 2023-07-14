@@ -15,6 +15,10 @@ import { ChevronDownIcon } from '@goorm-dev/gds-icons';
 
 import { PROGRAM_APPLY_KEYS, SCHOOL } from '../program.contants';
 import cn from 'classnames';
+import {
+    FileInputItem,
+    ImageFileInputItem,
+} from '@/view/components/ValidateFormItem';
 
 const PriceInputItem = ({ priceKey }) => {
     const { getValues } = useFormContext();
@@ -131,14 +135,11 @@ const ReadOnlyBasicForm = () => {
     return (
         <div className={styles.form}>
             <h5>기본 정보</h5>
-            <FormFileInput.WithImage
+            <ImageFileInputItem
                 label="프로그램 썸네일"
                 isRequired
                 maxFileSize={2}
-                fileKey={{ thumbnailKey, thumbnailFileKey }}
-                defaultFiles={
-                    getValues(thumbnailKey) ? [getValues(thumbnailKey)] : []
-                }
+                fileKey={thumbnailFileKey}
                 disabled
             />
             <div className={styles.divideRow}>
@@ -229,7 +230,7 @@ const ReadOnlyEducationForm = () => {
             <h5>교육 정보</h5>
             <FormInput
                 type="number"
-                label="총 교육 시간"
+                label="총 교육 차시"
                 value={learningTime}
                 isRequired
                 readOnly
@@ -242,12 +243,11 @@ const ReadOnlyEducationForm = () => {
                 isRequired
                 readOnly
             />
-            <FormFileInput
+            <FileInputItem
                 label="프로그램 교안 첨부 파일"
                 isRequired
                 maxFileSize={30}
                 fileKey={attachedFilesKey}
-                defaultFiles={attachedFiles ? [attachedFiles] : []}
                 disabled
             />
             <FormInput

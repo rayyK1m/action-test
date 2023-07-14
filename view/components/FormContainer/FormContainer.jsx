@@ -5,7 +5,7 @@ const FormContainer = ({ children }) => {
     return (
         <Container className={styles.container}>
             <Row>
-                <Col md={{ size: 8, offset: 2 }}>{children}</Col>
+                <Col md={{ size: 10, offset: 1 }}>{children}</Col>
             </Row>
         </Container>
     );

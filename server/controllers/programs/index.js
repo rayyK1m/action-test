@@ -21,9 +21,16 @@ const getPrograms = async (req, res) => {
     return res.json({ items, total });
 };
 
-const getProgram = async (_, res) => {
-    return res.json({ item: [] });
+const getProgram = async (req, res) => {
+    const { id } = req.query;
+
+    const data = await swcampSdk.getProgram({
+        programId: id,
+    });
+
+    return res.json(data);
 };
 
 const programsCtrl = { getPrograms, getProgram };
+
 export default programsCtrl;

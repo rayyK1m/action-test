@@ -38,17 +38,26 @@ const FormDropdown = ({
     };
 
     if (readOnly) {
-        <Button
-            icon={<ChevronDownIcon />}
-            color="select"
-            iconSide="right"
-            size={size}
-            className={styles.button}
-            disabled={disabled}
-            {...props}
-        >
-            {defaultValue}
-        </Button>;
+        return (
+            <FormWrapper
+                label={label}
+                isRequired={isRequired}
+                feedback={feedback}
+            >
+                <Button
+                    icon={<ChevronDownIcon />}
+                    color="select"
+                    iconSide="right"
+                    size={size}
+                    className={styles.button}
+                    disabled
+                    active
+                    {...props}
+                >
+                    {value}
+                </Button>
+            </FormWrapper>
+        );
     }
 
     return (

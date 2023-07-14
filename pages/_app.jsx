@@ -11,6 +11,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 
+import { ToastContainer, Slide } from '@goorm-dev/gds-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+
 /**
  * setting day.js
  */
@@ -53,6 +56,12 @@ export default function App({ Component, pageProps }) {
                     <ErrorBoundary>
                         <Component {...pageProps}></Component>
                     </ErrorBoundary>
+                    <ToastContainer
+                        hideProgressBar
+                        newestOnTop
+                        autoClose={3000}
+                        transition={Slide}
+                    />
                 </Hydrate>
             </QueryClientProvider>
         </>

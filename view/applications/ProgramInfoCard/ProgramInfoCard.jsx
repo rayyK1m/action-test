@@ -1,27 +1,24 @@
 import { NoticeCircleIcon } from '@goorm-dev/gds-icons';
-import { Alert } from '@goorm-dev/gds-components';
+import CustomAlert from '@/components/CustomAlert/CustomAlert';
 
 import { formatDate } from '@/utils';
 
 import styles from './ProgramInfoCard.module.scss';
 
-function ProgramInfoCard({ program }) {
+function ProgramInfoCard({ program, notice }) {
     const {
-        title,
+        name,
         applyDate,
         educationDate,
         learningTime,
+        type,
         educationLocation,
-        price,
-        notice,
     } = program;
-
-    const formattedCost = price === 0 ? '무료' : `${price}원`;
 
     return (
         <>
             <div className={styles.info}>
-                <h3 className="mb-0">{title}</h3>
+                <h3 className="mb-0">{name}</h3>
                 <ul className={styles.infoList}>
                     <li>{`신청 기간 : ${formatDate(
                         applyDate.start,
@@ -29,18 +26,15 @@ function ProgramInfoCard({ program }) {
                     <li>{`교육 기간 : ${formatDate(
                         educationDate.start,
                     )} ~ ${formatDate(educationDate.end)}`}</li>
-                    <li>{`총 교육 시간 : ${learningTime}시간`} </li>
-                    <li>{`교육 장소 : ${educationLocation}`}</li>
-                    <li>{`비용 : ${formattedCost}`} </li>
+                    <li>
+                        {`총 교육 차시 : ${learningTime}차시(${type.duration})`}{' '}
+                    </li>
+                    <li>{`교육 장소 : ${educationLocation.name}`}</li>
                 </ul>
             </div>
-            <Alert
-                className={styles.notice}
-                leftIcon={NoticeCircleIcon}
-                color="dark"
-            >
+            <CustomAlert className={styles.notice} leftIcon={NoticeCircleIcon}>
                 {notice}
-            </Alert>
+            </CustomAlert>
         </>
     );
 }

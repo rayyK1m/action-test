@@ -12,8 +12,8 @@ const FormInput = forwardRef(
             label,
             isRequired,
             size,
-            feedback,
             formText,
+            feedback,
             className,
             ...props
         },
@@ -23,8 +23,8 @@ const FormInput = forwardRef(
             <FormWrapper
                 label={label}
                 isRequired={isRequired}
-                feedback={feedback}
                 formText={formText}
+                feedback={feedback}
             >
                 <Input
                     ref={ref}

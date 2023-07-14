@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import cn from 'classnames';
 import dayjs from 'dayjs';
 
@@ -30,52 +30,54 @@ import styles from './CustomDatePicker.module.scss';
  * @param {CustomDatePickerProps} props
  * @returns {Date} ex) Tue Jul 11 2023 00:00:00 GMT+0900 (한국 표준시)
  */
-function CustomDatePicker({
-    size = 'lg',
-    inputClassName,
-    inputProps,
-    date,
-    onChange,
-}) {
-    const [isOpen, setIsOpen] = useState(false);
-    const toggle = () => {
-        setIsOpen((prev) => !prev);
-    };
+const CustomDatePicker = forwardRef(
+    (
+        { size = 'lg', inputClassName, inputProps, date, onChange, onBlur },
+        ref,
+    ) => {
+        const [isOpen, setIsOpen] = useState(false);
+        const toggle = () => {
+            setIsOpen((prev) => !prev);
+        };
 
-    const handleChange = (date) => {
-        onChange(date);
-    };
+        const handleChange = (date) => {
+            onChange(date);
+        };
 
-    return (
-        <>
-            <Dropdown isOpen={isOpen} toggle={toggle}>
-                <DropdownToggle tag="div" className={styles.inputWrapper}>
-                    <Input
-                        bsSize={size}
-                        placeholder="YYYY.MM.DD"
-                        className={cn(
-                            styles.input,
-                            isOpen ? styles.input_focus : '',
-                            inputClassName,
-                        )}
-                        value={!date ? '' : dayjs(date).format('YYYY.MM.DD')}
-                        readOnly
-                        {...inputProps}
-                    />
-                    <CalendarIcon
-                        className={cn(
-                            styles.inputIcon,
-                            styles[`inputIcon_${size}`],
-                        )}
-                    />
-                </DropdownToggle>
+        return (
+            <>
+                <Dropdown isOpen={isOpen} toggle={toggle}>
+                    <DropdownToggle tag="div" className={styles.inputWrapper}>
+                        <Input
+                            ref={ref}
+                            bsSize={size}
+                            placeholder="YYYY.MM.DD"
+                            className={cn(
+                                styles.input,
+                                isOpen ? styles.input_focus : '',
+                                inputClassName,
+                            )}
+                            value={
+                                !date ? '' : dayjs(date).format('YYYY.MM.DD')
+                            }
+                            onFocus={() => document.activeElement.blur()}
+                            {...inputProps}
+                        />
+                        <CalendarIcon
+                            className={cn(
+                                styles.inputIcon,
+                                styles[`inputIcon_${size}`],
+                            )}
+                        />
+                    </DropdownToggle>
 
-                <DropdownMenu>
-                    <Calendar locale="ko" onClickDay={handleChange} />
-                </DropdownMenu>
-            </Dropdown>
-        </>
-    );
-}
+                    <DropdownMenu>
+                        <Calendar locale="ko" onClickDay={handleChange} />
+                    </DropdownMenu>
+                </Dropdown>
+            </>
+        );
+    },
+);
 
 export default CustomDatePicker;

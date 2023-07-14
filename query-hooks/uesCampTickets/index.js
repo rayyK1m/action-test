@@ -34,20 +34,24 @@ const useGetCampTicketsAdmin = () => {
 };
 const useCreateCampTicket = () => {
     const queryClient = useQueryClient();
-    return useMutation((campId) => campTicketsApis.createCampTicket(campId), {
-        onSuccess: (e) => {
-            if (!e) {
-                toast('캠프 신청에 실패했습니다.', {
-                    type: toast.TYPE.ERROR,
+    return useMutation(
+        ({ type, formData }) =>
+            campTicketsApis.createCampTicket({ type, formData }),
+        {
+            onSuccess: (e) => {
+                if (!e) {
+                    toast('캠프 신청에 실패했습니다.', {
+                        type: toast.TYPE.ERROR,
+                    });
+                    return;
+                }
+                toast('캠프 신청이 완료되었습니다.', {
+                    type: toast.TYPE.SUCCESS,
                 });
-                return;
-            }
-            toast('캠프 신청이 완료되었습니다.', {
-                type: toast.TYPE.SUCCESS,
-            });
-            queryClient.invalidateQueries(campTicketsKeys.items());
+                queryClient.invalidateQueries(campTicketsKeys.items());
+            },
         },
-    });
+    );
 };
 
 export {

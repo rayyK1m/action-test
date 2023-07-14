@@ -14,7 +14,27 @@ const getCampTickets = async (query) => {
     };
 };
 
+const getCampTicket = async (query) => {
+    const { id } = query;
+
+    const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/campTickets/${id}`,
+    );
+    return data;
+};
+
+const createCampTicket = async (query) => {
+    const { type, formData } = query;
+    // const { data } = await axios.post(
+    //     `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/campTickets/${type}`,
+    //     formData,
+    // );
+    return true;
+};
+
 const campTicketsApis = {
     getCampTickets,
+    getCampTicket,
+    createCampTicket,
 };
 export default campTicketsApis;

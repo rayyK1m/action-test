@@ -1,14 +1,11 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import _isEmpty from 'lodash/isEmpty';
 
 import {
     FormWrapper,
     FormButtonToggleGroup,
-    FormDropdown,
-    FormFileInput,
     FormInput,
-    FormEditor,
 } from '@/components/FormItem';
 import Divider from '@/components/Divider';
 
@@ -31,6 +28,12 @@ import { ChevronDownIcon, NoticeCircleIcon } from '@goorm-dev/gds-icons';
 
 import useToggle from '@/hooks/useToggle';
 import { PROGRAM_APPLY_KEYS, SCHOOL } from '../program.contants.js';
+import {
+    DropdownInputItem,
+    EditorInputItem,
+    FileInputItem,
+    ImageFileInputItem,
+} from '@/view/components/ValidateFormItem';
 
 const InputItem = ({ label, inputKey, placeholder, ...props }) => {
     const {
@@ -280,74 +283,6 @@ const ApplyTargetInput = () => {
     );
 };
 
-const EditorInput = ({ editorKey, label, placeholder }) => {
-    const {
-        control,
-        formState: { errors },
-    } = useFormContext();
-
-    return (
-        <Controller
-            control={control}
-            name={editorKey}
-            rules={{
-                required: '필수 항목을 입력해주세요.',
-                validate: (value) =>
-                    value !== '<p><br></p>' || '필수 항목을 입력해주세요!',
-            }}
-            render={({ field: { value, onChange, onBlur } }) => (
-                <div>
-                    <FormEditor
-                        isRequired
-                        label={label}
-                        placeholder={placeholder}
-                        value={value}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                    />
-                    {errors[editorKey] && (
-                        <div className="d-flex algin-items-center text-danger mt-1">
-                            <NoticeCircleIcon />
-                            <p className="ml-1">{errors[editorKey]?.message}</p>
-                        </div>
-                    )}
-                </div>
-            )}
-        />
-    );
-};
-
-const DropdownInput = ({ label, dropdownKey, items, placeholder }) => {
-    const {
-        control,
-        formState: { errors },
-    } = useFormContext();
-
-    return (
-        <Controller
-            control={control}
-            name={dropdownKey}
-            rules={{
-                required: '필수 항목을 입력해주세요.',
-            }}
-            render={({ field: { value, onBlur, onChange } }) => (
-                <FormDropdown
-                    isRequired
-                    label={label}
-                    defaultValue={value}
-                    placeholder={placeholder}
-                    items={items}
-                    dropdownKey={dropdownKey}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    invalid={!!errors[dropdownKey]}
-                    feedback={errors[dropdownKey]?.message}
-                />
-            )}
-        />
-    );
-};
-
 const BasicForm = ({ type }) => {
     const { getValues } = useFormContext();
     const {
@@ -362,17 +297,14 @@ const BasicForm = ({ type }) => {
         contactKey,
     } = PROGRAM_APPLY_KEYS;
 
-    const [thumbnail] = getValues([thumbnailKey]);
-
     return (
         <div className={styles.form}>
             <h5>기본 정보</h5>
-            <FormFileInput.WithImage
+            <ImageFileInputItem
                 label="프로그램 썸네일"
                 isRequired
                 maxFileSize={2}
-                fileKey={{ thumbnailKey, thumbnailFileKey }}
-                defaultFiles={thumbnail ? [thumbnail] : []}
+                fileKey={thumbnailFileKey}
             />
             <div className={styles.divideRow}>
                 <InputItem
@@ -383,7 +315,7 @@ const BasicForm = ({ type }) => {
                 <ProgramTypeInput campType={type} typeKey={typeKey} />
             </div>
             <div className={styles.divideRow}>
-                <DropdownInput
+                <DropdownInputItem
                     label="프로그램 카테고리"
                     dropdownKey={categoryKey}
                     placeholder="카테고리 선택"
@@ -391,12 +323,12 @@ const BasicForm = ({ type }) => {
                 />
                 <PriceInputItem priceKey={priceKey} />
             </div>
-            <EditorInput
+            <EditorInputItem
                 label="프로그램 소개"
                 placeholder="예) 프로그래밍의 순차와 반복에 대해 학습하며 컴퓨팅 사고력을 키운다."
                 editorKey={descriptionKey}
             />
-            <DropdownInput
+            <DropdownInputItem
                 label="운영 지역"
                 placeholder="운영 지역 선택"
                 items={PROGRAM_OPERATION_LOCATIONS}
@@ -421,7 +353,6 @@ const ApplyForm = ({ program }) => {
 };
 
 const EducationForm = ({ type }) => {
-    const { getValues } = useFormContext();
     const {
         attachedFilesKey,
         learningTimeKey,
@@ -436,26 +367,21 @@ const EducationForm = ({ type }) => {
             <h5>교육 정보</h5>
             <InputItem
                 type="number"
-                label="총 교육 시간"
-                placeholder="예) 20 (단위: 시간)"
+                label="총 교육 차시"
+                placeholder="예) 8차시"
                 inputKey={learningTimeKey}
             />
             {/** 교육 기간 DatePicker 논의 중 */}
-            <EditorInput
+            <EditorInputItem
                 label="커리큘럼"
                 placeholder={`예) \n1차시. 순차 구조와 반복 구조 이해하기 \n2차시. 로봇을 활용한 그림 그리기`}
                 editorKey={curriculumKey}
             />
-            <FormFileInput
+            <FileInputItem
                 label="프로그램 교안 첨부 파일"
                 isRequired
                 maxFileSize={30}
                 fileKey={attachedFilesKey}
-                defaultFiles={
-                    getValues(attachedFilesKey)
-                        ? [getValues(attachedFilesKey)]
-                        : []
-                }
             />
             <InputItem
                 type="textarea"

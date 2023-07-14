@@ -25,7 +25,23 @@ export const convertSort = (sort) => {
     });
 };
 
+export const convertImageToBase64 = (file, fileType) => {
+    const mediaType = fileType || file?.type;
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64String = reader.result.split(',')[1];
+            const dataUrl = `data:${mediaType};base64,${base64String}`;
+            resolve(dataUrl);
+        };
+        reader.onerror = () => {
+            reject(new Error('이미지 변환에 실패헸습니다'));
+        };
+        reader.readAsDataURL(file);
+    });
+};
 /**
+ *
  * Object에서 empty value를 제거한다.
  * @param {Object} obj - empty value를 제거할 Object
  * @returns {Object} - empty value가 제거된 Object

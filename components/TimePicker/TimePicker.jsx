@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import cn from 'classnames';
 import { VariableSizeList as List } from 'react-window';
 import dayjs from 'dayjs';
@@ -68,108 +68,116 @@ const TIME_FORMAT = 'hh:mm a';
 
  * @returns {Date} ex) Sun May 07 2023(-- 오늘 날짜 --) 18:00:00 GMT+0900 (한국 표준시))
  */
-function TimePicker({
-    size = 'lg',
-    inputClassName,
-    inputProps,
-    time,
-    placeholderTime = { ampm: '오전', hour: '01', minute: '00' },
-    onChange,
-}) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [isDirty, setIsDirty] = useState(time ? true : false);
-    const [innerTime, setInnerTime] = useState(placeholderTime);
+const TimePicker = forwardRef(
+    (
+        {
+            size = 'lg',
+            inputClassName,
+            inputProps,
+            time,
+            placeholderTime = { ampm: '오전', hour: '01', minute: '00' },
+            onChange,
+        },
+        ref,
+    ) => {
+        const [isOpen, setIsOpen] = useState(false);
+        const [isDirty, setIsDirty] = useState(time ? true : false);
+        const [innerTime, setInnerTime] = useState(placeholderTime);
 
-    useEffect(() => {
-        const convertedHour = dayjs(time).format('hh');
-        const convertedMinute = dayjs(time).format('mm');
-        const convertedAmpm = dayjs(time).format('a');
+        useEffect(() => {
+            const convertedHour = dayjs(time).format('hh');
+            const convertedMinute = dayjs(time).format('mm');
+            const convertedAmpm = dayjs(time).format('a');
 
-        setInnerTime({
-            ampm: convertedAmpm,
-            hour: convertedHour,
-            minute: convertedMinute,
-        });
-    }, [time]);
+            setInnerTime({
+                ampm: convertedAmpm,
+                hour: convertedHour,
+                minute: convertedMinute,
+            });
+        }, [time]);
 
-    const toggle = useCallback((e) => {
-        if (e.target?.role === 'menuitem') return;
+        const toggle = useCallback((e) => {
+            if (e.target?.role === 'menuitem') return;
 
-        setIsOpen((prev) => !prev);
-    }, []);
+            setIsOpen((prev) => !prev);
+        }, []);
 
-    const handleClickItem = (itemKey, itemValue) => {
-        if (!isDirty) setIsDirty(true);
+        const handleClickItem = (itemKey, itemValue) => {
+            if (!isDirty) setIsDirty(true);
 
-        setInnerTime((prev) => {
-            return {
-                ...prev,
-                [itemKey]: itemValue,
-            };
-        });
+            setInnerTime((prev) => {
+                return {
+                    ...prev,
+                    [itemKey]: itemValue,
+                };
+            });
 
-        const selectedTime = { ...innerTime, [itemKey]: itemValue };
+            const selectedTime = { ...innerTime, [itemKey]: itemValue };
 
-        onChange(
-            dayjs(
-                `${selectedTime.hour}:${selectedTime.minute} ${selectedTime.ampm}`,
-                TIME_FORMAT,
-                'ko',
-            ).format(),
+            onChange(
+                dayjs(
+                    `${selectedTime.hour}:${selectedTime.minute} ${selectedTime.ampm}`,
+                    TIME_FORMAT,
+                    'ko',
+                ).format(),
+            );
+        };
+
+        return (
+            <Dropdown isOpen={isOpen} toggle={toggle}>
+                <DropdownToggle tag="div" className={styles.inputWrapper}>
+                    <Input
+                        ref={ref}
+                        bsSize={size}
+                        placeholder={`${placeholderTime.ampm} ${placeholderTime.hour}:${placeholderTime.minute}`}
+                        className={cn(
+                            styles.input,
+                            isOpen ? styles.input_focus : '',
+                            inputClassName,
+                        )}
+                        value={
+                            !isDirty
+                                ? ''
+                                : `${innerTime.ampm} ${innerTime.hour}:${innerTime.minute}`
+                        }
+                        onFocus={() => document.activeElement.blur()}
+                        {...inputProps}
+                    />
+                    <TimeIcon
+                        className={cn(
+                            styles.inputIcon,
+                            styles[`inputIcon_${size}`],
+                        )}
+                    />
+                </DropdownToggle>
+
+                <DropdownMenu
+                    className={cn(
+                        isOpen ? 'd-flex' : 'd-none',
+                        styles.dropdownMenu,
+                    )}
+                >
+                    <ListContainer
+                        items={AMPM}
+                        onClickItem={(value) => handleClickItem('ampm', value)}
+                        selectedItem={innerTime.ampm}
+                    />
+                    <ListContainer
+                        items={HOURS}
+                        onClickItem={(value) => handleClickItem('hour', value)}
+                        selectedItem={innerTime.hour}
+                    />
+                    <ListContainer
+                        items={MINUTES}
+                        onClickItem={(value) =>
+                            handleClickItem('minute', value)
+                        }
+                        selectedItem={innerTime.minute}
+                    />
+                </DropdownMenu>
+            </Dropdown>
         );
-    };
-
-    return (
-        <Dropdown isOpen={isOpen} toggle={toggle}>
-            <DropdownToggle tag="div" className={styles.inputWrapper}>
-                <Input
-                    bsSize={size}
-                    placeholder={`${placeholderTime.ampm} ${placeholderTime.hour}:${placeholderTime.minute}`}
-                    className={cn(
-                        styles.input,
-                        isOpen ? styles.input_focus : '',
-                        inputClassName,
-                    )}
-                    value={
-                        !isDirty
-                            ? ''
-                            : `${innerTime.ampm} ${innerTime.hour}:${innerTime.minute}`
-                    }
-                    readOnly
-                    {...inputProps}
-                />
-                <TimeIcon
-                    className={cn(
-                        styles.inputIcon,
-                        styles[`inputIcon_${size}`],
-                    )}
-                />
-            </DropdownToggle>
-
-            <DropdownMenu
-                className={cn(
-                    isOpen ? 'd-flex' : 'd-none',
-                    styles.dropdownMenu,
-                )}
-            >
-                <ListContainer
-                    items={AMPM}
-                    onClickItem={(value) => handleClickItem('ampm', value)}
-                    selectedItem={innerTime.ampm}
-                />
-                <ListContainer
-                    items={HOURS}
-                    onClickItem={(value) => handleClickItem('hour', value)}
-                    selectedItem={innerTime.hour}
-                />
-                <ListContainer
-                    items={MINUTES}
-                    onClickItem={(value) => handleClickItem('minute', value)}
-                    selectedItem={innerTime.minute}
-                />
-            </DropdownMenu>
-        </Dropdown>
-    );
-}
+    },
+);
 
 export default React.memo(TimePicker);

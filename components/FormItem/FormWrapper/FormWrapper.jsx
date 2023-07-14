@@ -1,4 +1,4 @@
-import { Label, FormText, FormFeedback } from '@goorm-dev/gds-components';
+import { Label } from '@goorm-dev/gds-components';
 import styles from './FormWrapper.module.scss';
 import cn from 'classnames';
 import { NoticeCircleIcon } from '@goorm-dev/gds-icons';
