@@ -3,7 +3,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 import { INSTITUTIONS } from '@/dummy/institution';
-import { delay } from '@/dummy/utils';
+import { delay, paginateArray } from '@/dummy/utils';
 import { removeEmptyValues } from '@/utils';
 
 const DELAY_TIME = 1500;
@@ -65,6 +65,20 @@ const getPrograms = async ({
     }
 };
 
+const getProgram = async ({ programId }) => {
+    try {
+        const { data } = await swcampInstance.get(
+            `/api/v1/programs/${programId}/open`,
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const getCampTickets = async ({ userId, page, limit, sort, reviewStatus }) => {
     const queryString = qs.stringify(
         {
@@ -91,10 +105,13 @@ const getCampTickets = async ({ userId, page, limit, sort, reviewStatus }) => {
     }
 };
 
-const getProgram = async ({ programId }) => {
+const getCampTicketsCount = async ({ userId }) => {
     try {
         const { data } = await swcampInstance.get(
-            `${process.env.SWCAMP_API_HOST}/api/v1/programs/${programId}/open`,
+            '/api/v1/camp-tickets/active-count',
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
         );
         return data;
     } catch (err) {
@@ -168,11 +185,12 @@ const getUserInfo = async ({ userId }) => {
 const swcampSdk = {
     getInstitutions,
     getCampTickets,
+    getCampTicketsCount,
     getPrograms,
+    getProgram,
     createProgram,
     getUserInfo,
     createCampTicket,
-    getProgram,
     getCampTicket,
 };
 export default swcampSdk;

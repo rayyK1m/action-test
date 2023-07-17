@@ -1,0 +1,28 @@
+.viewer {
+    line-height: 1.375rem /* 22px -> 1.375rem */;
+    & h1,
+    & h2,
+    & h3,
+    & h4,
+    & h5,
+    & h6,
+    & p,
+    & ol,
+    & ul,
+    & li {
+        margin: initial;
+        padding: initial;
+    }
+    & ol,
+    & ul {
+        list-style: initial;
+        padding-inline-start: 1.5rem /* 24px -> 1.5rem */;
+    }
+
+    & a,
+    & a:hover,
+    & a:active,
+    & a:focus {
+        text-decoration: initial;
+    }
+}

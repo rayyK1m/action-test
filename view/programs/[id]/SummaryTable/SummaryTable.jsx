@@ -6,11 +6,14 @@ import useProgram from '@/query-hooks/useProgram';
 
 import styles from './SummaryTable.module.scss';
 import Table from '../Table/Table';
+import { formatDate } from '@/utils';
 
 const SummaryTable = ({ className, ...props }) => {
     const router = useRouter();
     const { id } = router.query;
-    const { data: programData } = useProgram.GET({
+    const {
+        data: { item: programData },
+    } = useProgram.GET({
         type: 'detail',
         id,
     });
@@ -21,17 +24,17 @@ const SummaryTable = ({ className, ...props }) => {
                 <tr>
                     <th>신청 기간</th>
                     <td>
-                        {programData.applyDate.start}
+                        {formatDate(programData.applyDate.start)}
                         {' ~ '}
-                        {programData.applyDate.end}
+                        {formatDate(programData.applyDate.end)}
                     </td>
                 </tr>
                 <tr>
                     <th>교육 기간</th>
                     <td>
-                        {programData.educationDate.start}
+                        {formatDate(programData.educationDate.start)}
                         {' ~ '}
-                        {programData.educationDate.end}
+                        {formatDate(programData.educationDate.end)}
                     </td>
                 </tr>
                 <tr>

@@ -3,8 +3,10 @@ import { Skeleton } from '@goorm-dev/gds-components';
 
 import styles from './Map.module.scss';
 import { useQuery } from '@tanstack/react-query';
+import useMount from '@/hooks/useMount';
 
 const Map = ({ address }) => {
+    const isMounted = useMount();
     const { data: maps, isLoading } = useQuery(
         ['kakao.maps'],
         async () => {
@@ -18,7 +20,7 @@ const Map = ({ address }) => {
                 document.head.append($mapScript);
             });
         },
-        { enabled: !!globalThis.window, cacheTime: Infinity },
+        { enabled: isMounted, cacheTime: Infinity },
     );
 
     const mapRef = useRef(null);

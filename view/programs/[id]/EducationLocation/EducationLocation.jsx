@@ -9,7 +9,9 @@ import styles from './EducationLocation.module.scss';
 const EducationLocation = () => {
     const router = useRouter();
     const { id } = router.query;
-    const { data: programData } = useProgram.GET({
+    const {
+        data: { item: programData },
+    } = useProgram.GET({
         type: 'detail',
         id,
     });

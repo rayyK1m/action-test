@@ -5,6 +5,9 @@
         "eslint:recommended",
         "plugin:prettier/recommended"
     ],
+    "env": {
+        "es6": true
+    },
     "rules": {
         "import/no-anonymous-default-export": "off"
     }

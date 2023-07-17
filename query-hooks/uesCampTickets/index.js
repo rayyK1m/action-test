@@ -20,6 +20,21 @@ const useGetCampTicket = (filters) => {
 };
 
 /**
+ *
+ * @param {{ userId: string }} param
+ * @param {Omit<import('@tanstack/react-query').UseQueryOptions, 'queryKey' | 'queryFn' | 'initialData'>} options
+ * @returns
+ */
+const useGetCampTicketsCount = ({ userId }, options) => {
+    return useQuery({
+        /** queryKey와 queryFn을 덮는 상황을 막기 위해 앞쪽에 스프레드 */
+        ...options,
+        queryKey: campTicketsKeys.count(),
+        queryFn: () => campTicketsApis.getCampTicketsCount({ userId }),
+    });
+};
+
+/**
  * 아래 코드는 예시입니다. 실제 개발 시 삭제 후 작업해주세요.
  *
  * 예시와 같이 쿼리 훅은 사용해야 하는 행위(캠프 신청 내역 리스트 조회, 캠프 신청, 리뷰 상태 변경, 캠프 신청 내역 수정...) 단위로 작성합니다.
@@ -57,6 +72,7 @@ const useCreateCampTicket = () => {
 export {
     useGetCampTickets,
     useGetCampTicket,
+    useGetCampTicketsCount,
     useGetCampTicketsAdmin,
     useCreateCampTicket,
     campTicketsApis,

@@ -4,6 +4,7 @@
     color: var(--alternative);
     font-size: 0.875rem;
     line-height: 1.375rem;
+    word-break: keep-all;
 
     & tbody {
         display: flex;

@@ -2,8 +2,18 @@ import { useQueryClient } from '@tanstack/react-query';
 import sessionKeys from './keys';
 
 /**
+ * @typedef {'student' | 'teacher' | 'institution' | 'foundation'} Role
+ */
+/**
+ * @typedef UserData
+ * @property {string} id
+ * @property {string} name
+ * @property {Role} role
+ */
+
+/**
  *
- * @returns {{ data?: { id: string, name: string } }}
+ * @returns {{ data?: UserData }}
  */
 const GET = () => {
     const queryClient = useQueryClient();

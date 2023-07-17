@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    gap: 1.5rem /* 24px -> 1.5rem */;
+    align-items: center;
+}
+
+.image {
+    border-radius: 50%;
+    width: 5rem /* 80px -> 5rem */;
+    height: 5rem /* 80px -> 5rem */;
+    background-color: var(--gray-900);
+    object-fit: cover;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem /* 4px -> .25rem */;
+}

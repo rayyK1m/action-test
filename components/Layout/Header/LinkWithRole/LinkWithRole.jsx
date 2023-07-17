@@ -5,7 +5,7 @@ import styles from './LinkWithRole.module.scss';
 
 /**
  *
- * @param {{ role: import('@/components/Layout/Header/Header.type').Role; channelUrl?: string }} props
+ * @param {{ role: import('@/query-hooks/useSession').Role; channelUrl?: string }} props
  * @returns {JSX.Element}
  */
 const LinkWithRole = ({ role, channelUrl, className }) => {

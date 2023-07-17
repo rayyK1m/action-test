@@ -23,6 +23,11 @@ const getCampTicket = async (query) => {
     return data;
 };
 
+const getCampTicketsCount = async () => {
+    const { data } = await axios.get('/api/camp-tickets/active-count');
+    return data;
+};
+
 const createCampTicket = async (query) => {
     const { type, formData } = query;
     // const { data } = await axios.post(
@@ -35,6 +40,7 @@ const createCampTicket = async (query) => {
 const campTicketsApis = {
     getCampTickets,
     getCampTicket,
+    getCampTicketsCount,
     createCampTicket,
 };
 export default campTicketsApis;
