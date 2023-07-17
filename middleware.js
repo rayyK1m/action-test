@@ -28,9 +28,17 @@ export async function middleware(req) {
         return expireAllCookies(`${process.env.MAIN_HOST}`);
     }
 
+    // SSO 콜백
+    if (req.nextUrl.pathname.startsWith('/auth/goorm/callback')) {
+        const url = `${
+            process.env.ACCOUNT_HOST
+        }/auth/goorm/callback?${req.nextUrl.searchParams.toString()}`;
+        return NextResponse.redirect(url);
+    }
+
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/login', '/logout'],
+    matcher: ['/login', '/logout', '/auth/goorm/callback'],
 };
