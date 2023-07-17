@@ -24,8 +24,8 @@ import {
 } from '@/constants/db';
 import { PROGRAMS_DEFAULT_QUERY } from '@/pages';
 
-import CampCards from '../CampCards';
-import CampCardsLoading from '../CampCards/CampCards.loading';
+import ProgramsCards from '../ProgramsCards';
+import ProgramsCardsLoading from '../ProgramsCards/ProgramsCards.loading';
 import { DROP_DOWNS } from './ProgramsContainer.constants';
 
 import styles from './ProgramsContainer.module.scss';
@@ -219,8 +219,8 @@ export default function ProgramsContainer() {
             </section>
 
             <section>
-                <SSRSuspense fallback={<CampCardsLoading />}>
-                    <CampCards
+                <SSRSuspense fallback={<ProgramsCardsLoading />}>
+                    <ProgramsCards
                         campType={campType}
                         page={page}
                         setPage={setPage}

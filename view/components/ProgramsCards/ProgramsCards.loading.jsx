@@ -1,9 +1,9 @@
 import { Checkbox } from '@goorm-dev/gds-components';
-import CampCardLoading from '../CampCard/CampCard.loading';
+import ProgramsCardLoading from '../ProgramsCard/ProgramsCard.loading';
 
-import styles from './CampCards.module.scss';
+import styles from './ProgramsCards.module.scss';
 
-function CampCardsLoading() {
+function ProgramsCardsLoading() {
     return (
         <>
             <div className="mb-4">
@@ -18,18 +18,18 @@ function CampCardsLoading() {
                     </li>
                 </ul>
             </div>
-            <div className={styles.campCardContainer}>
-                <CampCardLoading />
-                <CampCardLoading />
-                <CampCardLoading />
-                <CampCardLoading />
-                <CampCardLoading />
-                <CampCardLoading />
-                <CampCardLoading />
-                <CampCardLoading />
+            <div className={styles.container}>
+                <ProgramsCardLoading />
+                <ProgramsCardLoading />
+                <ProgramsCardLoading />
+                <ProgramsCardLoading />
+                <ProgramsCardLoading />
+                <ProgramsCardLoading />
+                <ProgramsCardLoading />
+                <ProgramsCardLoading />
             </div>
         </>
     );
 }
 
-export default CampCardsLoading;
+export default ProgramsCardsLoading;

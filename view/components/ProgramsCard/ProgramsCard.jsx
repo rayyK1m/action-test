@@ -5,12 +5,11 @@ import dayjs from 'dayjs';
 import { Badge } from '@goorm-dev/gds-components';
 import { PERIOD_FORMAT } from '@/constants/common';
 
-import { APPLY_STATUS } from '../CampCards/CampCards.constants';
-import { BADGE_INFO } from './CampCard.constant';
+import { PRGRAM_APPLY_STATUS } from '@/constants/db';
 
-import styles from './CampCard.module.scss';
+import styles from './ProgramsCard.module.scss';
 
-export default function CampCard({
+export default function ProgramsCard({
     name,
     thumbnail,
     applyType,
@@ -18,7 +17,7 @@ export default function CampCard({
     educationDate,
 }) {
     /** Badge 관련 */
-    const { text: badgeText, color: badgeColor } = BADGE_INFO[applyType];
+    const { text: badgeText, badgeColor } = PRGRAM_APPLY_STATUS[applyType];
 
     /** Date 관련 */
     const { start: startApplyDate, end: endApplyDate } = applyDate || {};
@@ -63,7 +62,7 @@ export default function CampCard({
                     {formattedStartApply} - {formattedEndApply}
                 </p>
             </span>
-            {applyType !== APPLY_STATUS.CLOSED && (
+            {applyType !== PRGRAM_APPLY_STATUS.모집_종료.key && (
                 <span className="d-flex">
                     <p className="text-hint mr-2">교육기간</p>
                     <p className="text-alternative">

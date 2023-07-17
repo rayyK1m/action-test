@@ -180,4 +180,6 @@ const TimePicker = forwardRef(
     },
 );
 
+TimePicker.displayName = 'TimePicker';
+
 export default React.memo(TimePicker);

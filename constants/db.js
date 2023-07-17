@@ -3,6 +3,24 @@ export const PROGRAM_DIVISION = {
     집합형: '집합형',
 };
 
+export const PRGRAM_APPLY_STATUS = {
+    모집_예정: {
+        key: '모집_예정',
+        text: '모집 예정',
+        badgeColor: 'warning',
+    },
+    모집_중: {
+        key: '모집_중',
+        text: '모집 중',
+        badgeColor: 'primary',
+    },
+    모집_종료: {
+        key: '모집_종료',
+        text: '모집 종료',
+        badgeColor: 'info',
+    },
+};
+
 export const PROGRAM_REVIEW_STATUS = {
     심사중: {
         text: '심사중',

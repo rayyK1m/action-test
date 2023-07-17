@@ -1,10 +1,11 @@
 import Pagination from '@/components/Pagination';
-import useInstitutions from '@/query-hooks/useInstitutions';
+import { useGetInstitutions } from '@/query-hooks/useInstitutions';
 import { INSTITUTIONS_DEFAULT_QUERY } from '@/pages/institutions';
 
 import InstitutionCard from '../InstitutionCard';
 
 import styles from './InstitutionCards.module.scss';
+import EmptyTableCard from '@/components/EmptyTableCard/EmptyTableCard';
 
 function InstitutionCards({
     isCheckPossibleApply,
@@ -17,22 +18,31 @@ function InstitutionCards({
      */
     const {
         data: { items, total },
-    } = useInstitutions.GET({
+    } = useGetInstitutions({
         ...INSTITUTIONS_DEFAULT_QUERY,
         search: searchValue,
         page,
         active: isCheckPossibleApply,
     });
 
+    if (total === 0)
+        return (
+            <EmptyTableCard
+                useBg
+                text="검색 결과가 없습니다."
+                type="NO_SEARCH"
+            />
+        );
     return (
         <>
             <div className={styles.container}>
-                {items.map(({ index, logo, name, programCount }) => (
+                {items.map(({ id, logo, name, programCount }) => (
                     <InstitutionCard
-                        key={index}
+                        key={id}
                         logo={logo}
                         name={name}
                         programCount={programCount}
+                        institutionId={id}
                     />
                 ))}
             </div>

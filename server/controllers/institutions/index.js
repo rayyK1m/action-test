@@ -14,9 +14,18 @@ const getInstitutions = async (req, res) => {
     return res.json({ items, total });
 };
 
-const getInstitution = async (_, res) => {
-    return res.json({ item: [] });
+const getInstitution = async (req, res) => {
+    const { institutionId } = req.query;
+    const { item } = await swcampSdk.getInstitution(institutionId);
+
+    return res.json({
+        name: item?.name || '이름 없음',
+        institutionId: item?.id,
+        logo: item?.logo,
+        programCount: item?.programCount || 0,
+    });
 };
 
-const institutionsCtrl = { getInstitutions, getInstitution };
+const institutionsCtrl = { getInstitutions, getInstitution, validation };
+
 export default institutionsCtrl;

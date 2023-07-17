@@ -1,8 +1,8 @@
 import cn from 'classnames';
 import { Skeleton } from '@goorm-dev/gds-components';
-import styles from './CampCard.module.scss';
+import styles from './ProgramsCard.module.scss';
 
-export default function CampCardLoading() {
+export default function ProgramsCardLoading() {
     return (
         <div className={styles.container}>
             <div

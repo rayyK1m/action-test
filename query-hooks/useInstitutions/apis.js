@@ -18,3 +18,10 @@ export const getInstitution = async (institutionId) => {
 
     return data;
 };
+
+const institutionsApis = {
+    getInstitutions,
+    getInstitution,
+};
+
+export default institutionsApis;

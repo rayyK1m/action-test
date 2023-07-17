@@ -1,14 +1,11 @@
 import Head from 'next/head';
 import { withSessionSsr } from '@/server/utils/auth';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import useSession, { sessionKeys } from '@/query-hooks/useSession';
+import { sessionKeys } from '@/query-hooks/useSession';
 
-import ProgramsContainer from '@/view/components/ProgramsContainer';
-import Layout from '@/components/Layout/Layout';
-
-import { getPrograms, programsKeys } from '@/query-hooks/usePrograms';
+import { programsApis, programsKeys } from '@/query-hooks/usePrograms';
 import { PROGRAM_DIVISION } from '@/constants/db';
-import SSRSuspense from '@/components/SSRSuspense';
+import Programs from '@/view/programs';
 
 export const PROGRAMS_DEFAULT_QUERY = {
     campType: PROGRAM_DIVISION.방문형,
@@ -22,6 +19,7 @@ export const PROGRAMS_DEFAULT_QUERY = {
 export const getServerSideProps = withSessionSsr(async (context) => {
     const queryClient = new QueryClient();
 
+    /** 세션 데이터 조회 */
     if (context.req?.session) {
         await queryClient.prefetchQuery(
             sessionKeys.all(),
@@ -29,9 +27,10 @@ export const getServerSideProps = withSessionSsr(async (context) => {
         );
     }
 
+    /** 프로그램 리스트 조회 */
     await queryClient.prefetchQuery(
-        programsKeys.detail({ ...PROGRAMS_DEFAULT_QUERY }),
-        () => getPrograms({ ...PROGRAMS_DEFAULT_QUERY }),
+        programsKeys.itemsDetail({ ...PROGRAMS_DEFAULT_QUERY }),
+        () => programsApis.getPrograms({ ...PROGRAMS_DEFAULT_QUERY }),
     );
 
     return {
@@ -41,22 +40,13 @@ export const getServerSideProps = withSessionSsr(async (context) => {
     };
 });
 
-export default function MainPage() {
-    const { data: userData } = useSession.GET();
-
+export default function Page() {
     return (
-        <Layout>
+        <>
             <Head>
                 <title>SW CAMP HOME</title>
             </Head>
-            <Layout.Header userData={userData} />
-            <Layout.Banner />
-            <Layout.Main>
-                <SSRSuspense>
-                    <ProgramsContainer />
-                </SSRSuspense>
-            </Layout.Main>
-            <Layout.Footer />
-        </Layout>
+            <Programs />
+        </>
     );
 }

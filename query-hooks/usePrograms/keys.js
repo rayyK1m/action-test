@@ -1,7 +1,17 @@
 const programsKeys = {
     all: () => ['programs'],
-    list: () => [...programsKeys.all(), 'list'],
-    detail: (filters) => [...programsKeys.list(), { ...filters }],
+
+    /**
+     * 단일 프로그램 (Program)
+     */
+    item: () => [...programsKeys.all(), 'item'],
+    itemDetail: (id) => [...programsKeys.item(), id],
+
+    /**
+     * 프로그램 리스트 (Programs)
+     */
+    items: () => [...programsKeys.all(), 'items'],
+    itemsDetail: (filters) => [...programsKeys.items(), { ...filters }],
 };
 
 export default programsKeys;

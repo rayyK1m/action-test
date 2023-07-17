@@ -1,12 +1,14 @@
 import Head from 'next/head';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
-import Layout from '@/components/Layout/Layout';
-import InstitutionsContainer from '@/view/institutions/InstitutionsContainer';
 import {
-    getInstitutions,
+    institutionsApis,
     institutionsKeys,
 } from '@/query-hooks/useInstitutions';
+import { withSessionSsr } from '@/server/utils/auth';
+import { sessionKeys } from '@/query-hooks/useSession';
+
+import Institutions from '@/view/institutions';
 
 export const INSTITUTIONS_DEFAULT_QUERY = {
     limit: 16,
@@ -15,12 +17,22 @@ export const INSTITUTIONS_DEFAULT_QUERY = {
     active: false,
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = withSessionSsr(async (context) => {
     const queryClient = new QueryClient();
 
+    /** 세션 데이터 조회 */
+    if (context.req?.session) {
+        await queryClient.prefetchQuery(
+            sessionKeys.all(),
+            () => context.req.session,
+        );
+    }
+
+    /** 운영기관 리스트 조회 */
     await queryClient.prefetchQuery(
-        institutionsKeys.detail({ ...INSTITUTIONS_DEFAULT_QUERY }),
-        () => getInstitutions({ ...INSTITUTIONS_DEFAULT_QUERY }),
+        institutionsKeys.itemsDetail({ ...INSTITUTIONS_DEFAULT_QUERY }),
+        () =>
+            institutionsApis.getInstitutions({ ...INSTITUTIONS_DEFAULT_QUERY }),
     );
 
     return {
@@ -28,20 +40,15 @@ export const getServerSideProps = async () => {
             dehydratedState: dehydrate(queryClient),
         },
     };
-};
+});
 
-export default function OrganizationList() {
+export default function Page() {
     return (
-        <Layout>
+        <>
             <Head>
                 <title>SW CAMP HOME</title>
             </Head>
-            <Layout.Header />
-            <Layout.Banner />
-            <Layout.Main>
-                <InstitutionsContainer />
-            </Layout.Main>
-            <Layout.Footer />
-        </Layout>
+            <Institutions />
+        </>
     );
 }

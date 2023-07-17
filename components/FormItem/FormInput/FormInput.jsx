@@ -6,17 +6,7 @@ import styles from './FormInput.module.scss';
 
 const FormInput = forwardRef(
     (
-        {
-            inputField,
-            id,
-            label,
-            isRequired,
-            size,
-            formText,
-            feedback,
-            className,
-            ...props
-        },
+        { label, isRequired, size, formText, feedback, className, ...props },
         ref,
     ) => {
         return (
@@ -36,6 +26,8 @@ const FormInput = forwardRef(
         );
     },
 );
+
+FormInput.displayName = 'FormInput';
 
 FormInput.defaultProps = {
     size: 'lg',

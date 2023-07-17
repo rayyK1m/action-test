@@ -31,10 +31,7 @@ import styles from './CustomDatePicker.module.scss';
  * @returns {Date} ex) Tue Jul 11 2023 00:00:00 GMT+0900 (한국 표준시)
  */
 const CustomDatePicker = forwardRef(
-    (
-        { size = 'lg', inputClassName, inputProps, date, onChange, onBlur },
-        ref,
-    ) => {
+    ({ size = 'lg', inputClassName, inputProps, date, onChange }, ref) => {
         const [isOpen, setIsOpen] = useState(false);
         const toggle = () => {
             setIsOpen((prev) => !prev);
@@ -79,5 +76,7 @@ const CustomDatePicker = forwardRef(
         );
     },
 );
+
+CustomDatePicker.displayName = 'CustomDatePicker';
 
 export default CustomDatePicker;

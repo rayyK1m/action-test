@@ -1,4 +1,4 @@
-import useInstitutions from '@/query-hooks/useInstitutions';
+import { useGetInstitutions } from '@/query-hooks/useInstitutions';
 import { INSTITUTIONS_DEFAULT_QUERY } from '@/pages/institutions';
 
 function InstitutionsCount({ isCheckPossibleApply, searchValue, page }) {
@@ -7,7 +7,7 @@ function InstitutionsCount({ isCheckPossibleApply, searchValue, page }) {
      */
     const {
         data: { total },
-    } = useInstitutions.GET({
+    } = useGetInstitutions({
         ...INSTITUTIONS_DEFAULT_QUERY,
         search: searchValue,
         page,

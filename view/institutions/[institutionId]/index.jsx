@@ -4,10 +4,10 @@ import Layout from '@/components/Layout/Layout';
 import ProgramsContainer from '@/view/components/ProgramsContainer';
 import useSession from '@/query-hooks/useSession';
 
-import InstitutionInfo from '../InstitutionInfo';
-import InstitutionInfoLoading from '../InstitutionInfo/InstitutionInfo.loading';
+import InstitutionInfo from './InstitutionInfo';
+import InstitutionInfoLoading from './InstitutionInfo/InstitutionInfo.loading';
 
-function InstitutionContainer() {
+function Institution() {
     const { data: userData } = useSession.GET();
 
     return (
@@ -25,4 +25,4 @@ function InstitutionContainer() {
     );
 }
 
-export default InstitutionContainer;
+export default Institution;

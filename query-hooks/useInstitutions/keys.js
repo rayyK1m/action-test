@@ -7,7 +7,7 @@ const institutionsKeys = {
      * 기관 (institution)
      */
     item: () => [...institutionsKeys.all(), 'item'],
-    itemDetail: (id) => [...institutionsKeys.id(), id],
+    itemDetail: (id) => [...institutionsKeys.item(), id],
 
     // NOTE: 리스트 아이템의 query key는 "items"으로 통일한다. (list x)
     /**

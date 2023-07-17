@@ -1,14 +1,18 @@
 import Head from 'next/head';
-import { withSessionSsr } from '@/server/utils/auth';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { sessionKeys } from '@/query-hooks/useSession';
 
-import { getPrograms, programsKeys } from '@/query-hooks/usePrograms';
+import Institution from '@/view/institutions/[institutionId]';
+
+import { programsApis, programsKeys } from '@/query-hooks/usePrograms';
+import { sessionKeys } from '@/query-hooks/useSession';
+import { withSessionSsr } from '@/server/utils/auth';
 
 import { PROGRAM_DIVISION } from '@/constants/db';
-import InstitutionContainer from '@/view/institution/InstitutionContainer';
-import { institutionsKeys } from '@/query-hooks/useInstitutions';
-import { getInstitution } from '@/query-hooks/useInstitutions/apis';
+
+import {
+    institutionsKeys,
+    institutionsApis,
+} from '@/query-hooks/useInstitutions';
 
 export const INSTITUTION_DEFAULT_QUERY = {
     campType: PROGRAM_DIVISION.방문형,
@@ -23,6 +27,7 @@ export const getServerSideProps = withSessionSsr(async (context) => {
     const queryClient = new QueryClient();
     const { institutionId } = context.params;
 
+    /** 세션 데이터 조회 */
     if (context.req?.session) {
         await queryClient.prefetchQuery(
             sessionKeys.all(),
@@ -30,20 +35,23 @@ export const getServerSideProps = withSessionSsr(async (context) => {
         );
     }
 
-    /**
-     * 프로그램 리스트 조회
-     */
+    /** 프로그램 리스트 조회 */
     await queryClient.prefetchQuery(
-        programsKeys.detail({ ...INSTITUTION_DEFAULT_QUERY, institutionId }),
-        () => getPrograms({ ...INSTITUTION_DEFAULT_QUERY, institutionId }),
+        programsKeys.itemsDetail({
+            ...INSTITUTION_DEFAULT_QUERY,
+            institutionId,
+        }),
+        () =>
+            programsApis.getPrograms({
+                ...INSTITUTION_DEFAULT_QUERY,
+                institutionId,
+            }),
     );
 
-    /**
-     * 운영기관 조회
-     */
+    /** 운영기관 조회 */
     await queryClient.prefetchQuery(
         institutionsKeys.itemDetail(institutionId),
-        () => getInstitution(institutionId),
+        () => institutionsApis.getInstitution(institutionId),
     );
 
     return {
@@ -69,7 +77,7 @@ export default function Page() {
             <Head>
                 <title>SW CAMP HOME</title>
             </Head>
-            <InstitutionContainer />
+            <Institution />
         </>
     );
 }

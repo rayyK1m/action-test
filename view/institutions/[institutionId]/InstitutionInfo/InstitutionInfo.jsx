@@ -2,7 +2,8 @@ import { useRouter } from 'next/router';
 import cn from 'classnames';
 
 import { Avatar } from '@goorm-dev/gds-components';
-import useInstitutions from '@/query-hooks/useInstitutions';
+import { useGetInstitution } from '@/query-hooks/useInstitutions';
+
 import styles from './InstitutionInfo.module.scss';
 
 function InstitutionInfo() {
@@ -11,12 +12,8 @@ function InstitutionInfo() {
     } = useRouter();
 
     const {
-        data: { item },
-    } = useInstitutions.GET({
-        queryKeyType: 'itemDetail',
-        queryParams: institutionId,
-    });
-    const { logo, name, programCount } = item;
+        data: { logo, name, programCount },
+    } = useGetInstitution(institutionId);
 
     return (
         <div
@@ -29,7 +26,7 @@ function InstitutionInfo() {
                 <Avatar customSize="11.25rem" name={name} src={logo} />
             </div>
 
-            <h2 className="mb-2">{name}</h2>
+            <h2 className={cn('mb-2', styles.name)}>{name}</h2>
             <h6>
                 전체 프로그램{' '}
                 <span className="text-primary">{programCount}</span>

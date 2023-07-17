@@ -5,7 +5,7 @@ import programsApis from './apis';
 
 const useGetPrograms = (filters) => {
     return useQuery({
-        queryKey: programsKeys.detail({ ...filters }),
+        queryKey: programsKeys.itemsDetail({ ...filters }),
         queryFn: () => programsApis.getPrograms({ ...filters }),
     });
 };
