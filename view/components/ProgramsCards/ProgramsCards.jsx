@@ -7,7 +7,7 @@ import EmptyTableCard from '@/components/EmptyTableCard/EmptyTableCard';
 
 import { useGetPrograms } from '@/query-hooks/usePrograms';
 import { PROGRAMS_DEFAULT_QUERY } from '@/pages';
-import { PAGINATION_LIMI_COUNT } from '@/constants/common';
+import { PAGINATION_LIMIT_COUNT } from '@/constants/common';
 
 import ProgramsCard from '../ProgramsCard';
 
@@ -103,7 +103,7 @@ function ProgramsCards({ campType, filterList, searchValue, page, setPage }) {
                     scrollMove={false}
                     page={page}
                     pageCount={Math.ceil(total / PROGRAMS_DEFAULT_QUERY.limit)}
-                    limitCount={PAGINATION_LIMI_COUNT}
+                    limitCount={PAGINATION_LIMIT_COUNT}
                     className="justify-content-center"
                     onPageChangeHandler={(page) => setPage(page * 1)}
                 />

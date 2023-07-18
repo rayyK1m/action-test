@@ -1,24 +1,11 @@
 /* eslint-disable no-unused-vars */
-interface Param<
-    T extends
-        | StringConstructor
-        | NumberConstructor
-        | BooleanConstructor = StringConstructor,
-> {
+interface Param<T> {
     key: string;
-    parser?: T;
-    defaultValue?: ReturnType<T>;
-}
-
-interface ParamWithoutParser<DefaultValue> {
-    key: string;
-    defaultValue: DefaultValue;
+    parser?: (value: string | string[]) => T;
 }
 
 export interface UseQueryParam {
     (): undefined;
     (param: { key: string }): string;
-    <T>(param: Omit<Param<T>, 'key'>): undefined;
-    <DefaultValue>(param: ParamWithoutParser<DefaultValue>): DefaultValue;
-    <T>(param: Param<T>): ReturnType<T>;
+    <T>(param: Param<T>): T;
 }
