@@ -29,7 +29,9 @@ function ProgramInfoCard({ program, notice }) {
                     <li>
                         {`총 교육 차시 : ${learningTime}차시(${type.duration})`}{' '}
                     </li>
-                    <li>{`교육 장소 : ${educationLocation.name}`}</li>
+                    {educationLocation && (
+                        <li>{`교육 장소 : ${educationLocation.name}`}</li>
+                    )}
                 </ul>
             </div>
             <CustomAlert className={styles.notice} leftIcon={NoticeCircleIcon}>

@@ -109,6 +109,8 @@ export const StudentProgramForm = () => {
     const { getValues } = useFormContext();
     const { institutionKey, typeKey, nameKey, learningTimeKey } = PROGRAM_KEYS;
 
+    const { division, duration } = getValues(typeKey);
+
     return (
         <div className={styles.form}>
             <h5>프로그램 정보</h5>
@@ -127,7 +129,7 @@ export const StudentProgramForm = () => {
             <div className={styles.divideRow}>
                 <FormInput
                     label="프로그램 유형"
-                    value={getValues(typeKey)}
+                    value={`${division}/${duration}`}
                     disabled
                 />
                 <FormInput
@@ -148,6 +150,12 @@ export const ApplyForm = ({ programTargetGroup }) => {
 
     const { emailKey } = USER_KEYS;
 
+    const regexPhoneNumber = (e) => {
+        e.target.value = e.target.value
+            .replace(/[^0-9]/g, '')
+            .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+    };
+
     return (
         <div className={styles.form}>
             <h5>신청인 정보</h5>
@@ -163,6 +171,7 @@ export const ApplyForm = ({ programTargetGroup }) => {
                     label="연락처"
                     placeholder="예) 010-1234-5678"
                     inputKey={phoneNumberKey}
+                    onInput={regexPhoneNumber}
                 />
             </div>
             <div className={styles.divideRow}>

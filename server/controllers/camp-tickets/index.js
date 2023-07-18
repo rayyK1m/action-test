@@ -1,17 +1,18 @@
 import swcampSdk from '@/server/libs/swcamp';
 
 const createCampTicket = async (req, res) => {
-    const { type } = req.query;
+    const { role, userId } = req.query;
+    const formData = req.body;
 
-    const data = await swcampSdk.createCampTicket({ type });
+    const data = await swcampSdk.createCampTicket({ role, userId, formData });
     return res.json(data);
 };
 
 const getCampTicket = async (req, res) => {
-    const { id } = req.query;
+    const { id, userId } = req.query;
 
-    const data = swcampSdk.getCampTicket({ ticketId: id });
-    return res.json(data);
+    const { item } = await swcampSdk.getCampTicket({ ticketId: id, userId });
+    return res.json(item);
 };
 
 const getCampTickets = async (req, res) => {
@@ -27,6 +28,12 @@ const getCampTickets = async (req, res) => {
     return res.json({ items, total });
 };
 
+const cancelCampTicket = async (req, res) => {
+    const { id, userId } = req.query;
+    const data = await swcampSdk.cancelCampTicket({ ticketId: id, userId });
+    return res.json(data);
+};
+
 const getCampTicketsCount = async (req, res) => {
     const { count } = await swcampSdk.getCampTicketsCount({
         userId: req.session?.id,
@@ -39,6 +46,7 @@ const campTicketsCtrl = {
     createCampTicket,
     getCampTicket,
     getCampTickets,
+    cancelCampTicket,
     getCampTicketsCount,
 };
 export default campTicketsCtrl;

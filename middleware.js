@@ -21,11 +21,13 @@ export async function middleware(req) {
         );
 
         if (!isAuthenticated) {
-            return NextResponse.redirect(`${process.env.MAIN_HOST}`);
+            return NextResponse.redirect(
+                `${process.env.NEXT_PUBLIC_MAIN_HOST}`,
+            );
         }
 
         await authSdk.revokeToken(userData.id, token);
-        return expireAllCookies(`${process.env.MAIN_HOST}`);
+        return expireAllCookies(`${process.env.NEXT_PUBLIC_MAIN_HOST}`);
     }
 
     // SSO 콜백

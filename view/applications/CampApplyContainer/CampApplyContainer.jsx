@@ -21,8 +21,14 @@ import {
 import { useGetProgram } from '@/query-hooks/usePrograms';
 import { useCreateCampTicket } from '@/query-hooks/uesCampTickets';
 import useQueryParam from '@/hooks/useQueryParam';
+import { PROGRAM_DIVISION } from '@/constants/db';
+
+import { formatTeacherData } from './CampApplyContainer.utils';
+import { useRouter } from 'next/router';
 
 function CampApplyContainer({ userData, programId }) {
+    const router = useRouter();
+
     const id = useQueryParam({
         key: 'programId',
         defaultValue: programId,
@@ -33,27 +39,62 @@ function CampApplyContainer({ userData, programId }) {
     } = useGetProgram({ id });
     const createTicket = useCreateCampTicket();
 
+    {
+        /* NOTE: 010-1234-1234는 캠프 신청을 위한 임시방편(핸드폰 번호가 형식에 맞지 않으면 캠프 신청이 안됨)
+        테스트 유저에는 userCertification 정보가 없어서, 핸드폰 번호를 못 가져오므로 일단 임시로 추가해둠. 
+        유저 데이터에 추가되도록 수정 예정 */
+    }
     const methods = useForm({
         mode: 'onTouched',
         defaultValues: {
             [PROGRAM_KEYS.institutionKey]: program.institution.name,
-            [PROGRAM_KEYS.typeKey]: `${program.type.division}/${program.type.duration}`,
+            [PROGRAM_KEYS.typeKey]: program.type,
             [PROGRAM_KEYS.nameKey]: program.name,
             [PROGRAM_KEYS.learningTimeKey]: `${program.learningTime}시간`,
             [USER_KEYS.phoneNumberKey]:
-                (program.type.division === '방문형' && userData?.phoneNumber) ||
-                '',
+                program.type.division === PROGRAM_DIVISION.방문형
+                    ? userData?.phoneNumber || '010-1234-1234'
+                    : '',
             [USER_KEYS.emailKey]: userData?.email,
             [CAMP_APPLY_KEYS.elementaryTargetKey]: [],
             [CAMP_APPLY_KEYS.middleTargetKey]: [],
             [CAMP_APPLY_KEYS.highTargetKey]: [],
         },
     });
-    const onSubmit = (data) =>
+
+    const onSubmit = (data) => {
+        const {
+            elementarySchool,
+            middleSchool,
+            highSchool,
+            institution,
+            programName,
+            learningTime,
+            type,
+            ...rest
+        } = data;
+
+        const formatData = {
+            targetGroup: { elementarySchool, middleSchool, highSchool },
+            ...rest,
+        };
+
+        let formData = formatData;
+        if (program.type.division === PROGRAM_DIVISION.방문형) {
+            formData = formatTeacherData(formatData);
+        }
+
         createTicket.mutate({
-            type: program.type.division,
-            formData: data,
+            role: userData.role,
+            userId: userData.id,
+            formData: {
+                programId: program.id,
+                institutionId: program.institution.id,
+                ...formData,
+            },
         });
+        router.push('/applications/new/complete');
+    };
 
     const disabled =
         !methods.formState.isValid ||
@@ -61,7 +102,7 @@ function CampApplyContainer({ userData, programId }) {
         !!methods.formState.errors.terms;
 
     const getCampForm = (campType) => {
-        if (campType === '방문형') return TeacherTypeCamp;
+        if (campType === PROGRAM_DIVISION.방문형) return TeacherTypeCamp;
         return StudentTypeCamp;
     };
 

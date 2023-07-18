@@ -1,5 +1,4 @@
-import React from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 import { Badge, Button } from '@goorm-dev/gds-components';
@@ -8,15 +7,18 @@ import { formatDate } from '@/utils';
 import { STATUS_BADGE } from './ListItem.constants';
 
 import styles from './ListItem.module.scss';
+import TicketInfoPannel from '../TicketInfoPannel/TicketInfoPannel';
 
 function ListItem({ data }) {
-    const router = useRouter();
+    const [isOpen, setIsOpen] = useState(false);
+
     const {
         id,
         program: { thumbnail, name, applyDate, educationDate },
         channelIndex,
         reviewStatus,
     } = data;
+
     const { start: applyStart, end: applyEnd } = applyDate;
     const { start: educationStart, end: educationEnd } = educationDate;
 
@@ -65,7 +67,7 @@ function ListItem({ data }) {
                     color="link"
                     theme="light"
                     className="mr-1"
-                    onClick={() => router.push(`/application/${id}`)}
+                    onClick={() => setIsOpen(true)}
                 >
                     신청 정보 확인
                 </Button>
@@ -81,6 +83,14 @@ function ListItem({ data }) {
                     채널 이동
                 </Button>
             </div>
+
+            {/* 신청 정보 패널 */}
+            <TicketInfoPannel
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                program={data.program}
+                ticketId={id}
+            />
         </div>
     );
 }

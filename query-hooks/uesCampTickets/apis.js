@@ -15,10 +15,10 @@ const getCampTickets = async (query) => {
 };
 
 const getCampTicket = async (query) => {
-    const { id } = query;
+    const { id, userId } = query;
 
     const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/campTickets/${id}`,
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camp-tickets/${id}?userId=${userId}`,
     );
     return data;
 };
@@ -29,12 +29,24 @@ const getCampTicketsCount = async () => {
 };
 
 const createCampTicket = async (query) => {
-    const { type, formData } = query;
-    // const { data } = await axios.post(
-    //     `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/campTickets/${type}`,
-    //     formData,
-    // );
-    return true;
+    const { role, userId, formData } = query;
+    const queryString = qs.stringify({ role, userId });
+
+    const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camp-tickets/new?${queryString}`,
+        formData,
+    );
+
+    return data;
+};
+
+const cancelCampTicket = async (query) => {
+    const { id, userId } = query;
+
+    const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camp-tickets/${id}/cancel?userId=${userId}`,
+    );
+    return data;
 };
 
 const campTicketsApis = {
@@ -42,5 +54,6 @@ const campTicketsApis = {
     getCampTicket,
     getCampTicketsCount,
     createCampTicket,
+    cancelCampTicket,
 };
 export default campTicketsApis;

@@ -177,7 +177,7 @@ export const ReadOnlyTeacherForm = () => {
 
 export const ReadOnlyTargetForm = () => {
     const { getValues } = useFormContext();
-    const { expectedUserCountKey } = CAMP_APPLY_KEYS;
+    const { applicantCountKey } = CAMP_APPLY_KEYS;
 
     return (
         <div className={styles.form}>
@@ -185,7 +185,7 @@ export const ReadOnlyTargetForm = () => {
             <ApplyTargetInput />
             <FormInput
                 label="신청 인원"
-                value={getValues(expectedUserCountKey)}
+                value={getValues(applicantCountKey)}
                 isRequired
                 readOnly
             />

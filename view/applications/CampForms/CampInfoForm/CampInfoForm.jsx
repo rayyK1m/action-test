@@ -56,26 +56,21 @@ const ReadOnlyTermsForm = () => {
         </div>
     );
 };
-export const TeacherInfoForm = {
-    title: '신청 정보',
-    contents: () => (
-        <div className={styles.forms}>
-            <ReadOnlyProgramForm />
-            <ReadOnlyManagerForm />
-            <ReadOnlyTeacherForm />
-            <ReadOnlyTargetForm />
-            <ReadOnlyLearningTimeForm />
-            <ReadOnlyTermsForm />
-        </div>
-    ),
-};
+export const TeacherInfoForm = (
+    <div className={styles.forms}>
+        <ReadOnlyProgramForm />
+        <ReadOnlyManagerForm />
+        <ReadOnlyTeacherForm />
+        <ReadOnlyTargetForm />
+        <ReadOnlyLearningTimeForm />
+        <ReadOnlyTermsForm />
+    </div>
+);
 
-export const StudentInfoForm = {
-    title: '신청 정보',
-    contents: () => (
-        <div className={styles.forms}>
-            <ReadOnlyStudentProgramForm />
-            <ReadOnlyApplyForm />
-        </div>
-    ),
-};
+export const StudentInfoForm = (
+    <div className={styles.forms}>
+        <ReadOnlyStudentProgramForm />
+        <ReadOnlyApplyForm />
+        <ReadOnlyTermsForm />
+    </div>
+);

@@ -129,6 +129,8 @@ export const ProgramForm = () => {
     const { getValues } = useFormContext();
     const { institutionKey, typeKey, nameKey } = PROGRAM_KEYS;
 
+    const { division, duration } = getValues(typeKey);
+
     return (
         <div className={styles.form}>
             <h5>프로그램 정보</h5>
@@ -140,7 +142,7 @@ export const ProgramForm = () => {
             <div className={styles.divideRow}>
                 <FormInput
                     label="프로그램 유형"
-                    value={getValues(typeKey)}
+                    value={`${division}/${duration}`}
                     disabled
                 />
                 <FormInput
@@ -239,7 +241,7 @@ export const TeacherForm = () => {
 };
 
 export const TargetForm = ({ programTargetGroup }) => {
-    const { expectedUserCountKey } = CAMP_APPLY_KEYS;
+    const { applicantCountKey } = CAMP_APPLY_KEYS;
 
     return (
         <div className={styles.form}>
@@ -250,7 +252,7 @@ export const TargetForm = ({ programTargetGroup }) => {
                 isRequired
                 label="신청 인원"
                 placeholder="예) 15명"
-                inputKey={expectedUserCountKey}
+                inputKey={applicantCountKey}
             />
         </div>
     );

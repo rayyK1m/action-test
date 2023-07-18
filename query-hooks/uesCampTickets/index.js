@@ -12,10 +12,10 @@ const useGetCampTickets = (filters) => {
     });
 };
 
-const useGetCampTicket = (filters) => {
+const useGetCampTicket = (query) => {
     return useQuery({
-        queryKey: campTicketsKeys.itemDetail({ ...filters }),
-        queryFn: () => campTicketsApis.getCampTicket({ ...filters }),
+        queryKey: campTicketsKeys.itemDetail(),
+        queryFn: () => campTicketsApis.getCampTicket(query),
     });
 };
 
@@ -48,10 +48,9 @@ const useGetCampTicketsAdmin = () => {
     // 특정 자원에 대해 어드민 용으로 불러오는 경우에도 자원 폴더 내부에서 쿼리 훅을 선언해서 사용합니다.
 };
 const useCreateCampTicket = () => {
-    const queryClient = useQueryClient();
     return useMutation(
-        ({ type, formData }) =>
-            campTicketsApis.createCampTicket({ type, formData }),
+        ({ role, userId, formData }) =>
+            campTicketsApis.createCampTicket({ role, userId, formData }),
         {
             onSuccess: (e) => {
                 if (!e) {
@@ -60,9 +59,19 @@ const useCreateCampTicket = () => {
                     });
                     return;
                 }
-                toast('캠프 신청이 완료되었습니다.', {
-                    type: toast.TYPE.SUCCESS,
-                });
+            },
+        },
+    );
+};
+
+const useCancelCampTicket = () => {
+    const queryClient = useQueryClient();
+    return useMutation(
+        ({ id, userId }) => campTicketsApis.cancelCampTicket({ id, userId }),
+        {
+            onSuccess: () => {
+                toast('프로그램 신청이 취소되었습니다.');
+                queryClient.invalidateQueries(campTicketsKeys.itemDetail());
                 queryClient.invalidateQueries(campTicketsKeys.items());
             },
         },
@@ -75,6 +84,7 @@ export {
     useGetCampTicketsCount,
     useGetCampTicketsAdmin,
     useCreateCampTicket,
+    useCancelCampTicket,
     campTicketsApis,
     campTicketsKeys,
 };

@@ -8,6 +8,13 @@ export const formatDate = (date) => {
     return formattedDate;
 };
 
+export const setDateWithTime = (date, time) => {
+    const h = dayjs(time).get('hour');
+    const m = dayjs(time).get('minute');
+
+    return dayjs(date).set('hour', h).set('minute', m).format();
+};
+
 /**
  * @param {String} sort -name,reviewStatus
  * @returns {{ id: String, desc: Boolean }[]} [{ id: name, desc: true }, { id: reviewStatus, desc: fales }]

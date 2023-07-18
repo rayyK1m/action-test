@@ -10,10 +10,10 @@ const useGetPrograms = (filters) => {
     });
 };
 
-const useGetProgram = (filters) => {
+const useGetProgram = ({ id }) => {
     return useQuery({
         queryKey: programsKeys.item(),
-        queryFn: () => programsApis.getProgram({ ...filters }),
+        queryFn: () => programsApis.getProgram({ id }),
     });
 };
 

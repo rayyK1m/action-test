@@ -16,17 +16,20 @@ const getAuthHeader = (userId) => {
     return { 'x-user-id': userId };
 };
 
-const getCampTicket = async ({ ticketId }) => {
+const getCampTicket = async ({ userId, ticketId }) => {
     try {
         const { data } = await swcampInstance.get(
             `${process.env.SWCAMP_API_HOST}/api/v1/camp-tickets/${ticketId}/my`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
         );
+
         return data;
     } catch (err) {
         throw new ExternalResponseError({
             message: 'SWCAMP API',
             res: { status: err.response.status, data: err.response.data },
-            // NOTE: 디버깅에 필요한 데이터 넣어두기
         });
     }
 };
@@ -111,6 +114,25 @@ const getCampTickets = async ({ userId, page, limit, sort, reviewStatus }) => {
     }
 };
 
+const cancelCampTicket = async ({ userId, ticketId }) => {
+    try {
+        const { data } = await swcampInstance.post(
+            `${process.env.SWCAMP_API_HOST}/api/v1/camp-tickets/${ticketId}/cancel`,
+            {},
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        console.log(err);
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const getCampTicketsCount = async ({ userId }) => {
     try {
         const { data } = await swcampInstance.get(
@@ -141,13 +163,18 @@ const createProgram = async () => {
     }
 };
 
-const createCampTicket = async ({ type }) => {
+const createCampTicket = async ({ role, userId, formData }) => {
     try {
         const { data } = await swcampInstance.post(
-            `${process.env.SWCAMP_API_HOST}/api/v1/camp-tickets/role/${type}`,
+            `${process.env.SWCAMP_API_HOST}/api/v1/camp-tickets/role/${role}`,
+            formData,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
         );
         return data;
     } catch (err) {
+        console.log(err.response.data);
         throw new ExternalResponseError({
             message: 'SWCAMP API',
             res: { status: err.response.status, data: err.response.data },
@@ -233,6 +260,7 @@ const swcampSdk = {
 
     getCampTickets,
     getCampTicket,
+    cancelCampTicket,
     getCampTicketsCount,
     createCampTicket,
 

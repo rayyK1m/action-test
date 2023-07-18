@@ -1,11 +1,11 @@
 import { createRouter } from 'next-connect';
 
-import campTicketsCtrl from '@/server/controllers/campTickets';
+import campTicketsCtrl from '@/server/controllers/camp-tickets';
 import errorHandler from '@/server/utils/error/handler';
 
 const router = createRouter();
 
-router.get(campTicketsCtrl.createCampTicket);
+router.get(campTicketsCtrl.getCampTicket);
 
 export default router.handler({
     onError: errorHandler,

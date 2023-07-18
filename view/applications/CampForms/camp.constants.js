@@ -1,7 +1,7 @@
 // schoolName이 schoolIndex로 명시되어 있는 상황 <-> 상황에 따라 변경될 수 있음
 export const CAMP_APPLY_KEYS = {
     userNameKey: 'userName',
-    schoolNameKey: 'schoolName',
+    schoolNameKey: 'schoolIndex',
     operateLocationKey: 'operateLocation',
     schoolTypeKey: 'schoolType',
     // educator: {main, sub}
@@ -11,7 +11,7 @@ export const CAMP_APPLY_KEYS = {
     elementaryTargetKey: 'elementarySchool',
     middleTargetKey: 'middleSchool',
     highTargetKey: 'highSchool',
-    expectedUserCountKey: 'expectedUserCount',
+    applicantCountKey: 'applicantCount',
     phoneNumberKey: 'phoneNumber', // 집합형 : 신청인 정보 - 연락처
     startDateKey: 'startDate',
     startTimeKey: 'startTime',
@@ -22,7 +22,7 @@ export const CAMP_APPLY_KEYS = {
 export const PROGRAM_KEYS = {
     institutionKey: 'institution',
     nameKey: 'programName',
-    typeKey: 'programType',
+    typeKey: 'type',
     learningTimeKey: 'learningTime',
 };
 
