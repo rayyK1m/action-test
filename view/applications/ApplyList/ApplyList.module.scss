@@ -1,3 +1,13 @@
 .item {
     margin-bottom: 2.5rem;
 }
+
+.emptyContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 0rem;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 0.5rem;
+}

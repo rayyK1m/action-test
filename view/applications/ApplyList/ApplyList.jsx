@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 import {
     ButtonDropdown,
@@ -19,6 +20,21 @@ import { DROPDOWN_MENU } from './ApplyList.constants';
 import styles from './ApplyList.module.scss';
 
 const CURRENT_URL = '/applications';
+const EMPTY_IMAGE = 'https://statics.goorm.io/images/gds/empty_folder.svg';
+
+const EmptyList = ({ text }) => {
+    return (
+        <div className={styles.emptyContainer}>
+            <Image
+                src={EMPTY_IMAGE}
+                alt="empty view"
+                width={160}
+                height={120}
+            />
+            <div className="text-gray-800 mt-2">{text}</div>
+        </div>
+    );
+};
 function ApplyList() {
     const router = useRouter();
     const [isOpen, toggle] = useToggle();
@@ -38,13 +54,20 @@ function ApplyList() {
         }),
     });
 
+    const isEmpty = useMemo(() => totalCount === 0, [totalCount]);
     return (
         <GridContainer colProps={{ xs: { size: 10, offset: 1 } }}>
             {/* header */}
             <div className="d-flex align-items-center justify-content-between mb-4">
                 <h6>
                     신청 내역{' '}
-                    <span className="text-blue-500">{totalCount}</span>
+                    <span
+                        className={
+                            totalCount === 0 ? 'text-gray-600' : 'text-blue-500'
+                        }
+                    >
+                        {totalCount}
+                    </span>
                 </h6>
 
                 <ButtonDropdown isOpen={isOpen} toggle={toggle}>
@@ -78,32 +101,44 @@ function ApplyList() {
             </div>
 
             {/* list content */}
-            <div className={styles.item}>
-                {campTickets.map((campTicket) => (
-                    <ListItem key={campTicket.index} data={campTicket} />
-                ))}
-            </div>
-
-            {/* footer */}
-            <div className="w-100 d-flex justify-content-center">
-                <BasicPagination
-                    page={page}
-                    pageCount={Math.ceil(totalCount / 5)}
-                    limitCount={5}
-                    onPageChangeHandler={(selectedPage) => {
-                        router.push(
-                            {
-                                pathname: CURRENT_URL,
-                                query: {
-                                    page: selectedPage,
-                                },
-                            },
-                            undefined,
-                            { shallow: true },
-                        );
-                    }}
+            {isEmpty ? (
+                <EmptyList
+                    text={
+                        dropdownSelect === 0
+                            ? '신청한 프로그램이 없습니다.'
+                            : '해당하는 프로그램이 없습니다.'
+                    }
                 />
-            </div>
+            ) : (
+                <>
+                    <div className={styles.item}>
+                        {campTickets.map((campTicket) => (
+                            <ListItem key={campTicket.id} data={campTicket} />
+                        ))}
+                    </div>
+
+                    {/* footer */}
+                    <div className="w-100 d-flex justify-content-center">
+                        <BasicPagination
+                            page={page}
+                            pageCount={Math.ceil(totalCount / 5)}
+                            limitCount={5}
+                            onPageChangeHandler={(selectedPage) => {
+                                router.push(
+                                    {
+                                        pathname: CURRENT_URL,
+                                        query: {
+                                            page: selectedPage,
+                                        },
+                                    },
+                                    undefined,
+                                    { shallow: true },
+                                );
+                            }}
+                        />
+                    </div>
+                </>
+            )}
         </GridContainer>
     );
 }

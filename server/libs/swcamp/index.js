@@ -3,6 +3,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 import { removeEmptyValues } from '@/utils';
+import ForbiddenError from '@/server/utils/error/ForbiddenError';
 
 const swcampInstance = axios.create({
     baseURL: process.env.SWCAMP_API_HOST,
@@ -96,6 +97,13 @@ const getCampTickets = async ({ userId, page, limit, sort, reviewStatus }) => {
         );
         return data;
     } catch (err) {
+        switch (err.response.status) {
+            case 403:
+                throw new ForbiddenError({
+                    message: err.response.message,
+                    code: err.response.code,
+                });
+        }
         throw new ExternalResponseError({
             message: 'SWCAMP API',
             res: { status: err.response.status, data: err.response.data },
