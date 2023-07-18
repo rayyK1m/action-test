@@ -84,7 +84,6 @@ function ListItem({ data }) {
                 </Button>
             </div>
 
-            {/* 신청 정보 패널 */}
             <TicketInfoPannel
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}

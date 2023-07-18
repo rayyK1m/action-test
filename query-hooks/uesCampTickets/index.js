@@ -13,9 +13,12 @@ const useGetCampTickets = (filters) => {
 };
 
 const useGetCampTicket = (query) => {
+    const { isOpen, id, userId } = query;
     return useQuery({
         queryKey: campTicketsKeys.itemDetail(),
-        queryFn: () => campTicketsApis.getCampTicket(query),
+        queryFn: () => campTicketsApis.getCampTicket({ id, userId }),
+        enabled: isOpen,
+        suspense: false,
     });
 };
 

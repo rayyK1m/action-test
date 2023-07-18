@@ -28,9 +28,7 @@ const FormDropdown = ({
     ...props
 }) => {
     const [isOpen, toggle] = useToggle(false);
-    const [value, setValue] = useState(
-        defaultValue ? defaultValue : placeholder,
-    );
+    const [value, setValue] = useState(placeholder);
 
     const handleclick = (item) => {
         setValue(item);
@@ -54,7 +52,7 @@ const FormDropdown = ({
                     active
                     {...props}
                 >
-                    {value}
+                    {placeholder}
                 </Button>
             </FormWrapper>
         );

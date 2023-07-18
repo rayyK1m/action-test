@@ -33,11 +33,12 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
     const [isModalOpen, toggle] = useToggle();
 
     const { data: userData } = useSession.GET();
-    const { data: ticket } = useGetCampTicket({
+    /** NOTE : 로딩 시 뷰가 없어 임시 처리되어 있는 상태 - 처리 필요 */
+    const { data: ticket, isLoading } = useGetCampTicket({
         id: ticketId,
         userId: userData.id,
+        isOpen,
     });
-    const { program, institution } = ticket;
 
     const cancelTicket = useCancelCampTicket();
     const handleCancel = () => {
@@ -49,16 +50,16 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
     };
 
     const methods = useForm({
-        defaultValues: {
+        values: {
             ...ticket,
-            [PROGRAM_KEYS.institutionKey]: institution[0].name,
-            [PROGRAM_KEYS.nameKey]: program.name,
-            [PROGRAM_KEYS.typeKey]: `${program.type.division}/${program.type.duration}`,
-            [PROGRAM_KEYS.learningTimeKey]: `${program.learningTime}시간`,
+            [PROGRAM_KEYS.institutionKey]: ticket?.institution[0].name,
+            [PROGRAM_KEYS.nameKey]: ticket?.program.name,
+            [PROGRAM_KEYS.typeKey]: `${ticket?.program.type.division}/${ticket?.program.type.duration}`,
+            [PROGRAM_KEYS.learningTimeKey]: `${ticket?.program.learningTime}시간`,
             [CAMP_APPLY_KEYS.elementaryTargetKey]:
-                ticket.targetGroup.elementarySchool,
-            [CAMP_APPLY_KEYS.middleTargetKey]: ticket.targetGroup.middleSchool,
-            [CAMP_APPLY_KEYS.highTargetKey]: ticket.targetGroup.highSchool,
+                ticket?.targetGroup.elementarySchool,
+            [CAMP_APPLY_KEYS.middleTargetKey]: ticket?.targetGroup.middleSchool,
+            [CAMP_APPLY_KEYS.highTargetKey]: ticket?.targetGroup.highSchool,
             [CAMP_APPLY_KEYS.mainEducatorKey]: ticket?.educator?.main,
             [CAMP_APPLY_KEYS.subEducatorKey]: ticket?.educator?.sub,
         },
@@ -69,7 +70,7 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
         return StudentInfoForm;
     };
 
-    const ticketForm = getCampForm(program.type.division);
+    const ticketForm = getCampForm(ticket?.program.type.division);
 
     return (
         <>
@@ -89,11 +90,11 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
                                         <p className="text-hint mr-1">
                                             프로그램
                                         </p>
-                                        <p>{program.name}</p>
+                                        <p>{ticket?.program.name}</p>
                                     </div>
                                 </div>
                                 <div className="d-flex align-items-center">
-                                    {ticket.reviewStatus === 'CANCEL' ? (
+                                    {ticket?.reviewStatus === 'CANCEL' ? (
                                         <Badge color="danger" size="lg">
                                             <ErrorCircleIcon className="mr-1" />
                                             신청 취소됨
@@ -112,12 +113,16 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
                         </PageHeader.Title>
                     </PageHeader>
                     <ProgramInfoCard
-                        program={program}
+                        program={ticket?.program}
                         notice="신청 정보 수정을 원하신다면, 운영 기관 측에 문의해주세요."
                     />
-                    <FormProvider {...methods}>
-                        <Form>{ticketForm}</Form>
-                    </FormProvider>
+                    {isLoading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        <FormProvider {...methods}>
+                            <Form>{ticketForm}</Form>
+                        </FormProvider>
+                    )}
                 </SidePannel.Body>
             </SidePannel>
 
@@ -125,7 +130,7 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
             <Modal isOpen={isModalOpen} toggle={toggle} size="md" centered>
                 <ModalHeader toggle={toggle}>신청 취소하기</ModalHeader>
                 <ModalBody>
-                    {`'${program.name}' 신청을 취소하시겠습니까?`}
+                    {`'${ticket?.program.name}' 신청을 취소하시겠습니까?`}
                 </ModalBody>
                 <ModalFooter>
                     <Button onClick={toggle} color="link">

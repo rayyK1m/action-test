@@ -1,11 +1,7 @@
 export const campTicketsKeys = {
     all: () => ['campTickets'],
     item: () => [...campTicketsKeys.all(), 'item'],
-    itemDetail: (filters) => [
-        ...campTicketsKeys.item(),
-        'item',
-        { ...filters },
-    ],
+    itemDetail: (filters) => [...campTicketsKeys.item(), { ...filters }],
     items: () => [...campTicketsKeys.all(), 'items'],
     itemsDetail: (filters) => [...campTicketsKeys.items(), { ...filters }],
 
