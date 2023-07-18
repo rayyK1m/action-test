@@ -1,6 +1,6 @@
 import { createRouter } from 'next-connect';
 
-import campTicketsCtrl from '@/server/controllers/camp-tickets';
+import campTicketsCtrl from '@/server/controllers/campTickets';
 import errorHandler from '@/server/utils/error/handler';
 
 const router = createRouter();
