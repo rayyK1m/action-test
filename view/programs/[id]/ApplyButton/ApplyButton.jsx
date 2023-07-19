@@ -64,7 +64,7 @@ const ApplyButton = () => {
                 break;
             /** 프로그램 신청하기 페이지 이동 */
             default:
-                router.push(`/applications/${id}/new`, undefined, {
+                router.push(`/applications/new/${id}`, undefined, {
                     shallow: true,
                 });
         }
