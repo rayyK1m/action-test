@@ -40,10 +40,11 @@ function ApplyList() {
     const [isOpen, toggle] = useToggle();
     const [dropdownSelect, setDropdownSelect] = useState(0);
 
-    const page = useQueryParam({
-        key: 'page',
-        defaultValue: 1,
-    });
+    const page =
+        useQueryParam({
+            key: 'page',
+            parser: Number,
+        }) || 1;
 
     const {
         data: { campTickets, totalCount },

@@ -7,6 +7,7 @@ import { PROGRAM_DIVISION_BADGE, STATUS_TEXT } from './ProgramTable.constants';
 
 import styles from './ProgramTable.module.scss';
 
+const BASE_URL = '/institution/admin';
 export const getTableColoums = () => {
     const columns = [
         {
@@ -19,7 +20,7 @@ export const getTableColoums = () => {
                         color={PROGRAM_DIVISION_BADGE[value.division].color}
                         className="mr-1"
                     >
-                        {value.camp}
+                        {value.division}
                     </Badge>
                     <Badge size="sm" color="dark">
                         {value.duration}
@@ -64,12 +65,13 @@ export const getTableColoums = () => {
             accessorKey: 'student',
             header: <div>신청자 관리</div>,
             cell: cellHelper(({ rowData }) => {
-                const { status } = rowData;
+                const { status, id } = rowData;
                 const isInProgress = status === 'IN_PROGRESS';
                 return (
                     <Button
                         color="link"
-                        onClick={() => alert(rowData.id)}
+                        tag={Link}
+                        href={`${BASE_URL}/program/${id}/applicant`}
                         disabled={isInProgress}
                     >
                         신청자 관리
@@ -82,12 +84,13 @@ export const getTableColoums = () => {
             accessorKey: 'camp',
             header: <div>캠프 관리</div>,
             cell: cellHelper(({ rowData }) => {
-                const { status } = rowData;
+                const { status, id } = rowData;
                 const isInProgress = status === 'IN_PROGRESS';
                 return (
                     <Button
                         color="link"
-                        onClick={() => alert(rowData.id)}
+                        tag={Link}
+                        href={`${BASE_URL}/program/${id}/camp`}
                         disabled={isInProgress}
                     >
                         캠프 관리

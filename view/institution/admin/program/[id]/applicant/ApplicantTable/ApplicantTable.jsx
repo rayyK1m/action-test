@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/router';
 
 import {
@@ -6,17 +6,25 @@ import {
     HScrollTable,
     HScrollTablePagination,
 } from '@goorm-dev/gds-tables';
-import { SearchInput } from '@goorm-dev/gds-components';
+import {
+    SearchInput,
+    ButtonDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+} from '@goorm-dev/gds-components';
 
 import useQueryParam from '@/hooks/useQueryParam';
+import useToggle from '@/hooks/useToggle';
 import { convertSort, routerPushShallow } from '@/utils';
-import useProgramsAdmin from '@/query-hooks/useProgramsAdmin';
 import EmptyTableCard from '@/components/EmptyTableCard/EmptyTableCard';
-import { getTableColoums } from './ProgramTable.util.jsx';
+import { useGetCampTicketsAdmin } from '@/query-hooks/uesCampTickets';
+import { getTableColoums } from './ApplicantTable.util';
+import { DROPDOWN_MENU } from './ApplicantTable.constants';
 
-import styles from './ProgramTable.module.scss';
+import styles from './ApplicantTable.module.scss';
 
-function ProgramTable() {
+function ApplicantTable() {
     const router = useRouter();
     const memoizedRouter = useMemo(() => router, []);
 
@@ -30,23 +38,29 @@ function ProgramTable() {
     const [searchText, setSearchText] = useState(search);
     const [{ pageIndex, pageSize }, setPagination] = useState({
         pageIndex: page - 1,
-        pageSize: 5,
+        pageSize: 10,
     });
     const [sorting, setSorting] = useState(convertSort(sort));
+    const [isFilterDropdownOpen, toggleFilterDropdown] = useToggle();
+    const [dropdownSelect, setDropdownSelect] = useState(0);
 
     const {
-        data: { data: programs, totalCount },
-    } = useProgramsAdmin.GET({
+        data: { items: campApplicants, totalCount, programDivision },
+    } = useGetCampTicketsAdmin({
+        programId: router.query.id,
         page: pageIndex + 1,
         limit: pageSize,
         search,
         ...(sort !== '' && { sort }),
     });
 
-    const columns = useMemo(() => getTableColoums(), []);
+    const columns = useMemo(
+        () => getTableColoums(programDivision),
+        [programDivision],
+    );
     const { getTableProps, getPaginationProps } = useHScrollTable({
         columns,
-        data: programs,
+        data: campApplicants,
 
         extraColumnType: 'index',
 
@@ -114,7 +128,7 @@ function ProgramTable() {
         <div>
             <div className={styles.title}>
                 <h6>
-                    모든 프로그램{' '}
+                    모든 신청자{' '}
                     <span
                         className={
                             isEmptyData ? 'text-gray-600' : 'text-blue-500'
@@ -124,18 +138,56 @@ function ProgramTable() {
                     </span>
                 </h6>
 
-                <SearchInput
-                    className={styles.searchInput}
-                    placeholder="프로그램 검색"
-                    size="lg"
-                    onChange={handleSearhCange}
-                    onKeyDown={handleSearchKeyDown}
-                    value={searchText}
-                />
+                <div className="d-flex">
+                    <SearchInput
+                        className={styles.searchInput}
+                        placeholder="신청자 검색"
+                        size="lg"
+                        onChange={handleSearhCange}
+                        onKeyDown={handleSearchKeyDown}
+                        value={searchText}
+                    />
+                    <ButtonDropdown
+                        isOpen={isFilterDropdownOpen}
+                        toggle={toggleFilterDropdown}
+                    >
+                        <DropdownToggle
+                            size="lg"
+                            color="link"
+                            theme="light"
+                            caret
+                        >
+                            {
+                                DROPDOWN_MENU[programDivision][dropdownSelect]
+                                    .text
+                            }
+                        </DropdownToggle>
+
+                        <DropdownMenu right={true}>
+                            {DROPDOWN_MENU[programDivision].map((item) => (
+                                <DropdownItem
+                                    key={item.index}
+                                    onClick={() => {
+                                        setDropdownSelect(item.index);
+                                        routerPushShallow(memoizedRouter, {
+                                            reviewStatus:
+                                                item.index === 0
+                                                    ? null
+                                                    : item.value,
+                                            page: 1,
+                                        });
+                                    }}
+                                >
+                                    {item.text}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                </div>
             </div>
 
             {isEmptyData ? (
-                <EmptyTableCard text="등록된 프로그램이 없습니다." />
+                <EmptyTableCard text="프로그램 신청자가 아직 없습니다." />
             ) : (
                 <>
                     <HScrollTable {...getTableProps()} />
@@ -150,4 +202,4 @@ function ProgramTable() {
     );
 }
 
-export default ProgramTable;
+export default ApplicantTable;

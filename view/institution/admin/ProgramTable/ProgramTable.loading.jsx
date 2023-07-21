@@ -27,75 +27,39 @@ const getTableColoums = () => [
     {
         accessorKey: 'type',
         header: <div>유형</div>,
-        cell: (
-            <Skeleton
-                width="4rem"
-                height="1.25rem"
-                className={styles.roundSkeleton}
-            />
-        ),
+        cell: <Skeleton width="4rem" height="1.25rem" />,
         maxSize: 119,
     },
     {
         accessorKey: 'name',
         header: <div>프로그램 명</div>,
-        cell: (
-            <Skeleton
-                width="17.5rem"
-                height="1.25rem"
-                className={styles.roundSkeleton}
-            />
-        ),
+        cell: <Skeleton width="17.5rem" height="1.25rem" />,
         size: 640,
         enableSorting: true,
     },
     {
         accessorKey: 'status',
         header: <div>승인 상태</div>,
-        cell: (
-            <Skeleton
-                width="4rem"
-                height="1.25rem"
-                className={styles.roundSkeleton}
-            />
-        ),
+        cell: <Skeleton width="4rem" height="1.25rem" />,
         size: 129,
         enableSorting: true,
     },
     {
         accessorKey: 'student',
         header: <div>신청자 관리</div>,
-        cell: (
-            <Skeleton
-                width="5.5rem"
-                height="1.25rem"
-                className={styles.roundSkeleton}
-            />
-        ),
+        cell: <Skeleton width="5.5rem" height="1.25rem" />,
         size: 140,
     },
     {
         accessorKey: 'camp',
         header: <div>캠프 관리</div>,
-        cell: (
-            <Skeleton
-                width="5.5rem"
-                height="1.25rem"
-                className={styles.roundSkeleton}
-            />
-        ),
+        cell: <Skeleton width="5.5rem" height="1.25rem" />,
         size: 129,
     },
     {
         accessorKey: 'content',
         header: <div>콘텐츠 관리</div>,
-        cell: (
-            <Skeleton
-                width="5.5rem"
-                height="1.25rem"
-                className={styles.roundSkeleton}
-            />
-        ),
+        cell: <Skeleton width="5.5rem" height="1.25rem" />,
         size: 160,
     },
 ];

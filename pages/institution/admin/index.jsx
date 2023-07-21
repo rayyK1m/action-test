@@ -25,15 +25,21 @@ export default function InstitutionAdminPage({ isSubmitted }) {
     );
 }
 
-const INSTITUTION_ADMIN_DEFAULT_QUERY = {
-    page: 1,
-    limit: 5,
-};
 export const getServerSideProps = withSessionSsr(async (context) => {
     const queryClient = new QueryClient();
+    const page = Number(context.query?.page || 1);
+    const limit = Number(context.query?.limit || 5);
+
     await queryClient.prefetchQuery(
-        programAdminKeys.detail({ ...INSTITUTION_ADMIN_DEFAULT_QUERY }),
-        () => getProgramsAdmin(INSTITUTION_ADMIN_DEFAULT_QUERY),
+        programAdminKeys.detail({
+            page,
+            limit,
+        }),
+        () =>
+            getProgramsAdmin({
+                page,
+                limit,
+            }),
     );
 
     const session = context.req.session;

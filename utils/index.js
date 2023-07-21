@@ -32,6 +32,25 @@ export const convertSort = (sort) => {
     });
 };
 
+/**
+ * 같은 페이지 라우트 내부에서 필터링 등의 이유로 shallow 라우팅이 필요할 때 사용
+ *
+ * @param {import('next/router').NextRouter} router
+ * @param {Object} query
+ */
+export const routerPushShallow = (router, query) => {
+    router.push(
+        {
+            query: {
+                ...router.query,
+                ...query,
+            },
+        },
+        undefined,
+        { shallow: true },
+    );
+};
+
 export const convertImageToBase64 = (file, fileType) => {
     const mediaType = fileType || file?.type;
     return new Promise((resolve, reject) => {
@@ -47,6 +66,7 @@ export const convertImageToBase64 = (file, fileType) => {
         reader.readAsDataURL(file);
     });
 };
+
 /**
  *
  * Object에서 empty value를 제거한다.

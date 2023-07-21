@@ -32,16 +32,12 @@ export default function ApplicationsPage() {
     );
 }
 
-const APPLICANTS_DEFAULT_QUERY = {
-    page: 1,
-};
-
 export const getServerSideProps = withSessionSsr(async (context) => {
     const queryClient = new QueryClient();
+    const page = Number(context.query?.page || 1);
 
-    await queryClient.prefetchQuery(
-        campTicketsKeys.itemsDetail({ ...APPLICANTS_DEFAULT_QUERY }),
-        () => campTicketsApis.getCampTickets(APPLICANTS_DEFAULT_QUERY),
+    await queryClient.prefetchQuery(campTicketsKeys.itemsDetail({ page }), () =>
+        campTicketsApis.getCampTickets({ page }),
     );
 
     const session = context.req.session;
