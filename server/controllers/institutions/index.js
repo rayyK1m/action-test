@@ -22,7 +22,6 @@ const getInstitution = async (req, res) => {
         name: item?.name || '이름 없음',
         institutionId: item?.id,
         logo: item?.logo,
-        programCount: item?.programCount || 0,
     });
 };
 

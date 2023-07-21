@@ -14,6 +14,7 @@ export const PROGRAMS_DEFAULT_QUERY = {
     category: '',
     operateLocation: '',
     search: '',
+    active: false,
 };
 
 export const getServerSideProps = withSessionSsr(async (context) => {

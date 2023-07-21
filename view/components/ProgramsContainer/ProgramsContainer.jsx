@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import cn from 'classnames';
 
 import {
@@ -26,6 +26,9 @@ import { PROGRAMS_DEFAULT_QUERY } from '@/pages';
 
 import ProgramsCards from '../ProgramsCards';
 import ProgramsCardsLoading from '../ProgramsCards/ProgramsCards.loading';
+import ProgramsCountAndApplyableCheckboxLoading from '../ProgramsCountAndApplyableCheckbox/ProgramsCountAndApplyableCheckbox.loading';
+import ProgramsCountAndApplyableCheckbox from '../ProgramsCountAndApplyableCheckbox';
+
 import { DROP_DOWNS } from './ProgramsContainer.constants';
 
 import styles from './ProgramsContainer.module.scss';
@@ -52,6 +55,9 @@ export default function ProgramsContainer() {
 
     /** Pagination 관련 */
     const [page, setPage] = useState(PROGRAMS_DEFAULT_QUERY.page);
+
+    /** 신청 가능한 프로그램 체크 여부 */
+    const [isCheckPossibleApply, setIsCheckPossibleApply] = useState(false);
 
     const handleDropdown = (e) => {
         const { type, value } = e.target.dataset;
@@ -87,6 +93,7 @@ export default function ProgramsContainer() {
 
     return (
         <GridContainer>
+            {/* 운영지역, 카테고리, 프로그램 이름 검색 */}
             <section className="d-flex align-items-center justify-content-between mb-4">
                 <ul className={cn('d-flex', styles.dropdowns)}>
                     <li>
@@ -155,6 +162,7 @@ export default function ProgramsContainer() {
                 />
             </section>
 
+            {/* 필터링 선택시 나오는 필터 리스트 뷰 */}
             {Object.values(dropdowns).some((i) => i !== '') && (
                 <section
                     className={cn(
@@ -191,6 +199,7 @@ export default function ProgramsContainer() {
                 </section>
             )}
 
+            {/* 방문형, 집합형 선택 */}
             <section className="mb-4">
                 <Nav tabs className={styles.navTabs}>
                     <NavItem className={styles.navItem}>
@@ -218,6 +227,23 @@ export default function ProgramsContainer() {
                 </Nav>
             </section>
 
+            {/* 전체 프로그램 수, 신청 가능한 프로그램 보기 */}
+            <section className="mb-4">
+                <Suspense
+                    fallback={<ProgramsCountAndApplyableCheckboxLoading />}
+                >
+                    <ProgramsCountAndApplyableCheckbox
+                        campType={campType}
+                        page={page}
+                        filterList={dropdowns}
+                        searchValue={searchValue}
+                        isCheckPossibleApply={isCheckPossibleApply}
+                        setIsCheckPossibleApply={setIsCheckPossibleApply}
+                    />
+                </Suspense>
+            </section>
+
+            {/* 프로그램 리스트 */}
             <section>
                 <SSRSuspense fallback={<ProgramsCardsLoading />}>
                     <ProgramsCards
@@ -226,6 +252,7 @@ export default function ProgramsContainer() {
                         setPage={setPage}
                         filterList={dropdowns}
                         searchValue={searchValue}
+                        isCheckPossibleApply={isCheckPossibleApply}
                     />
                 </SSRSuspense>
             </section>

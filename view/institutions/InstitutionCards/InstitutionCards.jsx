@@ -1,11 +1,12 @@
 import Pagination from '@/components/Pagination';
+import EmptyTableCard from '@/components/EmptyTableCard/EmptyTableCard';
+
 import { useGetInstitutions } from '@/query-hooks/useInstitutions';
 import { INSTITUTIONS_DEFAULT_QUERY } from '@/pages/institutions';
 
 import InstitutionCard from '../InstitutionCard';
 
 import styles from './InstitutionCards.module.scss';
-import EmptyTableCard from '@/components/EmptyTableCard/EmptyTableCard';
 
 function InstitutionCards({
     isCheckPossibleApply,
@@ -13,9 +14,7 @@ function InstitutionCards({
     setPage,
     searchValue,
 }) {
-    /**
-     * [query-hooks] 운영기관 리스트 탐색
-     */
+    /** [query-hooks] 운영기관 리스트 탐색 */
     const {
         data: { items, total },
     } = useGetInstitutions({
