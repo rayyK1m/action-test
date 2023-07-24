@@ -1,7 +1,9 @@
+import dayjs from 'dayjs';
+
 import swcampSdk from '@/server/libs/swcamp';
 import { getPrgramApplyStatus } from '@/server/utils/common';
 
-import { PRGRAM_APPLY_STATUS } from '@/constants/db';
+import validation from './validation';
 
 const getPrograms = async (req, res) => {
     const {
@@ -12,7 +14,21 @@ const getPrograms = async (req, res) => {
         category,
         operateLocation,
         institutionId,
+        active,
     } = req.query;
+
+    /**
+     * 신청 가능한 프로그램 보기 기능
+     *
+     * - active가 true일 경우, 오늘을 기준으로 하루 전, 하루 후의 날짜를 검색 조건으로 필터링
+     */
+    const startApplyDate = active
+        ? `lt:${dayjs().add(1, 'day').format('YYYY-MM-DD')}`
+        : undefined;
+    const endApplyDate = active
+        ? `gt:${dayjs().subtract(1, 'day').format('YYYY-MM-DD')}`
+        : undefined;
+
     const { items, total } = await swcampSdk.getPrograms({
         page,
         limit,
@@ -21,15 +37,13 @@ const getPrograms = async (req, res) => {
         category,
         operateLocation,
         institutionId,
+        startApplyDate,
+        endApplyDate,
     });
 
     /**
-     * 프로그램 모집 상태 정보가 포함된 program 리스트
-     *
-     * @param {Object} extendedItems
-     * @param {Object} extendedItems.applyStatus - 프로그램 모집 상태에 대한 정보
-     * @param {type} extendedItems.applyStatus.type - 프로그램 모집 상태
-     * @param {type} extendedItems.applyStatus.isPossibleApply - '모집중', '모집예정'만 true
+     * @param {Object} extendedItems - 프로그램 모집 상태 정보가 포함된, 확장된 program 리스트
+     * @param {Object} extendedItems.applyStatus - 프로그램 모집 상태 상태 (모집_중, 모집_예정, 모집_종료)
      */
     const extendedItems = items.map((item) => {
         const {
@@ -42,12 +56,7 @@ const getPrograms = async (req, res) => {
 
         return {
             ...item,
-            applyStatus: {
-                type,
-                isPossibleApply:
-                    type === PRGRAM_APPLY_STATUS.모집_예정.key ||
-                    type === PRGRAM_APPLY_STATUS.모집_중.key,
-            },
+            applyStatus: type,
         };
     });
 
@@ -67,6 +76,6 @@ const getProgram = async (req, res) => {
     return res.json(data);
 };
 
-const programsCtrl = { getPrograms, getProgram };
+const programsCtrl = { getPrograms, getProgram, validation };
 
 export default programsCtrl;

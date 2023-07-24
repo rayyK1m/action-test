@@ -12,7 +12,7 @@ function InstitutionInfo() {
     } = useRouter();
 
     const {
-        data: { logo, name, programCount },
+        data: { logo, name },
     } = useGetInstitution(institutionId);
 
     return (
@@ -27,10 +27,6 @@ function InstitutionInfo() {
             </div>
 
             <h2 className={cn('mb-2', styles.name)}>{name}</h2>
-            <h6>
-                전체 프로그램{' '}
-                <span className="text-primary">{programCount}</span>
-            </h6>
         </div>
     );
 }

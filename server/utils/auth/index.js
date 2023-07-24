@@ -101,4 +101,6 @@ export const withSessionSsr =
         return handler(context);
     };
 
-export default {};
+export const getAuthHeader = (userId) => {
+    return { 'x-user-id': userId };
+};

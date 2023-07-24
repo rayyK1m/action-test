@@ -1,9 +1,10 @@
-import ExternalResponseError from '@/server/utils/error/ExternalResponseError';
 import axios from 'axios';
 import qs from 'qs';
-
 import { removeEmptyValues } from '@/utils';
 import ForbiddenError from '@/server/utils/error/ForbiddenError';
+
+import ExternalResponseError from '../../utils/error/ExternalResponseError';
+import { getAuthHeader } from '../../utils/auth';
 
 const swcampInstance = axios.create({
     baseURL: process.env.SWCAMP_API_HOST,
@@ -11,10 +12,6 @@ const swcampInstance = axios.create({
         // TODO: api server용 토큰이 있다면 추가하기
     },
 });
-
-const getAuthHeader = (userId) => {
-    return { 'x-user-id': userId };
-};
 
 const getCampTicket = async ({ userId, ticketId }) => {
     try {
@@ -42,6 +39,8 @@ const getPrograms = async ({
     category,
     operateLocation,
     institutionId,
+    startApplyDate,
+    endApplyDate,
 }) => {
     const removedEmptyQuery = removeEmptyValues({
         page,
@@ -51,6 +50,8 @@ const getPrograms = async ({
         category,
         operateLocation,
         institutionId,
+        'applyDate.start': startApplyDate,
+        'applyDate.end': endApplyDate,
     });
     const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
 
@@ -206,7 +207,7 @@ const getInstitutions = async ({ page, limit, search, active }) => {
     }
 };
 
-export const getInstitution = async (institutionId) => {
+const getInstitution = async (institutionId) => {
     try {
         const { data } = await swcampInstance.get(
             `/api/v1/institutions/${institutionId}/public`,
@@ -257,7 +258,6 @@ const swcampSdk = {
     /**
      * CampTicket
      */
-
     getCampTickets,
     getCampTicket,
     cancelCampTicket,
