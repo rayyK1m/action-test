@@ -1,18 +1,21 @@
 .info {
     width: 100%;
-    margin-top: 2.5rem;
     padding: 1.5rem;
     background-color: var(--gray-50);
     border-radius: 0.5rem;
 }
 
 .infoList {
+    list-style: disc;
     margin-top: 1rem;
     margin-bottom: 0;
     padding-inline-start: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .notice {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     margin-bottom: 2.5rem;
 }

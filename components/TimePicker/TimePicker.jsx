@@ -65,7 +65,7 @@ const TIME_FORMAT = 'hh:mm a';
    @param {Date} time 사용단에서의 자유로운 포맷팅을 위해 Date 객체 사용, dayjs 등의 라이브러리를 통해 time만 잘라서 사용 가능 
    @param {Object} placeholderTime { ampm: String, hour: String, minute: String}
    @param {Function} onChange 사용단에서 onChange={(time) => alert(time) } 과 같이 내려줄 수 있음
-
+   @param {Boolean} disabled 
  * @returns {Date} ex) Sun May 07 2023(-- 오늘 날짜 --) 18:00:00 GMT+0900 (한국 표준시))
  */
 const TimePicker = forwardRef(
@@ -77,6 +77,7 @@ const TimePicker = forwardRef(
             time,
             placeholderTime = { ampm: '오전', hour: '01', minute: '00' },
             onChange,
+            disabled,
         },
         ref,
     ) => {
@@ -85,6 +86,9 @@ const TimePicker = forwardRef(
         const [innerTime, setInnerTime] = useState(placeholderTime);
 
         useEffect(() => {
+            if (disabled) setIsDirty(true);
+            if (!time) return;
+
             const convertedHour = dayjs(time).format('hh');
             const convertedMinute = dayjs(time).format('mm');
             const convertedAmpm = dayjs(time).format('a');
@@ -124,7 +128,12 @@ const TimePicker = forwardRef(
         };
 
         return (
-            <Dropdown isOpen={isOpen} toggle={toggle}>
+            <Dropdown
+                isOpen={isOpen}
+                toggle={toggle}
+                disabled={disabled}
+                className={disabled ? styles.disabled : ''}
+            >
                 <DropdownToggle tag="div" className={styles.inputWrapper}>
                     <Input
                         ref={ref}

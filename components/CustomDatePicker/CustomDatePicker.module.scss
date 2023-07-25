@@ -1,11 +1,9 @@
 .inputWrapper {
     position: relative;
-    width: fit-content;
     cursor: pointer;
 }
 
 .input {
-    width: 17rem;
     opacity: 1 !important; // reactstrap Input의 readonly opacity를 막기 위한 조치
     cursor: pointer;
 
@@ -36,4 +34,8 @@
         width: 1rem;
         height: 1rem;
     }
+}
+
+.disabled {
+    pointer-events: none;
 }

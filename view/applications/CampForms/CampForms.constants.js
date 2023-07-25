@@ -1,7 +1,8 @@
 // schoolName이 schoolIndex로 명시되어 있는 상황 <-> 상황에 따라 변경될 수 있음
 export const CAMP_APPLY_KEYS = {
     userNameKey: 'userName',
-    schoolNameKey: 'schoolIndex',
+    schoolNameKey: 'schoolName',
+    schoolCodeKey: 'schoolCode',
     operateLocationKey: 'operateLocation',
     schoolTypeKey: 'schoolType',
     // educator: {main, sub}

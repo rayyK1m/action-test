@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -6,18 +7,18 @@ import { FormDropdown, FormInput, FormWrapper } from '@/components/FormItem';
 import Divider from '@/components/Divider/Divider';
 
 import { Radio } from '@goorm-dev/gds-components';
-import styles from '../camp.module.scss';
+import styles from '../CampForms.module.scss';
 
 import {
     CAMP_APPLY_KEYS,
     PROGRAM_KEYS,
     SCHOOL,
     USER_KEYS,
-} from '../camp.constants';
+} from '../CampForms.constants';
 
 // 집합형 프로그램 캠프 신청 폼
 
-const ApplyTargetInput = () => {
+const ApplyTargetInput = ({ programTarget }) => {
     const { watch } = useFormContext();
 
     const { elementaryTargetKey, middleTargetKey, highTargetKey } =
@@ -29,6 +30,8 @@ const ApplyTargetInput = () => {
         highTargetKey,
     ]);
 
+    const targetSchool = Object.values(programTarget);
+
     return (
         <FormWrapper label="신청 가능 대상" isRequired>
             <div className={styles.checkForm}>
@@ -37,16 +40,26 @@ const ApplyTargetInput = () => {
                         <div className={styles.schoolName}>{school.key}</div>
                         <Divider height="0.75rem" className={styles.divider} />
                         <div className={styles.schoolGrade}>
-                            {school.value.map((_, idx) => (
-                                <Radio
-                                    label={`${idx + 1}학년`}
-                                    key={idx}
-                                    name={index}
-                                    defaultChecked={targetFields[
-                                        index
-                                    ]?.includes(idx + 1)}
-                                />
-                            ))}
+                            {school.value.map((_, idx) => {
+                                const disabled = !targetSchool[index].includes(
+                                    idx + 1,
+                                );
+                                return (
+                                    <Radio
+                                        className={cn(
+                                            styles.readOnly,
+                                            disabled ? styles.disabled : '',
+                                        )}
+                                        label={`${idx + 1}학년`}
+                                        key={idx}
+                                        name={index}
+                                        disabled={disabled}
+                                        checked={targetFields[index]?.includes(
+                                            idx + 1,
+                                        )}
+                                    />
+                                );
+                            })}
                         </div>
                     </div>
                 ))}
@@ -91,7 +104,7 @@ export const ReadOnlyStudentProgramForm = () => {
     );
 };
 
-export const ReadOnlyApplyForm = () => {
+export const ReadOnlyApplyForm = ({ programTarget }) => {
     const { getValues } = useFormContext();
     const { userNameKey, phoneNumberKey, operateLocationKey, schoolNameKey } =
         CAMP_APPLY_KEYS;
@@ -122,17 +135,19 @@ export const ReadOnlyApplyForm = () => {
                     readOnly
                 />
                 <FormDropdown
+                    isRequired
                     label="신청 지역"
-                    placeholder={getValues(operateLocationKey)}
+                    value={getValues(operateLocationKey)}
                     readOnly
                 />
             </div>
             <FormInput
+                isRequired
                 label="소속 학교"
                 value={getValues(schoolNameKey)}
                 readOnly
             />
-            <ApplyTargetInput />
+            <ApplyTargetInput programTarget={programTarget} />
         </div>
     );
 };

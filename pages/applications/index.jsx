@@ -1,14 +1,15 @@
 import { QueryClient, dehydrate } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 
-import { withSessionSsr } from '@/server/utils/auth';
+import { checkAuthSsr } from '@/server/utils/auth';
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
 import { campTicketsApis, campTicketsKeys } from '@/query-hooks/uesCampTickets';
+import { createServerAxios } from '@/utils';
 
 import ApplyList from '@/view/applications/ApplyList/ApplyList';
 import ApplyListLoading from '@/view/applications/ApplyList/ApplyList.loading';
 import Layout from '@/components/Layout/Layout';
 import SSRSuspense from '@/components/SSRSuspense';
-import { useRouter } from 'next/router';
 
 export default function ApplicationsPage() {
     const router = useRouter();
@@ -32,12 +33,25 @@ export default function ApplicationsPage() {
     );
 }
 
-export const getServerSideProps = withSessionSsr(async (context) => {
+export const getServerSideProps = checkAuthSsr({
+    shouldLogin: true,
+    roles: ['teacher', 'student'],
+})(async (context) => {
     const queryClient = new QueryClient();
     const page = Number(context.query?.page || 1);
+    const reviewStatus = context.query?.reviewStatus || 'ALL';
 
-    await queryClient.prefetchQuery(campTicketsKeys.itemsDetail({ page }), () =>
-        campTicketsApis.getCampTickets({ page }),
+    const serverAxios = createServerAxios(context);
+
+    await queryClient.prefetchQuery(
+        campTicketsKeys.itemsDetail({ page, reviewStatus }),
+        () =>
+            campTicketsApis.getCampTickets(
+                {
+                    query: { page, reviewStatus },
+                },
+                serverAxios,
+            ),
     );
 
     const session = context.req.session;
@@ -45,6 +59,7 @@ export const getServerSideProps = withSessionSsr(async (context) => {
         /** session 정보 세팅 */
         await queryClient.prefetchQuery(sessionKeys.all(), () => session);
     }
+
     return {
         props: {
             dehydratedState: dehydrate(queryClient),

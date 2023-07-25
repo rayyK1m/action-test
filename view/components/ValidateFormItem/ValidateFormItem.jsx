@@ -1,6 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import {
-    FormDatePicker,
     FormDropdown,
     FormEditor,
     FormFileInput,
@@ -34,7 +33,7 @@ export const DropdownInputItem = ({
                 <FormDropdown
                     isRequired
                     label={label}
-                    defaultValue={value}
+                    value={value ? value : placeholder}
                     placeholder={placeholder}
                     items={items}
                     dropdownKey={dropdownKey}
@@ -200,9 +199,10 @@ export const ImageFileInputItem = ({
     );
 };
 
-export const DatePickerItem = ({ datePickerKey, ...props }) => {
+export const DatePickerItem = ({ datePickerKey, disabled, date, ...props }) => {
     const {
         control,
+        trigger,
         formState: { errors },
     } = useFormContext();
 
@@ -213,33 +213,41 @@ export const DatePickerItem = ({ datePickerKey, ...props }) => {
             rules={{
                 required: '필수 항목을 입력해주세요.',
             }}
-            render={({ field: { ref, value, onChange, onBlur } }) => (
-                <div className="d-flex flex-column">
-                    <CustomDatePicker
-                        ref={ref}
-                        date={value}
-                        onChange={onChange}
-                        inputProps={{
-                            invalid: !!errors[datePickerKey],
-                            onBlur,
-                            ...props,
-                        }}
-                    />
-                    {errors[datePickerKey] && (
-                        <div className="d-flex mt-1 text-danger">
-                            <NoticeCircleIcon />
-                            <span className="ml-1">
-                                {errors[datePickerKey]?.message}
-                            </span>
-                        </div>
-                    )}
-                </div>
-            )}
+            render={({ field: { ref, value, onChange, onBlur } }) => {
+                const handleChange = (value) => {
+                    onChange(value);
+                    trigger(datePickerKey);
+                };
+
+                return (
+                    <div className="d-flex flex-column" style={{ flex: 1 }}>
+                        <CustomDatePicker
+                            ref={ref}
+                            date={value}
+                            onChange={handleChange}
+                            inputProps={{
+                                invalid: !!errors[datePickerKey],
+                                onBlur,
+                                ...props,
+                            }}
+                            disabled={disabled}
+                        />
+                        {errors[datePickerKey] && (
+                            <div className="d-flex mt-1 text-danger">
+                                <NoticeCircleIcon />
+                                <span className="ml-1">
+                                    {errors[datePickerKey]?.message}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                );
+            }}
         />
     );
 };
 
-export const TimePickerItem = ({ timePickerKey, ...props }) => {
+export const TimePickerItem = ({ timePickerKey, disabled, ...props }) => {
     const {
         control,
         formState: { errors },
@@ -253,7 +261,7 @@ export const TimePickerItem = ({ timePickerKey, ...props }) => {
                 required: '필수 항목을 입력해주세요.',
             }}
             render={({ field: { ref, value, onChange, onBlur } }) => (
-                <div className="d-flex flex-column">
+                <div className="d-flex flex-column" style={{ flex: 1 }}>
                     <TimePicker
                         ref={ref}
                         time={value}
@@ -263,6 +271,7 @@ export const TimePickerItem = ({ timePickerKey, ...props }) => {
                             onBlur,
                             ...props,
                         }}
+                        disabled={disabled}
                     />
                     {errors[timePickerKey] && (
                         <div className="d-flex mt-1 text-danger">

@@ -1,4 +1,6 @@
+import { useState, useMemo } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import _isEmpty from 'lodash/isEmpty';
 
 import {
     TeacherTypeCamp,
@@ -12,31 +14,32 @@ import ProgramInfoCard from '@/view/applications/ProgramInfoCard';
 
 import { Button, Form } from '@goorm-dev/gds-components';
 import { BackPageIcon } from '@goorm-dev/gds-icons';
+import styles from './CampApplyContainer.module.scss';
 
 import {
     CAMP_APPLY_KEYS,
     PROGRAM_KEYS,
     USER_KEYS,
-} from '@/view/applications/CampForms/camp.constants';
+} from '@/view/applications/CampForms/CampForms.constants';
 import { useGetProgram } from '@/query-hooks/usePrograms';
 import { useCreateCampTicket } from '@/query-hooks/uesCampTickets';
-import useQueryParam from '@/hooks/useQueryParam';
 import { PROGRAM_DIVISION } from '@/constants/db';
 
 import { formatTeacherData } from './CampApplyContainer.utils';
 import { useRouter } from 'next/router';
+import { TermsForm } from '../CampForms/TermForm/TermForm';
+import Link from 'next/link';
 
 function CampApplyContainer({ userData, programId }) {
     const router = useRouter();
-
-    const id = useQueryParam({
-        key: 'programId',
-        defaultValue: programId,
+    const [{ thirdPartyInfoTerm, personalInfoTerm }, setTerms] = useState({
+        thirdPartyInfoTerm: false,
+        personalInfoTerm: false,
     });
 
     const {
         data: { item: program },
-    } = useGetProgram({ id });
+    } = useGetProgram({ id: programId });
     const createTicket = useCreateCampTicket();
 
     {
@@ -50,7 +53,7 @@ function CampApplyContainer({ userData, programId }) {
             [PROGRAM_KEYS.institutionKey]: program.institution.name,
             [PROGRAM_KEYS.typeKey]: program.type,
             [PROGRAM_KEYS.nameKey]: program.name,
-            [PROGRAM_KEYS.learningTimeKey]: `${program.learningTime}시간`,
+            [PROGRAM_KEYS.learningTimeKey]: program.learningTime,
             [USER_KEYS.phoneNumberKey]:
                 program.type.division === PROGRAM_DIVISION.방문형
                     ? userData?.phoneNumber || '010-1234-1234'
@@ -59,6 +62,9 @@ function CampApplyContainer({ userData, programId }) {
             [CAMP_APPLY_KEYS.elementaryTargetKey]: [],
             [CAMP_APPLY_KEYS.middleTargetKey]: [],
             [CAMP_APPLY_KEYS.highTargetKey]: [],
+            /** 유저 데이터 연결 안해서 임시로 지정해둔 상태, 수정 예정 */
+            [CAMP_APPLY_KEYS.schoolNameKey]: '가락중학교',
+            [CAMP_APPLY_KEYS.schoolCodeKey]: '7130165',
         },
     });
 
@@ -93,19 +99,29 @@ function CampApplyContainer({ userData, programId }) {
                 ...formData,
             },
         });
-        router.push('/applications/new/complete');
     };
 
+    /** 신청 대상 정보 error 처리를 위함 */
+    const targetFields = methods.watch([
+        CAMP_APPLY_KEYS.elementaryTargetKey,
+        CAMP_APPLY_KEYS.middleTargetKey,
+        CAMP_APPLY_KEYS.highTargetKey,
+    ]);
+    const isTargetError = useMemo(
+        () => _isEmpty(targetFields.flat()),
+        [targetFields],
+    );
+
+    /** form CTA 버튼 disable 처리를 위함 */
     const disabled =
         !methods.formState.isValid ||
-        !!methods.formState.errors.targetGroup ||
-        !!methods.formState.errors.terms;
+        isTargetError ||
+        !(thirdPartyInfoTerm && personalInfoTerm);
 
     const getCampForm = (campType) => {
         if (campType === PROGRAM_DIVISION.방문형) return TeacherTypeCamp;
         return StudentTypeCamp;
     };
-
     const { title, contents } = getCampForm(program.type.division);
 
     return (
@@ -118,8 +134,10 @@ function CampApplyContainer({ userData, programId }) {
                             <div className="d-flex align-items-center">
                                 <Button
                                     icon={<BackPageIcon />}
+                                    tag={Link}
                                     className="mr-2"
                                     color="link"
+                                    href={`/programs/${programId}`}
                                 />
                                 <h3>{title}</h3>
                             </div>
@@ -128,10 +146,20 @@ function CampApplyContainer({ userData, programId }) {
                     <ProgramInfoCard
                         program={program}
                         notice="프로그램은 최대 3개까지 신청 가능합니다."
+                        className={styles.infoCard}
                     />
                     <FormProvider {...methods}>
                         <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                            {contents({ program, userData })}
+                            <div className={styles.forms}>
+                                {contents({ program, userData })}
+                                <TermsForm
+                                    terms={{
+                                        personalInfoTerm,
+                                        thirdPartyInfoTerm,
+                                    }}
+                                    setTerms={setTerms}
+                                />
+                            </div>
                             <div className="d-flex justify-content-end">
                                 <Button size="xl" disabled={disabled}>
                                     신청하기

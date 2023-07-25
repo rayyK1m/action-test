@@ -1,7 +1,14 @@
+@mixin ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .input:read-only {
     opacity: 1;
 }
 
 .input:disabled {
     opacity: 0.32;
+    @include ellipsis();
 }

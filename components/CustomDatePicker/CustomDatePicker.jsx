@@ -31,7 +31,10 @@ import styles from './CustomDatePicker.module.scss';
  * @returns {Date} ex) Tue Jul 11 2023 00:00:00 GMT+0900 (한국 표준시)
  */
 const CustomDatePicker = forwardRef(
-    ({ size = 'lg', inputClassName, inputProps, date, onChange }, ref) => {
+    (
+        { size = 'lg', inputClassName, inputProps, date, onChange, disabled },
+        ref,
+    ) => {
         const [isOpen, setIsOpen] = useState(false);
         const toggle = () => {
             setIsOpen((prev) => !prev);
@@ -43,7 +46,12 @@ const CustomDatePicker = forwardRef(
 
         return (
             <>
-                <Dropdown isOpen={isOpen} toggle={toggle}>
+                <Dropdown
+                    isOpen={isOpen}
+                    toggle={toggle}
+                    disabled={disabled}
+                    className={disabled ? styles.disabled : ''}
+                >
                     <DropdownToggle tag="div" className={styles.inputWrapper}>
                         <Input
                             ref={ref}

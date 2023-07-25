@@ -38,7 +38,6 @@ const EmptyList = ({ text }) => {
 function ApplyList() {
     const router = useRouter();
     const [isOpen, toggle] = useToggle();
-    const [dropdownSelect, setDropdownSelect] = useState(0);
 
     const page =
         useQueryParam({
@@ -46,13 +45,12 @@ function ApplyList() {
             parser: Number,
         }) || 1;
 
+    const filter = router.query['reviewStatus'] || 0;
     const {
         data: { campTickets, totalCount },
     } = useGetCampTickets({
         page,
-        ...(dropdownSelect !== 0 && {
-            reviewStatus: DROPDOWN_MENU[dropdownSelect].value,
-        }),
+        reviewStatus: DROPDOWN_MENU[filter].value,
     });
 
     const isEmpty = useMemo(() => totalCount === 0, [totalCount]);
@@ -73,7 +71,7 @@ function ApplyList() {
 
                 <ButtonDropdown isOpen={isOpen} toggle={toggle}>
                     <DropdownToggle size="lg" color="link" theme="light" caret>
-                        {DROPDOWN_MENU[dropdownSelect].text}
+                        {DROPDOWN_MENU[filter].text}
                     </DropdownToggle>
 
                     <DropdownMenu>
@@ -81,12 +79,12 @@ function ApplyList() {
                             <DropdownItem
                                 key={item.key}
                                 onClick={() => {
-                                    setDropdownSelect(idx);
                                     router.push(
                                         {
                                             pathname: CURRENT_URL,
                                             query: {
                                                 page: 1,
+                                                reviewStatus: idx,
                                             },
                                         },
                                         undefined,
@@ -105,7 +103,7 @@ function ApplyList() {
             {isEmpty ? (
                 <EmptyList
                     text={
-                        dropdownSelect === 0
+                        filter === 0
                             ? '신청한 프로그램이 없습니다.'
                             : '해당하는 프로그램이 없습니다.'
                     }
@@ -129,6 +127,7 @@ function ApplyList() {
                                     {
                                         pathname: CURRENT_URL,
                                         query: {
+                                            ...router.query,
                                             page: selectedPage,
                                         },
                                     },

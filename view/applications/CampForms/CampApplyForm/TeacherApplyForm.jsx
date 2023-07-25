@@ -1,5 +1,5 @@
 import { useMemo, useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import _isEmpty from 'lodash/isEmpty';
 
 import {
@@ -13,27 +13,33 @@ import CustomAlert from '@/components/CustomAlert/CustomAlert';
 
 import { Checkbox } from '@goorm-dev/gds-components';
 import { NoticeCircleIcon } from '@goorm-dev/gds-icons';
-import styles from '../camp.module.scss';
+import styles from '../CampForms.module.scss';
 
 import {
     CAMP_APPLY_KEYS,
     PROGRAM_KEYS,
     SCHOOL,
     USER_KEYS,
-} from '../camp.constants';
+} from '../CampForms.constants';
 import { PROGRAM_OPERATION_LOCATIONS } from '@/constants/db';
 import FormDatePicker from '@/components/FormItem/FormDatePicker/FormDatePicker';
+import { formatNumberInput } from '@/utils';
+
+import useToggle from '@/hooks/useToggle';
+import useDebounce from '@/hooks/useDebounce';
+
+import { useGetSchools } from '@/query-hooks/useSchool';
+import SearchSchoolDropdown from '@/view/components/SearchSchoolDropdown/SearchSchoolDropdown';
 
 // 방문형 프로그램 캠프 신청 폼
 
 const ApplyTargetInput = ({ programTargetGroup }) => {
     const {
+        control,
         setValue,
         watch,
-        setError,
         getValues,
-        clearErrors,
-        formState: { errors, touchedFields },
+        formState: { touchedFields },
     } = useFormContext();
 
     const { elementaryTargetKey, middleTargetKey, highTargetKey } =
@@ -58,17 +64,6 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
         [targetFields],
     );
 
-    useEffect(() => {
-        if (isError) {
-            setError('targetGroup', {
-                type: 'required',
-                message: '필수 항목을 선택해주세요.',
-            });
-        } else {
-            clearErrors('targetGroup');
-        }
-    }, [isError]);
-
     const handleChange =
         ({ schoolKey, value, idx }) =>
         (e) => {
@@ -92,7 +87,9 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
         <FormWrapper
             label="신청 가능 대상"
             isRequired
-            feedback={isDirty && errors.targetGroup?.message}
+            feedback={
+                isDirty && isError ? '필수 항목을 선택해주세요.' : undefined
+            }
         >
             <div className={styles.checkForm}>
                 {Object.entries(SCHOOL).map(([key, school], index) => (
@@ -101,26 +98,85 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                         <Divider height="0.75rem" className={styles.divider} />
                         <div className={styles.schoolGrade}>
                             {school.value.map((_, idx) => (
-                                <Checkbox
-                                    label={`${idx + 1}학년`}
-                                    key={idx}
-                                    disabled={
-                                        !targetSchool[index].includes(idx + 1)
-                                    }
-                                    defaultChecked={targetFields[
-                                        index
-                                    ]?.includes(idx + 1)}
-                                    onChange={handleChange({
-                                        schoolKey: key,
-                                        value: idx,
-                                        idx: index,
-                                    })}
+                                <Controller
+                                    control={control}
+                                    name={key}
+                                    render={({ ref }) => {
+                                        const disabled = !targetSchool[
+                                            index
+                                        ].includes(idx + 1);
+                                        return (
+                                            <Checkbox
+                                                className={
+                                                    disabled
+                                                        ? styles.disabled
+                                                        : ''
+                                                }
+                                                ref={ref}
+                                                label={`${idx + 1}학년`}
+                                                key={idx}
+                                                disabled={disabled}
+                                                onChange={handleChange({
+                                                    schoolKey: key,
+                                                    value: idx,
+                                                    idx: index,
+                                                })}
+                                            />
+                                        );
+                                    }}
                                 />
                             ))}
                         </div>
                     </div>
                 ))}
             </div>
+        </FormWrapper>
+    );
+};
+
+const SearchSchoolInput = ({ userId, schoolKey }) => {
+    const { schoolNameKey, schoolCodeKey } = schoolKey;
+    const [isInputOpen, toggleInput] = useToggle();
+
+    const {
+        control,
+        formState: { errors },
+        setValue,
+    } = useFormContext();
+
+    const handleClick = (value) => {
+        setValue(schoolCodeKey, value);
+    };
+    return (
+        <FormWrapper isRequired label="소속 학교(교육 장소)">
+            <Controller
+                control={control}
+                name={schoolNameKey}
+                rules={{
+                    required: '필수 항목을 입력해주세요.',
+                }}
+                render={({ field: { ref, value, onChange, onBlur } }) => {
+                    const debouncedName = useDebounce(value, 500);
+                    const { data = { items: [], total: 0 } } = useGetSchools({
+                        userId,
+                        name: debouncedName,
+                    });
+
+                    return (
+                        <SearchSchoolDropdown
+                            ref={ref}
+                            schoolList={data.items}
+                            isOpenDropdown={isInputOpen}
+                            schoolName={value}
+                            toggle={toggleInput}
+                            onChangeSchoolName={onChange}
+                            onClickDropdownItem={handleClick}
+                            onBlur={onBlur}
+                            errors={errors[schoolNameKey]}
+                        />
+                    );
+                }}
+            />
         </FormWrapper>
     );
 };
@@ -142,7 +198,7 @@ export const ProgramForm = () => {
             <div className={styles.divideRow}>
                 <FormInput
                     label="프로그램 유형"
-                    value={`${division}/${duration}`}
+                    value={`${division} / ${duration}`}
                     disabled
                 />
                 <FormInput
@@ -155,10 +211,15 @@ export const ProgramForm = () => {
     );
 };
 
-export const ManagerForm = () => {
+export const ManagerForm = ({ userId }) => {
     const { getValues } = useFormContext();
-    const { userNameKey, schoolNameKey, operateLocationKey, schoolTypeKey } =
-        CAMP_APPLY_KEYS;
+    const {
+        userNameKey,
+        schoolNameKey,
+        schoolCodeKey,
+        operateLocationKey,
+        schoolTypeKey,
+    } = CAMP_APPLY_KEYS;
 
     const { emailKey, phoneNumberKey } = USER_KEYS;
 
@@ -184,11 +245,12 @@ export const ManagerForm = () => {
                     value={getValues(emailKey)}
                     disabled
                 />
-                <InputItem
-                    isRequired
-                    label="소속 학교(교육 장소)"
-                    placeholder="소속 학교"
-                    inputKey={schoolNameKey}
+                <SearchSchoolInput
+                    userId={userId}
+                    schoolKey={{
+                        schoolCodeKey,
+                        schoolNameKey,
+                    }}
                 />
             </div>
             <div className={styles.divideRow}>
@@ -218,12 +280,12 @@ export const TeacherForm = () => {
             <div>
                 <div className={styles.divideRow}>
                     <InputItem
-                        label="강사명"
+                        label="강사 명"
                         placeholder="예) 김구름"
                         inputKey={mainEducatorKey}
                     />
                     <InputItem
-                        label="보조 강사명"
+                        label="보조 강사 명"
                         placeholder="예) 김구름"
                         inputKey={subEducatorKey}
                     />
@@ -232,8 +294,8 @@ export const TeacherForm = () => {
                     leftIcon={NoticeCircleIcon}
                     className={styles.alert}
                 >
-                    강사 혹은 보조강사를 기재하지 않을 경우, 운영기관에서 배정할
-                    수 있습니다.
+                    강사 혹은 보조 강사를 기재하지 않을 경우, 운영 기관에서
+                    배정할 수 있습니다.
                 </CustomAlert>
             </div>
         </div>
@@ -248,21 +310,30 @@ export const TargetForm = ({ programTargetGroup }) => {
             <h5>신청 대상 정보</h5>
             <ApplyTargetInput programTargetGroup={programTargetGroup} />
             <InputItem
-                type="number"
                 isRequired
                 label="신청 인원"
-                placeholder="예) 15명"
+                placeholder="예) 15"
                 inputKey={applicantCountKey}
+                onInput={formatNumberInput}
             />
         </div>
     );
 };
 
 export const LearningTimeForm = () => {
-    const { getValues } = useFormContext();
+    const {
+        getValues,
+        formState: { errors },
+    } = useFormContext();
     const { startDateKey, startTimeKey, endDateKey, endTimeKey } =
         CAMP_APPLY_KEYS;
     const { learningTimeKey } = PROGRAM_KEYS;
+
+    const isDateError =
+        !!errors[startDateKey] ||
+        !!errors[startTimeKey] ||
+        !!errors[endDateKey] ||
+        !!errors[endTimeKey];
 
     return (
         <div className={styles.form}>
@@ -272,19 +343,26 @@ export const LearningTimeForm = () => {
                 value={getValues(learningTimeKey)}
                 disabled
             />
-            <div className={styles.divideRow}>
-                <FormDatePicker
-                    isRequired
-                    label="교육 이수 시작일"
-                    datePickerKey={startDateKey}
-                    timePickerKey={startTimeKey}
-                />
-                <FormDatePicker
-                    isRequired
-                    label="교육 이수 종료일"
-                    datePickerKey={endDateKey}
-                    timePickerKey={endTimeKey}
-                />
+            <div>
+                <div className={styles.divideRow}>
+                    <FormDatePicker
+                        isRequired
+                        label="교육 이수 시작일"
+                        datePickerKey={startDateKey}
+                        timePickerKey={startTimeKey}
+                        formText={
+                            !isDateError
+                                ? '안내된 교육 기간 중 실제로 진행하실 기간을 선택해주세요.'
+                                : ''
+                        }
+                    />
+                    <FormDatePicker
+                        isRequired
+                        label="교육 이수 종료일"
+                        datePickerKey={endDateKey}
+                        timePickerKey={endTimeKey}
+                    />
+                </div>
             </div>
         </div>
     );

@@ -1,0 +1,91 @@
+// .SearchSchoolBox {
+//     &__container {
+//         display: flex;
+//         flex-direction: column;
+//         margin-bottom: 0.75rem;
+//     }
+
+//     &__schoolNameInput {
+//         flex: 1;
+//     }
+
+//     &__schoolNameDropdown {
+//         top: -0.625rem;
+//         height: 0;
+//     }
+
+//     &__schoolNameDropdownContainer {
+//         overflow-y: auto;
+//         max-height: 240px;
+//     }
+
+//     &__schoolNameHiddenDropdownButton {
+//         visibility: hidden;
+//         width: 0;
+//         height: 0;
+//         margin: 0;
+//         padding: 0;
+//     }
+
+//     &__schoolNameDropdownItemContainer {
+//         margin: 0.275rem;
+//         border-radius: 0.375rem;
+//         width: 97%;
+//         height: 3.125rem;
+//     }
+
+//     &__schoolNameDropdownItem {
+//         p {
+//             margin-bottom: 0rem;
+//         }
+
+//         p:nth-child(1) {
+//             font-size: 0.875rem;
+//         }
+
+//         p:nth-child(2) {
+//             font-size: 0.75rem;
+//         }
+//     }
+// }
+.input {
+    flex: 1;
+}
+.dropdown {
+    overflow-y: auto;
+    max-height: 240px;
+}
+
+.dropdownContainer {
+    overflow-y: auto;
+    max-height: 240px;
+}
+
+.dropdownMenu {
+    width: 100%;
+    max-height: 15rem;
+    border-radius: 0.625rem;
+    overflow: hidden;
+    top: -0.5rem;
+}
+
+.itemContainer {
+    margin: 0.275rem;
+    border-radius: 0.375rem;
+    width: 97%;
+    height: 3.125rem;
+}
+
+.item {
+    p {
+        margin-bottom: 0rem;
+    }
+
+    p:nth-child(1) {
+        font-size: 0.875rem;
+    }
+
+    p:nth-child(2) {
+        font-size: 0.75rem;
+    }
+}

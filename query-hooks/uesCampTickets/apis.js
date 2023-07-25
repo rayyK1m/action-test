@@ -3,16 +3,18 @@ import qs from 'qs';
 import _omit from 'lodash/omit';
 import { paginateArray, delay } from '../../dummy/utils';
 
-const getCampTickets = async (query) => {
+const getCampTickets = async ({ query }, axiosInstance = axios) => {
     const queryString = qs.stringify(query, { skipNulls: true });
-    const { data } = await axios.get(
-        `${process.env.MAIN_HOST}/api/camp-tickets?${queryString}`,
+    const {
+        data: { campTickets, campType, totalCount },
+    } = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camp-tickets?${queryString}`,
     );
 
     return {
-        campTickets: data?.items || [],
-        campType: data?.items[0]?.programDivision,
-        totalCount: data?.total || 0,
+        campTickets,
+        campType,
+        totalCount,
     };
 };
 

@@ -1,12 +1,15 @@
 import { useForm, FormProvider } from 'react-hook-form';
-
+import dayjs from 'dayjs';
 import {
     TeacherInfoForm,
     StudentInfoForm,
 } from '../CampForms/CampInfoForm/CampInfoForm';
 import ProgramInfoCard from '../ProgramInfoCard';
 
-import { CAMP_APPLY_KEYS, PROGRAM_KEYS } from '../CampForms/camp.constants';
+import {
+    CAMP_APPLY_KEYS,
+    PROGRAM_KEYS,
+} from '../CampForms/CampForms.constants';
 
 import {
     useCancelCampTicket,
@@ -49,25 +52,34 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
         toggle();
     };
 
+    console.log(ticket);
+
     const methods = useForm({
         values: {
             ...ticket,
             [PROGRAM_KEYS.institutionKey]: ticket?.institution[0].name,
             [PROGRAM_KEYS.nameKey]: ticket?.program.name,
-            [PROGRAM_KEYS.typeKey]: `${ticket?.program.type.division}/${ticket?.program.type.duration}`,
-            [PROGRAM_KEYS.learningTimeKey]: `${ticket?.program.learningTime}시간`,
+            [PROGRAM_KEYS.typeKey]: `${ticket?.program.type.division} / ${ticket?.program.type.duration}`,
+            [PROGRAM_KEYS.learningTimeKey]: ticket?.program.learningTime,
             [CAMP_APPLY_KEYS.elementaryTargetKey]:
                 ticket?.targetGroup.elementarySchool,
             [CAMP_APPLY_KEYS.middleTargetKey]: ticket?.targetGroup.middleSchool,
             [CAMP_APPLY_KEYS.highTargetKey]: ticket?.targetGroup.highSchool,
             [CAMP_APPLY_KEYS.mainEducatorKey]: ticket?.educator?.main,
             [CAMP_APPLY_KEYS.subEducatorKey]: ticket?.educator?.sub,
+            [CAMP_APPLY_KEYS.startDateKey]: ticket?.educationDate?.start,
+            [CAMP_APPLY_KEYS.startTimeKey]: ticket?.educationDate?.start,
+            [CAMP_APPLY_KEYS.endDateKey]: ticket?.educationDate?.end,
+            [CAMP_APPLY_KEYS.endTimeKey]: ticket?.educationDate?.end,
         },
     });
 
     const getCampForm = (campType) => {
-        if (campType === '방문형') return TeacherInfoForm;
-        return StudentInfoForm;
+        if (campType === '방문형')
+            return (
+                <TeacherInfoForm programTarget={ticket?.program.targetGroup} />
+            );
+        return <StudentInfoForm programTarget={ticket?.program.targetGroup} />;
     };
 
     const ticketForm = getCampForm(ticket?.program.type.division);
@@ -104,6 +116,9 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
                                             color="danger"
                                             size="lg"
                                             onClick={toggle}
+                                            disabled={dayjs(new Date()).isAfter(
+                                                ticket?.program.applyDate.end,
+                                            )}
                                         >
                                             신청 취소하기
                                         </Button>
@@ -115,6 +130,7 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
                     <ProgramInfoCard
                         program={ticket?.program}
                         notice="신청 정보 수정을 원하신다면, 운영 기관 측에 문의해주세요."
+                        className={styles.infoCard}
                     />
                     {isLoading ? (
                         <p>Loading...</p>

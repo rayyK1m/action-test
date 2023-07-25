@@ -1,13 +1,13 @@
-.divideRow {
-    display: flex;
-    flex-basis: 50%;
-    gap: 1rem;
-}
-
 .forms {
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
+}
+
+.divideRow {
+    display: flex;
+    flex-basis: 50%;
+    gap: 1rem;
 }
 
 .form {
@@ -20,6 +20,17 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+}
+
+.readOnly {
+    pointer-events: none;
+}
+
+.disabled {
+    pointer-events: none;
+    > label {
+        opacity: 0.3;
+    }
 }
 
 .school {
@@ -44,4 +55,5 @@
 
 .alert {
     margin-top: 1rem;
+    margin-bottom: 0;
 }

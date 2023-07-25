@@ -236,6 +236,23 @@ const getUserInfo = async ({ userId }) => {
     }
 };
 
+const getSchools = async ({ name, userId }) => {
+    try {
+        const { data } = await swcampInstance.get(
+            `/api/v1/school?name=${name}`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const swcampSdk = {
     /**
      * Program
@@ -268,6 +285,11 @@ const swcampSdk = {
      * UserData
      */
     getUserInfo,
+
+    /**
+     * School
+     */
+    getSchools,
 };
 
 export default swcampSdk;

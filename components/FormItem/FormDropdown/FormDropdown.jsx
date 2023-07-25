@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import {
     UncontrolledDropdown,
     DropdownToggle,
@@ -16,32 +16,32 @@ const FormDropdown = ({
     label,
     isRequired,
     placeholder,
+    value,
     items,
     size,
     disabled,
-    dropdownKey,
     readOnly,
     feedback,
     invalid,
-    defaultValue,
     onChange,
+    onBlur,
     ...props
 }) => {
     const [isOpen, toggle] = useToggle(false);
-    const [value, setValue] = useState(placeholder);
+    const dropdownRef = useRef(null);
 
-    const handleclick = (item) => {
-        setValue(item);
-        onChange(item);
+    const handleBlur = (e) => {
+        if (
+            dropdownRef.current &&
+            !dropdownRef.current.contains(e.relatedTarget)
+        ) {
+            onBlur();
+        }
     };
 
     if (readOnly) {
         return (
-            <FormWrapper
-                label={label}
-                isRequired={isRequired}
-                feedback={feedback}
-            >
+            <FormWrapper label={label} isRequired={isRequired}>
                 <Button
                     icon={<ChevronDownIcon />}
                     color="select"
@@ -52,7 +52,7 @@ const FormDropdown = ({
                     active
                     {...props}
                 >
-                    {placeholder}
+                    {value}
                 </Button>
             </FormWrapper>
         );
@@ -68,7 +68,10 @@ const FormDropdown = ({
                 <DropdownToggle
                     data-toggle="dropdown"
                     tag="div"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                    }}
                 >
                     <Button
                         icon={<ChevronDownIcon />}
@@ -81,20 +84,23 @@ const FormDropdown = ({
                             invalid && styles.invalidButton,
                         )}
                         disabled={disabled}
+                        onBlur={handleBlur}
                         {...props}
                     >
                         {value}
                     </Button>
                 </DropdownToggle>
                 <DropdownMenu>
-                    {items?.map((item) => (
-                        <DropdownItem
-                            key={item}
-                            onClick={() => handleclick(item)}
-                        >
-                            {item}
-                        </DropdownItem>
-                    ))}
+                    <div ref={dropdownRef}>
+                        {items?.map((item) => (
+                            <DropdownItem
+                                key={item}
+                                onClick={() => onChange(item)}
+                            >
+                                {item}
+                            </DropdownItem>
+                        ))}
+                    </div>
                 </DropdownMenu>
             </UncontrolledDropdown>
         </FormWrapper>

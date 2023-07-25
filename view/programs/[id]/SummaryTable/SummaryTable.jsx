@@ -40,7 +40,7 @@ const SummaryTable = ({ className, ...props }) => {
                 <tr>
                     <th>총 교육 차시</th>
                     <td>
-                        {programData.learningTime}시간 (
+                        {programData.learningTime}차시 (
                         {programData.type.duration})
                     </td>
                 </tr>

@@ -10,14 +10,27 @@ const FormDatePicker = ({
     label,
     isRequired,
     feedback,
+    formText,
     datePickerKey,
     timePickerKey,
+    disabled,
 }) => {
     return (
-        <FormWrapper label={label} isRequired={isRequired} feedback={feedback}>
+        <FormWrapper
+            label={label}
+            isRequired={isRequired}
+            feedback={feedback}
+            formText={formText}
+        >
             <div className={styles.body}>
-                <DatePickerItem datePickerKey={datePickerKey} />
-                <TimePickerItem timePickerKey={timePickerKey} />
+                <DatePickerItem
+                    datePickerKey={datePickerKey}
+                    disabled={disabled}
+                />
+                <TimePickerItem
+                    timePickerKey={timePickerKey}
+                    disabled={disabled}
+                />
             </div>
         </FormWrapper>
     );

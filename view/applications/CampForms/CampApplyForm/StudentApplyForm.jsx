@@ -1,5 +1,5 @@
-import { useMemo, useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useMemo, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import _isEmpty from 'lodash/isEmpty';
 
 import {
@@ -11,7 +11,7 @@ import { FormInput, FormWrapper } from '@/components/FormItem';
 import Divider from '@/components/Divider/Divider';
 
 import { Radio } from '@goorm-dev/gds-components';
-import styles from '../camp.module.scss';
+import styles from '../CampForms.module.scss';
 
 import { PROGRAM_OPERATION_LOCATIONS } from '@/constants/db';
 import {
@@ -19,7 +19,15 @@ import {
     PROGRAM_KEYS,
     SCHOOL,
     USER_KEYS,
-} from '../camp.constants';
+} from '../CampForms.constants';
+import { formatPhoneNumberInput } from '@/utils';
+import SearchSchoolBox from '@/view/components/SearchSchoolDropdown/SearchSchoolDropdown';
+import useToggle from '@/hooks/useToggle';
+import useDebounce from '@/hooks/useDebounce';
+
+import { useGetSchools } from '@/query-hooks/useSchool';
+import useSession from '@/query-hooks/useSession';
+import SearchSchoolDropdown from '@/view/components/SearchSchoolDropdown/SearchSchoolDropdown';
 
 // 집합형 프로그램 캠프 신청 폼
 
@@ -27,9 +35,7 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
     const {
         setValue,
         watch,
-        setError,
-        clearErrors,
-        formState: { errors, touchedFields },
+        formState: { touchedFields },
     } = useFormContext();
 
     const { elementaryTargetKey, middleTargetKey, highTargetKey } =
@@ -54,24 +60,15 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
         [targetFields],
     );
 
-    useEffect(() => {
-        if (isError) {
-            setError('targetGroup', {
-                type: 'required',
-                message: '필수 항목을 선택해주세요.',
-            });
-        } else {
-            clearErrors('targetGroup');
-        }
-    }, [isError]);
-
     const targetSchool = Object.values(programTargetGroup);
 
     return (
         <FormWrapper
             label="신청 가능 대상"
             isRequired
-            feedback={isDirty && errors.targetGroup?.message}
+            feedback={
+                isDirty && isError ? '필수 항목을 선택해주세요.' : undefined
+            }
         >
             <div className={styles.checkForm}>
                 {Object.entries(SCHOOL).map(([key, school], index) => (
@@ -79,28 +76,81 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                         <div className={styles.schoolName}>{school.key}</div>
                         <Divider height="0.75rem" className={styles.divider} />
                         <div className={styles.schoolGrade}>
-                            {school.value.map((_, idx) => (
-                                <Radio
-                                    label={`${idx + 1}학년`}
-                                    key={idx}
-                                    name={index}
-                                    disabled={
-                                        !targetSchool[index].includes(idx + 1)
-                                    }
-                                    defaultChecked={targetFields[
-                                        index
-                                    ]?.includes(idx + 1)}
-                                    onChange={() =>
-                                        setValue(key, [idx + 1], {
-                                            shouldTouch: true,
-                                        })
-                                    }
-                                />
-                            ))}
+                            {school.value.map((_, idx) => {
+                                const disabled = !targetSchool[index].includes(
+                                    idx + 1,
+                                );
+                                return (
+                                    <Radio
+                                        className={
+                                            disabled ? styles.disabled : ''
+                                        }
+                                        label={`${idx + 1}학년`}
+                                        key={idx}
+                                        name={index}
+                                        disabled={disabled}
+                                        defaultChecked={targetFields[
+                                            index
+                                        ]?.includes(idx + 1)}
+                                        onChange={() =>
+                                            setValue(key, [idx + 1], {
+                                                shouldTouch: true,
+                                            })
+                                        }
+                                    />
+                                );
+                            })}
                         </div>
                     </div>
                 ))}
             </div>
+        </FormWrapper>
+    );
+};
+
+const SearchSchoolInput = ({ userId, schoolKey }) => {
+    const { schoolNameKey, schoolCodeKey } = schoolKey;
+    const [isOpen, toggle] = useToggle(false);
+
+    const {
+        control,
+        formState: { errors },
+        setValue,
+    } = useFormContext();
+
+    const handleClick = (value) => {
+        setValue(schoolCodeKey, value);
+    };
+    return (
+        <FormWrapper isRequired label="소속 학교">
+            <Controller
+                control={control}
+                name={schoolNameKey}
+                rules={{
+                    required: '필수 항목을 입력해주세요.',
+                }}
+                render={({ field: { ref, value, onChange, onBlur } }) => {
+                    const debouncedName = useDebounce(value, 500);
+                    const { data = { items: [], total: 0 } } = useGetSchools({
+                        userId,
+                        name: debouncedName,
+                    });
+
+                    return (
+                        <SearchSchoolDropdown
+                            ref={ref}
+                            schoolList={data.items}
+                            isOpenDropdown={isOpen}
+                            schoolName={value}
+                            toggle={toggle}
+                            onChangeSchoolName={onChange}
+                            onClickDropdownItem={handleClick}
+                            onBlur={onBlur}
+                            errors={errors[schoolNameKey]}
+                        />
+                    );
+                }}
+            />
         </FormWrapper>
     );
 };
@@ -129,7 +179,7 @@ export const StudentProgramForm = () => {
             <div className={styles.divideRow}>
                 <FormInput
                     label="프로그램 유형"
-                    value={`${division}/${duration}`}
+                    value={`${division} / ${duration}`}
                     disabled
                 />
                 <FormInput
@@ -142,19 +192,18 @@ export const StudentProgramForm = () => {
     );
 };
 
-export const ApplyForm = ({ programTargetGroup }) => {
+export const ApplyForm = ({ programTargetGroup, userId }) => {
     const { getValues } = useFormContext();
 
-    const { userNameKey, phoneNumberKey, operateLocationKey, schoolNameKey } =
-        CAMP_APPLY_KEYS;
+    const {
+        userNameKey,
+        phoneNumberKey,
+        operateLocationKey,
+        schoolNameKey,
+        schoolCodeKey,
+    } = CAMP_APPLY_KEYS;
 
     const { emailKey } = USER_KEYS;
-
-    const regexPhoneNumber = (e) => {
-        e.target.value = e.target.value
-            .replace(/[^0-9]/g, '')
-            .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
-    };
 
     return (
         <div className={styles.form}>
@@ -171,7 +220,7 @@ export const ApplyForm = ({ programTargetGroup }) => {
                     label="연락처"
                     placeholder="예) 010-1234-5678"
                     inputKey={phoneNumberKey}
-                    onInput={regexPhoneNumber}
+                    onInput={formatPhoneNumberInput}
                 />
             </div>
             <div className={styles.divideRow}>
@@ -187,11 +236,18 @@ export const ApplyForm = ({ programTargetGroup }) => {
                     items={PROGRAM_OPERATION_LOCATIONS}
                 />
             </div>
-            <InputItem
+            {/* <InputItem
                 isRequired
                 label="소속 학교"
                 placeholder="소속 학교"
                 inputKey={schoolNameKey}
+            /> */}
+            <SearchSchoolInput
+                userId={userId}
+                schoolKey={{
+                    schoolNameKey,
+                    schoolCodeKey,
+                }}
             />
             <ApplyTargetInput programTargetGroup={programTargetGroup} />
         </div>

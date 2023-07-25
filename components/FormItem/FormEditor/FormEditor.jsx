@@ -14,8 +14,6 @@ const FormEditor = ({
     isRequired,
     placeholder,
     value,
-    feedback,
-    formText,
     onChange,
     ...props
 }) => {

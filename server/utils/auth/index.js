@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import authSdk from '@/server/libs/auth';
 import swcampSdk from '@/server/libs/swcamp';
+import UnauthorizedError from '../error/UnauthorizedError';
+import ForbiddenError from '@/server/utils/error/ForbiddenError';
+import { isEmpty } from '@/utils';
 
 /**
  * request 기준으로 인증 상태 확인 및 유저 데이터를 리턴하는 함수
@@ -69,6 +72,10 @@ export const expireAllCookies = (redirectUrl) => {
 };
 
 export const withSessionRoute = (handler) => async (req, res, next) => {
+    if (Object.keys(req.cookies).length === 0 && !!req.headers.cookie) {
+        req.cookies = JSON.parse(req.headers.cookie || '');
+    }
+
     const { isAuthenticated, userData } = await checkAuthentication(req);
 
     if (isAuthenticated) {
@@ -85,9 +92,12 @@ export const withSessionRoute = (handler) => async (req, res, next) => {
  * @property {'student' | 'teacher' | 'institution' | 'foundation'} role
  */
 
-/** @param {import('../types').CustomGetServerSideProps<{ session: Session }>} handler */
+/**
+ *  @param {import('../types').CustomGetServerSideProps<{ session: Session }>} handler
+ *  @param {object} options { shouldLogin: Boolean, roles: Array<role>}
+ */
 export const withSessionSsr =
-    (handler) =>
+    (handler, options) =>
     /** @type {import('../types').CustomGetServerSideProps<{ session: Session }>} */
     async (context) => {
         const { isAuthenticated, userData } = await checkAuthentication(
@@ -98,8 +108,45 @@ export const withSessionSsr =
             context.req.session = userData;
         }
 
+        // TODO: 별도 util로 빠질 수 도 있을 것 같으나 우선 그대로 작성
+        const shouldLogin = options?.shouldLogin || false;
+        const roles = options?.roles || [];
+        if (!isAuthenticated && shouldLogin) {
+            throw new UnauthorizedError({});
+        }
+
+        if (!isEmpty(roles) && !roles.includes(userData.role)) {
+            throw new ForbiddenError({
+                userRole: userData.role,
+                roles,
+            });
+        }
+
         return handler(context);
     };
+/**
+ *
+ * @param {{ shouldLogin: boolean; roles: Array<import('@/query-hooks/useSession').Role> }} options
+ * @returns
+ */
+export const checkAuthSsr =
+    ({ shouldLogin = false, roles = [] }) =>
+    (handler) =>
+        withSessionSsr(async (context) => {
+            const userData = context.req.session;
+            if (!userData && shouldLogin) {
+                throw new UnauthorizedError({});
+            }
+
+            if (!isEmpty(roles) && !roles.includes(userData.role)) {
+                throw new ForbiddenError({
+                    userRole: userData.role,
+                    roles,
+                });
+            }
+
+            return handler(context);
+        });
 
 export const getAuthHeader = (userId) => {
     return { 'x-user-id': userId };

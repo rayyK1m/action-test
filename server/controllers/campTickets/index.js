@@ -16,16 +16,22 @@ const getCampTicket = async (req, res) => {
 };
 
 const getCampTickets = async (req, res) => {
+    const userId = req.session.id;
     const { page = 1, limit = 5, sort, reviewStatus } = req.query;
+
     const { items, total } = await swcampSdk.getCampTickets({
-        userId: req.session?.id,
+        userId,
         page,
         limit,
         sort,
-        reviewStatus,
+        ...(reviewStatus !== 'ALL' && { reviewStatus }),
     });
 
-    return res.json({ items, total });
+    return res.json({
+        campTickets: items || [],
+        totalCount: total || 0,
+        campType: items[0]?.programDivision || null,
+    });
 };
 
 const cancelCampTicket = async (req, res) => {

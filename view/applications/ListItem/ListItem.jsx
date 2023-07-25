@@ -30,7 +30,7 @@ function ListItem({ data }) {
     return (
         <div className={styles.container}>
             <Image
-                src={thumbnail}
+                src={thumbnail.url}
                 alt="camp-thumbnail"
                 width={320}
                 height={136}
@@ -87,7 +87,6 @@ function ListItem({ data }) {
             <TicketInfoPannel
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
-                program={data.program}
                 ticketId={id}
             />
         </div>

@@ -20,7 +20,7 @@ const FormFileInput = ({
         getFileInputProps,
         state: { fileMap, fileSize },
     } = useFileInput({
-        defaultFiles: !!value ? [value] : [],
+        defaultFiles: value ? [value] : [],
     });
     const fileSizeMB = useMemo(
         () => Number((fileSize / 1024 / 1024).toFixed(2)) || 0,

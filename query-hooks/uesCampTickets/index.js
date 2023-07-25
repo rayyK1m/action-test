@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { toast } from '@goorm-dev/gds-toastify';
@@ -8,7 +9,7 @@ import campTicketsApis from './apis';
 const useGetCampTickets = (filters) => {
     return useQuery({
         queryKey: campTicketsKeys.itemsDetail({ ...filters }),
-        queryFn: () => campTicketsApis.getCampTickets({ ...filters }),
+        queryFn: () => campTicketsApis.getCampTickets({ query: filters }),
     });
 };
 
@@ -38,18 +39,18 @@ const useGetCampTicketsCount = ({ userId }, options) => {
 };
 
 const useCreateCampTicket = () => {
+    const router = useRouter();
     return useMutation(
         ({ role, userId, formData }) =>
             campTicketsApis.createCampTicket({ role, userId, formData }),
         {
-            onSuccess: (e) => {
-                if (!e) {
-                    toast('캠프 신청에 실패했습니다.', {
-                        type: toast.TYPE.ERROR,
-                    });
-                    return;
-                }
+            onSuccess: () => {
+                router.push('/applications/new/complete');
             },
+            onError: () =>
+                toast('캠프 신청에 실패했습니다.', {
+                    type: toast.TYPE.ERROR,
+                }),
         },
     );
 };

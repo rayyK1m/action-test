@@ -9,68 +9,25 @@ import {
     ReadOnlyStudentProgramForm,
     ReadOnlyApplyForm,
 } from './StudentInfoForm';
+import { ReadOnlyTermsForm } from '../TermForm/TermForm';
 
-import { Checkbox, TextButton } from '@goorm-dev/gds-components';
-import { ChevronRightIcon } from '@goorm-dev/gds-icons';
-import styles from '../camp.module.scss';
+import styles from '../CampForms.module.scss';
 
-const ReadOnlyTermsForm = () => {
-    return (
-        <div className={styles.form}>
-            <h5>약관 동의</h5>
-            <div className={styles.checkForm}>
-                <Checkbox label="전체 동의" checked readOnly />
-                <div className="d-flex align-items-center">
-                    <Checkbox
-                        label="[필수] 개인정보 수집 및 이용"
-                        className="mr-4"
-                        checked
-                        readOnly
-                    />
-                    <TextButton
-                        color="link"
-                        size="sm"
-                        icon={ChevronRightIcon}
-                        iconSide="right"
-                    >
-                        더보기
-                    </TextButton>
-                </div>
-                <div className="d-flex align-items-center">
-                    <Checkbox
-                        label="[필수] 제 3자 정보 제공 동의"
-                        className="mr-4"
-                        checked
-                        readOnly
-                    />
-                    <TextButton
-                        color="link"
-                        size="sm"
-                        icon={ChevronRightIcon}
-                        iconSide="right"
-                    >
-                        더보기
-                    </TextButton>
-                </div>
-            </div>
-        </div>
-    );
-};
-export const TeacherInfoForm = (
+export const TeacherInfoForm = ({ programTarget }) => (
     <div className={styles.forms}>
         <ReadOnlyProgramForm />
         <ReadOnlyManagerForm />
         <ReadOnlyTeacherForm />
-        <ReadOnlyTargetForm />
+        <ReadOnlyTargetForm programTarget={programTarget} />
         <ReadOnlyLearningTimeForm />
         <ReadOnlyTermsForm />
     </div>
 );
 
-export const StudentInfoForm = (
+export const StudentInfoForm = ({ programTarget }) => (
     <div className={styles.forms}>
         <ReadOnlyStudentProgramForm />
-        <ReadOnlyApplyForm />
+        <ReadOnlyApplyForm programTarget={programTarget} />
         <ReadOnlyTermsForm />
     </div>
 );
