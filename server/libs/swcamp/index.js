@@ -9,7 +9,7 @@ import { getAuthHeader } from '../../utils/auth';
 const swcampInstance = axios.create({
     baseURL: process.env.SWCAMP_API_HOST,
     headers: {
-        // TODO: api server용 토큰이 있다면 추가하기
+        authorization: `bearer ${process.env.SWCAMP_API_TOKEN}`,
     },
 });
 
