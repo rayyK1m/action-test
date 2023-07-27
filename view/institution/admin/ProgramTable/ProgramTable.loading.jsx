@@ -80,7 +80,7 @@ function ProgramTableLoading() {
     return (
         <div>
             <div className={styles.title}>
-                <h6>모든 프로그램</h6>
+                <h6>전체 프로그램</h6>
 
                 <SearchInput
                     className={cn(

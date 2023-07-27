@@ -10,7 +10,7 @@ import { SearchInput } from '@goorm-dev/gds-components';
 
 import useQueryParam from '@/hooks/useQueryParam';
 import { convertSort, routerPushShallow } from '@/utils';
-import useProgramsAdmin from '@/query-hooks/useProgramsAdmin';
+import { useGetProgramsAdmin } from '@/query-hooks/usePrograms';
 import EmptyTableCard from '@/components/EmptyTableCard/EmptyTableCard';
 import { getTableColoums } from './ProgramTable.util.jsx';
 
@@ -35,8 +35,8 @@ function ProgramTable() {
     const [sorting, setSorting] = useState(convertSort(sort));
 
     const {
-        data: { data: programs, totalCount },
-    } = useProgramsAdmin.GET({
+        data: { programs, totalCount },
+    } = useGetProgramsAdmin({
         page: pageIndex + 1,
         limit: pageSize,
         search,
@@ -114,7 +114,7 @@ function ProgramTable() {
         <div>
             <div className={styles.title}>
                 <h6>
-                    모든 프로그램{' '}
+                    전체 프로그램{' '}
                     <span
                         className={
                             isEmptyData ? 'text-gray-600' : 'text-blue-500'

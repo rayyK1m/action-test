@@ -68,6 +68,41 @@ const getPrograms = async ({
     }
 };
 
+const getProgramsAdmin = async ({
+    userId,
+    institutionId,
+    page,
+    limit,
+    search,
+    sort,
+}) => {
+    const removedEmptyQuery = removeEmptyValues({
+        page,
+        limit,
+        search,
+        sort,
+    });
+    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
+    const institutionQueryString = institutionId
+        ? `institutionId=${institutionId}&`
+        : '';
+
+    try {
+        const { data } = await swcampInstance.get(
+            `/api/v1/programs/admin?${institutionQueryString}${queryString}`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const getProgram = async ({ programId }) => {
     try {
         const { data } = await swcampInstance.get(
@@ -258,8 +293,9 @@ const swcampSdk = {
      * Program
      */
     getPrograms,
-    getProgram,
+    getProgramsAdmin,
     createProgram,
+    getProgram,
 
     /**
      * Institution

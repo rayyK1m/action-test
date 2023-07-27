@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import useQueryParam from '@/hooks/useQueryParam';
 import { useEffect, useMemo, useState } from 'react';
 import { convertSort } from '@/utils';
-import useProgramsAdmin from '@/query-hooks/useProgramsAdmin';
+import { useGetProgramsAdmin } from '@/query-hooks/usePrograms';
 import {
     HScrollTable,
     HScrollTablePagination,
@@ -34,8 +34,8 @@ function ProgramTable() {
     const [sorting, setSorting] = useState(convertSort(sort));
 
     const {
-        data: { data: programs, totalCount },
-    } = useProgramsAdmin.GET({
+        data: { programs, totalCount },
+    } = useGetProgramsAdmin({
         page,
         limit: pageSize,
         search,

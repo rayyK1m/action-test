@@ -17,4 +17,17 @@ const useGetProgram = ({ id }) => {
     });
 };
 
-export { useGetPrograms, useGetProgram, programsKeys, programsApis };
+const useGetProgramsAdmin = (filters) => {
+    return useQuery({
+        queryKey: programsKeys.itemsAdminDetail({ ...filters }),
+        queryFn: () => programsApis.getProgramsAdmin({ ...filters }),
+    });
+};
+
+export {
+    useGetPrograms,
+    useGetProgram,
+    useGetProgramsAdmin,
+    programsApis,
+    programsKeys,
+};

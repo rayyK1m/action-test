@@ -12,6 +12,15 @@ const programsKeys = {
      */
     items: () => [...programsKeys.all(), 'items'],
     itemsDetail: (filters) => [...programsKeys.items(), { ...filters }],
+
+    /**
+     * 운영 기관 어드민 - 프로그램 관리 페이지에서 사용되는 키
+     */
+    itemsAdmin: () => [...programsKeys.all(), 'itemsAdmin'],
+    itemsAdminDetail: (filters) => [
+        ...programsKeys.itemsAdmin(),
+        { ...filters },
+    ],
 };
 
 export default programsKeys;

@@ -1,3 +1,10 @@
+export const ROLE = {
+    FOUNDATION: 'foundation',
+    INSTITUTION: 'institution',
+    TEACHER: 'teacher',
+    STUDENT: 'student',
+};
+
 export const PROGRAM_DIVISION = {
     방문형: '방문형',
     집합형: '집합형',

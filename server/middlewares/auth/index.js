@@ -4,6 +4,11 @@ import { withSessionRoute } from '@/server/utils/auth';
 import ForbiddenError from '@/server/utils/error/ForbiddenError';
 import UnauthorizedError from '@/server/utils/error/UnauthorizedError';
 
+/**
+ *
+ * @param {Array<'foundation' | 'institution' | 'teacher' | 'student'>} roles
+ * @returns
+ */
 export const checkAuth = ({ roles = [] } = {}) =>
     withSessionRoute(async (req, res, next) => {
         const userData = req.session;

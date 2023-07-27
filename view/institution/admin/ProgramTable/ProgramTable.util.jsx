@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { cellHelper } from '@goorm-dev/gds-tables';
 import { Badge, Button } from '@goorm-dev/gds-components';
-import { SubmitModeIcon } from '@goorm-dev/gds-icons';
+import { ChevronRightIcon, SubmitModeIcon } from '@goorm-dev/gds-icons';
 import { PROGRAM_DIVISION_BADGE, STATUS_TEXT } from './ProgramTable.constants';
 
 import styles from './ProgramTable.module.scss';
@@ -86,18 +86,24 @@ export const getTableColoums = () => {
             cell: cellHelper(({ rowData }) => {
                 const { status, id } = rowData;
                 const isInProgress = status === 'IN_PROGRESS';
+
                 return (
                     <Button
                         color="link"
                         tag={Link}
                         href={`${BASE_URL}/program/${id}/camp`}
                         disabled={isInProgress}
+                        icon={<ChevronRightIcon />}
+                        iconSide="right"
                     >
-                        캠프 관리
+                        캠프
+                        <span className="text-blue-500">
+                            {rowData.campCount > 99 ? '99+' : rowData.campCount}
+                        </span>
                     </Button>
                 );
             }),
-            size: 129,
+            size: 146,
         },
         {
             accessorKey: 'content',

@@ -18,7 +18,7 @@ const CustomErrorPage = ({ statusCode }) => {
  * @param {import('next').NextPageContext} context
  */
 CustomErrorPage.getInitialProps = ({ res, err }) => {
-    const errorName = err.name || err.response?.data.code;
+    const errorName = err?.name || err?.response?.data.code;
 
     switch (errorName) {
         case 'UnauthorizedError':
@@ -33,7 +33,7 @@ CustomErrorPage.getInitialProps = ({ res, err }) => {
             break;
     }
 
-    return { statusCode: err.statusCode || 500 };
+    return { statusCode: err?.statusCode || 500 };
 };
 
 export default CustomErrorPage;

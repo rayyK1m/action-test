@@ -7,13 +7,11 @@ import Layout from '@/components/Layout/Layout';
 import { withSessionSsr } from '@/server/utils/auth';
 
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
-import {
-    getProgramsAdmin,
-    programAdminKeys,
-} from '@/query-hooks/useProgramsAdmin';
+import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
 
 import FoundationAdminPrograms from '@/view/foundation/admin/programs';
 import { FOUNDATION_ADMIN_DEFAULT_QUERY } from '@/view/foundation/admin/programs/ProgramTable/ProgramTable.constants';
+import { createServerAxios } from '@/utils';
 
 export default function FoundationAdminProgramsPage() {
     const { data: userData } = useSession.GET();
@@ -61,9 +59,11 @@ export const getServerSideProps = withSessionSsr(async (context) => {
         sort,
     };
 
+    const serverAxios = createServerAxios(context);
+
     await queryClient.prefetchQuery(
-        programAdminKeys.detail({ ...DEFAULT_QUERY }),
-        () => getProgramsAdmin({ ...DEFAULT_QUERY }),
+        programsKeys.itemsAdminDetail({ ...DEFAULT_QUERY }),
+        () => programsApis.getProgramsAdmin({ ...DEFAULT_QUERY }, serverAxios),
     );
 
     if (context.req?.session) {

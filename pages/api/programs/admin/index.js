@@ -1,17 +1,15 @@
 import { createRouter } from 'next-connect';
 
-import campTicketsCtrl from '@/server/controllers/campTickets';
+import programsCtrl from '@/server/controllers/programs';
 import errorHandler from '@/server/utils/error/handler';
-
 import { checkAuth } from '@/server/middlewares/auth';
 import { ROLE } from '@/constants/db';
 
 const router = createRouter();
 
-// TODO: Joi validation 추가 필요
 router
-    .use(checkAuth({ role: [ROLE.STUDENT, ROLE.TEACHER] }))
-    .get(campTicketsCtrl.getCampTickets);
+    .use(checkAuth({ roles: [ROLE.INSTITUTION, ROLE.FOUNDATION] }))
+    .get(programsCtrl.getProgramsAdmin);
 
 export default router.handler({
     onError: errorHandler,

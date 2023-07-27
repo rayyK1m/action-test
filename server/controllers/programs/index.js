@@ -4,6 +4,7 @@ import swcampSdk from '@/server/libs/swcamp';
 import { getPrgramApplyStatus } from '@/server/utils/common';
 
 import validation from './validation';
+import { ROLE } from '@/constants/db';
 
 const getPrograms = async (req, res) => {
     const {
@@ -76,6 +77,21 @@ const getProgram = async (req, res) => {
     return res.json(data);
 };
 
-const programsCtrl = { getPrograms, getProgram, validation };
+const getProgramsAdmin = async (req, res) => {
+    const { page, limit, search, sort } = req.query;
+    const isInstitution = req.session?.role === ROLE.INSTITUTION;
 
+    const { items, total } = await swcampSdk.getProgramsAdmin({
+        userId: req.session?.id,
+        ...(isInstitution && { institutionId: req.session?.institutionId }),
+        page,
+        limit,
+        search,
+        sort,
+    });
+
+    return res.json({ programs: items, totalCount: total });
+};
+
+const programsCtrl = { validation, getPrograms, getProgram, getProgramsAdmin };
 export default programsCtrl;

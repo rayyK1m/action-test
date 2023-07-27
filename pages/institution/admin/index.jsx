@@ -1,13 +1,13 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
-import { withSessionSsr } from '@/server/utils/auth';
+import { checkAuthSsr } from '@/server/utils/auth';
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
-import {
-    getProgramsAdmin,
-    programAdminKeys,
-} from '@/query-hooks/useProgramsAdmin';
+
+import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
 import ProgramManageList from '@/view/institution/admin/ProgramManageList';
 import Layout from '@/components/Layout/Layout';
+import { createServerAxios } from '@/utils';
+import { ROLE } from '@/constants/db';
 
 export default function InstitutionAdminPage({ isSubmitted }) {
     const { data: userData } = useSession.GET();
@@ -25,21 +25,28 @@ export default function InstitutionAdminPage({ isSubmitted }) {
     );
 }
 
-export const getServerSideProps = withSessionSsr(async (context) => {
+export const getServerSideProps = checkAuthSsr({
+    shouldLogin: true,
+    roles: [ROLE.INSTITUTION],
+})(async (context) => {
     const queryClient = new QueryClient();
+    const serverAxios = createServerAxios(context);
     const page = Number(context.query?.page || 1);
     const limit = Number(context.query?.limit || 5);
 
     await queryClient.prefetchQuery(
-        programAdminKeys.detail({
+        programsKeys.itemsAdminDetail({
             page,
             limit,
         }),
         () =>
-            getProgramsAdmin({
-                page,
-                limit,
-            }),
+            programsApis.getProgramsAdmin(
+                {
+                    page,
+                    limit,
+                },
+                serverAxios,
+            ),
     );
 
     const session = context.req.session;

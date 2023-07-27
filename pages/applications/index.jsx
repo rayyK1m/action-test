@@ -10,6 +10,7 @@ import ApplyList from '@/view/applications/ApplyList/ApplyList';
 import ApplyListLoading from '@/view/applications/ApplyList/ApplyList.loading';
 import Layout from '@/components/Layout/Layout';
 import SSRSuspense from '@/components/SSRSuspense';
+import { ROLE } from '@/constants/db';
 
 export default function ApplicationsPage() {
     const router = useRouter();
@@ -35,7 +36,7 @@ export default function ApplicationsPage() {
 
 export const getServerSideProps = checkAuthSsr({
     shouldLogin: true,
-    roles: ['teacher', 'student'],
+    roles: [ROLE.STUDENT, ROLE.TEACHER],
 })(async (context) => {
     const queryClient = new QueryClient();
     const page = Number(context.query?.page || 1);
