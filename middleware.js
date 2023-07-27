@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import authSdk from '@/server/libs/auth';
 import { expireAllCookies, checkAuthentication } from '@/server/utils/auth';
 
+/** @type {import('next/server').NextMiddleware}*/
 export async function middleware(req) {
     // 로그인
     if (req.nextUrl.pathname.startsWith('/login')) {
@@ -11,7 +12,13 @@ export async function middleware(req) {
             return NextResponse.redirect('/');
         }
 
-        return expireAllCookies(`${process.env.ACCOUNT_HOST}/login`);
+        const returnUrl =
+            req.nextUrl.searchParams.get('return_url') ||
+            req.headers.get('referer');
+
+        return expireAllCookies(
+            `${process.env.ACCOUNT_HOST}/login?return_url=${btoa(returnUrl)}`,
+        );
     }
 
     // 로그아웃

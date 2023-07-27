@@ -48,11 +48,23 @@ const getCampTicketsCount = async (req, res) => {
     return res.json({ count });
 };
 
+const getCampTicketHistory = async (req, res) => {
+    const { id } = req.query;
+
+    const data = await swcampSdk.getCampTicketHistory({
+        userId: req.session?.id,
+        programId: id,
+    });
+
+    return res.json(data);
+};
+
 const campTicketsCtrl = {
     createCampTicket,
     getCampTicket,
     getCampTickets,
     cancelCampTicket,
     getCampTicketsCount,
+    getCampTicketHistory,
 };
 export default campTicketsCtrl;

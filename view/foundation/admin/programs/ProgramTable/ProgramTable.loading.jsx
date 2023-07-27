@@ -6,12 +6,13 @@ import { Skeleton, SearchInput } from '@goorm-dev/gds-components';
 
 import styles from './ProgramTable.module.scss';
 import { FOUNDATION_ADMIN_DEFAULT_QUERY } from './ProgramTable.constants';
+import { PROGRAM_DIVISION } from '@/constants/db';
 
 const getTableData = () =>
     Array.from({ length: FOUNDATION_ADMIN_DEFAULT_QUERY.limit }, () => ({
         index: '',
         type: {
-            camp: '방문형',
+            camp: PROGRAM_DIVISION.방문형,
             duration: '장기',
         },
         name: '인간을 돕는 드론 에이전트',

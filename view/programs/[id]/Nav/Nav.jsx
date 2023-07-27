@@ -79,7 +79,12 @@ const Nav = () => {
     }, []);
 
     return (
-        <GDSNav tabs id={navId} className={styles.nav} tag="nav">
+        <GDSNav
+            tabs
+            id={navId}
+            className={cn(styles.nav, 'nav-tabs-lg')}
+            tag="nav"
+        >
             {navContextValue?.map(({ text, ref }) => {
                 const scrollToContent = () => {
                     /** ref content의 순수한 스크롤 위치 */
@@ -107,9 +112,13 @@ const Nav = () => {
                         <GDSNavLink
                             tag="button"
                             active={activeMap[text]}
-                            className={cn(styles.link, {
-                                [styles.link_isActive]: activeMap[text],
-                            })}
+                            className={cn(
+                                styles.link,
+                                {
+                                    [styles.link_isActive]: activeMap[text],
+                                },
+                                // 'nav-link-lg',
+                            )}
                             onClick={scrollToContent}
                         >
                             {text}

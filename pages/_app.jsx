@@ -43,6 +43,7 @@ export default function App({ Component, pageProps }) {
                         suspense: true,
                         useErrorBoundary: true,
                         refetchOnWindowFocus: false,
+                        networkMode: 'offlineFirst',
                     },
                 },
             }),

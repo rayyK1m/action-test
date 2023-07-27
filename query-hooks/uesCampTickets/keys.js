@@ -26,6 +26,12 @@ export const campTicketsKeys = {
         ...campTicketsKeys.itemsAdmin(),
         { ...filters },
     ],
+
+    /**
+     * 모집 페이지 - 프로그램 상세 보기에서 이미 신청한 프로그램인지를 판단하는 키
+     */
+    history: () => [...campTicketsKeys.all(), 'history'],
+    historyDetail: (filters) => [...campTicketsKeys.history(), { ...filters }],
 };
 
 export default campTicketsKeys;

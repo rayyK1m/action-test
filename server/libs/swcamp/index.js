@@ -219,6 +219,24 @@ const createCampTicket = async ({ role, userId, formData }) => {
     }
 };
 
+const getCampTicketHistory = async ({ userId, programId }) => {
+    try {
+        const { data } = await swcampInstance.get(
+            `${process.env.SWCAMP_API_HOST}/api/v1/camp-tickets/programs/${programId}`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+        // return true;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const getInstitutions = async ({ page, limit, search, active }) => {
     const removedEmptyQuery = removeEmptyValues({
         page,
@@ -316,6 +334,7 @@ const swcampSdk = {
     cancelCampTicket,
     getCampTicketsCount,
     createCampTicket,
+    getCampTicketHistory,
 
     /**
      * UserData

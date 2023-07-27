@@ -17,12 +17,14 @@ const CustomErrorPage = ({ statusCode }) => {
 /**
  * @param {import('next').NextPageContext} context
  */
-CustomErrorPage.getInitialProps = ({ res, err }) => {
+CustomErrorPage.getInitialProps = ({ res, err, asPath }) => {
     const errorName = err?.name || err?.response?.data.code;
 
     switch (errorName) {
         case 'UnauthorizedError':
-            res.writeHead(302, { Location: `/login` });
+            res.writeHead(302, {
+                Location: `/login?return_url=${process.env.MAIN_HOST}${asPath}`,
+            });
             res.end();
             break;
         case 'ForbiddenError':

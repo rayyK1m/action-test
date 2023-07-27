@@ -31,12 +31,7 @@ const ProgramDetail = () => {
         { text: '프로그램 소개', ref: useRef(null) },
         { text: '교육 장소', ref: useRef(null) },
         { text: '기관 정보', ref: useRef(null) },
-    ].filter(({ text }) => {
-        if (programData.type.division !== '집합형') {
-            return text !== '교육 장소';
-        }
-        return true;
-    });
+    ];
 
     const getNavRef = (navText) => {
         return NAV_REF_LIST.find(({ text }) => text === navText).ref;
@@ -101,8 +96,15 @@ const ProgramDetail = () => {
                                         첨부파일 다운로드
                                     </DownloadButton>
                                     <div className="mt-2 text-hint">
-                                        ※ 교안세부 내용은 참고용이며, 교육차시나
-                                        세부내용은 변경될 수 있습니다.
+                                        <span className="d-block">
+                                            ※ 교안 세부 내용은 참고용이며, 교육
+                                            차시나 세부 내용은 변경될 수
+                                            있습니다.
+                                        </span>
+                                        <span className="d-block">
+                                            ※ 다운로드에 이상이 있을 경우
+                                            contact@goorm.io로 문의해주세요.
+                                        </span>
                                     </div>
                                 </ContentWrapper>
                             </div>
@@ -119,12 +121,10 @@ const ProgramDetail = () => {
                                 </ContentWrapper>
                             </div>
                         </ContentContainer>
-                        {programData.type.division === '집합형' && (
-                            <div ref={getNavRef('교육 장소')}>
-                                <h6 className="subtitle-1">교육 장소</h6>
-                                <EducationLocation />
-                            </div>
-                        )}
+                        <div ref={getNavRef('교육 장소')}>
+                            <h6 className="subtitle-1">교육 장소</h6>
+                            <EducationLocation />
+                        </div>
                         <div ref={getNavRef('기관 정보')}>
                             <h6 className="subtitle-1">기관 정보</h6>
                             <InstitutionInfo />

@@ -13,11 +13,21 @@ import styles from './ApplyButton.module.scss';
 import { useRouter } from 'next/router';
 import useSession from '@/query-hooks/useSession';
 import { useState } from 'react';
-import { useGetCampTicketsCount } from '@/query-hooks/uesCampTickets';
+import {
+    campTicketsKeys,
+    useGetCampTicketHistory,
+    useGetCampTicketsCount,
+} from '@/query-hooks/uesCampTickets';
 import { DENYED_PROGRAM_TYPE } from './ApplyButton.constants';
+import useProgram from '@/query-hooks/useProgram';
+import { useQueryClient } from '@tanstack/react-query';
+import { PROGRAM_DIVISION } from '@/constants/db';
 
 const ApplyButton = () => {
+    const queryClient = useQueryClient();
     const router = useRouter();
+    const { id } = router.query;
+
     const { data: userData } = useSession.GET();
     const [{ isOpen, type }, setModal] = useState({
         isOpen: false,
@@ -27,6 +37,9 @@ const ApplyButton = () => {
         setModal({ isOpen: !isOpen, type });
     };
 
+    const {
+        data: { item: programData },
+    } = useProgram.GET({ type: 'detail', id });
     const { refetch: getCampTicketsCount } = useGetCampTicketsCount(
         {
             userId: userData?.id,
@@ -36,43 +49,74 @@ const ApplyButton = () => {
         },
     );
 
-    const { id } = router.query;
+    const { data: campTicketHistoryData } = useGetCampTicketHistory({
+        programId: id,
+    });
 
-    const applyProgram = async () => {
-        const { count = 0 } = await getCampTicketsCount();
+    const checkAuth = () => {
+        if (!userData) {
+            /** 게스트일 경우 로그인창으로 이동 */
+            router.push('/login');
+            return false;
+        }
 
-        switch (true) {
-            /** 게스트일 경우 어카운트로 이동 */
-            case !userData:
-                router.push('/login');
-                break;
+        const { role } = userData;
+        if (role === 'foundation' || role === 'institution') {
             /** 관리자 계정인 경우 신청 불가 */
-            case userData?.role === 'foundation':
-            case userData?.role === 'institution':
-                setModal({
-                    isOpen: true,
-                    type: DENYED_PROGRAM_TYPE.관리자_계정,
-                });
+            setModal({
+                isOpen: true,
+                type: DENYED_PROGRAM_TYPE.관리자_계정,
+            });
+            return false;
+        }
 
-                break;
-            /** 프로그램 신청 갯수가 3개 이상인 경우 신청 불가 */
-            case count >= 3:
+        /** 신청 가능한 계정 */
+        return true;
+    };
+
+    const checkDivision = async () => {
+        if (programData.type.division === PROGRAM_DIVISION.방문형) {
+            /** 방문형일 경우에만 특이 케이스가 존재함 */
+            await getCampTicketsCount();
+
+            const { count = 0 } = queryClient.getQueryData(
+                campTicketsKeys.count(),
+            );
+
+            if (count >= 3) {
+                /** 프로그램 신청 갯수가 3개 이상인 경우 신청 불가 */
                 setModal({
                     isOpen: true,
                     type: DENYED_PROGRAM_TYPE.신청_갯수_초과,
                 });
-                break;
+                return false;
+            }
+        }
+
+        /** 신청 가능한 case */
+        return true;
+    };
+
+    const applyProgram = async () => {
+        /** *체크 순서 중요* */
+        if (checkAuth() && (await checkDivision())) {
             /** 프로그램 신청하기 페이지 이동 */
-            default:
-                router.push(`/applications/new/${id}`, undefined, {
-                    shallow: true,
-                });
+            router.push(`/applications/new/${id}`, undefined, {
+                shallow: true,
+            });
         }
     };
 
+    const isFinishApply = Date.now() > new Date(programData.applyDate.end);
+    const isDisabledApplyButton =
+        /** 신청기간 지남 */
+        isFinishApply ||
+        /** 이미 신청한 프로그램 */
+        !!campTicketHistoryData?.item;
+
     return (
-        <>
-            <Container fluid="xxl" className={styles.container}>
+        <div className={styles.container}>
+            <Container fluid="xxl">
                 <Row>
                     <Col xs={{ size: 10, offset: 1 }}>
                         <Button
@@ -80,13 +124,20 @@ const ApplyButton = () => {
                             color="primary"
                             block
                             onClick={applyProgram}
+                            disabled={isDisabledApplyButton}
                         >
-                            신청하기
+                            {isFinishApply && '모집이 마감된 프로그램입니다.'}
+                            {!isFinishApply &&
+                                !!campTicketHistoryData?.item &&
+                                '이미 신청한 프로그램입니다.'}
+                            {!isFinishApply &&
+                                !campTicketHistoryData?.item &&
+                                '신청하기'}
                         </Button>
                     </Col>
                 </Row>
             </Container>
-            <Modal isOpen={isOpen} toggle={toggleModal} centered>
+            <Modal isOpen={isOpen} toggle={toggleModal} centered size="md">
                 <ModalHeader toggle={toggleModal}>
                     프로그램 신청 안내
                 </ModalHeader>
@@ -102,7 +153,7 @@ const ApplyButton = () => {
                     </Button>
                 </ModalFooter>
             </Modal>
-        </>
+        </div>
     );
 };
 

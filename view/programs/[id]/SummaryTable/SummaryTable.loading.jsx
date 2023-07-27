@@ -1,7 +1,7 @@
 import { Skeleton, Table } from '@goorm-dev/gds-components';
 
 export default function SummaryTableLoading() {
-    const EMPTY_LIST = Array.from({ length: 5 }, (_, index) => index);
+    const EMPTY_LIST = Array.from({ length: 4 }, (_, index) => index);
 
     return (
         <Table>

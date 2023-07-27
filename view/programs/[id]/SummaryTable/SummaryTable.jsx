@@ -7,6 +7,7 @@ import useProgram from '@/query-hooks/useProgram';
 import styles from './SummaryTable.module.scss';
 import Table from '../Table/Table';
 import { formatDate } from '@/utils';
+import { PROGRAM_DIVISION } from '@/constants/db';
 
 const SummaryTable = ({ className, ...props }) => {
     const router = useRouter();
@@ -46,13 +47,13 @@ const SummaryTable = ({ className, ...props }) => {
                 </tr>
                 <tr>
                     <th>교육 장소</th>
-                    <td>{programData.educationLocation.name}</td>
-                </tr>
-                <tr>
-                    <th>비용</th>
-                    <td>
-                        {programData.price ? `${programData.price}원` : '무료'}
-                    </td>
+                    {programData.type.division === PROGRAM_DIVISION.방문형 && (
+                        <td>각 학교에서 진행</td>
+                    )}
+
+                    {programData.type.division === PROGRAM_DIVISION.집합형 && (
+                        <td>{programData.educationLocation.name}</td>
+                    )}
                 </tr>
             </tbody>
         </Table>

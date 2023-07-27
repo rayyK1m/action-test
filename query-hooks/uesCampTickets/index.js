@@ -5,6 +5,7 @@ import { toast } from '@goorm-dev/gds-toastify';
 
 import campTicketsKeys from './keys';
 import campTicketsApis from './apis';
+import useSession from '../useSession';
 
 const useGetCampTickets = (filters) => {
     return useQuery({
@@ -76,6 +77,16 @@ const useGetCampTicketsAdmin = (filters) => {
     });
 };
 
+const useGetCampTicketHistory = (filters) => {
+    const { data: userData } = useSession.GET();
+
+    return useQuery({
+        queryKey: campTicketsKeys.historyDetail({ ...filters }),
+        queryFn: () => campTicketsApis.getCampTicketHistory({ ...filters }),
+        enabled: !!userData?.id,
+    });
+};
+
 export {
     useGetCampTickets,
     useGetCampTicket,
@@ -83,6 +94,7 @@ export {
     useCreateCampTicket,
     useCancelCampTicket,
     useGetCampTicketsAdmin,
+    useGetCampTicketHistory,
     campTicketsApis,
     campTicketsKeys,
 };

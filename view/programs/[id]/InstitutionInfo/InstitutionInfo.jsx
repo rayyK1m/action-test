@@ -20,10 +20,10 @@ function InstitutionInfo() {
 
     return (
         <div className={styles.container}>
-            {programData.institution.logo ? (
+            {programData.institution.logo?.url ? (
                 <Image
                     className={styles.image}
-                    src={programData.institution.logo}
+                    src={programData.institution.logo?.url}
                     width={80}
                     height={80}
                     alt={programData.institution.name}

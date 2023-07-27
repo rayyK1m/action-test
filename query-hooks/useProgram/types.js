@@ -26,7 +26,7 @@
  * @property {Array<string>} attachedFiles 첨부파일
  * @property {string} [notice] 안내 사항
  * @property {{ name?: string; address?: string }} [educationLocation] 교육 장소
- * @property {{ id: string; name: string; logo?: string }} [institution] 기관 정보
+ * @property {{ id: string; name: string; logo?: { url: string; } }} [institution] 기관 정보
  */
 
 export default {};

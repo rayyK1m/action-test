@@ -5,6 +5,7 @@
     z-index: 1;
     width: 100%;
     margin: 0 auto;
-    padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
+    margin-top: -2rem /* -32px -> -2rem */;
+    margin-bottom: 2.5rem /* 40px -> 2.5rem */;
+    padding-bottom: 2.5rem /* 80px -> 5rem */;
 }

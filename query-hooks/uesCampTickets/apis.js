@@ -654,6 +654,15 @@ export const getCampticketsAdmin = async (query) => {
     );
 };
 
+const getCampTicketHistory = async (query, axiosInstance = axios) => {
+    const { programId } = query;
+    const { data } = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camp-tickets/programs/${programId}`,
+    );
+
+    return data;
+};
+
 const campTicketsApis = {
     getCampTickets,
     getCampTicket,
@@ -661,5 +670,6 @@ const campTicketsApis = {
     createCampTicket,
     cancelCampTicket,
     getCampticketsAdmin,
+    getCampTicketHistory,
 };
 export default campTicketsApis;
