@@ -277,14 +277,21 @@ const getInstitution = async (institutionId) => {
 
 const getUserInfo = async ({ userId }) => {
     try {
-        const { data } = await swcampInstance.get(`/api/v1/swcamp-users`, {
-            headers: { ...getAuthHeader(userId) },
-        });
+        const res = await fetch(
+            `${process.env.SWCAMP_API_HOST}/api/v1/swcamp-users`,
+            {
+                headers: {
+                    authorization: `bearer ${process.env.SWCAMP_API_TOKEN}`,
+                    ...getAuthHeader(userId),
+                },
+            },
+        );
+        const data = await res.json();
         return data;
     } catch (err) {
         throw new ExternalResponseError({
             message: 'SWCAMP API',
-            res: { status: err.response.status, data: err.response.data },
+            res: { status: err.response?.status, data: err.response?.data },
         });
     }
 };

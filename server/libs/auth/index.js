@@ -25,7 +25,7 @@ const validateToken = async (token) => {
     const data = await response.json();
     if (data.message !== 'SUCCESS') {
         // 토큰 에러 처리
-        return { isValid: false };
+        return { isValid: false, userData: {} };
     }
 
     return { isValid: true, userData: data.user_data };
@@ -36,7 +36,7 @@ const validateToken = async (token) => {
  *
  * @param {string} userId - 토큰을 폐기할 유저 ID
  * @param {string} token - 폐기할 토큰
- * @returns {boolean} - 토큰 폐기 성공 여부를 나타내는 값. 성공한 경우 true, 그렇지 않은 경우 false
+ * @returns {Promise<boolean>} - 토큰 폐기 성공 여부를 나타내는 값. 성공한 경우 true, 그렇지 않은 경우 false
  */
 const revokeToken = async (userId, token) => {
     const postData = JSON.stringify({
