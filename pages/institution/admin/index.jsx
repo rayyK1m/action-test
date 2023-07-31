@@ -1,12 +1,13 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
-import { checkAuthSsr } from '@/server/utils/auth';
-import useSession, { sessionKeys } from '@/query-hooks/useSession';
-
-import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
-import ProgramManageList from '@/view/institution/admin/ProgramManageList';
 import Layout from '@/components/Layout/Layout';
+import ProgramManageList from '@/view/institution/admin/program/ProgramManageList';
+
 import { createServerAxios } from '@/utils';
+import useSession, { sessionKeys } from '@/query-hooks/useSession';
+import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
+import { checkAuthSsr } from '@/server/utils/auth';
+
 import { ROLE } from '@/constants/db';
 
 export default function InstitutionAdminPage({ isSubmitted }) {

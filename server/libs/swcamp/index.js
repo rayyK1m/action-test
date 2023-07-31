@@ -3,8 +3,13 @@ import qs from 'qs';
 import { removeEmptyValues } from '@/utils';
 import ForbiddenError from '@/server/utils/error/ForbiddenError';
 
+import { delay, paginateArray } from '@/dummy/utils';
+import { CAMPS } from '@/dummy/camps';
+
 import ExternalResponseError from '../../utils/error/ExternalResponseError';
 import { getAuthHeader } from '../../utils/auth';
+
+const DELAY_TIME = 500;
 
 const swcampInstance = axios.create({
     baseURL: process.env.SWCAMP_API_HOST,
@@ -241,6 +246,19 @@ const createCampTicket = async ({ role, userId, formData }) => {
     }
 };
 
+const getCamps = async ({ programId, institutionId, page, limit }) => {
+    await delay(DELAY_TIME);
+
+    const data = CAMPS;
+    const filteredData = data.filter(({ institutionId: dataInstitutionId }) =>
+        institutionId ? institutionId === dataInstitutionId : true,
+    );
+    const paginatedData = paginateArray(filteredData, page, limit);
+    const newData = { items: paginatedData, total: filteredData.length };
+
+    return newData;
+};
+
 const getCampTicketHistory = async ({ userId, programId }) => {
     try {
         const { data } = await swcampInstance.get(
@@ -394,7 +412,7 @@ const swcampSdk = {
     /**
      * Camp
      */
-    // ...
+    getCamps,
 
     /**
      * CampTicket

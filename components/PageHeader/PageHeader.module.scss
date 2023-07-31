@@ -4,6 +4,10 @@
     gap: 1.25rem;
 }
 
+.alert {
+    line-height: 1.5625rem /* 25px -> 1.5625rem */;
+}
+
 .breadcrumbItem {
     cursor: pointer;
 }

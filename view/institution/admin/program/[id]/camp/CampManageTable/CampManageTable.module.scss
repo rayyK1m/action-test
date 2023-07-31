@@ -1,0 +1,11 @@
+.container {
+    & th,
+    td {
+        flex-grow: unset !important;
+    }
+
+    & th:nth-child(4),
+    & td:nth-child(4) {
+        flex: 1 !important;
+    }
+}

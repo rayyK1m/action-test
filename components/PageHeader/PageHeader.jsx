@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import Link from 'next/link';
 
 import { InfoCircleIcon } from '@goorm-dev/gds-icons';
@@ -47,7 +48,10 @@ function Breadcrumb({ breadcrumbs }) {
 }
 function Description({ children }) {
     return (
-        <CustomAlert leftIcon={InfoCircleIcon} className="mb-0">
+        <CustomAlert
+            leftIcon={InfoCircleIcon}
+            className={cn(styles.alert, 'mb-0')}
+        >
             {children}
         </CustomAlert>
     );
