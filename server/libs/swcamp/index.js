@@ -94,6 +94,28 @@ const getProgramsAdmin = async ({
                 headers: { ...getAuthHeader(userId) },
             },
         );
+
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
+const getProgramAdmin = async ({ userId, institutionId, programId }) => {
+    try {
+        const institutionQueryString = institutionId
+            ? `institutionId=${institutionId}&`
+            : '';
+        const { data } = await swcampInstance.get(
+            `/api/v1/programs/${programId}/admin?${institutionQueryString}`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+
         return data;
     } catch (err) {
         throw new ExternalResponseError({
@@ -237,6 +259,46 @@ const getCampTicketHistory = async ({ userId, programId }) => {
     }
 };
 
+const getCampTicketsByProgram = async ({
+    userId,
+    institutionId,
+    programId,
+    page,
+    limit,
+    search,
+    sort,
+    reviewStatus,
+}) => {
+    try {
+        const queryString = qs.stringify(
+            {
+                page,
+                limit,
+                search,
+                ...(sort && { sort }),
+                ...(reviewStatus && { reviewStatus }),
+            },
+            { skipNulls: true },
+        );
+        const institutionQueryString = institutionId
+            ? `institutionId=${institutionId}&`
+            : '';
+        const { data } = await swcampInstance.get(
+            `/api/v1/camp-tickets/programs/${programId}/admin?${institutionQueryString}${queryString}`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const getInstitutions = async ({ page, limit, search, active }) => {
     const removedEmptyQuery = removeEmptyValues({
         page,
@@ -318,9 +380,10 @@ const swcampSdk = {
      * Program
      */
     getPrograms,
-    getProgramsAdmin,
-    createProgram,
     getProgram,
+    getProgramsAdmin,
+    getProgramAdmin,
+    createProgram,
 
     /**
      * Institution
@@ -342,6 +405,7 @@ const swcampSdk = {
     getCampTicketsCount,
     createCampTicket,
     getCampTicketHistory,
+    getCampTicketsByProgram,
 
     /**
      * UserData

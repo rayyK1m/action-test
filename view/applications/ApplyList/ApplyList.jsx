@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
@@ -70,7 +70,13 @@ function ApplyList() {
                 </h6>
 
                 <ButtonDropdown isOpen={isOpen} toggle={toggle}>
-                    <DropdownToggle size="lg" color="link" theme="light" caret>
+                    <DropdownToggle
+                        size="lg"
+                        color="link"
+                        theme="light"
+                        caret
+                        active={filter !== 0}
+                    >
                         {DROPDOWN_MENU[filter].text}
                     </DropdownToggle>
 

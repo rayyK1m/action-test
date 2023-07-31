@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Container, Col, Row } from '@goorm-dev/gds-components';
+import { Col, Row } from '@goorm-dev/gds-components';
 
 import SSRSuspense from '@/components/SSRSuspense';
+import GridContainer from '@/components/GridContainer';
 import Header from '../Header/Header.jsx';
 import ProgramTable from '../ProgramTable/ProgramTable.jsx';
 import ProgramTableLoading from '../ProgramTable/ProgramTable.loading.jsx';
@@ -13,7 +14,7 @@ import { useRouter } from 'next/router.js';
 function ProgramManageList({ isSubmitted }) {
     const router = useRouter();
     return (
-        <Container fluid="xxl">
+        <GridContainer fluid="xxl">
             <Row>
                 <Col>
                     <div className={styles.container}>
@@ -28,7 +29,7 @@ function ProgramManageList({ isSubmitted }) {
                     </div>
                 </Col>
             </Row>
-        </Container>
+        </GridContainer>
     );
 }
 

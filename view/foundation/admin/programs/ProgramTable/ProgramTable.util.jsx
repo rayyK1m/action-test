@@ -1,9 +1,11 @@
 import Link from 'next/link';
 
 import { cellHelper } from '@goorm-dev/gds-tables';
-import { Badge, Button } from '@goorm-dev/gds-components';
+import { Button } from '@goorm-dev/gds-components';
 import { ChevronRightIcon } from '@goorm-dev/gds-icons';
-import { PROGRAM_DIVISION_BADGE, STATUS_TEXT } from './ProgramTable.constants';
+
+import ProgramTypeBadge from '@/view/components/ProgramTypeBadge';
+import { STATUS_TEXT } from './ProgramTable.constants';
 
 import styles from './ProgramTable.module.scss';
 
@@ -45,18 +47,10 @@ export const getTableColoums = () => {
             accessorKey: 'type',
             header: <div>유형</div>,
             cell: cellHelper(({ value: type }) => (
-                <div className="d-flex">
-                    <Badge
-                        size="sm"
-                        color={PROGRAM_DIVISION_BADGE[type.division].color}
-                        className="mr-1"
-                    >
-                        {type.division}
-                    </Badge>
-                    <Badge size="sm" color="dark">
-                        {type.duration}
-                    </Badge>
-                </div>
+                <ProgramTypeBadge
+                    division={type.division}
+                    duration={type.duration}
+                />
             )),
             maxSize: 129,
         },

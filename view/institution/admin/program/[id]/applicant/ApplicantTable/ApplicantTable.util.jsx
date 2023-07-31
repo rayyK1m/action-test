@@ -44,21 +44,21 @@ export const getTableColoums = (division) => {
                     targetString += joinToGradeString(
                         elementarySchool,
                         ', ',
-                        '초등학생',
+                        '초등학생 ',
                     );
                 }
                 if (middleSchool.length > 0) {
                     targetString += joinToGradeString(
                         middleSchool,
                         ', ',
-                        '\n중학생',
+                        '\n중학생 ',
                     );
                 }
                 if (highSchool.length > 0) {
                     targetString += joinToGradeString(
                         highSchool,
                         ', ',
-                        '\n고등학생',
+                        '\n고등학생 ',
                     );
                 }
                 return (
@@ -85,14 +85,14 @@ export const getTableColoums = (division) => {
     ];
     const 방문형 = [
         {
-            accessorKey: 'schoolIndex',
+            accessorKey: 'schoolName',
             header: <div>교육 장소</div>,
             cell: cellHelper(({ value }) => <div>{value}</div>),
             size: 340,
             maxSize: 500,
         },
         {
-            accessorKey: 'expectedUserCount',
+            accessorKey: 'applicantCount',
             header: <div>신청 인원</div>,
             cell: cellHelper(({ value }) => <div>{value}</div>),
             size: 129,

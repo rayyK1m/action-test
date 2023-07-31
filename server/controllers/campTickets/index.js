@@ -1,4 +1,6 @@
+import { PROGRAM_DIVISION } from '@/constants/db';
 import swcampSdk from '@/server/libs/swcamp';
+import _omit from 'lodash/omit';
 
 const createCampTicket = async (req, res) => {
     const { role, userId } = req.query;
@@ -59,6 +61,29 @@ const getCampTicketHistory = async (req, res) => {
     return res.json(data);
 };
 
+const getCampTicketsByProgram = async (req, res) => {
+    const { programId, page, limit, search, sort, reviewStatus } = req.query;
+
+    const { items, total } = await swcampSdk.getCampTicketsByProgram({
+        userId: req.session?.id,
+        institutionId: req.session?.institutionId,
+        programId,
+
+        page,
+        limit,
+        sort,
+        ...(search && { search }),
+        ...(reviewStatus !== 'ALL' && { reviewStatus }),
+    });
+
+    return res.json({
+        campApplicants: items || [],
+        totalCount: total || 0,
+        programDivision:
+            items[0]?.program?.type.division || PROGRAM_DIVISION.방문형,
+    });
+};
+
 const campTicketsCtrl = {
     createCampTicket,
     getCampTicket,
@@ -66,5 +91,6 @@ const campTicketsCtrl = {
     cancelCampTicket,
     getCampTicketsCount,
     getCampTicketHistory,
+    getCampTicketsByProgram,
 };
 export default campTicketsCtrl;

@@ -1,9 +1,12 @@
 import Link from 'next/link';
 
 import { cellHelper } from '@goorm-dev/gds-tables';
-import { Badge, Button } from '@goorm-dev/gds-components';
+import { Button } from '@goorm-dev/gds-components';
 import { ChevronRightIcon, SubmitModeIcon } from '@goorm-dev/gds-icons';
-import { PROGRAM_DIVISION_BADGE, STATUS_TEXT } from './ProgramTable.constants';
+
+import { slugify } from '@/utils';
+import ProgramTypeBadge from '@/view/components/ProgramTypeBadge';
+import { STATUS_TEXT } from './ProgramTable.constants';
 
 import styles from './ProgramTable.module.scss';
 
@@ -14,18 +17,10 @@ export const getTableColoums = () => {
             accessorKey: 'type',
             header: <div>유형</div>,
             cell: cellHelper(({ value }) => (
-                <div className="d-flex">
-                    <Badge
-                        size="sm"
-                        color={PROGRAM_DIVISION_BADGE[value.division].color}
-                        className="mr-1"
-                    >
-                        {value.division}
-                    </Badge>
-                    <Badge size="sm" color="dark">
-                        {value.duration}
-                    </Badge>
-                </div>
+                <ProgramTypeBadge
+                    division={value.division}
+                    duration={value.duration}
+                />
             )),
             maxSize: 119,
         },
@@ -114,7 +109,13 @@ export const getTableColoums = () => {
                 return (
                     <Button
                         color="link"
-                        onClick={() => alert(rowData.id)}
+                        tag={Link}
+                        target="_blank"
+                        href={`${
+                            process.env.SWCAMP_CONTENTS_CHANNEL
+                        }/v2/teach/lecture/${rowData.lectureSequence}/${slugify(
+                            rowData.name,
+                        )}`}
                         disabled={isInProgress}
                     >
                         콘텐츠 관리

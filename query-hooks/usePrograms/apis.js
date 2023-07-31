@@ -28,10 +28,20 @@ const getProgramsAdmin = async (query, axiosInstance = axios) => {
 
     return data;
 };
+
+const getProgramAdmin = async (programId, axiosInstance = axios) => {
+    const { data } = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/programs/admin/${programId}`,
+    );
+
+    return data;
+};
+
 const programsApis = {
     getPrograms,
     getProgram,
     getProgramsAdmin,
+    getProgramAdmin,
 };
 
 export default programsApis;

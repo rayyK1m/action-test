@@ -21,6 +21,12 @@ const programsKeys = {
         ...programsKeys.itemsAdmin(),
         { ...filters },
     ],
+
+    /**
+     * 운영 기관 어드민 - 단일 프로그램 조회 시 사용
+     */
+    itemAdmin: () => [...programsKeys.all(), 'itemAdmin'],
+    itemAdminDetail: (id) => [...programsKeys.itemAdmin(), id],
 };
 
 export default programsKeys;

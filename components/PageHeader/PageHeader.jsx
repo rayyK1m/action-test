@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 import { InfoCircleIcon } from '@goorm-dev/gds-icons';
 import {
@@ -24,18 +25,20 @@ function Title({ children, className }) {
 
 function Breadcrumb({ breadcrumbs }) {
     // NOTE: PageHeader.Title 내부에서 사용해야 gap (css)가 시안대로 적용됨
-    // TODO: 2차 MVP로 Breadcrumb에 네비게이션 기능 추가 필요, 아래 컴포넌트는 추후에 수정될 수 있음 (확정 x)
 
     return (
         <GDSBreadcrumb className="mb-2">
             {breadcrumbs.map((breadcrumb) => {
+                // NOTE: 현재 페이지에 대해서는 링크 태그를 사용할 필요가 없기 때문에 그에 대한 처리를 위해 아래 커스텀 A 태그를 사용
+                const ATag = breadcrumb.active ? 'span' : Link;
                 return (
                     <BreadcrumbItem
                         key={breadcrumb.to}
                         active={breadcrumb.active}
                         size="md"
+                        className={styles.breadcrumbItem}
                     >
-                        {breadcrumb.children}
+                        <ATag href={breadcrumb.to}>{breadcrumb.children}</ATag>
                     </BreadcrumbItem>
                 );
             })}

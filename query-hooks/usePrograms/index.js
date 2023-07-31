@@ -24,10 +24,18 @@ const useGetProgramsAdmin = (filters) => {
     });
 };
 
+const useGetProgramAdmin = (id) => {
+    return useQuery({
+        queryKey: programsKeys.itemAdminDetail(id),
+        queryFn: () => programsApis.getProgramAdmin(id),
+    });
+};
+
 export {
     useGetPrograms,
     useGetProgram,
     useGetProgramsAdmin,
+    useGetProgramAdmin,
     programsApis,
     programsKeys,
 };

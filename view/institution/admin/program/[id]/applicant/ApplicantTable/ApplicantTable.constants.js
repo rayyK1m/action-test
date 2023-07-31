@@ -3,7 +3,7 @@ import {
     ErrorCircleIcon,
     TimeIcon,
 } from '@goorm-dev/gds-icons';
-import { PROGRAM_DIVISION, CAMP_REVIEW_STATUS } from '@/constants/db';
+import { CAMP_REVIEW_STATUS } from '@/constants/db';
 
 export const CAMP_TICKET_STATUS_TEXT = {
     [CAMP_REVIEW_STATUS.승인.value]: {
@@ -28,55 +28,29 @@ export const CAMP_TICKET_STATUS_TEXT = {
     },
 };
 
-export const DROPDOWN_MENU = {
-    [PROGRAM_DIVISION.방문형]: [
-        {
-            index: 0,
-            key: 'ALL',
-            text: '전체',
-        },
-        {
-            index: 1,
-            key: CAMP_REVIEW_STATUS.심사중.key,
-            value: CAMP_REVIEW_STATUS.심사중.value,
-            text: CAMP_REVIEW_STATUS.심사중.text,
-        },
-        {
-            index: 2,
-            key: CAMP_REVIEW_STATUS.승인.key,
-            value: CAMP_REVIEW_STATUS.승인.value,
-            text: CAMP_REVIEW_STATUS.승인.text,
-        },
-        {
-            index: 3,
-            key: CAMP_REVIEW_STATUS.거절.key,
-            value: CAMP_REVIEW_STATUS.거절.value,
-            text: CAMP_REVIEW_STATUS.거절.text,
-        },
-    ],
-    [PROGRAM_DIVISION.집합형]: [
-        {
-            index: 0,
-            key: 'ALL',
-            text: '전체',
-        },
-        {
-            index: 1,
-            key: CAMP_REVIEW_STATUS.승인.key,
-            value: CAMP_REVIEW_STATUS.승인.value,
-            text: CAMP_REVIEW_STATUS.승인.text,
-        },
-        {
-            index: 2,
-            key: CAMP_REVIEW_STATUS.거절.key,
-            value: CAMP_REVIEW_STATUS.거절.value,
-            text: CAMP_REVIEW_STATUS.거절.text,
-        },
-        {
-            index: 3,
-            key: CAMP_REVIEW_STATUS.취소.key,
-            value: CAMP_REVIEW_STATUS.취소.value,
-            text: CAMP_REVIEW_STATUS.취소.text,
-        },
-    ],
-};
+export const DROPDOWN_MENU = [
+    {
+        index: 0,
+        key: 'ALL',
+        text: '전체',
+        value: 'ALL',
+    },
+    {
+        index: 1,
+        key: CAMP_REVIEW_STATUS.심사중.key,
+        text: CAMP_REVIEW_STATUS.심사중.text,
+        value: CAMP_REVIEW_STATUS.심사중.value,
+    },
+    {
+        index: 2,
+        key: CAMP_REVIEW_STATUS.승인.key,
+        text: CAMP_REVIEW_STATUS.승인.text,
+        value: CAMP_REVIEW_STATUS.승인.value,
+    },
+    {
+        index: 3,
+        key: CAMP_REVIEW_STATUS.거절.key,
+        text: CAMP_REVIEW_STATUS.거절.text,
+        value: CAMP_REVIEW_STATUS.거절.value,
+    },
+];

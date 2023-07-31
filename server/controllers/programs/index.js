@@ -93,5 +93,24 @@ const getProgramsAdmin = async (req, res) => {
     return res.json({ programs: items, totalCount: total });
 };
 
-const programsCtrl = { validation, getPrograms, getProgram, getProgramsAdmin };
+const getProgramAdmin = async (req, res) => {
+    const { id } = req.query;
+    const isInstitution = req.session?.role === ROLE.INSTITUTION;
+
+    const { item } = await swcampSdk.getProgramAdmin({
+        userId: req.session?.id,
+        ...(isInstitution && { institutionId: req.session?.institutionId }),
+        programId: id,
+    });
+
+    return res.json(item);
+};
+
+const programsCtrl = {
+    validation,
+    getPrograms,
+    getProgram,
+    getProgramsAdmin,
+    getProgramAdmin,
+};
 export default programsCtrl;

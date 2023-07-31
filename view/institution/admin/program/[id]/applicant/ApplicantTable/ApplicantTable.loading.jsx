@@ -106,7 +106,7 @@ function ApplicantTableLoading({ division }) {
     return (
         <div>
             <div className={styles.title}>
-                <h6>모든 신청자</h6>
+                <h6>전체 신청자</h6>
 
                 <div className="d-flex">
                     <SearchInput

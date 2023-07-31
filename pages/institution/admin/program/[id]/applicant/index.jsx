@@ -2,33 +2,41 @@ import { QueryClient, dehydrate } from '@tanstack/query-core';
 
 import Layout from '@/components/Layout/Layout';
 import ApplicantManageList from '@/view/institution/admin/program/[id]/applicant/ApplicantManageList';
-import { withSessionSsr } from '@/server/utils/auth';
+import { checkAuthSsr } from '@/server/utils/auth';
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
-import SSRSuspense from '@/components/SSRSuspense';
 import { campTicketsKeys, campTicketsApis } from '@/query-hooks/uesCampTickets';
+import { ROLE } from '@/constants/db';
+import { createServerAxios } from '@/utils';
+import { programsApis, programsKeys } from '@/query-hooks/usePrograms';
 
-export default function InstitutionAdminApplicantPage({ programDivision }) {
+export default function InstitutionAdminApplicantPage() {
     const { data: userData } = useSession.GET();
 
     return (
-        <SSRSuspense fallback={<h2>서버 로딩중</h2>}>
-            <Layout>
-                <Layout.Header userData={userData} />
-                <Layout.Main>
-                    <ApplicantManageList division={programDivision} />
-                </Layout.Main>
-                <Layout.Footer />
-            </Layout>
-        </SSRSuspense>
+        <Layout>
+            <Layout.Header userData={userData} />
+            <Layout.Main>
+                <ApplicantManageList />
+            </Layout.Main>
+            <Layout.Footer />
+        </Layout>
     );
 }
 
-export const getServerSideProps = withSessionSsr(async (context) => {
+export const getServerSideProps = checkAuthSsr({
+    shouldLogin: true,
+    roles: [ROLE.INSTITUTION],
+})(async (context) => {
     const queryClient = new QueryClient();
     const { id } = context.params;
     const page = Number(context.query?.page || 1);
     const limit = Number(context.query?.limit || 10);
 
+    const serverAxios = createServerAxios(context);
+
+    /**
+     * 프로그램 별 신청자 정보 가져오기
+     */
     await queryClient.prefetchQuery(
         campTicketsKeys.itemsAdminDetail({
             programId: id,
@@ -36,12 +44,22 @@ export const getServerSideProps = withSessionSsr(async (context) => {
             limit,
         }),
         () =>
-            campTicketsApis.getCampticketsAdmin({
-                page,
-                limit,
-            }),
+            campTicketsApis.getCampticketsAdmin(
+                {
+                    programId: id,
+                    page,
+                    limit,
+                },
+                serverAxios,
+            ),
     );
-    const { programDivision } = queryClient.getQueryData();
+
+    /**
+     * 프로그램 정보 가져오기
+     */
+    await queryClient.prefetchQuery(programsKeys.itemAdminDetail(id), () =>
+        programsApis.getProgramAdmin(id, serverAxios),
+    );
 
     if (context.req?.session) {
         await queryClient.prefetchQuery(
@@ -53,7 +71,6 @@ export const getServerSideProps = withSessionSsr(async (context) => {
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
-            programDivision,
         },
     };
 });

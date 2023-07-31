@@ -16,6 +16,7 @@ const nextConfig = {
     env: {
         KAKAO_MAP_APP_KEY: process.env.KAKAO_MAP_APP_KEY,
         MAIN_HOST: process.env.NEXT_PUBLIC_MAIN_HOST,
+        SWCAMP_CONTENTS_CHANNEL: process.env.SWCAMP_CONTENTS_CHANNEL,
     },
 };
 

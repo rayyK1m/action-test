@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/router';
+import cn from 'classnames';
 
 import {
     useHScrollTable,
@@ -34,6 +35,8 @@ function ApplicantTable() {
             key: 'page',
             parser: Number,
         }) || 1;
+    const reviewStatus =
+        useQueryParam({ key: 'reviewStatus', parser: Number }) || 0;
 
     const [searchText, setSearchText] = useState(search);
     const [{ pageIndex, pageSize }, setPagination] = useState({
@@ -42,15 +45,16 @@ function ApplicantTable() {
     });
     const [sorting, setSorting] = useState(convertSort(sort));
     const [isFilterDropdownOpen, toggleFilterDropdown] = useToggle();
-    const [dropdownSelect, setDropdownSelect] = useState(0);
 
     const {
-        data: { items: campApplicants, totalCount, programDivision },
+        data: { campApplicants, totalCount, programDivision },
     } = useGetCampTicketsAdmin({
         programId: router.query.id,
         page: pageIndex + 1,
         limit: pageSize,
         search,
+
+        reviewStatus: DROPDOWN_MENU[reviewStatus].value,
         ...(sort !== '' && { sort }),
     });
 
@@ -124,11 +128,15 @@ function ApplicantTable() {
     );
 
     const isEmptyData = useMemo(() => totalCount === 0, [totalCount]);
+    const isFiltered = useMemo(
+        () => reviewStatus !== 0 || !!search,
+        [reviewStatus, search],
+    );
     return (
         <div>
             <div className={styles.title}>
                 <h6>
-                    모든 신청자{' '}
+                    전체 신청자{' '}
                     <span
                         className={
                             isEmptyData ? 'text-gray-600' : 'text-blue-500'
@@ -140,7 +148,12 @@ function ApplicantTable() {
 
                 <div className="d-flex">
                     <SearchInput
-                        className={styles.searchInput}
+                        className={cn(
+                            styles.searchInput,
+                            isEmptyData &&
+                                !isFiltered &&
+                                styles.searchInput_isLoading,
+                        )}
                         placeholder="신청자 검색"
                         size="lg"
                         onChange={handleSearhCange}
@@ -156,25 +169,20 @@ function ApplicantTable() {
                             color="link"
                             theme="light"
                             caret
+                            disabled={isEmptyData && !isFiltered}
+                            active={reviewStatus !== 0}
                         >
-                            {
-                                DROPDOWN_MENU[programDivision][dropdownSelect]
-                                    .text
-                            }
+                            {DROPDOWN_MENU[reviewStatus].text}
                         </DropdownToggle>
 
                         <DropdownMenu right={true}>
-                            {DROPDOWN_MENU[programDivision].map((item) => (
+                            {DROPDOWN_MENU.map((item) => (
                                 <DropdownItem
-                                    key={item.index}
+                                    key={item.key}
                                     onClick={() => {
-                                        setDropdownSelect(item.index);
                                         routerPushShallow(memoizedRouter, {
-                                            reviewStatus:
-                                                item.index === 0
-                                                    ? null
-                                                    : item.value,
                                             page: 1,
+                                            reviewStatus: item.index,
                                         });
                                     }}
                                 >
@@ -187,7 +195,13 @@ function ApplicantTable() {
             </div>
 
             {isEmptyData ? (
-                <EmptyTableCard text="프로그램 신청자가 아직 없습니다." />
+                <EmptyTableCard
+                    text={
+                        isFiltered
+                            ? '해당하는 신청자가 없습니다.'
+                            : '프로그램 신청자가 없습니다.'
+                    }
+                />
             ) : (
                 <>
                     <HScrollTable {...getTableProps()} />

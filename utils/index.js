@@ -139,3 +139,39 @@ export const createServerAxios = (context) => {
         },
     });
 };
+
+/**
+ * 문자열을 받아 url slug에 사용 가능한 형태로 반환한다.
+ *
+ * @param {Stirng} text
+ * @returns {String}
+ */
+export const slugify = (text) => {
+    return (
+        text
+            .toLowerCase()
+            // 영문자, 숫자, 한글, 하이픈(-)을 제외한 모든 문자를 공백으로 변환
+            .replace(/[^\w\s가-힣-]/g, '')
+            // 공백을 하이픈(-)으로 변환
+            .replace(/\s+/g, '-')
+            // 연속적인 하이픈은 하나의 하이픈으로 변경
+            .replace(/-+/g, '-')
+            // 양쪽의 하이픈 제거
+            .replace(/^-+|-+$/g, '')
+    );
+};
+
+/**
+ * 문자열과 최대 길이를 받아서 최대 길이를 넘어갈 경우 '...'으로 변경한 값을 반환한다.
+ *
+ * @param {String}} string
+ * @param {Number} maxLength
+ * @returns {String}
+ */
+export const ellipsisedString = (string, maxLength) => {
+    if (string.length <= maxLength) {
+        return string;
+    } else {
+        return string.slice(0, maxLength) + '...';
+    }
+};
