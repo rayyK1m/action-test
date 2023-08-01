@@ -86,6 +86,7 @@ function ProgramTable() {
 
             if (!value) {
                 routerPushShallow(memoizedRouter, {
+                    page: 1,
                     search: null,
                 });
                 return;
@@ -102,6 +103,7 @@ function ProgramTable() {
             } = e;
             if (key === 'Enter') {
                 routerPushShallow(memoizedRouter, {
+                    page: 1,
                     search: value,
                 });
             }
