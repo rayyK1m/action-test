@@ -4,8 +4,8 @@
     bottom: 0;
     z-index: 1;
     width: 100%;
-    margin: 0 auto;
-    margin-top: -2rem /* -32px -> -2rem */;
-    margin-bottom: 2.5rem /* 40px -> 2.5rem */;
-    padding-bottom: 2.5rem /* 80px -> 5rem */;
+    padding-top: 0.75rem /* 12px -> .75rem */;
+    padding-bottom: 0.75rem /* 12px -> .75rem */;
+    background-color: var(--white);
+    border-top: 1px solid var(--gray-300);
 }

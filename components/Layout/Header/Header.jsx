@@ -15,6 +15,7 @@ import cn from 'classnames';
 import styles from './Header.module.scss';
 import LinkWithRole from './LinkWithRole/LinkWithRole';
 import Logo from './Logo/Logo';
+import { useRouter } from 'next/router';
 
 /**
  *
@@ -26,6 +27,8 @@ const Header = ({ userData, className, children, ...props }) => {
         console.log('해당 컴포넌트는 children prop을 받지 않습니다.');
     }
 
+    const router = useRouter();
+
     return (
         <header className={cn(styles.container, className)} {...props}>
             <div className={styles.wrapper}>
@@ -35,11 +38,16 @@ const Header = ({ userData, className, children, ...props }) => {
                     </Link>
                     <div className={styles.leftAreaWrapper}>
                         <Button
+                            className={styles.link}
                             tag={Link}
                             color="link"
                             size="lg"
                             href="/institutions"
-                            className=""
+                            active={
+                                router.pathname === '/institutions' ||
+                                router.pathname ===
+                                    '/institutions/[institutionId]'
+                            }
                         >
                             운영 기관
                         </Button>

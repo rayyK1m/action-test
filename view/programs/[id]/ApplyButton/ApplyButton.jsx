@@ -107,12 +107,24 @@ const ApplyButton = () => {
         }
     };
 
-    const isFinishApply = Date.now() > new Date(programData.applyDate.end);
     const isDisabledApplyButton =
-        /** 신청기간 지남 */
-        isFinishApply ||
+        programData.applyStatus === '모집_예정' ||
+        programData.applyStatus === '모집_종료' ||
         /** 이미 신청한 프로그램 */
         !!campTicketHistoryData?.item;
+
+    const applyButtonText = (() => {
+        switch (true) {
+            case !!campTicketHistoryData?.item:
+                return '이미 신청한 프로그램입니다.';
+            case programData.applyStatus === '모집_예정':
+                return '모집 예정인 프로그램입니다.';
+            case programData.applyStatus === '모집_중':
+                return '신청하기';
+            case programData.applyStatus === '모집_종료':
+                return '모집이 마감된 프로그램입니다.';
+        }
+    })();
 
     return (
         <div className={styles.container}>
@@ -126,13 +138,7 @@ const ApplyButton = () => {
                             onClick={applyProgram}
                             disabled={isDisabledApplyButton}
                         >
-                            {isFinishApply && '모집이 마감된 프로그램입니다.'}
-                            {!isFinishApply &&
-                                !!campTicketHistoryData?.item &&
-                                '이미 신청한 프로그램입니다.'}
-                            {!isFinishApply &&
-                                !campTicketHistoryData?.item &&
-                                '신청하기'}
+                            {applyButtonText}
                         </Button>
                     </Col>
                 </Row>

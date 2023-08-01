@@ -70,11 +70,21 @@ const getPrograms = async (req, res) => {
 const getProgram = async (req, res) => {
     const { id } = req.query;
 
-    const data = await swcampSdk.getProgram({
+    const { item } = await swcampSdk.getProgram({
         programId: id,
     });
 
-    return res.json(data);
+    const { type: applyStatus } = getPrgramApplyStatus(
+        new Date(item.applyDate.start),
+        new Date(item.applyDate.end),
+    ).find((entry) => entry.condition);
+
+    return res.json({
+        item: {
+            applyStatus,
+            ...item,
+        },
+    });
 };
 
 const getProgramsAdmin = async (req, res) => {
