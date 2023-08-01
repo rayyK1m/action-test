@@ -1,16 +1,17 @@
 import { useRouter } from 'next/router';
+import cn from 'classnames';
 
 import { Checkbox } from '@goorm-dev/gds-components';
 
 import { useGetPrograms } from '@/query-hooks/usePrograms';
 
 import { PROGRAMS_DEFAULT_QUERY } from '@/pages';
-import { DROP_DOWNS } from '../ProgramsContainer/ProgramsContainer.constants';
 
 function ProgramsCountAndApplyableCheckbox({
     campType,
     page,
-    filterList,
+    selectedLocations,
+    checkedCategories,
     searchValue,
     isCheckPossibleApply,
     setIsCheckPossibleApply,
@@ -26,8 +27,8 @@ function ProgramsCountAndApplyableCheckbox({
         ...PROGRAMS_DEFAULT_QUERY,
         campType,
         page,
-        operateLocation: filterList[DROP_DOWNS.LOCATIONS],
-        category: filterList[DROP_DOWNS.CATEGORIES],
+        operateLocation: selectedLocations,
+        category: checkedCategories,
         search: searchValue,
         institutionId,
         active: isCheckPossibleApply,
@@ -35,10 +36,28 @@ function ProgramsCountAndApplyableCheckbox({
 
     return (
         <ul className="d-flex justify-content-between align-items-center">
-            <li className="d-flex">
-                <h6 className="text-dark">전체 프로그램</h6>
-                <h6 className="text-primary ml-1">{total}</h6>
-            </li>
+            {searchValue ? (
+                <li className="d-flex">
+                    <h6>
+                        &apos;
+                        {searchValue}&apos; 검색 결과
+                    </h6>
+                    <h6
+                        className={cn(
+                            'ml-1',
+                            total === 0 ? 'text-hint' : 'text-primary',
+                        )}
+                    >
+                        {total}건
+                    </h6>
+                </li>
+            ) : (
+                <li className="d-flex">
+                    <h6 className="text-dark">전체 프로그램</h6>
+                    <h6 className="text-primary ml-1">{total}</h6>
+                </li>
+            )}
+
             <li className="d-flex">
                 <Checkbox
                     value={isCheckPossibleApply}

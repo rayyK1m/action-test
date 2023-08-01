@@ -79,22 +79,23 @@ export const PROGRAM_CATEGORIES = [
     '기타',
 ];
 
-export const PROGRAM_OPERATION_LOCATIONS = [
-    '강원특별자치도',
-    '경기도',
-    '세종특별자치시',
-    '경상남도',
-    '경상북도',
-    '광주광역시',
-    '대구광역시',
-    '대전광역시',
-    '부산광역시',
-    '서울특별시',
-    '울산광역시',
-    '인천광역시',
-    '전라남도',
-    '전라북도',
-    '제주특별자치도',
-    '충청남도',
-    '충청북도',
-];
+export const PROGRAM_LOCATION_CATEGORIES = {
+    '강원, 충청권': [
+        '강원특별자치도',
+        '충청남도',
+        '충청북도',
+        '세종특별자치시',
+        '대전광역시',
+    ],
+    경기도: ['경기도'],
+    경상권: ['경상남도', '경상북도', '대구광역시', '부산광역시', '울산광역시'],
+    '서울, 인천': ['서울특별시', '인천광역시'],
+    '호남, 제주': ['광주광역시', '전라남도', '전라북도', '제주특별자치도'],
+};
+
+/**
+ * @return [ '강원특별자치도', '경기도', '세종특별자치시', '경상남도', ... ]
+ */
+export const PROGRAM_OPERATION_LOCATIONS = Object.values(
+    PROGRAM_LOCATION_CATEGORIES,
+).reduce((acc, val) => acc.concat(val), []);

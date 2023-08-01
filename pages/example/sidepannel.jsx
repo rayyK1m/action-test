@@ -20,7 +20,6 @@ export default function Page() {
                 <title>SW CAMP HOME</title>
             </Head>
             <Layout.Header />
-            <Layout.Banner />
             <Layout.Main className="p-5">
                 <h1>SidePannel EXAMPLE</h1>
 

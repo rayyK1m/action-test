@@ -15,6 +15,7 @@ export const PROGRAMS_DEFAULT_QUERY = {
     operateLocation: '',
     search: '',
     active: false,
+    sort: '-updatedAt',
 };
 
 export const getServerSideProps = withSessionSsr(async (context) => {

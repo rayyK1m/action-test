@@ -39,23 +39,23 @@ const getCampTicket = async ({ userId, ticketId }) => {
 const getPrograms = async ({
     page,
     limit,
+    sort,
     search,
     campType: division,
     category,
     operateLocation,
     institutionId,
-    startApplyDate,
     endApplyDate,
 }) => {
     const removedEmptyQuery = removeEmptyValues({
         page,
         limit,
+        sort,
         search,
         division,
         category,
         operateLocation,
         institutionId,
-        'applyDate.start': startApplyDate,
         'applyDate.end': endApplyDate,
     });
     const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });

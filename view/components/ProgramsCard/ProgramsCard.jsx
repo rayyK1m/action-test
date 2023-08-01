@@ -13,7 +13,8 @@ import styles from './ProgramsCard.module.scss';
 export default function ProgramsCard({
     id,
     name,
-    thumbnail,
+    thumbnailUrl,
+    thumbnailName,
     applyType,
     applyDate,
     educationDate,
@@ -42,10 +43,10 @@ export default function ProgramsCard({
                         'position-relative bg-gray-300 rounded mb-2',
                     )}
                 >
-                    {thumbnail && (
+                    {thumbnailUrl && (
                         <Image
-                            src={thumbnail}
-                            alt="캠프 썸네일"
+                            src={thumbnailUrl}
+                            alt={thumbnailName}
                             fill
                             priority
                             sizes="500px"
@@ -53,20 +54,24 @@ export default function ProgramsCard({
                     )}
                 </div>
 
-                <Badge color={badgeColor} className={cn(styles.badge, 'mb-1')}>
+                <Badge
+                    color={badgeColor}
+                    size="md"
+                    className={cn(styles.badge, 'mb-1')}
+                >
                     {badgeText}
                 </Badge>
 
                 <h6 className={cn('mb-2', styles.title)}>{name}</h6>
                 <span className="d-flex mb-1">
-                    <p className="text-hint mr-2">신청기간</p>
+                    <p className="text-hint mr-2">신청 기간</p>
                     <p className="text-alternative">
                         {formattedStartApply} - {formattedEndApply}
                     </p>
                 </span>
                 {applyType !== PRGRAM_APPLY_STATUS.모집_종료.key && (
                     <span className="d-flex">
-                        <p className="text-hint mr-2">교육기간</p>
+                        <p className="text-hint mr-2">교육 기간</p>
                         <p className="text-alternative">
                             {formattedStartEducation} - {formattedEndEducation}
                         </p>

@@ -10,6 +10,7 @@ const getPrograms = async (req, res) => {
     const {
         page = 1,
         limit = 4,
+        sort,
         search,
         campType,
         category,
@@ -21,11 +22,10 @@ const getPrograms = async (req, res) => {
     /**
      * 신청 가능한 프로그램 보기 기능
      *
-     * - active가 true일 경우, 오늘을 기준으로 하루 전, 하루 후의 날짜를 검색 조건으로 필터링
+     * - active가 true일 경우, 모집중, 모집 예정인 프로그램만 보여준다.
+     * - 신청 종료일 >= 오늘 날짜
+     * - lt = `>` 이므로, 오늘에서 하루를 뺀 날짜와 비교한다. ex. 신청 종료일(23.07.28) > 어제(23.07.27)
      */
-    const startApplyDate = active
-        ? `lt:${dayjs().add(1, 'day').format('YYYY-MM-DD')}`
-        : undefined;
     const endApplyDate = active
         ? `gt:${dayjs().subtract(1, 'day').format('YYYY-MM-DD')}`
         : undefined;
@@ -33,12 +33,12 @@ const getPrograms = async (req, res) => {
     const { items, total } = await swcampSdk.getPrograms({
         page,
         limit,
+        sort,
         search,
         campType,
         category,
         operateLocation,
         institutionId,
-        startApplyDate,
         endApplyDate,
     });
 

@@ -1,4 +1,15 @@
-.Banner {
-    min-height: 22.5rem;
+.container {
+    width: 100%;
+    min-height: 22.5rem /* 360px -> 22.5rem */;
     background-color: var(--gray-300);
+    overflow: hidden;
+    position: relative;
+
+    &_useBrandBox {
+        min-height: 11rem /* 176px -> 11rem */;
+        background-color: var(--newsac-primary);
+    }
+    & img {
+        object-fit: contain;
+    }
 }

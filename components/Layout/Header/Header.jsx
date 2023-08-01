@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import cn from 'classnames';
 
 import {
     Avatar,
@@ -9,13 +11,13 @@ import {
     DropdownItem,
 } from '@goorm-dev/gds-components';
 import { OutIcon, SubmitModeIcon } from '@goorm-dev/gds-icons';
+import { useRouter } from 'next/router';
 
-import cn from 'classnames';
+import LinkWithRole from './LinkWithRole/LinkWithRole';
 
 import styles from './Header.module.scss';
-import LinkWithRole from './LinkWithRole/LinkWithRole';
-import Logo from './Logo/Logo';
-import { useRouter } from 'next/router';
+
+import { LOGO_IMAGE } from '@/constants/common';
 
 /**
  *
@@ -34,7 +36,12 @@ const Header = ({ userData, className, children, ...props }) => {
             <div className={styles.wrapper}>
                 <div className={styles.leftAreaContainer}>
                     <Link href="/" className="mr-4">
-                        <Logo />
+                        <Image
+                            src={LOGO_IMAGE}
+                            alt="디지털 새싹 로고"
+                            width={88}
+                            height={26.8}
+                        />
                     </Link>
                     <div className={styles.leftAreaWrapper}>
                         <Button

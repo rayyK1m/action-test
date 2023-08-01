@@ -28,17 +28,15 @@ function Pagination({
 }) {
     return (
         <>
-            {itemTotalCount > itemLimit && (
-                <BasicPagination
-                    size={size}
-                    scrollMove={false}
-                    page={page}
-                    pageCount={Math.ceil(itemTotalCount / itemLimit)}
-                    limitCount={pageLimit}
-                    className={cn('justify-content-center', className)}
-                    {...props}
-                />
-            )}
+            <BasicPagination
+                size={size}
+                scrollMove={false}
+                page={page}
+                pageCount={Math.ceil(itemTotalCount / itemLimit)}
+                limitCount={pageLimit}
+                className={cn('justify-content-center', className)}
+                {...props}
+            />
         </>
     );
 }

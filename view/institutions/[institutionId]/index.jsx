@@ -13,7 +13,7 @@ function Institution() {
     return (
         <Layout>
             <Layout.Header userData={userData} />
-            <Layout.Banner />
+            <Layout.Banner useBrandBox />
             <Layout.Main>
                 <Suspense fallback={<InstitutionInfoLoading />}>
                     <InstitutionInfo />

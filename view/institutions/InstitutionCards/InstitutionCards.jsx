@@ -38,7 +38,7 @@ function InstitutionCards({
                 {items.map(({ id, logo, name, programCount }) => (
                     <InstitutionCard
                         key={id}
-                        logo={logo}
+                        logoUrl={logo?.url}
                         name={name}
                         programCount={programCount}
                         institutionId={id}

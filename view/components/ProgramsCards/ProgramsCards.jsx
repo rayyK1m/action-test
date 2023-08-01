@@ -8,13 +8,12 @@ import { PROGRAMS_DEFAULT_QUERY } from '@/pages';
 
 import ProgramsCard from '../ProgramsCard';
 
-import { DROP_DOWNS } from '../ProgramsContainer/ProgramsContainer.constants';
-
 import styles from './ProgramsCards.module.scss';
 
 function ProgramsCards({
     campType,
-    filterList,
+    selectedLocations,
+    checkedCategories,
     searchValue,
     page,
     setPage,
@@ -31,8 +30,8 @@ function ProgramsCards({
         ...PROGRAMS_DEFAULT_QUERY,
         campType,
         page,
-        operateLocation: filterList[DROP_DOWNS.LOCATIONS],
-        category: filterList[DROP_DOWNS.CATEGORIES],
+        operateLocation: selectedLocations,
+        category: checkedCategories,
         search: searchValue,
         institutionId,
         active: isCheckPossibleApply,
@@ -41,7 +40,7 @@ function ProgramsCards({
     if (total === 0)
         return <EmptyTableCard text="검색 결과가 없습니다." type="NO_SEARCH" />;
     return (
-        <>
+        <div>
             <div className={styles.container}>
                 {items.map(
                     ({
@@ -56,7 +55,8 @@ function ProgramsCards({
                             key={id}
                             id={id}
                             name={name}
-                            thumbnail={thumbnail}
+                            thumbnailUrl={thumbnail.url}
+                            thumbnailName={thumbnail.filename}
                             applyType={applyStatus}
                             applyDate={applyDate}
                             educationDate={educationDate}
@@ -71,7 +71,7 @@ function ProgramsCards({
                 page={page}
                 onPageChangeHandler={(page) => setPage(page * 1)}
             />
-        </>
+        </div>
     );
 }
 

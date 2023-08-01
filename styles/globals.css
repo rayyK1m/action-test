@@ -28,3 +28,7 @@ a:focus {
 body {
     background-color: var(--white);
 }
+
+:root {
+    --newsac-primary: #b6cf52;
+}

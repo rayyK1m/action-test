@@ -13,9 +13,13 @@ import {
 
 import styles from './InstitutionCard.module.scss';
 
-function InstitutionCard({ institutionId, logo, name, programCount }) {
+import { DEFAULT_AVATAR_IMAGE } from '@/constants/common';
+
+function InstitutionCard({ institutionId, logoUrl, name, programCount }) {
     const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const avatarImageUrl = logoUrl || DEFAULT_AVATAR_IMAGE;
 
     const handleCard = () => {
         if (programCount === 0) setIsModalOpen(true);
@@ -49,7 +53,7 @@ function InstitutionCard({ institutionId, logo, name, programCount }) {
                 )}
                 onClick={handleCard}
             >
-                <Avatar size="xl" name={name} src={logo} />
+                <Avatar size="xl" name={name} src={avatarImageUrl} />
 
                 <span className={styles.contents}>
                     <h6 className={cn(styles.title, 'mb-1')}>{name}</h6>
