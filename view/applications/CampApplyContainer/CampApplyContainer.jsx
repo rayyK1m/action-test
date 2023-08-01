@@ -121,7 +121,6 @@ function CampApplyContainer({ userData, programId }) {
             userId: userData.id,
             formData: {
                 programId: program.id,
-                institutionId: program.institution.id,
                 ...formData,
             },
         });
