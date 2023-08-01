@@ -32,6 +32,7 @@ function Page() {
                         서비스 홈 이동
                     </Button>
                     <Button
+                        color="primary"
                         size="xl"
                         onClick={() => router.push('/applications')}
                     >

@@ -1,9 +1,5 @@
-.pannel {
-    z-index: 100;
-    width: 50rem;
-}
-
 .drawer {
+    width: 50rem;
     padding-bottom: 2.5rem;
 }
 
@@ -15,4 +11,19 @@
 
 .infoCard {
     margin-top: 1.5rem;
+}
+
+.skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.gridSkeleton {
+    margin-top: 3.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    column-gap: 1rem;
+    row-gap: 3.5rem;
 }

@@ -31,6 +31,7 @@ import PageHeader from '@/components/PageHeader';
 import useSession from '@/query-hooks/useSession';
 import useToggle from '@/hooks/useToggle';
 import { ErrorCircleIcon } from '@goorm-dev/gds-icons';
+import TicketInfoPannelLoading from './TicketInfoPannel.loading';
 
 function TicketInfoPannel({ isOpen, onClose, ticketId }) {
     const [isModalOpen, toggle] = useToggle();
@@ -51,8 +52,6 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
         });
         toggle();
     };
-
-    console.log(ticket);
 
     const methods = useForm({
         values: {
@@ -86,60 +85,68 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
 
     return (
         <>
-            <SidePannel
-                isOpen={isOpen}
-                onClose={onClose}
-                className={styles.pannel}
-            >
-                <SidePannel.Header />
+            <SidePannel isOpen={isOpen} onClose={onClose}>
+                <SidePannel.Header>신청 내역</SidePannel.Header>
+
                 <SidePannel.Body className={styles.drawer}>
-                    <PageHeader useHrTag={true}>
-                        <PageHeader.Title>
-                            <div className="d-flex justify-content-between">
-                                <div className={styles.header}>
-                                    <h3>신청 정보</h3>
-                                    <div className="d-flex align-items-center">
-                                        <p className="text-hint mr-1">
-                                            프로그램
-                                        </p>
-                                        <p>{ticket?.program.name}</p>
-                                    </div>
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    {ticket?.reviewStatus === 'CANCEL' ? (
-                                        <Badge color="danger" size="lg">
-                                            <ErrorCircleIcon className="mr-1" />
-                                            신청 취소됨
-                                        </Badge>
-                                    ) : (
-                                        <Button
-                                            color="danger"
-                                            size="lg"
-                                            onClick={toggle}
-                                            disabled={dayjs(new Date()).isAfter(
-                                                ticket?.program.applyDate.end,
-                                            )}
-                                        >
-                                            신청 취소하기
-                                        </Button>
-                                    )}
-                                </div>
-                            </div>
-                        </PageHeader.Title>
-                    </PageHeader>
-                    <ProgramInfoCard
-                        program={ticket?.program}
-                        notice="신청 정보 수정을 원하신다면, 운영 기관 측에 문의해주세요."
-                        className={styles.infoCard}
-                    />
                     {isLoading ? (
-                        <p>Loading...</p>
+                        <TicketInfoPannelLoading />
                     ) : (
-                        <FormProvider {...methods}>
-                            <Form>{ticketForm}</Form>
-                        </FormProvider>
+                        <div>
+                            <PageHeader useHrTag={true}>
+                                <PageHeader.Title>
+                                    <div className="d-flex justify-content-between">
+                                        <div className={styles.header}>
+                                            <h3>신청 정보</h3>
+                                            <div className="d-flex align-items-center">
+                                                <p className="text-hint mr-1">
+                                                    프로그램
+                                                </p>
+                                                <p>{ticket?.program.name}</p>
+                                            </div>
+                                        </div>
+                                        <div className="d-flex align-items-center">
+                                            {ticket?.reviewStatus ===
+                                            'CANCEL' ? (
+                                                <Badge color="danger" size="lg">
+                                                    <ErrorCircleIcon className="mr-1" />
+                                                    신청 취소됨
+                                                </Badge>
+                                            ) : (
+                                                <></>
+                                            )}
+                                        </div>
+                                    </div>
+                                </PageHeader.Title>
+                            </PageHeader>
+                            <ProgramInfoCard
+                                program={ticket?.program}
+                                notice="신청 정보 수정을 원하신다면, 운영 기관 측에 문의해주세요."
+                                className={styles.infoCard}
+                            />
+                            <FormProvider {...methods}>
+                                <Form>{ticketForm}</Form>
+                            </FormProvider>
+                        </div>
                     )}
                 </SidePannel.Body>
+                {ticket?.reviewStatus !== 'CANCEL' && (
+                    <SidePannel.Footer className="d-flex justify-content-end">
+                        <Button
+                            color="danger"
+                            size="lg"
+                            onClick={toggle}
+                            disabled={
+                                isLoading ||
+                                dayjs(new Date()).isAfter(
+                                    ticket?.program.applyDate.end,
+                                )
+                            }
+                        >
+                            신청 취소하기
+                        </Button>
+                    </SidePannel.Footer>
+                )}
             </SidePannel>
 
             {/* 신청 취소 모달 */}

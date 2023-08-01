@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -12,7 +12,14 @@ import PageHeader from '@/components/PageHeader';
 import FormContainer from '@/view/components/FormContainer/FormContainer';
 import ProgramInfoCard from '@/view/applications/ProgramInfoCard';
 
-import { Button, Form } from '@goorm-dev/gds-components';
+import {
+    Button,
+    Form,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+} from '@goorm-dev/gds-components';
 import { BackPageIcon } from '@goorm-dev/gds-icons';
 import styles from './CampApplyContainer.module.scss';
 
@@ -22,16 +29,34 @@ import {
     USER_KEYS,
 } from '@/view/applications/CampForms/CampForms.constants';
 import { useGetProgram } from '@/query-hooks/usePrograms';
-import { useCreateCampTicket } from '@/query-hooks/uesCampTickets';
+import {
+    useCreateCampTicket,
+    useGetCampTicketsCount,
+} from '@/query-hooks/uesCampTickets';
 import { PROGRAM_DIVISION } from '@/constants/db';
 
 import { formatTeacherData } from './CampApplyContainer.utils';
-import { useRouter } from 'next/router';
 import { TermsForm } from '../CampForms/TermForm/TermForm';
 import Link from 'next/link';
+import useToggle from '@/hooks/useToggle';
+import { useRouter } from 'next/router';
 
 function CampApplyContainer({ userData, programId }) {
     const router = useRouter();
+    const [isOpen, toggle] = useToggle(false);
+    const {
+        data: { count },
+    } = useGetCampTicketsCount({ userId: userData?.id });
+
+    const handleModalClose = () => {
+        toggle(false);
+        router.push('/');
+    };
+    /** 신청한 프로그램이 3개 이상일 경우 다른 페이지로 안내하기 전 모달 띄워주기 위한 처리 */
+    useEffect(() => {
+        if (count >= 3) toggle(true);
+    }, []);
+
     const [{ thirdPartyInfoTerm, personalInfoTerm }, setTerms] = useState({
         thirdPartyInfoTerm: false,
         personalInfoTerm: false,
@@ -65,6 +90,7 @@ function CampApplyContainer({ userData, programId }) {
             /** 유저 데이터 연결 안해서 임시로 지정해둔 상태, 수정 예정 */
             [CAMP_APPLY_KEYS.schoolNameKey]: '가락중학교',
             [CAMP_APPLY_KEYS.schoolCodeKey]: '7130165',
+            [CAMP_APPLY_KEYS.userNameKey]: '김구름',
         },
     });
 
@@ -125,52 +151,78 @@ function CampApplyContainer({ userData, programId }) {
     const { title, contents } = getCampForm(program.type.division);
 
     return (
-        <Layout>
-            <Layout.Header userData={userData} />
-            <Layout.Main>
-                <FormContainer>
-                    <PageHeader>
-                        <PageHeader.Title>
-                            <div className="d-flex align-items-center">
-                                <Button
-                                    icon={<BackPageIcon />}
-                                    tag={Link}
-                                    className="mr-2"
-                                    color="link"
-                                    href={`/programs/${programId}`}
-                                />
-                                <h3>{title}</h3>
-                            </div>
-                        </PageHeader.Title>
-                    </PageHeader>
-                    <ProgramInfoCard
-                        program={program}
-                        notice="프로그램은 최대 3개까지 신청 가능합니다."
-                        className={styles.infoCard}
-                    />
-                    <FormProvider {...methods}>
-                        <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                            <div className={styles.forms}>
-                                {contents({ program, userData })}
-                                <TermsForm
-                                    terms={{
-                                        personalInfoTerm,
-                                        thirdPartyInfoTerm,
-                                    }}
-                                    setTerms={setTerms}
-                                />
-                            </div>
-                            <div className="d-flex justify-content-end">
-                                <Button size="xl" disabled={disabled}>
-                                    신청하기
-                                </Button>
-                            </div>
-                        </Form>
-                    </FormProvider>
-                </FormContainer>
-            </Layout.Main>
-            <Layout.Footer />
-        </Layout>
+        <>
+            <Layout>
+                <Layout.Header userData={userData} />
+                <Layout.Main>
+                    <FormContainer>
+                        <PageHeader>
+                            <PageHeader.Title>
+                                <div className="d-flex align-items-center">
+                                    <Button
+                                        icon={<BackPageIcon />}
+                                        tag={Link}
+                                        className="mr-2"
+                                        color="link"
+                                        href={`/programs/${programId}`}
+                                    />
+                                    <h3>{title}</h3>
+                                </div>
+                            </PageHeader.Title>
+                        </PageHeader>
+                        <ProgramInfoCard
+                            program={program}
+                            notice="프로그램은 최대 3개까지 신청 가능합니다."
+                            className={styles.infoCard}
+                        />
+                        <FormProvider {...methods}>
+                            <Form onSubmit={methods.handleSubmit(onSubmit)}>
+                                <div className={styles.forms}>
+                                    {contents({ program, userData })}
+                                    <TermsForm
+                                        terms={{
+                                            personalInfoTerm,
+                                            thirdPartyInfoTerm,
+                                        }}
+                                        setTerms={setTerms}
+                                    />
+                                </div>
+                                <div className="d-flex justify-content-end">
+                                    <Button
+                                        color="primary"
+                                        size="xl"
+                                        disabled={disabled}
+                                    >
+                                        신청하기
+                                    </Button>
+                                </div>
+                            </Form>
+                        </FormProvider>
+                    </FormContainer>
+                </Layout.Main>
+                <Layout.Footer />
+            </Layout>
+
+            <Modal
+                isOpen={isOpen}
+                toggle={toggle}
+                size="md"
+                backdrop="static"
+                centered
+            >
+                <ModalHeader>프로그램 신청 안내</ModalHeader>
+                <ModalBody>프로그램은 최대 3개까지 신청 가능합니다.</ModalBody>
+                <ModalFooter>
+                    <Button
+                        color="primary"
+                        size="lg"
+                        onClick={handleModalClose}
+                    >
+                        확인
+                    </Button>
+                </ModalFooter>
+            </Modal>
+        </>
     );
 }
 

@@ -6,6 +6,7 @@ import { formatDate } from '@/utils';
 
 import styles from './ProgramInfoCard.module.scss';
 import { PROGRAM_DIVISION } from '@/constants/db';
+import ProgramInfoCardLoading from './ProgramInfoCard.loading';
 
 function ProgramInfoCard({ program, notice, className }) {
     const location =
@@ -35,5 +36,7 @@ function ProgramInfoCard({ program, notice, className }) {
         </>
     );
 }
+
+ProgramInfoCard.Loading = ProgramInfoCardLoading;
 
 export default ProgramInfoCard;

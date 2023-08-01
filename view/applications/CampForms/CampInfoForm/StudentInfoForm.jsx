@@ -30,7 +30,7 @@ const ApplyTargetInput = ({ programTarget }) => {
         highTargetKey,
     ]);
 
-    const targetSchool = Object.values(programTarget);
+    const targetSchool = Object.values(programTarget) || {};
 
     return (
         <FormWrapper label="신청 가능 대상" isRequired>

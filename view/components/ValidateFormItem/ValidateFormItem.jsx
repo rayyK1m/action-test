@@ -90,6 +90,7 @@ export const InputItem = ({
     label,
     inputKey,
     placeholder,
+    validate,
     ...props
 }) => {
     const {
@@ -100,6 +101,7 @@ export const InputItem = ({
         ...(isRequired
             ? {
                   required: '필수 항목을 입력해주세요.',
+                  ...validate,
               }
             : {}),
     });
@@ -199,7 +201,13 @@ export const ImageFileInputItem = ({
     );
 };
 
-export const DatePickerItem = ({ datePickerKey, disabled, date, ...props }) => {
+export const DatePickerItem = ({
+    datePickerKey,
+    disabled,
+    date,
+    calendarProps,
+    ...props
+}) => {
     const {
         control,
         trigger,
@@ -230,10 +238,11 @@ export const DatePickerItem = ({ datePickerKey, disabled, date, ...props }) => {
                                 onBlur,
                                 ...props,
                             }}
+                            calendarProps={calendarProps}
                             disabled={disabled}
                         />
                         {errors[datePickerKey] && (
-                            <div className="d-flex mt-1 text-danger">
+                            <div className="d-flex align-items-center mt-1 text-danger">
                                 <NoticeCircleIcon />
                                 <span className="ml-1">
                                     {errors[datePickerKey]?.message}
@@ -258,7 +267,7 @@ export const TimePickerItem = ({ timePickerKey, disabled, ...props }) => {
             control={control}
             name={timePickerKey}
             rules={{
-                required: '필수 항목을 입력해주세요.',
+                required: '필수 항목을 입력해주세요',
             }}
             render={({ field: { ref, value, onChange, onBlur } }) => (
                 <div className="d-flex flex-column" style={{ flex: 1 }}>
@@ -274,7 +283,7 @@ export const TimePickerItem = ({ timePickerKey, disabled, ...props }) => {
                         disabled={disabled}
                     />
                     {errors[timePickerKey] && (
-                        <div className="d-flex mt-1 text-danger">
+                        <div className="d-flex align-items-center mt-1 text-danger">
                             <NoticeCircleIcon />
                             <span className="ml-1">
                                 {errors[timePickerKey]?.message}

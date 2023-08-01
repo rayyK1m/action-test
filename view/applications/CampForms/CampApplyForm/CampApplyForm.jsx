@@ -15,7 +15,7 @@ export const TeacherTypeCamp = {
             <ManagerForm userId={userData.id} />
             <TeacherForm />
             <TargetForm programTargetGroup={program.targetGroup} />
-            <LearningTimeForm />
+            <LearningTimeForm educationDate={program.educationDate} />
         </>
     ),
 };

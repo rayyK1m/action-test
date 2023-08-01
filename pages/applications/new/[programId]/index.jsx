@@ -4,8 +4,9 @@ import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
 import SSRSuspense from '@/components/SSRSuspense';
 import { useRouter } from 'next/router';
-import { withSessionSsr } from '@/server/utils/auth';
+import { checkAuthSsr } from '@/server/utils/auth';
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
+import { PROGRAM_DIVISION, ROLE } from '@/constants/db';
 
 function Page() {
     const router = useRouter();
@@ -25,7 +26,10 @@ function Page() {
 
 export default Page;
 
-export const getServerSideProps = withSessionSsr(async (context) => {
+export const getServerSideProps = checkAuthSsr({
+    shouldLogin: true,
+    roles: [ROLE.TEACHER, ROLE.TEACHER],
+})(async (context) => {
     const queryClient = new QueryClient();
     const programId = context.params.programId;
 
@@ -37,6 +41,25 @@ export const getServerSideProps = withSessionSsr(async (context) => {
 
     if (session) {
         await queryClient.prefetchQuery(sessionKeys.all(), () => session);
+    }
+
+    const {
+        item: {
+            type: { division },
+        },
+    } = queryClient.getQueryData(programsKeys.item());
+
+    /** 방문형 신청 페이지는 선생님만, 집합형 신청 페이지는 학생만 접근 가능 */
+    if (
+        (division === PROGRAM_DIVISION.방문형 && session.role === 'student') ||
+        (division === PROGRAM_DIVISION.집합형 && session.role === 'teacher')
+    ) {
+        return {
+            redirect: {
+                destination: '/403',
+                permanent: false,
+            },
+        };
     }
 
     return {

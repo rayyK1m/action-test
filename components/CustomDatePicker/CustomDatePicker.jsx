@@ -32,7 +32,15 @@ import styles from './CustomDatePicker.module.scss';
  */
 const CustomDatePicker = forwardRef(
     (
-        { size = 'lg', inputClassName, inputProps, date, onChange, disabled },
+        {
+            size = 'lg',
+            inputClassName,
+            inputProps,
+            calendarProps,
+            date,
+            onChange,
+            disabled,
+        },
         ref,
     ) => {
         const [isOpen, setIsOpen] = useState(false);
@@ -77,7 +85,11 @@ const CustomDatePicker = forwardRef(
                     </DropdownToggle>
 
                     <DropdownMenu>
-                        <Calendar locale="ko" onClickDay={handleChange} />
+                        <Calendar
+                            locale="ko"
+                            onClickDay={handleChange}
+                            {...calendarProps}
+                        />
                     </DropdownMenu>
                 </Dropdown>
             </>

@@ -60,7 +60,7 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
         [targetFields],
     );
 
-    const targetSchool = Object.values(programTargetGroup);
+    const targetSchool = Object.values(programTargetGroup) || {};
 
     return (
         <FormWrapper
@@ -204,6 +204,7 @@ export const ApplyForm = ({ programTargetGroup, userId }) => {
     } = CAMP_APPLY_KEYS;
 
     const { emailKey } = USER_KEYS;
+    const phoneNumberReg = /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/;
 
     return (
         <div className={styles.form}>
@@ -214,6 +215,13 @@ export const ApplyForm = ({ programTargetGroup, userId }) => {
                     label="이름"
                     placeholder="예) 김구름"
                     inputKey={userNameKey}
+                    validate={{
+                        minLength: {
+                            value: 2,
+                            message: '2글자 이상을 입력해주세요',
+                        },
+                    }}
+                    maxLength="25"
                 />
                 <InputItem
                     isRequired
@@ -221,6 +229,13 @@ export const ApplyForm = ({ programTargetGroup, userId }) => {
                     placeholder="예) 010-1234-5678"
                     inputKey={phoneNumberKey}
                     onInput={formatPhoneNumberInput}
+                    validate={{
+                        validate: {
+                            validatePhoneNumber: (v) =>
+                                phoneNumberReg.test(v) ||
+                                '올바른 휴대 전화번호를 입력해주세요.',
+                        },
+                    }}
                 />
             </div>
             <div className={styles.divideRow}>
@@ -236,12 +251,6 @@ export const ApplyForm = ({ programTargetGroup, userId }) => {
                     items={PROGRAM_OPERATION_LOCATIONS}
                 />
             </div>
-            {/* <InputItem
-                isRequired
-                label="소속 학교"
-                placeholder="소속 학교"
-                inputKey={schoolNameKey}
-            /> */}
             <SearchSchoolInput
                 userId={userId}
                 schoolKey={{

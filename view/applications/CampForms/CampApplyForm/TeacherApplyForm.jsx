@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -30,7 +30,7 @@ import useDebounce from '@/hooks/useDebounce';
 
 import { useGetSchools } from '@/query-hooks/useSchool';
 import SearchSchoolDropdown from '@/view/components/SearchSchoolDropdown/SearchSchoolDropdown';
-
+import dayjs from 'dayjs';
 // 방문형 프로그램 캠프 신청 폼
 
 const ApplyTargetInput = ({ programTargetGroup }) => {
@@ -81,7 +81,7 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
             }
         };
 
-    const targetSchool = Object.values(programTargetGroup);
+    const targetSchool = Object.values(programTargetGroup) || {};
 
     return (
         <FormWrapper
@@ -232,6 +232,7 @@ export const ManagerForm = ({ userId }) => {
                     label="현장 담당자 명"
                     placeholder="예) 김구름"
                     inputKey={userNameKey}
+                    disabled
                 />
                 <FormInput
                     label="담당자 연락처"
@@ -320,10 +321,11 @@ export const TargetForm = ({ programTargetGroup }) => {
     );
 };
 
-export const LearningTimeForm = () => {
+export const LearningTimeForm = ({ educationDate }) => {
     const {
         getValues,
         formState: { errors },
+        watch,
     } = useFormContext();
     const { startDateKey, startTimeKey, endDateKey, endTimeKey } =
         CAMP_APPLY_KEYS;
@@ -334,6 +336,14 @@ export const LearningTimeForm = () => {
         !!errors[startTimeKey] ||
         !!errors[endDateKey] ||
         !!errors[endTimeKey];
+    const [startDate, startTime, endDate, endTime] = watch([
+        startDateKey,
+        startTimeKey,
+        endDateKey,
+        endTimeKey,
+    ]);
+
+    const validDate = startDate || startTime || endDate || endTime;
 
     return (
         <div className={styles.form}>
@@ -349,9 +359,19 @@ export const LearningTimeForm = () => {
                         isRequired
                         label="교육 이수 시작일"
                         datePickerKey={startDateKey}
+                        calendarProps={{
+                            minDate: new Date(educationDate.start),
+                            ...(!!endDate
+                                ? {
+                                      maxDate: new Date(
+                                          dayjs(endDate).subtract(1, 'day'),
+                                      ),
+                                  }
+                                : {}),
+                        }}
                         timePickerKey={startTimeKey}
                         formText={
-                            !isDateError
+                            !isDateError && !validDate
                                 ? '안내된 교육 기간 중 실제로 진행하실 기간을 선택해주세요.'
                                 : ''
                         }
@@ -359,6 +379,16 @@ export const LearningTimeForm = () => {
                     <FormDatePicker
                         isRequired
                         label="교육 이수 종료일"
+                        calendarProps={{
+                            ...(!!startDate
+                                ? {
+                                      minDate: new Date(
+                                          dayjs(startDate).add(1, 'day'),
+                                      ),
+                                  }
+                                : {}),
+                            maxDate: new Date(educationDate.end),
+                        }}
                         datePickerKey={endDateKey}
                         timePickerKey={endTimeKey}
                     />

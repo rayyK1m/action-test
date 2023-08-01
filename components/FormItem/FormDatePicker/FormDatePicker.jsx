@@ -11,6 +11,7 @@ const FormDatePicker = ({
     isRequired,
     feedback,
     formText,
+    calendarProps,
     datePickerKey,
     timePickerKey,
     disabled,
@@ -26,6 +27,7 @@ const FormDatePicker = ({
                 <DatePickerItem
                     datePickerKey={datePickerKey}
                     disabled={disabled}
+                    calendarProps={calendarProps}
                 />
                 <TimePickerItem
                     timePickerKey={timePickerKey}
