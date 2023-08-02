@@ -1,0 +1,23 @@
+@import '@/styles/utils.scss';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; /* 20px -> 1.25rem */
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.tableCard {
+    overflow: hidden;
+    border-bottom: 0;
+}
+
+.targetGroup {
+    white-space: nowrap;
+    @include ellipsis();
+}

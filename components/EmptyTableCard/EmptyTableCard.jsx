@@ -6,6 +6,7 @@ import styles from './EmptyTableCard.module.scss';
 const EMPTY_TYPE = {
     NO_DATA: 'https://statics.goorm.io/images/gds/empty_folder.svg',
     NO_SEARCH: 'https://statics.goorm.io/images/gds/empty_search.svg',
+    NO_LIST: 'https://statics.goorm.io/images/gds/empty_list.svg',
 };
 
 /**

@@ -1,20 +1,17 @@
-import Link from 'next/link';
-
 import { cellHelper } from '@goorm-dev/gds-tables';
 import { Button, Tooltip } from '@goorm-dev/gds-components';
 
-import { PROGRAM_DIVISION } from '@/constants/db';
 import { joinToGradeString } from '@/utils';
-import { CAMP_TICKET_STATUS_TEXT } from './ApplicantTable.constants';
+
 import useHover from '@/hooks/useHover';
 
-import styles from './ApplicantTable.module.scss';
+import styles from './SelectApplicantTable.module.scss';
 
-export const getTableColoums = (division) => {
-    const baseColumns = [
+export const getTableColums = () => {
+    return [
         {
             accessorKey: 'userName',
-            header: <div>신청자 명</div>,
+            header: <div>이름</div>,
             cell: cellHelper(({ value }) => (
                 <div className="d-flex">{value}</div>
             )),
@@ -77,89 +74,26 @@ export const getTableColoums = (division) => {
             size: 168,
             maxSize: 248,
         },
-    ];
-    const 방문형 = [
-        {
-            accessorKey: 'schoolName',
-            header: <div>교육 장소</div>,
-            cell: cellHelper(({ value }) => <div>{value}</div>),
-            size: 340,
-            maxSize: 500,
-        },
-        {
-            accessorKey: 'applicantCount',
-            header: <div>신청 인원</div>,
-            cell: cellHelper(({ value }) => <div>{value}</div>),
-            size: 129,
-        },
-        {
-            accessorKey: 'reviewStatus',
-            header: <div>승인 상태</div>,
-            cell: (info) => {
-                const status = info.getValue();
-                const Icon = CAMP_TICKET_STATUS_TEXT[status].icon;
-                return (
-                    <div
-                        className={`d-flex align-items-center text-${CAMP_TICKET_STATUS_TEXT[status].color}`}
-                    >
-                        <Icon className="mr-2" />
-                        {CAMP_TICKET_STATUS_TEXT[status].text}
-                    </div>
-                );
-            },
-            size: 119,
-            enableSorting: true,
-        },
-        {
-            accessorKey: 'viewDetail',
-            header: <></>,
-            cell: () => <Button color="link">신청 정보 보기</Button>,
-            size: 151,
-        },
-    ];
-    const 집합형 = [
         {
             accessorKey: 'schoolName',
             header: <div>소속 학교</div>,
             cell: cellHelper(({ value }) => <div>{value}</div>),
-            size: 340,
-            maxSize: 500,
+            size: 310,
+            maxSize: 450,
+            enableSorting: true,
         },
         {
             accessorKey: 'phoneNumber',
             header: <div>연락처</div>,
             cell: cellHelper(({ value }) => <div>{value}</div>),
-            size: 140,
-        },
-        {
-            accessorKey: 'reviewStatus',
-            header: <div>승인 상태</div>,
-            cell: (info) => {
-                const status = info.getValue();
-                const Icon = CAMP_TICKET_STATUS_TEXT[status].icon;
-                return (
-                    <div
-                        className={`d-flex align-items-center text-${CAMP_TICKET_STATUS_TEXT[status].color}`}
-                    >
-                        <Icon className="mr-2" />
-                        {CAMP_TICKET_STATUS_TEXT[status].text}
-                    </div>
-                );
-            },
-            size: 119,
-            enableSorting: true,
+            size: 145,
         },
         {
             accessorKey: 'viewDetail',
             header: <></>,
             cell: () => <Button color="link">신청 정보 확인</Button>,
-            size: 151,
-            minSize: 151,
+            size: 154,
+            minSize: 154,
         },
     ];
-
-    if (division === PROGRAM_DIVISION.방문형) {
-        return [...baseColumns, ...방문형];
-    }
-    return [...baseColumns, ...집합형];
 };

@@ -201,6 +201,7 @@ function ApplicantTable() {
                             ? '해당하는 신청자가 없습니다.'
                             : '프로그램 신청자가 없습니다.'
                     }
+                    type="NO_LIST"
                 />
             ) : (
                 <>

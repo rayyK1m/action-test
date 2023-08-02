@@ -1,4 +1,4 @@
-import { PROGRAM_DIVISION } from '@/constants/db';
+import { PROGRAM_DIVISION, CAMP_REVIEW_STATUS } from '@/constants/db';
 import swcampSdk from '@/server/libs/swcamp';
 import _omit from 'lodash/omit';
 
@@ -72,8 +72,11 @@ const getCampTicketsByProgram = async (req, res) => {
         page,
         limit,
         sort,
+        reviewStatus:
+            reviewStatus === 'ALL'
+                ? `${CAMP_REVIEW_STATUS.심사중.value},${CAMP_REVIEW_STATUS.승인.value},${CAMP_REVIEW_STATUS.거절.value}`
+                : reviewStatus,
         ...(search && { search }),
-        ...(reviewStatus !== 'ALL' && { reviewStatus }),
     });
 
     return res.json({

@@ -29,7 +29,7 @@ const getTableData = () => {
     return data;
 };
 
-const getTableColoums = (division) => [
+const getTableColums = (division) => [
     {
         accessorKey: 'userName',
         header: <div>신청자 명</div>,
@@ -93,7 +93,7 @@ const getTableColoums = (division) => [
 const ROW_DATA = getTableData();
 
 function ApplicantTableLoading({ division }) {
-    const COLUMNS = useMemo(() => getTableColoums(division), [division]);
+    const COLUMNS = useMemo(() => getTableColums(division), [division]);
     const { getTableProps } = useHScrollTable({
         columns: COLUMNS,
         data: ROW_DATA,

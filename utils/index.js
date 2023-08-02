@@ -175,3 +175,16 @@ export const ellipsisedString = (string, maxLength) => {
         return string.slice(0, maxLength) + '...';
     }
 };
+
+/**
+ *
+ * @param {Array<number>} target 숫자로 구성된 타겟 학생 배열
+ * @param {String} joinUnit 구분자
+ * @param {String} prefix
+ * @returns {String}
+ */
+export const joinToGradeString = (target, joinUnit, prefix) => {
+    const arrayWithGrade = target.map((grade) => `${grade}학년`);
+
+    return prefix + arrayWithGrade.join(joinUnit);
+};
