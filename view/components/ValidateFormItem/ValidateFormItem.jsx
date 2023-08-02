@@ -126,6 +126,7 @@ export const FileInputItem = ({ label, fileKey, maxFileSize, disabled }) => {
     const {
         control,
         formState: { errors, isDirty },
+        trigger,
     } = useFormContext();
 
     return (
@@ -139,22 +140,28 @@ export const FileInputItem = ({ label, fileKey, maxFileSize, disabled }) => {
                             ? '파일을 업로드해주세요.'
                             : undefined,
                     maxSize: (fieldValue) =>
-                        fieldValue?.size > maxFileSize * 1024 * 1024
+                        fieldValue?.size > maxFileSize
                             ? `파일 용량이 ${maxFileSize}MB를 초과하였습니다. 파일을 다시 선택해 주세요.`
                             : undefined,
                 },
             }}
-            render={({ field: { value, onChange } }) => (
-                <FormFileInput
-                    isRequired
-                    label={label}
-                    value={value}
-                    onChange={onChange}
-                    errors={errors[fileKey]}
-                    maxFileSize={maxFileSize}
-                    disabled={disabled}
-                />
-            )}
+            render={({ field: { value, onChange } }) => {
+                const handleChange = (value) => {
+                    onChange(value);
+                    trigger(fileKey);
+                };
+                return (
+                    <FormFileInput
+                        isRequired
+                        label={label}
+                        value={value}
+                        onChange={handleChange}
+                        errors={errors[fileKey]}
+                        maxFileSize={maxFileSize}
+                        disabled={disabled}
+                    />
+                );
+            }}
         />
     );
 };
@@ -167,6 +174,7 @@ export const ImageFileInputItem = ({
 }) => {
     const {
         control,
+        trigger,
         formState: { errors, isDirty },
     } = useFormContext();
 
@@ -181,22 +189,28 @@ export const ImageFileInputItem = ({
                             ? '파일을 업로드해주세요.'
                             : undefined,
                     maxSize: (fieldValue) =>
-                        fieldValue?.size > maxFileSize * 1024 * 1024
+                        fieldValue?.size > maxFileSize
                             ? `파일 용량이 ${maxFileSize}MB를 초과하였습니다. 파일을 다시 선택해 주세요.`
                             : undefined,
                 },
             }}
-            render={({ field: { value, onChange } }) => (
-                <FormFileInput.WithImage
-                    isRequired
-                    label={label}
-                    value={value}
-                    onChange={onChange}
-                    errors={errors[fileKey]}
-                    maxFileSize={2}
-                    disabled={disabled}
-                />
-            )}
+            render={({ field: { value, onChange } }) => {
+                const handleChange = (value) => {
+                    onChange(value);
+                    trigger(fileKey);
+                };
+                return (
+                    <FormFileInput.WithImage
+                        isRequired
+                        label={label}
+                        value={value}
+                        onChange={handleChange}
+                        errors={errors[fileKey]}
+                        maxFileSize={2}
+                        disabled={disabled}
+                    />
+                );
+            }}
         />
     );
 };

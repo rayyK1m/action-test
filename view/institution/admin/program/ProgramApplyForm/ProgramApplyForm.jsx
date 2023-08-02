@@ -2,21 +2,25 @@ import { useEffect, useState, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import _isEmpty from 'lodash/isEmpty';
 
-import {
-    FormWrapper,
-    FormButtonToggleGroup,
-    FormInput,
-} from '@/components/FormItem';
-import Divider from '@/components/Divider';
+import useToggle from '@/hooks/useToggle';
 
-import styles from '../program.module.scss';
+import {
+    InputItem,
+    DropdownInputItem,
+    EditorInputItem,
+    FileInputItem,
+    ImageFileInputItem,
+} from '@/view/components/ValidateFormItem';
+import { FormWrapper, FormDatePicker } from '@/components/FormItem';
+
 import {
     PROGRAM_CATEGORIES,
+    PROGRAM_DIVISION,
     PROGRAM_OPERATION_LOCATIONS,
 } from '@/constants/db';
+import { PROGRAM_APPLY_KEYS, SCHOOL } from '../program.contants.js';
 
 import {
-    Input,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -24,104 +28,13 @@ import {
     Button,
     Checkbox,
 } from '@goorm-dev/gds-components';
-import { ChevronDownIcon, NoticeCircleIcon } from '@goorm-dev/gds-icons';
+import { ChevronDownIcon } from '@goorm-dev/gds-icons';
+import Divider from '@/components/Divider';
+import styles from '../program.module.scss';
+import { formatNumberInput } from '@/utils/index.js';
+import dayjs from 'dayjs';
 
-import useToggle from '@/hooks/useToggle';
-import { PROGRAM_APPLY_KEYS, SCHOOL } from '../program.contants.js';
-import {
-    DropdownInputItem,
-    EditorInputItem,
-    FileInputItem,
-    ImageFileInputItem,
-} from '@/view/components/ValidateFormItem';
-
-const InputItem = ({ label, inputKey, placeholder, ...props }) => {
-    const {
-        register,
-        formState: { errors },
-    } = useFormContext();
-    const { ref, ...rest } = register(inputKey, {
-        required: '필수 항목을 입력해주세요.',
-    });
-    return (
-        <FormInput
-            ref={ref}
-            isRequired
-            label={label}
-            placeholder={placeholder}
-            feedback={errors[inputKey]?.message}
-            invalid={!!errors[inputKey]}
-            {...props}
-            {...rest}
-        />
-    );
-};
-
-const PriceInputItem = ({ priceKey }) => {
-    const {
-        setValue,
-        watch,
-        register,
-        formState: { errors },
-    } = useFormContext();
-
-    const price = watch(priceKey);
-    const [isCharged, setIsCharged] = useState(price > 0);
-
-    return (
-        <div className={styles.buttonGroup}>
-            <FormButtonToggleGroup
-                label="비용"
-                defaultIndex={isCharged ? 1 : 0}
-                items={[
-                    {
-                        children: '무료',
-                        props: {
-                            onClick: () => {
-                                setIsCharged(false);
-                                setValue(priceKey, 0);
-                            },
-                        },
-                    },
-                    {
-                        children: '유료',
-                        props: {
-                            onClick: () => setIsCharged(true),
-                        },
-                    },
-                ]}
-                size="md"
-                isRequired
-            />
-            {isCharged && (
-                <div>
-                    <Input
-                        type="number"
-                        placeholder="금액을 입력해주세요."
-                        defaultValue={price}
-                        bsSize="lg"
-                        {...register(priceKey, {
-                            min: {
-                                value: 1,
-                                message: '필수 항목을 입력해주세요.',
-                            },
-                            required: '필수 항목을 입력해주세요.',
-                        })}
-                        invalid={!!errors[priceKey]}
-                    />
-                    {errors[priceKey] && (
-                        <div className="d-flex algin-items-center text-danger mt-1">
-                            <NoticeCircleIcon />
-                            <p className="ml-1">{errors[priceKey].message}</p>
-                        </div>
-                    )}
-                </div>
-            )}
-        </div>
-    );
-};
-
-const ProgramTypeInput = ({ campType, typeKey }) => {
+const ProgramTypeInput = ({ division, typeKey }) => {
     const { setValue, watch } = useFormContext();
 
     const items = ['장기', '단기'];
@@ -129,7 +42,7 @@ const ProgramTypeInput = ({ campType, typeKey }) => {
 
     useEffect(() => {
         setValue(typeKey, {
-            camp: campType,
+            division,
             duration: '장기',
         });
     }, []);
@@ -147,7 +60,7 @@ const ProgramTypeInput = ({ campType, typeKey }) => {
                     className={styles.typeButton}
                     disabled
                 >
-                    {campType}
+                    {division}
                 </Button>
                 <UncontrolledDropdown
                     isOpen={isOpen}
@@ -174,8 +87,8 @@ const ProgramTypeInput = ({ campType, typeKey }) => {
                             <DropdownItem
                                 key={item}
                                 onClick={() =>
-                                    setValue('type', {
-                                        camp: campType,
+                                    setValue(typeKey, {
+                                        division,
                                         duration: item,
                                     })
                                 }
@@ -283,16 +196,13 @@ const ApplyTargetInput = () => {
     );
 };
 
-const BasicForm = ({ type }) => {
-    const { getValues } = useFormContext();
+const BasicForm = ({ division }) => {
     const {
         thumbnailKey,
-        thumbnailFileKey,
         nameKey,
         categoryKey,
         operateLocationKey,
         typeKey,
-        priceKey,
         descriptionKey,
         contactKey,
     } = PROGRAM_APPLY_KEYS;
@@ -304,15 +214,16 @@ const BasicForm = ({ type }) => {
                 label="프로그램 썸네일"
                 isRequired
                 maxFileSize={2}
-                fileKey={thumbnailFileKey}
+                fileKey={thumbnailKey}
             />
             <div className={styles.divideRow}>
                 <InputItem
+                    isRequired
                     label="프로그램 명"
                     placeholder="예) 신나는 로봇 코딩"
                     inputKey={nameKey}
                 />
-                <ProgramTypeInput campType={type} typeKey={typeKey} />
+                <ProgramTypeInput division={division} typeKey={typeKey} />
             </div>
             <div className={styles.divideRow}>
                 <DropdownInputItem
@@ -321,38 +232,82 @@ const BasicForm = ({ type }) => {
                     placeholder="카테고리 선택"
                     items={PROGRAM_CATEGORIES}
                 />
-                <PriceInputItem priceKey={priceKey} />
+                <DropdownInputItem
+                    label="운영 지역"
+                    placeholder="운영 지역 선택"
+                    items={PROGRAM_OPERATION_LOCATIONS}
+                    dropdownKey={operateLocationKey}
+                />
             </div>
             <EditorInputItem
                 label="프로그램 소개"
                 placeholder="예) 프로그래밍의 순차와 반복에 대해 학습하며 컴퓨팅 사고력을 키운다."
                 editorKey={descriptionKey}
             />
-            <DropdownInputItem
-                label="운영 지역"
-                placeholder="운영 지역 선택"
-                items={PROGRAM_OPERATION_LOCATIONS}
-                dropdownKey={operateLocationKey}
-            />
             <InputItem
+                isRequired
+                type="textarea"
                 label="문의처(기관)"
                 placeholder="프로그램 관련 문의할 수 있는 연락처나 이메일을 입력해주세요."
                 inputKey={contactKey}
+                className={styles.textarea}
             />
         </div>
     );
 };
 
-const ApplyForm = ({ program }) => {
+const ApplyForm = () => {
+    const { watch } = useFormContext();
+    const {
+        applyStartDateKey,
+        applyStartTimeKey,
+        applyEndDateKey,
+        applyEndTimeKey,
+    } = PROGRAM_APPLY_KEYS;
+
+    const [applyStartDate, applyEndDate] = watch([
+        applyStartDateKey,
+        applyEndDateKey,
+    ]);
+
     return (
         <div className={styles.form}>
             <h5>신청 정보</h5>
-            <ApplyTargetInput targetGroup={program?.targetGroup} />
+            <div className={styles.divideRow}>
+                <FormDatePicker
+                    isRequired
+                    label="신청 시작일"
+                    datePickerKey={applyStartDateKey}
+                    timePickerKey={applyStartTimeKey}
+                    calendarProps={{
+                        ...(!!applyEndDate
+                            ? {
+                                  maxDate: new Date(applyEndDate),
+                              }
+                            : {}),
+                    }}
+                />
+                <FormDatePicker
+                    isRequired
+                    label="신청 종료일"
+                    datePickerKey={applyEndDateKey}
+                    timePickerKey={applyEndTimeKey}
+                    calendarProps={{
+                        ...(!!applyStartDate
+                            ? {
+                                  minDate: new Date(applyStartDate),
+                              }
+                            : {}),
+                    }}
+                />
+            </div>
+            <ApplyTargetInput />
         </div>
     );
 };
 
-const EducationForm = ({ type }) => {
+const EducationForm = ({ division }) => {
+    const { watch } = useFormContext();
     const {
         attachedFilesKey,
         learningTimeKey,
@@ -360,18 +315,55 @@ const EducationForm = ({ type }) => {
         noticeKey,
         educationLocationNameKey,
         educationLocationAddressKey,
+        educationStartDateKey,
+        educationStartTimeKey,
+        educationEndDateKey,
+        educationEndTimeKey,
     } = PROGRAM_APPLY_KEYS;
+
+    const [educationStartDate, educationEndDate] = watch([
+        educationStartDateKey,
+        educationEndDateKey,
+    ]);
 
     return (
         <div className={styles.form}>
             <h5>교육 정보</h5>
             <InputItem
-                type="number"
+                isRequired
                 label="총 교육 차시"
                 placeholder="예) 8차시"
                 inputKey={learningTimeKey}
+                onInput={formatNumberInput}
             />
-            {/** 교육 기간 DatePicker 논의 중 */}
+            <div className={styles.divideRow}>
+                <FormDatePicker
+                    isRequired
+                    label="교육 시작일"
+                    datePickerKey={educationStartDateKey}
+                    timePickerKey={educationStartTimeKey}
+                    calendarProps={{
+                        ...(!!educationEndDate
+                            ? {
+                                  maxDate: new Date(educationEndDate),
+                              }
+                            : {}),
+                    }}
+                />
+                <FormDatePicker
+                    isRequired
+                    label="교육 종료일"
+                    datePickerKey={educationEndDateKey}
+                    timePickerKey={educationEndTimeKey}
+                    calendarProps={{
+                        ...(!!educationStartDate
+                            ? {
+                                  minDate: new Date(educationStartDate),
+                              }
+                            : {}),
+                    }}
+                />
+            </div>
             <EditorInputItem
                 label="커리큘럼"
                 placeholder={`예) \n1차시. 순차 구조와 반복 구조 이해하기 \n2차시. 로봇을 활용한 그림 그리기`}
@@ -380,24 +372,27 @@ const EducationForm = ({ type }) => {
             <FileInputItem
                 label="프로그램 교안 첨부 파일"
                 isRequired
-                maxFileSize={30}
+                maxFileSize={2}
                 fileKey={attachedFilesKey}
             />
             <InputItem
+                isRequired
                 type="textarea"
                 label="안내사항"
                 placeholder="안내 사항이나 주의 사항을 입력해주세요."
                 className={styles.textarea}
                 inputKey={noticeKey}
             />
-            {type === '집합형' && (
+            {division === PROGRAM_DIVISION.집합형 && (
                 <div className={styles.divideRow}>
                     <InputItem
+                        isRequired
                         label="교육 장소"
                         placeholder="예) 구름 타운홀"
                         inputKey={educationLocationNameKey}
                     />
                     <InputItem
+                        isRequired
                         label="교육 주소"
                         placeholder="교육 주소"
                         inputKey={educationLocationAddressKey}
@@ -408,11 +403,11 @@ const EducationForm = ({ type }) => {
     );
 };
 
-const EditForm = ({ camp }) => (
+const EditForm = ({ division }) => (
     <>
-        <BasicForm type={camp} />
+        <BasicForm division={division} />
         <ApplyForm />
-        <EducationForm type={camp} />
+        <EducationForm division={division} />
     </>
 );
 

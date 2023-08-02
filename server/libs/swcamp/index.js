@@ -112,7 +112,7 @@ const getProgramsAdmin = async ({
 const getProgramAdmin = async ({ userId, institutionId, programId }) => {
     try {
         const institutionQueryString = institutionId
-            ? `institutionId=${institutionId}&`
+            ? `institutionId=${institutionId}`
             : '';
         const { data } = await swcampInstance.get(
             `/api/v1/programs/${programId}/admin?${institutionQueryString}`,
@@ -140,6 +140,49 @@ const getProgram = async ({ programId }) => {
         throw new ExternalResponseError({
             message: 'SWCAMP API',
             res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
+const createProgram = async ({ userId, institutionId, formData }) => {
+    try {
+        const { data } = await swcampInstance.post(
+            `${process.env.SWCAMP_API_HOST}/api/v1/programs?institutionId=${institutionId}`,
+            formData,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+            // NOTE: 디버깅에 필요한 데이터 넣어두기
+        });
+    }
+};
+
+const patchProgramAdmin = async ({
+    institutionId,
+    userId,
+    programId,
+    formData,
+}) => {
+    try {
+        const { data } = await swcampInstance.patch(
+            `${process.env.SWCAMP_API_HOST}/api/v1/programs/${programId}?institutionId=${institutionId}`,
+            formData,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+            // NOTE: 디버깅에 필요한 데이터 넣어두기
         });
     }
 };
@@ -188,7 +231,6 @@ const cancelCampTicket = async ({ userId, ticketId }) => {
         );
         return data;
     } catch (err) {
-        console.log(err);
         throw new ExternalResponseError({
             message: 'SWCAMP API',
             res: { status: err.response.status, data: err.response.data },
@@ -213,19 +255,6 @@ const getCampTicketsCount = async ({ userId }) => {
     }
 };
 
-const createProgram = async () => {
-    try {
-        const { data } = await swcampInstance.post('/');
-        return data;
-    } catch (err) {
-        throw new ExternalResponseError({
-            message: 'SWCAMP API',
-            res: { status: err.response.status, data: err.response.data },
-            // NOTE: 디버깅에 필요한 데이터 넣어두기
-        });
-    }
-};
-
 const createCampTicket = async ({ role, userId, formData }) => {
     try {
         const { data } = await swcampInstance.post(
@@ -237,7 +266,6 @@ const createCampTicket = async ({ role, userId, formData }) => {
         );
         return data;
     } catch (err) {
-        console.log(err.response.data);
         throw new ExternalResponseError({
             message: 'SWCAMP API',
             res: { status: err.response.status, data: err.response.data },
@@ -399,8 +427,9 @@ const swcampSdk = {
      */
     getPrograms,
     getProgram,
-    getProgramsAdmin,
     getProgramAdmin,
+    patchProgramAdmin,
+    getProgramsAdmin,
     createProgram,
 
     /**

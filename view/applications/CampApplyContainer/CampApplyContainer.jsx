@@ -9,7 +9,7 @@ import {
 
 import Layout from '@/components/Layout/Layout';
 import PageHeader from '@/components/PageHeader';
-import FormContainer from '@/view/components/FormContainer/FormContainer';
+import GridContainer from '@/components/GridContainer';
 import ProgramInfoCard from '@/view/applications/ProgramInfoCard';
 
 import {
@@ -154,7 +154,7 @@ function CampApplyContainer({ userData, programId }) {
             <Layout>
                 <Layout.Header userData={userData} />
                 <Layout.Main>
-                    <FormContainer>
+                    <GridContainer colProps={{ md: { size: 10, offset: 1 } }}>
                         <PageHeader>
                             <PageHeader.Title>
                                 <div className="d-flex align-items-center">
@@ -197,7 +197,7 @@ function CampApplyContainer({ userData, programId }) {
                                 </div>
                             </Form>
                         </FormProvider>
-                    </FormContainer>
+                    </GridContainer>
                 </Layout.Main>
                 <Layout.Footer />
             </Layout>

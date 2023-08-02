@@ -2,22 +2,27 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import Layout from '@/components/Layout/Layout';
 import PageHeader from '@/components/PageHeader';
-import FormContainer from '@/view/components/FormContainer/FormContainer';
 import EditForm from '@/view/institution/admin/program/ProgramApplyForm';
-import { BackPageIcon } from '@goorm-dev/gds-icons';
-import styles from '../program.module.scss';
+import GridContainer from '@/components/GridContainer';
 
 import { PROGRAM_APPLY_KEYS } from '@/view/institution/admin/program/program.contants';
 
 import { Form, Button, Badge } from '@goorm-dev/gds-components';
+import { BackPageIcon } from '@goorm-dev/gds-icons';
+import styles from '../program.module.scss';
+import useSession from '@/query-hooks/useSession';
+import { formatData } from './ProgramApplyContainer.utils';
+import { useCreateProgram } from '@/query-hooks/usePrograms';
 
-function ProgramApplyContainer({ type }) {
+function ProgramApplyContainer({ division }) {
+    const { data: userData } = useSession.GET();
+
+    const createProgram = useCreateProgram();
+
     const methods = useForm({
         mode: 'onTouched',
         defaultValues: {
-            [PROGRAM_APPLY_KEYS.nameKey]: '',
-            [PROGRAM_APPLY_KEYS.typeKey]: { camp: type, duration: '장기' },
-            [PROGRAM_APPLY_KEYS.priceKey]: 0,
+            [PROGRAM_APPLY_KEYS.typeKey]: { division, duration: '장기' },
             [PROGRAM_APPLY_KEYS.elementaryTargetKey]: [],
             [PROGRAM_APPLY_KEYS.middleTargetKey]: [],
             [PROGRAM_APPLY_KEYS.highTargetKey]: [],
@@ -25,14 +30,18 @@ function ProgramApplyContainer({ type }) {
     });
 
     const onSubmit = (data) => {
-        console.log(data);
-        router.push('/institution/admin/program/new/complete');
+        const formData = formatData(data);
+        createProgram.mutate({
+            userId: userData.id,
+            institutionId: userData.institutionId,
+            formData,
+        });
     };
     return (
         <Layout>
-            <Layout.Header />
+            <Layout.Header userData={userData} />
             <Layout.Main>
-                <FormContainer>
+                <GridContainer colProps={{ md: { size: 10, offset: 1 } }}>
                     <PageHeader useHrTag={true}>
                         <PageHeader.Title>
                             <PageHeader.Breadcrumb
@@ -40,6 +49,7 @@ function ProgramApplyContainer({ type }) {
                                     {
                                         children: '프로그램 관리',
                                         active: false,
+                                        to: '/institution/admin',
                                     },
                                     {
                                         children: '새 프로그램 등록하기',
@@ -58,7 +68,7 @@ function ProgramApplyContainer({ type }) {
                                         새 프로그램 등록하기
                                     </h3>
                                     <Badge size="md" className="ml-1">
-                                        {type}
+                                        {division}
                                     </Badge>
                                 </div>
                             </div>
@@ -69,7 +79,7 @@ function ProgramApplyContainer({ type }) {
                             onSubmit={methods.handleSubmit(onSubmit)}
                             className={styles.forms}
                         >
-                            <EditForm camp={type} />
+                            <EditForm division={division} />
                             <Button
                                 type="submit"
                                 size="xl"
@@ -80,7 +90,7 @@ function ProgramApplyContainer({ type }) {
                             </Button>
                         </Form>
                     </FormProvider>
-                </FormContainer>
+                </GridContainer>
             </Layout.Main>
             <Layout.Footer />
         </Layout>

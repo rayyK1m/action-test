@@ -1,13 +1,16 @@
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
+/* container */
 .forms {
     display: flex;
     flex-direction: column;
     gap: 3rem;
+    margin-top: 1.5rem;
+}
+
+/* form */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .divideRow {
@@ -16,20 +19,10 @@
     gap: 1rem;
 }
 
+/* programTypeInput */
 .dropdown {
     align-self: flex-end;
     width: 100%;
-}
-
-.buttonGroup {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 50%;
-    gap: 0.5rem;
-
-    input:read-only {
-        opacity: 1;
-    }
 }
 
 .button,
@@ -43,14 +36,20 @@
     opacity: 1;
 }
 
+/* InputItem - textarea */
 .textarea {
     height: 6.5rem !important;
 }
 
+/* ApplyTargetInput */
 .checkForm {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+}
+
+.readOnly {
+    pointer-events: none;
 }
 
 .school {

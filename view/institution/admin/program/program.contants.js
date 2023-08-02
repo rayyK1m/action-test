@@ -2,7 +2,6 @@ export const PROGRAM_APPLY_KEYS = {
     nameKey: 'name', // 프로그램 명
     categoryKey: 'category', // 프로그램 카테고리
     thumbnailKey: 'thumbnail', // 프로그램 썸네일
-    thumbnailFileKey: 'thumbnailFile', //프로그램 썸네일 파일
     operateLocationKey: 'operateLocation', // 운영 지역
     learningTimeKey: 'learningTime', // 총 교육 차시
     attachedFilesKey: 'attachedFiles', // 프로그램 교안 첨부파일
@@ -15,8 +14,18 @@ export const PROGRAM_APPLY_KEYS = {
     elementaryTargetKey: 'elementarySchool', // 신청 가능 대상 - 초등학생
     middleTargetKey: 'middleSchool', // 신청 가능 대상 - 중학생
     highTargetKey: 'highSchool', // 신청 가능 대상 - 고등학생
-    educationLocationNameKey: 'educationLocation.name',
-    educationLocationAddressKey: 'educationLocation.address',
+    educationLocationNameKey: 'educationLocationName',
+    educationLocationAddressKey: 'educationLocationAddress',
+    // 신청 기간
+    applyStartDateKey: 'applyStartDate',
+    applyStartTimeKey: 'applyStartTime',
+    applyEndDateKey: 'applyEndDate',
+    applyEndTimeKey: 'applyEndTime',
+    // 교육 일정
+    educationStartDateKey: 'educationStartDate',
+    educationStartTimeKey: 'educationStartTime',
+    educationEndDateKey: 'educationEndDate',
+    educationEndTimeKey: 'educationEndTime',
 };
 
 export const SCHOOL = {

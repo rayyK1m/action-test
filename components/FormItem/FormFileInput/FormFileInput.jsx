@@ -6,6 +6,7 @@ import FormFileInputWithImage from './WithImage/FormFileInputWithImage';
 import useFileInput from '@/hooks/useFileInput';
 
 import styles from './FormFileInput.module.scss';
+import { useUploadFile, fileApis } from '@/query-hooks/useFile';
 
 const FormFileInput = ({
     label,
@@ -15,27 +16,65 @@ const FormFileInput = ({
     disabled,
     onChange,
     errors,
+    pathType = 'program',
 }) => {
     const {
         getFileInputProps,
         state: { fileMap, fileSize },
     } = useFileInput({
-        defaultFiles: value ? [value] : [],
+        defaultFiles: value
+            ? [
+                  {
+                      name: value.filename,
+                      src: value.url,
+                  },
+              ]
+            : [],
     });
+
+    const { deleteFiles, ...fileInputProps } = getFileInputProps();
+
     const fileSizeMB = useMemo(
         () => Number((fileSize / 1024 / 1024).toFixed(2)) || 0,
         [fileSize],
     );
 
+    const uploadFile = useUploadFile();
+    const handleChange = async (file) => {
+        if (!file) return;
+
+        if (fileSizeMB > maxFileSize) {
+            onChange({ size: fileSizeMB });
+            deleteFiles();
+            return;
+        }
+        /** 현재 GDS FileInput 스펙상 useEffect 내에서 파일 입력 처리하므로 getPresignedUrl을 useQuery를 사용하여 관리할 수 없음.
+         * 따라서 API를 직접 호출하여 사용하는 방법으로 url을 가져오도록 처리함.
+         */
+        const { url, path } = await fileApis.getPresignedUrl({
+            file,
+            pathType,
+        });
+
+        uploadFile.mutate({ url, file });
+
+        onChange({
+            filename: file.name,
+            url: path,
+        });
+    };
+
     useEffect(() => {
+        if (disabled || !!Object.values(fileMap)[0]?.src) return;
+
         const tempFile = Object.values(fileMap)[0]?.file;
-        onChange(tempFile);
+        handleChange(tempFile);
     }, [fileMap, fileSize]);
 
     return (
         <FormWrapper label={label} isRequired={isRequired}>
             <FileInput
-                {...getFileInputProps()}
+                {...fileInputProps}
                 captionText={errors && errors?.message}
                 isError={errors}
                 className={disabled && styles.disabledInput}

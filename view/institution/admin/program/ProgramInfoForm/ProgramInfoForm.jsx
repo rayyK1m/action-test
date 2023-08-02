@@ -1,16 +1,15 @@
 import { useFormContext } from 'react-hook-form';
 import {
     FormWrapper,
-    FormButtonToggleGroup,
     FormDropdown,
-    FormFileInput,
     FormInput,
     FormEditor,
+    FormDatePicker,
 } from '@/components/FormItem';
 import Divider from '@/components/Divider';
 import styles from '../program.module.scss';
 
-import { Input, Button, Checkbox } from '@goorm-dev/gds-components';
+import { Button, Checkbox } from '@goorm-dev/gds-components';
 import { ChevronDownIcon } from '@goorm-dev/gds-icons';
 
 import { PROGRAM_APPLY_KEYS, SCHOOL } from '../program.contants';
@@ -20,42 +19,6 @@ import {
     ImageFileInputItem,
 } from '@/view/components/ValidateFormItem';
 
-const PriceInputItem = ({ priceKey }) => {
-    const { getValues } = useFormContext();
-
-    const price = getValues(priceKey);
-
-    return (
-        <div className={styles.buttonGroup}>
-            <FormButtonToggleGroup
-                label="비용"
-                defaultIndex={price > 0 ? 1 : 0}
-                items={[
-                    {
-                        children: '무료',
-                        props: { disabled: true },
-                    },
-                    {
-                        children: '유료',
-                        props: { disabled: true },
-                    },
-                ]}
-                size="md"
-                isRequired
-            />
-            {price > 0 && (
-                <Input
-                    type="number"
-                    placeholder="금액을 입력해주세요."
-                    value={price}
-                    bsSize="lg"
-                    readOnly
-                />
-            )}
-        </div>
-    );
-};
-
 const ProgramTypeInput = ({ typeKey }) => {
     const { getValues } = useFormContext();
 
@@ -63,7 +26,7 @@ const ProgramTypeInput = ({ typeKey }) => {
         <div className={styles.divideRow}>
             <FormDropdown
                 label="프로그램 유형"
-                placeholder={getValues(`${typeKey}.camp`)}
+                value={getValues(`${typeKey}.division`)}
                 isRequired
                 readOnly
             />
@@ -82,11 +45,11 @@ const ProgramTypeInput = ({ typeKey }) => {
 };
 
 const ApplyTargetInput = () => {
-    const { getValues } = useFormContext();
+    const { watch } = useFormContext();
     const { elementaryTargetKey, middleTargetKey, highTargetKey } =
         PROGRAM_APPLY_KEYS;
 
-    const targetFields = getValues([
+    const targetFields = watch([
         elementaryTargetKey,
         middleTargetKey,
         highTargetKey,
@@ -102,6 +65,7 @@ const ApplyTargetInput = () => {
                         <div className={styles.schoolGrade}>
                             {school.value.map((_, idx) => (
                                 <Checkbox
+                                    className={styles.readOnly}
                                     label={`${idx + 1}학년`}
                                     key={idx}
                                     checked={targetFields[index]?.includes(
@@ -122,12 +86,10 @@ const ReadOnlyBasicForm = () => {
     const { getValues } = useFormContext();
     const {
         thumbnailKey,
-        thumbnailFileKey,
         nameKey,
         categoryKey,
-        operateLocationKey,
         typeKey,
-        priceKey,
+        operateLocationKey,
         descriptionKey,
         contactKey,
     } = PROGRAM_APPLY_KEYS;
@@ -139,7 +101,7 @@ const ReadOnlyBasicForm = () => {
                 label="프로그램 썸네일"
                 isRequired
                 maxFileSize={2}
-                fileKey={thumbnailFileKey}
+                fileKey={thumbnailKey}
                 disabled
             />
             <div className={styles.divideRow}>
@@ -154,23 +116,22 @@ const ReadOnlyBasicForm = () => {
             <div className={styles.divideRow}>
                 <FormDropdown
                     label="프로그램 카테고리"
-                    placeholder={getValues(categoryKey)}
+                    value={getValues(categoryKey)}
                     isRequired
                     readOnly
                 />
-                <PriceInputItem priceKey={priceKey} />
+                <FormDropdown
+                    label="운영 지역"
+                    value={getValues(operateLocationKey)}
+                    dropdownKey={operateLocationKey}
+                    isRequired
+                    readOnly
+                />
             </div>
             <FormEditor
                 label="프로그램 소개"
                 value={getValues(descriptionKey)}
                 editorKey={descriptionKey}
-                isRequired
-                readOnly
-            />
-            <FormDropdown
-                label="운영 지역"
-                placeholder={getValues(operateLocationKey)}
-                dropdownKey={operateLocationKey}
                 isRequired
                 readOnly
             />
@@ -187,9 +148,31 @@ const ReadOnlyBasicForm = () => {
 };
 
 const ReadOnlyApplyForm = () => {
+    const {
+        applyStartDateKey,
+        applyStartTimeKey,
+        applyEndDateKey,
+        applyEndTimeKey,
+    } = PROGRAM_APPLY_KEYS;
     return (
         <div className={styles.form}>
             <h5>신청 정보</h5>
+            <div className={styles.divideRow}>
+                <FormDatePicker
+                    label="신청 시작일"
+                    isRequired
+                    datePickerKey={applyStartDateKey}
+                    timePickerKey={applyStartTimeKey}
+                    disabled
+                />
+                <FormDatePicker
+                    label="신청 종료일"
+                    isRequired
+                    datePickerKey={applyEndDateKey}
+                    timePickerKey={applyEndTimeKey}
+                    disabled
+                />
+            </div>
             <ApplyTargetInput />
         </div>
     );
@@ -205,25 +188,13 @@ const ReadOnlyEducationForm = () => {
         educationLocationNameKey,
         educationLocationAddressKey,
         typeKey,
+        educationStartDateKey,
+        educationStartTimeKey,
+        educationEndDateKey,
+        educationEndTimeKey,
     } = PROGRAM_APPLY_KEYS;
 
-    const [
-        attachedFiles,
-        learningTime,
-        curriculum,
-        notice,
-        educationLocationName,
-        educationLocationAddress,
-        type,
-    ] = getValues([
-        attachedFilesKey,
-        learningTimeKey,
-        curriculumKey,
-        noticeKey,
-        educationLocationNameKey,
-        educationLocationAddressKey,
-        typeKey,
-    ]);
+    const type = getValues(typeKey);
 
     return (
         <div className={styles.form}>
@@ -231,14 +202,29 @@ const ReadOnlyEducationForm = () => {
             <FormInput
                 type="number"
                 label="총 교육 차시"
-                value={learningTime}
+                value={getValues(learningTimeKey)}
                 isRequired
                 readOnly
             />
-            {/** 교육 기간 DatePicker 논의 중 */}
+            <div className={styles.divideRow}>
+                <FormDatePicker
+                    label="교육 시작일"
+                    isRequired
+                    datePickerKey={educationStartDateKey}
+                    timePickerKey={educationStartTimeKey}
+                    disabled
+                />
+                <FormDatePicker
+                    label="교육 종료일"
+                    isRequired
+                    datePickerKey={educationEndDateKey}
+                    timePickerKey={educationEndTimeKey}
+                    disabled
+                />
+            </div>
             <FormEditor
                 label="커리큘럼"
-                value={curriculum}
+                value={getValues(curriculumKey)}
                 editorKey={curriculumKey}
                 isRequired
                 readOnly
@@ -253,22 +239,22 @@ const ReadOnlyEducationForm = () => {
             <FormInput
                 type="textarea"
                 label="안내사항"
-                value={notice}
+                value={getValues(noticeKey)}
                 className={styles.textarea}
                 isRequired
                 readOnly
             />
-            {type.camp === '집합형' && (
+            {type.division === '집합형' && (
                 <div className={styles.divideRow}>
                     <FormInput
                         label="교육 장소"
-                        value={educationLocationName}
+                        value={getValues(educationLocationNameKey)}
                         isRequired
                         readOnly
                     />
                     <FormInput
                         label="교육 주소"
-                        value={educationLocationAddress}
+                        value={getValues(educationLocationAddressKey)}
                         isRequired
                         readOnly
                     />

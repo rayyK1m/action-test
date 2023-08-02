@@ -1,5 +1,5 @@
 .thumbnailContainer {
-    width: 50%;
+    width: 27.25rem;
     position: relative;
     border: 1px solid var(--gray-800-transparent-8);
     border-radius: 0.5rem;
@@ -15,7 +15,7 @@
 }
 
 .fileInput {
-    width: 50%;
+    flex: 1 0 auto;
 }
 
 .disabledInput {

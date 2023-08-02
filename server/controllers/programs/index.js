@@ -116,11 +116,38 @@ const getProgramAdmin = async (req, res) => {
     return res.json(item);
 };
 
+const patchProgramAdmin = async (req, res) => {
+    const { institutionId, userId, id } = req.query;
+    const formData = req.body;
+    const data = await swcampSdk.patchProgramAdmin({
+        institutionId,
+        userId,
+        programId: id,
+        formData,
+    });
+
+    return res.json(data);
+};
+
+const createProgram = async (req, res) => {
+    const { userId, institutionId } = req.query;
+    const formData = req.body;
+    const data = await swcampSdk.createProgram({
+        userId,
+        institutionId,
+        formData,
+    });
+
+    return res.json(data);
+};
+
 const programsCtrl = {
     validation,
     getPrograms,
     getProgram,
     getProgramsAdmin,
     getProgramAdmin,
+    patchProgramAdmin,
+    createProgram,
 };
 export default programsCtrl;

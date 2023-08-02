@@ -1,7 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import programsKeys from './keys';
 import programsApis from './apis';
+import programKeys from '../useProgram/keys';
+import { useRouter } from 'next/router';
+import { toast } from '@goorm-dev/gds-toastify';
+
+import useSession from '../useSession';
 
 const useGetPrograms = (filters) => {
     return useQuery({
@@ -31,11 +36,50 @@ const useGetProgramAdmin = (id) => {
     });
 };
 
+const usePatchProgramAdmin = () => {
+    const { data: userData } = useSession.GET();
+    return useMutation(
+        ({ id, formData }) =>
+            programsApis.patchProgramAdmin({
+                userId: userData.id,
+                institutionId: userData.institutionId,
+                programId: id,
+                formData,
+            }),
+        {
+            onSuccess: () =>
+                toast('승인 요청이 완료되었습니다.', {
+                    type: toast.TYPE.SUCCESS,
+                }),
+
+            onError: () =>
+                toast('프로그램 수정에 실패했습니다.', {
+                    type: toast.TYPE.ERROR,
+                }),
+        },
+    );
+};
+
+const useCreateProgram = () => {
+    const router = useRouter();
+    return useMutation((query) => programsApis.createProgram(query), {
+        onSuccess: () => {
+            router.push('/institution/admin/program/new/complete');
+        },
+        onError: () =>
+            toast('프로그램 생성에 실패했습니다.', {
+                type: toast.TYPE.ERROR,
+            }),
+    });
+};
+
 export {
     useGetPrograms,
     useGetProgram,
     useGetProgramsAdmin,
     useGetProgramAdmin,
+    useCreateProgram,
+    usePatchProgramAdmin,
     programsApis,
     programsKeys,
 };

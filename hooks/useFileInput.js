@@ -89,12 +89,17 @@ const useFileInput = ({ defaultFiles = [], isMultiple }) => {
         });
     }, []);
 
+    const deleteFiles = () => {
+        setFileMap([]);
+    };
+
     const getFileInputProps = useCallback(
         () => ({
             fileMap,
             isMultiple,
             addFile,
             deleteFile,
+            deleteFiles,
         }),
         [fileMap, isMultiple],
     );
