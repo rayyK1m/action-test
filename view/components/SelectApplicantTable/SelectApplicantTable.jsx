@@ -21,22 +21,23 @@ import { useGetCampTicketsAdmin } from '@/query-hooks/uesCampTickets';
 import { CAMP_REVIEW_STATUS } from '@/constants/db';
 import { ENTER_KEY } from '@/constants/common.js';
 import { routerPushShallow } from '@/utils';
+import useRowSelections from '@/hooks/useRowSelections';
 import EmptyTableCard, {
     EMPTY_IMAGE_TYPE,
 } from '@/components/EmptyTableCard/EmptyTableCard';
 
 import { getTableColums } from './SelectApplicantTable.utils';
+import SelectApplicantTableLoading from './SelectApplicantTable.loading';
 
 import styles from './SelectApplicantTable.module.scss';
-import SelectApplicantTableLoading from './SelectApplicantTable.loading';
 
 const Table = forwardRef(function Table(
     { setSelectedCount, onSelectedRowChange },
     ref,
 ) {
     const router = useRouter();
-
     const { search } = router.query;
+
     const [{ pageIndex, pageSize }, setPagination] = useState({
         pageIndex: 0,
         pageSize: 10,
@@ -57,11 +58,7 @@ const Table = forwardRef(function Table(
     });
 
     const columns = useMemo(() => getTableColums(), []);
-    const {
-        getTableProps,
-        getPaginationProps,
-        state: { rowSelection },
-    } = useHScrollTable({
+    const { getTableProps, getPaginationProps } = useHScrollTable({
         columns,
         data: campApplicants,
 
@@ -76,41 +73,30 @@ const Table = forwardRef(function Table(
         pageSize,
         sorting,
     });
+    const { selectedRows, selectedRowCount, resetRowSelection } =
+        useRowSelections(getTableProps().table);
 
     useEffect(() => {
-        ref.current.resetRowSelection = getTableProps().table.resetRowSelection;
-    }, []);
+        ref.current.resetRowSelection = resetRowSelection;
+    }, [ref, resetRowSelection]);
 
     useEffect(() => {
-        // NOTE: 매뉴얼 페이지네이션 사용 시 페이지가 변경될 때 마다 rowSelection 유지 및 초기화를 위한 코드
-        getTableProps().table.setRowSelection(ref.current[pageIndex] || {});
-    }, [pageIndex]);
+        setSelectedCount(selectedRowCount);
+    }, [selectedRowCount, setSelectedCount]);
 
     useEffect(() => {
-        // NOTE: rowSelection이 변경될 때 마다 해당하는 페이지의 rowSelection 정보를 업데이트 하기 위한 코드
-        ref.current.selectedRows = {
-            ...ref.current.selectedRows,
-            [`${pageIndex}`]: rowSelection,
-        };
-        setSelectedCount(
-            Object.values(ref.current.selectedRows).reduce(
-                (acc, pageRowSelection) =>
-                    acc + Object.keys(pageRowSelection).length,
-                0,
-            ),
-        );
-    }, [rowSelection]);
-
-    useEffect(() => {
-        if (!ref.current.selectedRows[pageIndex]) {
+        if (!selectedRows[pageIndex]) {
             return;
         }
-        const selectedRowData = Object.keys(
-            ref.current.selectedRows[pageIndex],
-        ).map((rowIndex) => campApplicants[rowIndex]);
+        const selectedRowData = Object.keys(selectedRows[pageIndex]).map(
+            (rowIndex) => campApplicants[rowIndex],
+        );
 
-        onSelectedRowChange(selectedRowData);
-    }, [pageIndex, campApplicants, onSelectedRowChange]);
+        onSelectedRowChange((prev) => ({
+            ...prev,
+            [`${pageIndex}`]: selectedRowData,
+        }));
+    }, [pageIndex, selectedRows, campApplicants, onSelectedRowChange]);
 
     const isEmptyData = useMemo(() => totalCount === 0, [totalCount]);
     const isFiltered = useMemo(() => !!search, [search]);
@@ -149,7 +135,12 @@ function SelectApplicantTable({ onSelectedRowChange }) {
     const router = useRouter();
     const memoizedRouter = useMemo(() => router, []);
 
-    const tableRef = useRef({});
+    /**
+     * tableRef.current = {
+     *   resetRowSelection,
+     * }
+     */
+    const tableRef = useRef({}); // NOTE: <Table /> 에서만 접근 가능한 함수(resetRowSelection)를 사용하기 위한 ref
     const [searchText, setSearchText] = useState('');
     const [selectedCount, setSelectedCount] = useState(0);
 
@@ -173,7 +164,6 @@ function SelectApplicantTable({ onSelectedRowChange }) {
 
     const handleResetSelection = () => {
         tableRef.current.resetRowSelection();
-        tableRef.current.selectedRows = {};
     };
 
     return (
