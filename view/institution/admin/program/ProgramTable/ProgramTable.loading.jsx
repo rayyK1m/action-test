@@ -8,7 +8,7 @@ import styles from './ProgramTable.module.scss';
 
 const getTableData = () => {
     const data = [];
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < 10; i += 1) {
         data.push({
             index: '',
             type: {
