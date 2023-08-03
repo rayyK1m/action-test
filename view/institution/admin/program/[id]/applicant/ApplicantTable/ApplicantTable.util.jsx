@@ -4,7 +4,7 @@ import { cellHelper } from '@goorm-dev/gds-tables';
 import { Button, Tooltip } from '@goorm-dev/gds-components';
 
 import { PROGRAM_DIVISION } from '@/constants/db';
-import { joinToGradeString } from '@/utils';
+import { ellipsisedString, getTargetGroupString } from '@/utils';
 import { CAMP_TICKET_STATUS_TEXT } from './ApplicantTable.constants';
 import useHover from '@/hooks/useHover';
 
@@ -15,9 +15,24 @@ export const getTableColoums = (division) => {
         {
             accessorKey: 'userName',
             header: <div>신청자 명</div>,
-            cell: cellHelper(({ value }) => (
-                <div className="d-flex">{value}</div>
-            )),
+            cell: cellHelper(({ value }) => {
+                const [nameRef, isHover] = useHover();
+                const needEllipsis = value.length > 5;
+                return (
+                    <>
+                        <div className="d-flex" ref={nameRef}>
+                            {ellipsisedString(value, 5)}
+                        </div>
+                        <Tooltip
+                            target={nameRef}
+                            isOpen={needEllipsis && isHover}
+                            placement="bottom-start"
+                        >
+                            {value}
+                        </Tooltip>
+                    </>
+                );
+            }),
             size: 119,
             maxSize: 119,
             enableSorting: true,
@@ -34,28 +49,13 @@ export const getTableColoums = (division) => {
             cell: cellHelper(({ value }) => {
                 const { elementarySchool, middleSchool, highSchool } = value;
                 const [targetGroupRef, isHover] = useHover();
-                let targetString = '';
-                if (elementarySchool.length > 0) {
-                    targetString += joinToGradeString(
-                        elementarySchool,
-                        ', ',
-                        '초등학생 ',
-                    );
-                }
-                if (middleSchool.length > 0) {
-                    targetString += joinToGradeString(
-                        middleSchool,
-                        ', ',
-                        '\n중학생 ',
-                    );
-                }
-                if (highSchool.length > 0) {
-                    targetString += joinToGradeString(
-                        highSchool,
-                        ', ',
-                        '\n고등학생 ',
-                    );
-                }
+                const targetString = getTargetGroupString(
+                    elementarySchool,
+                    middleSchool,
+                    highSchool,
+                );
+                const needEllipsis = targetString.length > 15;
+
                 return (
                     <>
                         <div
@@ -66,8 +66,9 @@ export const getTableColoums = (division) => {
                         </div>
                         <Tooltip
                             target={targetGroupRef}
-                            isOpen={isHover}
+                            isOpen={needEllipsis && isHover}
                             placement="bottom-start"
+                            className={styles.targetGroupTooltip}
                         >
                             {targetString}
                         </Tooltip>
@@ -113,7 +114,7 @@ export const getTableColoums = (division) => {
         {
             accessorKey: 'viewDetail',
             header: <></>,
-            cell: () => <Button color="link">신청 정보 보기</Button>,
+            cell: () => <Button color="link">신청 정보 확인</Button>,
             size: 151,
         },
     ];

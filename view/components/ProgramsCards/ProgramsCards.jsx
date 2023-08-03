@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 
-import EmptyTableCard from '@/components/EmptyTableCard/EmptyTableCard';
+import EmptyTableCard, {
+    EMPTY_IMAGE_TYPE,
+} from '@/components/EmptyTableCard/EmptyTableCard';
 import Pagination from '@/components/Pagination';
 
 import { useGetPrograms } from '@/query-hooks/usePrograms';
@@ -38,7 +40,12 @@ function ProgramsCards({
     });
 
     if (total === 0)
-        return <EmptyTableCard text="검색 결과가 없습니다." type="NO_SEARCH" />;
+        return (
+            <EmptyTableCard
+                text="검색 결과가 없습니다."
+                imageSrc={EMPTY_IMAGE_TYPE.SEARCH}
+            />
+        );
     return (
         <div>
             <div className={styles.container}>

@@ -1,17 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 
-import {
-    Dropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    Button,
-} from '@goorm-dev/gds-components';
+import { Dropdown, DropdownToggle, Button } from '@goorm-dev/gds-components';
 import { OpenfileIcon, PlusIcon } from '@goorm-dev/gds-icons';
 
 import useToggle from '@/hooks/useToggle';
 import PageHeader from '@/components/PageHeader';
+import CustomDropdownMenu from '@/components/CustomDropdownMenu';
+import CustomDropdownItem from '@/components/CustomDropdownItem';
 import SubmitModal from '../SubmitModal/SubmitModal';
 
 function Header({ isSubmitted }) {
@@ -49,7 +45,7 @@ function Header({ isSubmitted }) {
                                 <PlusIcon className="mr-2" />새 프로그램
                                 등록하기
                             </DropdownToggle>
-                            <DropdownMenu className="w-100">
+                            <CustomDropdownMenu className="w-100" right>
                                 <Link
                                     href={{
                                         pathname:
@@ -59,7 +55,9 @@ function Header({ isSubmitted }) {
                                         },
                                     }}
                                 >
-                                    <DropdownItem>방문형</DropdownItem>
+                                    <CustomDropdownItem>
+                                        방문형
+                                    </CustomDropdownItem>
                                 </Link>
                                 <Link
                                     href={{
@@ -70,9 +68,11 @@ function Header({ isSubmitted }) {
                                         },
                                     }}
                                 >
-                                    <DropdownItem>집합형</DropdownItem>
+                                    <CustomDropdownItem>
+                                        집합형
+                                    </CustomDropdownItem>
                                 </Link>
-                            </DropdownMenu>
+                            </CustomDropdownMenu>
                         </Dropdown>
                     </div>
                 </PageHeader.Title>

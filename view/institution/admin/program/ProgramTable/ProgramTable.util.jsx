@@ -9,6 +9,7 @@ import ProgramTypeBadge from '@/view/components/ProgramTypeBadge';
 import { STATUS_TEXT } from './ProgramTable.constants';
 
 import styles from './ProgramTable.module.scss';
+import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
 
 const BASE_URL = '/institution/admin';
 export const getTableColoums = () => {
@@ -60,14 +61,15 @@ export const getTableColoums = () => {
             accessorKey: 'student',
             header: <div>신청자 관리</div>,
             cell: cellHelper(({ rowData }) => {
-                const { status, id } = rowData;
-                const isInProgress = status === 'IN_PROGRESS';
+                const { reviewStatus, id } = rowData;
+                const isApproved =
+                    reviewStatus === PROGRAM_REVIEW_STATUS.승인.value;
                 return (
                     <Button
                         color="link"
                         tag={Link}
                         href={`${BASE_URL}/program/${id}/applicant`}
-                        disabled={isInProgress}
+                        disabled={!isApproved}
                     >
                         신청자 관리
                     </Button>
@@ -79,15 +81,16 @@ export const getTableColoums = () => {
             accessorKey: 'camp',
             header: <div>캠프 관리</div>,
             cell: cellHelper(({ rowData }) => {
-                const { status, id } = rowData;
-                const isInProgress = status === 'IN_PROGRESS';
+                const { reviewStatus, id } = rowData;
+                const isApproved =
+                    reviewStatus === PROGRAM_REVIEW_STATUS.승인.value;
 
                 return (
                     <Button
                         color="link"
                         tag={Link}
                         href={`${BASE_URL}/program/${id}/camp`}
-                        disabled={isInProgress}
+                        disabled={!isApproved}
                         icon={<ChevronRightIcon />}
                         iconSide="right"
                     >
@@ -104,8 +107,9 @@ export const getTableColoums = () => {
             accessorKey: 'content',
             header: <div>콘텐츠 관리</div>,
             cell: cellHelper(({ rowData }) => {
-                const { status } = rowData;
-                const isInProgress = status === 'IN_PROGRESS';
+                const { reviewStatus } = rowData;
+                const isApproved =
+                    reviewStatus === PROGRAM_REVIEW_STATUS.승인.value;
                 return (
                     <Button
                         color="link"
@@ -116,7 +120,7 @@ export const getTableColoums = () => {
                         }/v2/teach/lecture/${rowData.lectureSequence}/${slugify(
                             rowData.name,
                         )}`}
-                        disabled={isInProgress}
+                        disabled={!isApproved}
                     >
                         콘텐츠 관리
                         <SubmitModeIcon />

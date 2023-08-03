@@ -19,15 +19,17 @@ import { RefreshIcon } from '@goorm-dev/gds-icons';
 
 import { useGetCampTicketsAdmin } from '@/query-hooks/uesCampTickets';
 import { CAMP_REVIEW_STATUS } from '@/constants/db';
+import { ENTER_KEY } from '@/constants/common.js';
 import { routerPushShallow } from '@/utils';
-import EmptyTableCard from '@/components/EmptyTableCard/EmptyTableCard';
+import EmptyTableCard, {
+    EMPTY_IMAGE_TYPE,
+} from '@/components/EmptyTableCard/EmptyTableCard';
 
 import { getTableColums } from './SelectApplicantTable.utils';
 
 import styles from './SelectApplicantTable.module.scss';
 import SelectApplicantTableLoading from './SelectApplicantTable.loading';
 
-const ENTER_KEY = 'Enter';
 const Table = forwardRef(function Table(
     { setSelectedCount, onSelectedRowChange },
     ref,
@@ -118,10 +120,14 @@ const Table = forwardRef(function Table(
                 <EmptyTableCard
                     text={
                         isFiltered
-                            ? '해당하는 신청자가 없습니다.'
+                            ? '검색 결과가 없습니다.'
                             : '승인된 신청자가 없습니다.'
                     }
-                    type="NO_LIST"
+                    imageSrc={
+                        isFiltered
+                            ? EMPTY_IMAGE_TYPE.SEARCH
+                            : EMPTY_IMAGE_TYPE.LIST
+                    }
                 />
             ) : (
                 <div>
@@ -141,6 +147,7 @@ const Table = forwardRef(function Table(
 
 function SelectApplicantTable({ onSelectedRowChange }) {
     const router = useRouter();
+    const memoizedRouter = useMemo(() => router, []);
 
     const tableRef = useRef({});
     const [searchText, setSearchText] = useState('');
@@ -153,16 +160,18 @@ function SelectApplicantTable({ onSelectedRowChange }) {
         setSearchText(value);
     }, []);
 
-    const handleSearchKeyDown = useCallback((key, value) => {
-        if (key === ENTER_KEY) {
-            routerPushShallow(router, {
-                search: value,
-            });
-        }
-    }, []);
+    const handleSearchKeyDown = useCallback(
+        (key, value) => {
+            if (key === ENTER_KEY) {
+                routerPushShallow(memoizedRouter, {
+                    search: value,
+                });
+            }
+        },
+        [memoizedRouter],
+    );
 
     const handleResetSelection = () => {
-        // getTableProps().table.resetRowSelection();
         tableRef.current.resetRowSelection();
         tableRef.current.selectedRows = {};
     };

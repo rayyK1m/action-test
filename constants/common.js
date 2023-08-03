@@ -12,3 +12,5 @@ export const DEFAULT_AVATAR_IMAGE_LG =
 
 // TODO: 실제 url로 변경 필요
 export const LOGO_LINK = 'https://swcamp-lms.dev.goorm.io';
+
+export const ENTER_KEY = 'Enter';

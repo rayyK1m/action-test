@@ -11,14 +11,17 @@ import {
     SearchInput,
     ButtonDropdown,
     DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
 } from '@goorm-dev/gds-components';
 
 import useQueryParam from '@/hooks/useQueryParam';
 import useToggle from '@/hooks/useToggle';
 import { convertSort, routerPushShallow } from '@/utils';
-import EmptyTableCard from '@/components/EmptyTableCard/EmptyTableCard';
+import { ENTER_KEY } from '@/constants/common.js';
+import EmptyTableCard, {
+    EMPTY_IMAGE_TYPE,
+} from '@/components/EmptyTableCard/EmptyTableCard';
+import CustomDropdownMenu from '@/components/CustomDropdownMenu';
+import CustomDropdownItem from '@/components/CustomDropdownItem';
 import { useGetCampTicketsAdmin } from '@/query-hooks/uesCampTickets';
 import { getTableColoums } from './ApplicantTable.util';
 import { DROPDOWN_MENU } from './ApplicantTable.constants';
@@ -79,12 +82,16 @@ function ApplicantTable() {
     });
 
     useEffect(() => {
+        if (pageIndex === 0 && page === 1) {
+            return;
+        }
         routerPushShallow(memoizedRouter, { page: pageIndex + 1 });
-    }, [memoizedRouter, pageIndex]);
+    }, [memoizedRouter, pageIndex, page]);
 
     useEffect(() => {
         if (sorting.length === 0) {
-            routerPushShallow(memoizedRouter, { sort: null });
+            sort !== undefined &&
+                routerPushShallow(memoizedRouter, { sort: null });
             return;
         }
         const sortId = sorting[0]?.id ?? null;
@@ -101,24 +108,13 @@ function ApplicantTable() {
                 target: { value },
             } = e;
             setSearchText(value);
-
-            if (!value) {
-                routerPushShallow(memoizedRouter, {
-                    search: null,
-                });
-                return;
-            }
         },
-        [memoizedRouter, setSearchText],
+        [setSearchText],
     );
 
     const handleSearchKeyDown = useCallback(
-        (e) => {
-            const {
-                key,
-                target: { value },
-            } = e;
-            if (key === 'Enter') {
+        (key, value) => {
+            if (key === ENTER_KEY) {
                 routerPushShallow(memoizedRouter, {
                     search: value,
                 });
@@ -157,7 +153,12 @@ function ApplicantTable() {
                         placeholder="신청자 검색"
                         size="lg"
                         onChange={handleSearhCange}
-                        onKeyDown={handleSearchKeyDown}
+                        onKeyDown={(e) =>
+                            handleSearchKeyDown(e.key, searchText)
+                        }
+                        onCancelClick={() => {
+                            handleSearchKeyDown(ENTER_KEY, '');
+                        }}
                         value={searchText}
                     />
                     <ButtonDropdown
@@ -175,9 +176,9 @@ function ApplicantTable() {
                             {DROPDOWN_MENU[reviewStatus].text}
                         </DropdownToggle>
 
-                        <DropdownMenu right={true}>
+                        <CustomDropdownMenu right={true}>
                             {DROPDOWN_MENU.map((item) => (
-                                <DropdownItem
+                                <CustomDropdownItem
                                     key={item.key}
                                     onClick={() => {
                                         routerPushShallow(memoizedRouter, {
@@ -187,9 +188,9 @@ function ApplicantTable() {
                                     }}
                                 >
                                     {item.text}
-                                </DropdownItem>
+                                </CustomDropdownItem>
                             ))}
-                        </DropdownMenu>
+                        </CustomDropdownMenu>
                     </ButtonDropdown>
                 </div>
             </div>
@@ -198,10 +199,14 @@ function ApplicantTable() {
                 <EmptyTableCard
                     text={
                         isFiltered
-                            ? '해당하는 신청자가 없습니다.'
+                            ? '검색 결과가 없습니다.'
                             : '프로그램 신청자가 없습니다.'
                     }
-                    type="NO_LIST"
+                    imageSrc={
+                        isFiltered
+                            ? EMPTY_IMAGE_TYPE.SEARCH
+                            : EMPTY_IMAGE_TYPE.LIST
+                    }
                 />
             ) : (
                 <>

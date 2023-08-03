@@ -23,3 +23,11 @@
     white-space: nowrap;
     @include ellipsis();
 }
+
+.targetGroupTooltip {
+    & > div > div {
+        white-space: break-spaces;
+        text-align: start;
+        cursor: default;
+    }
+}

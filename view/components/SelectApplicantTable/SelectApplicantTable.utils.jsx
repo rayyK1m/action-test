@@ -1,7 +1,7 @@
 import { cellHelper } from '@goorm-dev/gds-tables';
 import { Button, Tooltip } from '@goorm-dev/gds-components';
 
-import { joinToGradeString } from '@/utils';
+import { getTargetGroupString, ellipsisedString } from '@/utils';
 
 import useHover from '@/hooks/useHover';
 
@@ -12,9 +12,24 @@ export const getTableColums = () => {
         {
             accessorKey: 'userName',
             header: <div>이름</div>,
-            cell: cellHelper(({ value }) => (
-                <div className="d-flex">{value}</div>
-            )),
+            cell: cellHelper(({ value }) => {
+                const [nameRef, isHover] = useHover();
+                const needEllipsis = value.length > 5;
+                return (
+                    <>
+                        <div className="d-flex" ref={nameRef}>
+                            {ellipsisedString(value, 5)}
+                        </div>
+                        <Tooltip
+                            target={nameRef}
+                            isOpen={needEllipsis && isHover}
+                            placement="bottom-start"
+                        >
+                            {value}
+                        </Tooltip>
+                    </>
+                );
+            }),
             size: 119,
             maxSize: 119,
             enableSorting: true,
@@ -31,28 +46,11 @@ export const getTableColums = () => {
             cell: cellHelper(({ value }) => {
                 const { elementarySchool, middleSchool, highSchool } = value;
                 const [targetGroupRef, isHover] = useHover();
-                let targetString = '';
-                if (elementarySchool.length > 0) {
-                    targetString += joinToGradeString(
-                        elementarySchool,
-                        ', ',
-                        '초등학생 ',
-                    );
-                }
-                if (middleSchool.length > 0) {
-                    targetString += joinToGradeString(
-                        middleSchool,
-                        ', ',
-                        '\n중학생 ',
-                    );
-                }
-                if (highSchool.length > 0) {
-                    targetString += joinToGradeString(
-                        highSchool,
-                        ', ',
-                        '\n고등학생 ',
-                    );
-                }
+                const targetString = getTargetGroupString(
+                    elementarySchool,
+                    middleSchool,
+                    highSchool,
+                );
                 return (
                     <>
                         <div

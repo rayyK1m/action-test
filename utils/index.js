@@ -188,3 +188,38 @@ export const joinToGradeString = (target, joinUnit, prefix) => {
 
     return prefix + arrayWithGrade.join(joinUnit);
 };
+
+/**
+ *
+ * @param {Array<number>} elementarySchool 숫자로 구성된 타겟 학생 배열
+ * @param {Array<number>} middleSchool 숫자로 구성된 타겟 학생 배열
+ * @param {Array<number>} highSchool 숫자로 구성된 타겟 학생 배열
+ * @returns {String} ex) '중학교 3학년,\n고등학교 1학년, 2학년'
+ */
+export const getTargetGroupString = (
+    elementarySchool,
+    middleSchool,
+    highSchool,
+) => {
+    let elementaryTarget = '';
+    let middleTarget = '';
+    let highTarget = '';
+    if (elementarySchool.length > 0) {
+        elementaryTarget = joinToGradeString(
+            elementarySchool,
+            ', ',
+            '초등학생 ',
+        );
+    }
+    if (middleSchool.length > 0) {
+        middleTarget = joinToGradeString(middleSchool, ', ', '중학생 ');
+    }
+    if (highSchool.length > 0) {
+        highTarget = joinToGradeString(highSchool, ', ', '고등학생 ');
+    }
+    const targetString = [elementaryTarget, middleTarget, highTarget]
+        .filter((target) => target !== '')
+        .join('\n');
+
+    return targetString;
+};

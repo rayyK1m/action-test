@@ -5,8 +5,6 @@ import Image from 'next/image';
 import {
     ButtonDropdown,
     DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
     BasicPagination,
 } from '@goorm-dev/gds-components';
 
@@ -14,6 +12,8 @@ import useToggle from '@/hooks/useToggle';
 import useQueryParam from '@/hooks/useQueryParam';
 import { useGetCampTickets } from '@/query-hooks/uesCampTickets';
 import GridContainer from '@/components/GridContainer';
+import CustomDropdownMenu from '@/components/CustomDropdownMenu';
+import CustomDropdownItem from '@/components/CustomDropdownItem';
 import ListItem from '@/view/applications/ListItem/ListItem.jsx';
 import { DROPDOWN_MENU } from './ApplyList.constants';
 
@@ -80,9 +80,9 @@ function ApplyList() {
                         {DROPDOWN_MENU[filter].text}
                     </DropdownToggle>
 
-                    <DropdownMenu>
+                    <CustomDropdownMenu right>
                         {DROPDOWN_MENU.map((item, idx) => (
-                            <DropdownItem
+                            <CustomDropdownItem
                                 key={item.key}
                                 onClick={() => {
                                     router.push(
@@ -99,9 +99,9 @@ function ApplyList() {
                                 }}
                             >
                                 {item.text}
-                            </DropdownItem>
+                            </CustomDropdownItem>
                         ))}
-                    </DropdownMenu>
+                    </CustomDropdownMenu>
                 </ButtonDropdown>
             </div>
 

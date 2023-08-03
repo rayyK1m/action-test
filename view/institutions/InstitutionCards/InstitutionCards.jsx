@@ -1,5 +1,7 @@
 import Pagination from '@/components/Pagination';
-import EmptyTableCard from '@/components/EmptyTableCard/EmptyTableCard';
+import EmptyTableCard, {
+    EMPTY_IMAGE_TYPE,
+} from '@/components/EmptyTableCard/EmptyTableCard';
 
 import { useGetInstitutions } from '@/query-hooks/useInstitutions';
 import { INSTITUTIONS_DEFAULT_QUERY } from '@/pages/institutions';
@@ -29,7 +31,7 @@ function InstitutionCards({
             <EmptyTableCard
                 useBg
                 text="검색 결과가 없습니다."
-                type="NO_SEARCH"
+                imageSrc={EMPTY_IMAGE_TYPE.SEARCH}
             />
         );
     return (
