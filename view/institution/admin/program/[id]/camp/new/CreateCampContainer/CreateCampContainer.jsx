@@ -25,11 +25,16 @@ import { useGetProgramAdmin } from '@/query-hooks/usePrograms';
 import { getBreadcrumbs } from './CreateCampContainer.utils';
 import { useCreateCampSubmitActionContext } from './context';
 import SelectStudent from '../SelectStudent';
-
-// import styles from './CreateCampContainer.module.scss';
+import InfoInputForm from '../InfoInputForm/InfoInputForm';
+import {
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+} from '@goorm-dev/gds-components/dist/cjs';
+import useToggle from '@/hooks/useToggle';
 
 // FIXME: 적절한 컴포넌트로 변경 필요
-const CampInfoForm = () => <div>정보 입력</div>;
 const STEP_ITEMS = [
     {
         key: 'campInfo',
@@ -42,7 +47,7 @@ const STEP_ITEMS = [
         text: '학생 선택',
     },
 ];
-const STEP_CARDS = [CampInfoForm, SelectStudent];
+const STEP_CARDS = [InfoInputForm, SelectStudent];
 
 function CreateCampContainer() {
     const router = useRouter();
@@ -51,8 +56,11 @@ function CreateCampContainer() {
     const { submit } = useCreateCampSubmitActionContext();
     const { data: program } = useGetProgramAdmin(id);
 
+    const [isModalOpen, toggleModal] = useToggle(false);
+
     const handleSubmit = () => {
         submit();
+        toggleModal(false);
     };
 
     const isFirst = useMemo(() => stepIndex === 0, [stepIndex]);
@@ -122,13 +130,26 @@ function CreateCampContainer() {
                             size="xl"
                             color="primary"
                             className="ml-auto"
-                            onClick={handleSubmit}
+                            onClick={toggleModal}
                         >
                             캠프 생성하기
                         </Button>
                     )}
                 </CardFooter>
             </Card>
+
+            <Modal isOpen={isModalOpen} toggle={toggleModal} size="md" centered>
+                <ModalHeader>캠프 생성하기</ModalHeader>
+                <ModalBody>캠프를 생성하시겠어요?</ModalBody>
+                <ModalFooter>
+                    <Button size="lg" onClick={toggleModal} color="link">
+                        취소
+                    </Button>
+                    <Button size="lg" color="primary" onClick={handleSubmit}>
+                        캠프 생성하기
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </GridContainer>
     );
 }

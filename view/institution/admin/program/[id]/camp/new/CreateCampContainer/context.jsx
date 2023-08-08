@@ -1,7 +1,17 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, {
+    createContext,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from 'react';
 
 const CreateCampSubmitActionContext = createContext();
-const CreateCampUpdateActionContext = createContext();
+const CreateCampInfoContext = createContext();
+const CreateCampStudentsContext = createContext();
+
+import { useCreateCamp } from '@/query-hooks/useCamps';
+import { checkIsInfoTemporary, parseData } from './CreateCampContainer.utils';
 
 export const useCreateCampSubmitActionContext = () => {
     const submitActions = useContext(CreateCampSubmitActionContext);
@@ -11,14 +21,23 @@ export const useCreateCampSubmitActionContext = () => {
 
     return submitActions;
 };
-export const useCreateCampUpdateActionContext = () => {
-    const updateActions = useContext(CreateCampUpdateActionContext);
+export const useCreateCampInfoContext = () => {
+    const campInfoContext = useContext(CreateCampInfoContext);
 
-    if (!updateActions) {
+    if (!campInfoContext) {
         throw new Error('CreateCampContextProvider 없이 사용할 수 없습니다.');
     }
 
-    return updateActions;
+    return campInfoContext;
+};
+export const useCreateCampStudentsContext = () => {
+    const studentsContext = useContext(CreateCampStudentsContext);
+
+    if (!studentsContext) {
+        throw new Error('CreateCampContextProvider 없이 사용할 수 없습니다.');
+    }
+
+    return studentsContext;
 };
 
 /**
@@ -31,34 +50,43 @@ function CreateCampContextProvider({ children }) {
     const [campInfo, setCampInfo] = useState({});
     const [students, setStudents] = useState([]); // targetUserIdList {Array<string>}
 
-    const updateActions = useMemo(
-        () => ({
-            updateCampInfo(formData) {
-                setCampInfo(formData);
-            },
-            updateStudents(students) {
-                setStudents(students);
-            },
-        }),
-        [],
-    );
+    const returnPath = `/institution/admin/program/${campInfo.programId}/camp`;
+    const createCamp = useCreateCamp(returnPath);
 
+    const updateCampInfo = useCallback((formData) => {
+        setCampInfo(formData);
+    }, []);
+    const updateStudents = useCallback((students) => {
+        setStudents(students);
+    }, []);
     const submitAction = useMemo(
         () => ({
             submit() {
-                // TODO: 임시 저장 검증 필요 - 필수 입력 폼이 하나라도 비워져 있거나 선택된 학생이 0 명일 경우
-                console.log(campInfo, students);
+                const parsedStudents = students.flat();
+                const isTemporary = checkIsInfoTemporary(campInfo);
+
+                createCamp.mutate({
+                    ...parseData(campInfo),
+                    targetUserIdList: parsedStudents,
+                    isTemporary,
+                });
             },
         }),
         [campInfo, students],
     );
 
     return (
-        <CreateCampUpdateActionContext.Provider value={updateActions}>
-            <CreateCampSubmitActionContext.Provider value={submitAction}>
-                {children}
-            </CreateCampSubmitActionContext.Provider>
-        </CreateCampUpdateActionContext.Provider>
+        <CreateCampSubmitActionContext.Provider value={submitAction}>
+            <CreateCampInfoContext.Provider
+                value={{ campInfo, updateCampInfo }}
+            >
+                <CreateCampStudentsContext.Provider
+                    value={{ students, updateStudents }}
+                >
+                    {children}
+                </CreateCampStudentsContext.Provider>
+            </CreateCampInfoContext.Provider>
+        </CreateCampSubmitActionContext.Provider>
     );
 }
 export default CreateCampContextProvider;

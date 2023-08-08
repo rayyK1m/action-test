@@ -196,17 +196,7 @@ const ReadOnlyEducationForm = () => {
         educationEndTimeKey,
     } = PROGRAM_APPLY_KEYS;
 
-    const [educationLocationAddress, setEducationLocationAddress] =
-        useState('');
-
-    const { data: mapSearch } = useDaumSearchMap({
-        onComplete: (data) => {
-            setEducationLocationAddress(data.address);
-        },
-    });
-
     const type = getValues(typeKey);
-    const mapPopupKey = useId();
 
     return (
         <div className={styles.form}>
@@ -272,27 +262,6 @@ const ReadOnlyEducationForm = () => {
                     />
                 </div>
             )}
-            <Button
-                outline
-                color="basic"
-                size="lg"
-                onClick={() => {
-                    console.log({
-                        mapSearch,
-                        screenWidth: window.screen.width,
-                        screenHeight: window.screen.height,
-                        width: mapSearch.width / 2,
-                        top: mapSearch.height / 2,
-                    });
-                    mapSearch?.open({
-                        popupKey: mapPopupKey,
-                        left: window.screen.width / 2 - mapSearch.width / 2,
-                        top: window.screen.height / 2 - mapSearch.height / 2,
-                    });
-                }}
-            >
-                검색하기
-            </Button>
         </div>
     );
 };

@@ -1,0 +1,88 @@
+/* container */
+.forms {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-top: 1.5rem;
+}
+
+/* form */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.divideRow {
+    display: flex;
+    flex: 0 0 50%;
+    gap: 1rem;
+}
+
+/* programTypeInput */
+.dropdown {
+    align-self: flex-end;
+    width: 100%;
+}
+
+.button,
+.typeButton {
+    width: 100%;
+    > div {
+        justify-content: space-between !important;
+    }
+}
+
+/* InputItem - textarea */
+.textarea {
+    height: 6.5rem !important;
+}
+
+/* ApplyTargetInput */
+.checkForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.readOnly {
+    pointer-events: none;
+}
+
+.disabled {
+    pointer-events: none;
+    > label {
+        opacity: 0.3;
+    }
+}
+
+.school {
+    display: flex;
+    align-items: center;
+}
+
+.schoolName {
+    width: 4rem;
+    font-size: 0.875rem;
+    vertical-align: center;
+}
+
+.schoolGrade {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.divider {
+    margin-right: 1rem;
+}
+
+.location {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.searchButton {
+    align-self: end;
+    width: 6rem;
+}

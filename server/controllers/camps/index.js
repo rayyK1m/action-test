@@ -85,4 +85,14 @@ const getCamps = async (req, res) => {
     return res.json({ items: newItems, total });
 };
 
-export default { validation, getCamps };
+const createCamp = async (req, res) => {
+    const formData = req.body;
+    const data = await swcampSdk.createCamp({
+        userId: req.session?.id,
+        formData: { ...formData, institutionId: req.session?.institutionId },
+    });
+
+    return res.json(data);
+};
+
+export default { validation, getCamps, createCamp };

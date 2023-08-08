@@ -64,6 +64,7 @@ const FormDropdown = ({
                 isOpen={isOpen}
                 toggle={toggle}
                 disabled={disabled}
+                direction="down"
             >
                 <DropdownToggle
                     data-toggle="dropdown"
@@ -90,10 +91,11 @@ const FormDropdown = ({
                         {value}
                     </Button>
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className="w-100">
                     <div ref={dropdownRef}>
                         {items?.map((item) => (
                             <DropdownItem
+                                //className="w-100"
                                 key={item}
                                 onClick={() => onChange(item)}
                             >

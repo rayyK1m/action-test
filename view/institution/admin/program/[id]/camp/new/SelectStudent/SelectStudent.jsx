@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { useCreateCampUpdateActionContext } from '../CreateCampContainer/context';
+import { useCreateCampStudentsContext } from '../CreateCampContainer/context';
 import SelectApplicantTable from '@/view/components/SelectApplicantTable';
-
-import styles from './SelectStudent.module.scss';
 
 function SelectStudent() {
     const [selectedStudents, setSelectedStudents] = useState({});
-    const { updateStudents } = useCreateCampUpdateActionContext();
+    const { updateStudents } = useCreateCampStudentsContext();
 
     useEffect(() => {
         const selecedStudentIds = Object.values(selectedStudents).map(

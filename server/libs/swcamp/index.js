@@ -287,6 +287,25 @@ const getCamps = async ({ programId, institutionId, page, limit }) => {
     return newData;
 };
 
+const createCamp = async ({ userId, formData }) => {
+    try {
+        const { data } = await swcampInstance.post(
+            `${process.env.SWCAMP_API_HOST}/api/v1/camps/type/group`,
+            formData,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+            // NOTE: 디버깅에 필요한 데이터 넣어두기
+        });
+    }
+};
+
 const getCampTicketHistory = async ({ userId, programId }) => {
     try {
         const { data } = await swcampInstance.get(
@@ -474,7 +493,7 @@ const swcampSdk = {
      * Camp
      */
     getCamps,
-
+    createCamp,
     /**
      * CampTicket
      */

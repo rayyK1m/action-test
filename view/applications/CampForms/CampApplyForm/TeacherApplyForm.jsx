@@ -257,6 +257,7 @@ export const ManagerForm = ({ userId }) => {
             <div className={styles.divideRow}>
                 <DropdownInputItem
                     label="신청 지역"
+                    isRequired
                     dropdownKey={operateLocationKey}
                     items={PROGRAM_OPERATION_LOCATIONS}
                     placeholder="지역 선택"

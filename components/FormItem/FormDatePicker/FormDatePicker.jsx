@@ -25,11 +25,13 @@ const FormDatePicker = ({
         >
             <div className={styles.body}>
                 <DatePickerItem
+                    isRequired={isRequired}
                     datePickerKey={datePickerKey}
                     disabled={disabled}
                     calendarProps={calendarProps}
                 />
                 <TimePickerItem
+                    isRequired={isRequired}
                     timePickerKey={timePickerKey}
                     disabled={disabled}
                 />

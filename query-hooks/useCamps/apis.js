@@ -15,8 +15,17 @@ export const getCamps = async (programId, filters) => {
     return data;
 };
 
+export const createCamp = async (formData) => {
+    const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camps/new`,
+        formData,
+    );
+    return data;
+};
+
 const campsApis = {
     getCamps,
+    createCamp,
 };
 
 export default campsApis;

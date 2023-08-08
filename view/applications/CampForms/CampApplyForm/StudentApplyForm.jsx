@@ -21,12 +21,10 @@ import {
     USER_KEYS,
 } from '../CampForms.constants';
 import { formatPhoneNumberInput } from '@/utils';
-import SearchSchoolBox from '@/view/components/SearchSchoolDropdown/SearchSchoolDropdown';
 import useToggle from '@/hooks/useToggle';
 import useDebounce from '@/hooks/useDebounce';
 
 import { useGetSchools } from '@/query-hooks/useSchool';
-import useSession from '@/query-hooks/useSession';
 import SearchSchoolDropdown from '@/view/components/SearchSchoolDropdown/SearchSchoolDropdown';
 
 // 집합형 프로그램 캠프 신청 폼
@@ -246,6 +244,7 @@ export const ApplyForm = ({ programTargetGroup, userId }) => {
                 />
                 <DropdownInputItem
                     label="신청 지역"
+                    isRequired
                     placeholder="지역 선택"
                     dropdownKey={operateLocationKey}
                     items={PROGRAM_OPERATION_LOCATIONS}

@@ -15,6 +15,7 @@ export const DropdownInputItem = ({
     dropdownKey,
     items,
     placeholder,
+    isRequired,
     ...props
 }) => {
     const {
@@ -27,11 +28,15 @@ export const DropdownInputItem = ({
             control={control}
             name={dropdownKey}
             rules={{
-                required: '필수 항목을 선택해주세요.',
+                ...(isRequired
+                    ? {
+                          required: '필수 항목을 선택해주세요.',
+                      }
+                    : {}),
             }}
             render={({ field: { value, onChange, onBlur } }) => (
                 <FormDropdown
-                    isRequired
+                    isRequired={isRequired}
                     label={label}
                     value={value ? value : placeholder}
                     placeholder={placeholder}
@@ -216,6 +221,7 @@ export const ImageFileInputItem = ({
 };
 
 export const DatePickerItem = ({
+    isRequired,
     datePickerKey,
     disabled,
     date,
@@ -233,7 +239,11 @@ export const DatePickerItem = ({
             control={control}
             name={datePickerKey}
             rules={{
-                required: '필수 항목을 입력해주세요.',
+                ...(isRequired
+                    ? {
+                          required: '필수 항목을 선택해주세요.',
+                      }
+                    : {}),
             }}
             render={({ field: { ref, value, onChange, onBlur } }) => {
                 const handleChange = (value) => {
@@ -270,7 +280,12 @@ export const DatePickerItem = ({
     );
 };
 
-export const TimePickerItem = ({ timePickerKey, disabled, ...props }) => {
+export const TimePickerItem = ({
+    isRequired,
+    timePickerKey,
+    disabled,
+    ...props
+}) => {
     const {
         control,
         formState: { errors },
@@ -281,7 +296,11 @@ export const TimePickerItem = ({ timePickerKey, disabled, ...props }) => {
             control={control}
             name={timePickerKey}
             rules={{
-                required: '필수 항목을 입력해주세요',
+                ...(isRequired
+                    ? {
+                          required: '필수 항목을 선택해주세요.',
+                      }
+                    : {}),
             }}
             render={({ field: { ref, value, onChange, onBlur } }) => (
                 <div className="d-flex flex-column" style={{ flex: 1 }}>

@@ -32,7 +32,6 @@ import { ChevronDownIcon } from '@goorm-dev/gds-icons';
 import Divider from '@/components/Divider';
 import styles from '../program.module.scss';
 import { formatNumberInput } from '@/utils/index.js';
-import dayjs from 'dayjs';
 
 const ProgramTypeInput = ({ division, typeKey }) => {
     const { setValue, watch } = useFormContext();
@@ -227,12 +226,14 @@ const BasicForm = ({ division }) => {
             </div>
             <div className={styles.divideRow}>
                 <DropdownInputItem
+                    isRequired
                     label="프로그램 카테고리"
                     dropdownKey={categoryKey}
                     placeholder="카테고리 선택"
                     items={PROGRAM_CATEGORIES}
                 />
                 <DropdownInputItem
+                    isRequired
                     label="운영 지역"
                     placeholder="운영 지역 선택"
                     items={PROGRAM_OPERATION_LOCATIONS}

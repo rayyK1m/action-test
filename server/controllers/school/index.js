@@ -1,9 +1,12 @@
 import swcampSdk from '@/server/libs/swcamp';
 
 const getSchools = async (req, res) => {
-    const { name, userId } = req.query;
+    const { name } = req.query;
 
-    const { items, total } = await swcampSdk.getSchools({ name, userId });
+    const { items, total } = await swcampSdk.getSchools({
+        name,
+        userId: req.session?.id,
+    });
     return res.json({ items, total });
 };
 
