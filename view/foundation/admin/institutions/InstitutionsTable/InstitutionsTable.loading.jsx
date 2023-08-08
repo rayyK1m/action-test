@@ -4,21 +4,23 @@ import cn from 'classnames';
 import { useHScrollTable, HScrollTable } from '@goorm-dev/gds-tables';
 import { Skeleton, SearchInput } from '@goorm-dev/gds-components';
 
-import styles from './ProgramTable.module.scss';
-import { FOUNDATION_ADMIN_DEFAULT_QUERY } from './ProgramTable.constants';
-import { PROGRAM_DIVISION } from '@/constants/db';
+import styles from './InstitutionsTable.module.scss';
+import { FOUNDATION_ADMIN_INSTITUTIONS_DEFAULT_QUERY } from './InstitutionsTable.constants';
 
 const getTableData = () =>
-    Array.from({ length: FOUNDATION_ADMIN_DEFAULT_QUERY.limit }, () => ({
-        index: '',
-        type: {
-            camp: PROGRAM_DIVISION.방문형,
-            duration: '장기',
-        },
-        name: '인간을 돕는 드론 에이전트',
-        status: 1,
-        uuid: '',
-    }));
+    Array.from(
+        { length: FOUNDATION_ADMIN_INSTITUTIONS_DEFAULT_QUERY.limit },
+        () => ({
+            index: '',
+            type: {
+                camp: '방문형',
+                duration: '장기',
+            },
+            name: '인간을 돕는 드론 에이전트',
+            status: 1,
+            uuid: '',
+        }),
+    );
 
 const TableSkeleton = () => (
     <Skeleton width="100%" height="1.25rem" className={styles.roundSkeleton} />
@@ -26,44 +28,32 @@ const TableSkeleton = () => (
 
 const getTableColoums = () => [
     {
-        accessorKey: 'reviewStatus',
-        header: <div>승인 상태</div>,
-        cell: <TableSkeleton />,
-        size: 119,
-    },
-    {
         accessorKey: 'name',
-        header: <div>프로그램 명</div>,
+        header: <div>운영 기관 명</div>,
         cell: <TableSkeleton />,
-        size: 640,
+        size: 837,
     },
     {
-        accessorKey: 'type',
-        header: <div>유형</div>,
+        accessorKey: 'file',
+        header: <div>필수 자료 제출</div>,
         cell: <TableSkeleton />,
-        maxSize: 129,
-    },
-    {
-        accessorKey: 'institution',
-        header: <div>기관 명</div>,
-        cell: <TableSkeleton />,
-        size: 180,
+        maxSize: 159,
     },
     {
         accessorKey: 'student',
         header: '',
         cell: <TableSkeleton />,
-        size: 136,
+        size: 151,
     },
     {
-        accessorKey: 'campCount',
+        accessorKey: 'programCount',
         header: '',
         cell: <TableSkeleton />,
-        size: 146,
+        size: 161,
     },
 ];
 
-function ProgramTableLoading() {
+function InstitutionsTableLoading() {
     const { getTableProps } = useHScrollTable({
         columns: getTableColoums(),
         data: getTableData(),
@@ -71,19 +61,19 @@ function ProgramTableLoading() {
         extraColumnType: 'index',
 
         usePagination: true,
-        pageSize: FOUNDATION_ADMIN_DEFAULT_QUERY.limit,
+        pageSize: FOUNDATION_ADMIN_INSTITUTIONS_DEFAULT_QUERY.limit,
     });
     return (
         <div>
             <div className={styles.title}>
-                <h6>전체 프로그램</h6>
+                <h6>전체 기관</h6>
 
                 <SearchInput
                     className={cn(
                         styles.searchInput,
                         styles.searchInput_isLoading,
                     )}
-                    placeholder="프로그램 검색"
+                    placeholder="기관 명, 캠프 명으로 검색"
                     size="lg"
                 />
             </div>
@@ -92,4 +82,4 @@ function ProgramTableLoading() {
     );
 }
 
-export default ProgramTableLoading;
+export default InstitutionsTableLoading;

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import institutionsKeys from './keys';
 import institutionsApis from './apis';
+import useSession from '../useSession';
 
 /**
  * 운영기관 리스트 조회
@@ -21,6 +22,20 @@ const useGetInstitution = (id) =>
         queryFn: () => institutionsApis.getInstitution(id),
     });
 
+/**
+ * 운영기관 리스트 조회(재단)
+ */
+const useGetInstitutionsFoundation = (filters) => {
+    const { data: userData } = useSession.GET();
+
+    return useQuery({
+        queryKey: institutionsKeys.itemsFoundationDetail({ ...filters }),
+        queryFn: () =>
+            institutionsApis.getInstitutionsFoundation({ ...filters }),
+        enabled: userData?.role === 'foundation',
+    });
+};
+
 export {
     institutionsKeys,
     institutionsApis,
@@ -30,4 +45,5 @@ export {
      */
     useGetInstitutions,
     useGetInstitution,
+    useGetInstitutionsFoundation,
 };

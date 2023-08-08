@@ -383,6 +383,37 @@ const getInstitution = async (institutionId) => {
     }
 };
 
+export const getInstitutionsFoundation = async ({
+    userId,
+    page,
+    limit,
+    search,
+    sort,
+}) => {
+    const removedEmptyQuery = removeEmptyValues({
+        page,
+        limit,
+        search,
+        sort,
+    });
+    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
+
+    try {
+        const { data } = await swcampInstance.get(
+            `/api/v1/institutions/foundation?${queryString}`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const getUserInfo = async ({ userId }) => {
     try {
         const res = await fetch(
@@ -437,6 +468,7 @@ const swcampSdk = {
      */
     getInstitutions,
     getInstitution,
+    getInstitutionsFoundation,
 
     /**
      * Camp

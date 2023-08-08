@@ -25,5 +25,5 @@ export const STATUS_TEXT = {
 
 export const FOUNDATION_ADMIN_DEFAULT_QUERY = {
     page: 1,
-    limit: 5,
+    limit: 10,
 };

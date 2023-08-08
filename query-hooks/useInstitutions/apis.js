@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 
-export const getInstitutions = async (query) => {
+const getInstitutions = async (query) => {
     const queryString = qs.stringify(query, { skipNulls: true });
 
     const { data } = await axios.get(
@@ -11,9 +11,26 @@ export const getInstitutions = async (query) => {
     return data;
 };
 
-export const getInstitution = async (institutionId) => {
+const getInstitution = async (institutionId) => {
     const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/institutions/${institutionId}`,
+    );
+
+    return data;
+};
+
+/**
+ *
+ * @param {*} query
+ * @param {import('axios').AxiosRequestConfig} config
+ * @returns
+ */
+const getInstitutionsFoundation = async (query, config) => {
+    const queryString = qs.stringify(query, { skipNulls: true });
+
+    const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/institutions/foundation?${queryString}`,
+        { ...config },
     );
 
     return data;
@@ -22,6 +39,7 @@ export const getInstitution = async (institutionId) => {
 const institutionsApis = {
     getInstitutions,
     getInstitution,
+    getInstitutionsFoundation,
 };
 
 export default institutionsApis;

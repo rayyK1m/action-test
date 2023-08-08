@@ -89,11 +89,15 @@ const getProgram = async (req, res) => {
 
 const getProgramsAdmin = async (req, res) => {
     const { page, limit, search, sort } = req.query;
-    const isInstitution = req.session?.role === ROLE.INSTITUTION;
+    const { id: userId, role, institutionId } = req.session || {};
+
+    const isInstitution = role === ROLE.INSTITUTION;
+    const isFoundation = role === ROLE.FOUNDATION && req.query.institutionId;
 
     const { items, total } = await swcampSdk.getProgramsAdmin({
-        userId: req.session?.id,
-        ...(isInstitution && { institutionId: req.session?.institutionId }),
+        ...(isInstitution && { institutionId }),
+        ...(isFoundation && { institutionId: req.query.institutionId }),
+        userId,
         page,
         limit,
         search,

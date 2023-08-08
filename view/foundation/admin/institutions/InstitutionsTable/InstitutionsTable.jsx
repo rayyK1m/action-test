@@ -1,20 +1,22 @@
-import { useRouter } from 'next/router';
 import useQueryParam from '@/hooks/useQueryParam';
-import { useEffect, useMemo, useState } from 'react';
+import { useGetInstitutionsFoundation } from '@/query-hooks/useInstitutions';
 import { convertSort } from '@/utils';
-import { useGetProgramsAdmin } from '@/query-hooks/usePrograms';
 import {
     HScrollTable,
     HScrollTablePagination,
     useHScrollTable,
 } from '@goorm-dev/gds-tables';
-import { getTableColoums } from './ProgramTable.util';
-import EmptyTableCard from '@/components/EmptyTableCard/EmptyTableCard';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
+import { getTableColoums } from './InstitutionsTable.util';
 
-import styles from './ProgramTable.module.scss';
-import { SearchInput } from '@goorm-dev/gds-components/dist/cjs';
+import styles from './InstitutionsTable.module.scss';
+import { SearchInput } from '@goorm-dev/gds-components';
+import EmptyTableCard, {
+    EMPTY_IMAGE_TYPE,
+} from '@/components/EmptyTableCard/EmptyTableCard';
 
-function ProgramTable() {
+function InstitutionsTable() {
     const router = useRouter();
     const page = useQueryParam({
         key: 'page',
@@ -34,8 +36,8 @@ function ProgramTable() {
     const [sorting, setSorting] = useState(convertSort(sort));
 
     const {
-        data: { programs, totalCount },
-    } = useGetProgramsAdmin({
+        data: { items: institutions, totalCount },
+    } = useGetInstitutionsFoundation({
         page,
         limit: pageSize,
         search,
@@ -43,9 +45,10 @@ function ProgramTable() {
     });
 
     const columns = useMemo(() => getTableColoums(), []);
+
     const { getTableProps, getPaginationProps } = useHScrollTable({
         columns,
-        data: programs,
+        data: institutions,
 
         extraColumnType: 'index',
 
@@ -59,6 +62,7 @@ function ProgramTable() {
         sorting,
     });
     const isEmptyData = useMemo(() => !totalCount, [totalCount]);
+    const isFiltered = useMemo(() => !!search, [search]);
 
     const searchTable = (e) => {
         e.preventDefault();
@@ -113,7 +117,7 @@ function ProgramTable() {
         <div>
             <div className={styles.title}>
                 <h6>
-                    전체 프로그램{' '}
+                    전체 기관{' '}
                     <span
                         className={
                             isEmptyData ? 'text-gray-600' : 'text-blue-500'
@@ -125,7 +129,7 @@ function ProgramTable() {
                 <form onSubmit={searchTable}>
                     <SearchInput
                         className={styles.searchInput}
-                        placeholder="프로그램 검색"
+                        placeholder="기관 명, 캠프 명으로 검색"
                         size="lg"
                         value={searchText}
                         onChange={(e) => {
@@ -135,7 +139,18 @@ function ProgramTable() {
                 </form>
             </div>
             {isEmptyData ? (
-                <EmptyTableCard text="등록된 프로그램이 없습니다." />
+                <EmptyTableCard
+                    text={
+                        isFiltered
+                            ? '검색 결과가 없습니다.'
+                            : '등록된 기관이 없습니다.'
+                    }
+                    imageSrc={
+                        isFiltered
+                            ? EMPTY_IMAGE_TYPE.SEARCH
+                            : EMPTY_IMAGE_TYPE.LIST
+                    }
+                />
             ) : (
                 <>
                     <HScrollTable {...getTableProps()} />
@@ -148,4 +163,4 @@ function ProgramTable() {
     );
 }
 
-export default ProgramTable;
+export default InstitutionsTable;

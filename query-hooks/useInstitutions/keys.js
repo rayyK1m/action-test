@@ -15,6 +15,15 @@ const institutionsKeys = {
      */
     items: () => [...institutionsKeys.all(), 'items'],
     itemsDetail: (filters) => [...institutionsKeys.items(), { ...filters }],
+
+    /**
+     * 기관 리스트[재단용]
+     */
+    itemsFoundation: () => [...institutionsKeys.all(), 'itemsFoundation'],
+    itemsFoundationDetail: (filters) => [
+        ...institutionsKeys.itemsFoundation(),
+        { ...filters },
+    ],
 };
 
 export default institutionsKeys;

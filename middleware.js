@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import authSdk from '@/server/libs/auth';
 import { expireAllCookies, checkAuthentication } from '@/server/utils/auth';
+import { checkAuth } from './server/middlewares/auth';
 
 /** @type {import('next/server').NextMiddleware}*/
 export async function middleware(req) {
@@ -45,9 +46,23 @@ export async function middleware(req) {
         return NextResponse.redirect(url);
     }
 
+    // 재단 어드민 권한 체크
+    if (req.nextUrl.pathname.startsWith('/foundation/admin')) {
+        return await checkAuth({ roles: ['foundation'] })(
+            req,
+            undefined,
+            NextResponse.next,
+        );
+    }
+
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/login', '/logout', '/auth/goorm/callback'],
+    matcher: [
+        '/login',
+        '/logout',
+        '/auth/goorm/callback',
+        '/foundation/admin/:path*',
+    ],
 };

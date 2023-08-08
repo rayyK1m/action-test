@@ -9,11 +9,11 @@ import { withSessionSsr } from '@/server/utils/auth';
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
 import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
 
-import FoundationAdminPrograms from '@/view/foundation/admin/programs';
+import FoundationAdminInstitutionPrograms from '@/view/foundation/admin/institution/[institutionId]/programs';
 import { FOUNDATION_ADMIN_DEFAULT_QUERY } from '@/view/foundation/admin/components/ProgramTable/ProgramTable.constants';
 import { createServerAxios } from '@/utils';
 
-export default function FoundationAdminProgramsPage() {
+export default function FoundationAdminInstitutionProgramsPage() {
     const { data: userData } = useSession.GET();
 
     return (
@@ -23,7 +23,7 @@ export default function FoundationAdminProgramsPage() {
             </Head>
             <Layout.Header userData={userData} />
             <Layout.Main>
-                <FoundationAdminPrograms />
+                <FoundationAdminInstitutionPrograms />
             </Layout.Main>
             <Layout.Footer />
         </Layout>
@@ -32,7 +32,7 @@ export default function FoundationAdminProgramsPage() {
 
 export const getServerSideProps = withSessionSsr(async (context) => {
     const queryClient = new QueryClient();
-    const { page, limit, search, sort } = context.query;
+    const { institutionId, page, limit, search, sort } = context.query;
 
     const isNumber = (value) => {
         if (!value) return false;
@@ -56,18 +56,21 @@ export const getServerSideProps = withSessionSsr(async (context) => {
                 dehydratedState: dehydrate(queryClient),
             },
             redirect: {
-                destination: `/foundation/admin/programs?${qs.stringify({
-                    page: getNumberQuery('page'),
-                    limit: getNumberQuery('limit'),
-                    search: search || '',
-                    sort: sort || '',
-                })}`,
+                destination: `/foundation/admin/institution/${institutionId}/programs?${qs.stringify(
+                    {
+                        page: getNumberQuery('page'),
+                        limit: getNumberQuery('limit'),
+                        search: search || '',
+                        sort: sort || '',
+                    },
+                )}`,
                 permanent: false,
             },
         };
     }
 
     const DEFAULT_QUERY = {
+        institutionId,
         page: Number(page),
         limit: Number(limit),
         search,
@@ -76,15 +79,19 @@ export const getServerSideProps = withSessionSsr(async (context) => {
 
     const serverAxios = createServerAxios(context);
 
-    await queryClient.prefetchQuery(
-        programsKeys.itemsAdminDetail({ ...DEFAULT_QUERY }),
-        () => programsApis.getProgramsAdmin({ ...DEFAULT_QUERY }, serverAxios),
-    );
-
     if (context.req?.session) {
         await queryClient.prefetchQuery(
             sessionKeys.all(),
             () => context.req.session,
+        );
+
+        await queryClient.prefetchQuery(
+            programsKeys.itemsAdminDetail({ ...DEFAULT_QUERY }),
+            () =>
+                programsApis.getProgramsAdmin(
+                    { ...DEFAULT_QUERY },
+                    serverAxios,
+                ),
         );
     }
 

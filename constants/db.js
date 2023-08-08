@@ -69,6 +69,19 @@ export const CAMP_REVIEW_STATUS = {
     },
 };
 
+export const REQUIRED_FILE_SUBMIT_STATUS = {
+    제출: {
+        text: '제출',
+        key: 'SUBMIT',
+        value: 'SUBMIT',
+    },
+    미제출: {
+        text: '미제출',
+        key: 'NOT_SUBMITTED',
+        value: 'NOT_SUBMITTED',
+    },
+};
+
 export const PROGRAM_CATEGORIES = [
     '드론',
     '메타버스',

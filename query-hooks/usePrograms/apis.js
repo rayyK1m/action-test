@@ -21,6 +21,11 @@ const getProgram = async (query) => {
     return data;
 };
 
+/**
+ * @param {*} query
+ * @param {import('axios').AxiosInstance} axiosInstance
+ * @returns {Promise<{ programs: Array<import('./types').Program>; totalCount: number; }>}
+ */
 const getProgramsAdmin = async (query, axiosInstance = axios) => {
     const queryString = qs.stringify(query, { skipNulls: true });
     const { data } = await axiosInstance.get(

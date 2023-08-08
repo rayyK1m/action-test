@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import sessionKeys from './keys';
 
 /**
@@ -19,7 +19,10 @@ const GET = () => {
     const queryClient = useQueryClient();
     const data = queryClient.getQueryData(sessionKeys.all());
 
-    return { data };
+    return useQuery(sessionKeys.all(), () => data, {
+        cacheTime: Infinity,
+        enabled: !!data,
+    });
 };
 
 const useSession = {

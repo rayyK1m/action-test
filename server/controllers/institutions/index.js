@@ -25,6 +25,25 @@ const getInstitution = async (req, res) => {
     });
 };
 
-const institutionsCtrl = { getInstitutions, getInstitution, validation };
+const getInstitutionsFoundation = async (req, res) => {
+    const { page, limit, search, sort } = req.query;
+
+    const { items, total } = await swcampSdk.getInstitutionsFoundation({
+        userId: req.session?.id,
+        page,
+        limit,
+        search,
+        sort,
+    });
+
+    return res.json({ items, totalCount: total });
+};
+
+const institutionsCtrl = {
+    getInstitutions,
+    getInstitution,
+    getInstitutionsFoundation,
+    validation,
+};
 
 export default institutionsCtrl;

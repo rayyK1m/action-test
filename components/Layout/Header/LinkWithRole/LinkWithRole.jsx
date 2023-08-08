@@ -32,7 +32,7 @@ const LinkWithRole = ({ role, channelUrl, className }) => {
             );
         case 'foundation':
             return (
-                <Button {...DEFAULT_PROPS} href="/foundation/admin">
+                <Button {...DEFAULT_PROPS} href="/foundation/admin/programs">
                     재단 어드민
                 </Button>
             );

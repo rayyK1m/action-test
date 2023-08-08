@@ -9,8 +9,11 @@ import { STATUS_TEXT } from './ProgramTable.constants';
 
 import styles from './ProgramTable.module.scss';
 
-export const getTableColoums = () => {
-    const columns = [
+/**
+ * @param {import('./ProgramTable.type').ColumnsOption}
+ */
+export const getTableColoums = (option = {}) => {
+    return [
         {
             accessorKey: 'reviewStatus',
             header: <div>승인 상태</div>,
@@ -34,7 +37,7 @@ export const getTableColoums = () => {
             header: <div>프로그램 명</div>,
             cell: cellHelper(({ value: name, rowData }) => (
                 <Link
-                    href={`/institution/admin/program/${rowData.id}`}
+                    href={`/foundation/admin/programs/${rowData.id}`}
                     className={styles.programName}
                 >
                     {name}
@@ -67,13 +70,15 @@ export const getTableColoums = () => {
             accessorKey: 'student',
             header: '',
             cell: cellHelper(({ rowData }) => {
-                const { campUserTicketCount } = rowData;
+                const { reviewStatus } = rowData;
+                const isDisabled =
+                    reviewStatus === 'IN_PROGRESS' || reviewStatus === 'REJECT';
 
                 return (
                     <Button
                         color="link"
                         onClick={() => alert(rowData.id)}
-                        disabled={!campUserTicketCount}
+                        disabled={isDisabled}
                     >
                         신청자 관리
                     </Button>
@@ -85,9 +90,9 @@ export const getTableColoums = () => {
             accessorKey: 'campCount',
             header: '',
             cell: cellHelper(({ value: campCount, rowData }) => {
-                const { campUserTicketCount } = rowData;
-
-                if (!campUserTicketCount) return <></>;
+                const { reviewStatus } = rowData;
+                const isDisabled =
+                    reviewStatus === 'IN_PROGRESS' || reviewStatus === 'REJECT';
 
                 return (
                     <Button
@@ -95,6 +100,7 @@ export const getTableColoums = () => {
                         onClick={() => alert(campCount)}
                         iconSide={'right'}
                         icon={<ChevronRightIcon />}
+                        disabled={isDisabled}
                     >
                         캠프 <span className="text-primary">{campCount}</span>
                     </Button>
@@ -102,7 +108,5 @@ export const getTableColoums = () => {
             }),
             size: 146,
         },
-    ];
-
-    return columns;
+    ].filter(({ accessorKey }) => option[accessorKey] !== false);
 };

@@ -3,23 +3,27 @@ import ProgramTable from '@/view/foundation/admin/components/ProgramTable/Progra
 import { useRouter } from 'next/router';
 import { Suspense } from 'react';
 import GridContainer from '@/components/GridContainer';
-import NavTab from '@/view/foundation/admin/components/NavTab';
+import BackButton from './BackButton';
 
-function FoundationAdminPrograms() {
+function FoundationAdminInstitutionPrograms() {
     const router = useRouter();
     return (
         <div>
             <GridContainer>
-                <NavTab />
                 <Suspense
-                    fallback={<ProgramTableLoading />}
+                    fallback={
+                        <ProgramTableLoading
+                            columnsOption={{ institution: false }}
+                        />
+                    }
                     key={router.asPath}
                 >
-                    <ProgramTable />
+                    <BackButton />
+                    <ProgramTable columnsOption={{ institution: false }} />
                 </Suspense>
             </GridContainer>
         </div>
     );
 }
 
-export default FoundationAdminPrograms;
+export default FoundationAdminInstitutionPrograms;
