@@ -2,32 +2,13 @@ import { Button } from '@goorm-dev/gds-components';
 import { BackPageIcon } from '@goorm-dev/gds-icons';
 import styles from './BackButton.module.scss';
 import Link from 'next/link';
-import { useGetProgramsAdmin } from '@/query-hooks/usePrograms';
 import { useRouter } from 'next/router';
-import useQueryParam from '@/hooks/useQueryParam';
+import { useGetInstitution } from '@/query-hooks/useInstitutions';
 
 function BackButton() {
     const router = useRouter();
-    const page = useQueryParam({
-        key: 'page',
-        parser: Number,
-    });
-    const limit = useQueryParam({
-        key: 'limit',
-        parser: Number,
-    });
-
-    const { institutionId, search, sort } = router.query;
-
-    const {
-        data: { programs },
-    } = useGetProgramsAdmin({
-        institutionId,
-        page,
-        limit,
-        search,
-        sort,
-    });
+    const { institutionId } = router.query;
+    const { data: institution } = useGetInstitution(institutionId);
 
     return (
         <div className={styles.container}>
@@ -39,7 +20,7 @@ function BackButton() {
                 icon={<BackPageIcon />}
                 className={styles.button}
             />
-            <h3>{programs[0].institution.name}</h3>
+            <h3>{institution.name}</h3>
         </div>
     );
 }
