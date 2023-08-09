@@ -4,7 +4,7 @@ const getPresignedUrl = async (query) => {
     const { file, pathType } = query;
     const {
         data: { url, path },
-    } = await axios.get('/api/files/presigned', {
+    } = await axios.get('/api/files/upload', {
         params: {
             pathType, // 사전에 약속된 업로드될 디렉토리 타입
             contentType: file.type,

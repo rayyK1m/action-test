@@ -1,6 +1,6 @@
 .disabledInput {
     // NOTE : disabled props 없어서 직접 처리
-    > div button {
+    > div {
         pointer-events: none;
         opacity: 0.32;
     }

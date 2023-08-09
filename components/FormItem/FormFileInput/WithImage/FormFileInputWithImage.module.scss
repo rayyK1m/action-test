@@ -1,16 +1,19 @@
 .thumbnailContainer {
     width: 27.25rem;
+    height: 11.625rem;
     position: relative;
-    border: 1px solid var(--gray-800-transparent-8);
     border-radius: 0.5rem;
+    &__border {
+        border: 1px solid var(--gray-800-transparent-8);
+    }
 }
 
 .thumbnail {
     width: 100%;
+    height: 100%;
     border-radius: 0.5rem;
-    padding-top: 52.36%;
     background-position: center;
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
 }
 
@@ -20,7 +23,7 @@
 
 .disabledInput {
     // NOTE : disabled props 없어서 직접 처리
-    > div button {
+    > div {
         pointer-events: none;
         opacity: 0.32;
     }

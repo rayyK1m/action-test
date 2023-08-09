@@ -11,5 +11,14 @@ const getPresignedUrl = async (req, res) => {
     return res.json({ url, path });
 };
 
-const filesCtrl = { validation, getPresignedUrl };
+const getPresignedUrlWithPath = async (req, res) => {
+    const { path } = req.query;
+    const url = await awsS3Sdk.createPresignedUrlWithPath(
+        decodeURIComponent(path),
+    );
+
+    return res.json(url);
+};
+
+const filesCtrl = { validation, getPresignedUrl, getPresignedUrlWithPath };
 export default filesCtrl;

@@ -51,5 +51,16 @@ const createPresignedUrl = async (pathType, contentType) => {
     return { url, path };
 };
 
-const awsS3Sdk = { PATH_TYPE, createPresignedUrl };
+const createPresignedUrlWithPath = async (path) => {
+    const s3 = new aws.S3();
+
+    const params = {
+        Bucket: DEFAULT_BUCKET,
+        Key: path,
+    };
+    const url = await s3.getSignedUrlPromise('getObject', params);
+    return url;
+};
+
+const awsS3Sdk = { PATH_TYPE, createPresignedUrl, createPresignedUrlWithPath };
 export default awsS3Sdk;

@@ -10,7 +10,7 @@ import styles from './FormFileInputWithImage.module.scss';
 import { useUploadFile, fileApis } from '@/query-hooks/useFile';
 // 임시 기본 썸네일 : 확정 후 변경 예정
 const DEFAULT_THUMBNAIL =
-    'https://statics.goorm.io/images/edu/lecture_thumb.svg';
+    'https://s3.ap-northeast-2.amazonaws.com/statics.goorm.io/images/newsac/default_thumbnail.svg';
 
 const FormFileInputWithImage = ({
     label,
@@ -94,6 +94,7 @@ const FormFileInputWithImage = ({
                     className={cn(
                         styles.thumbnailContainer,
                         'mr-lg-4 mr-0 mb-lg-0 mb-3',
+                        imageUrl && styles.thumbnailContainer__border,
                     )}
                 >
                     <div
