@@ -25,6 +25,13 @@ const getCampTicket = async (query) => {
     return data;
 };
 
+const getCampTicketAdmin = async ({ id }) => {
+    const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camp-tickets/${id}/admin`,
+    );
+    return data;
+};
+
 const getCampTicketsCount = async () => {
     const { data } = await axios.get('/api/camp-tickets/active-count');
     return data;
@@ -78,13 +85,25 @@ const getCampTicketHistory = async (query, axiosInstance = axios) => {
     return data;
 };
 
+const changeCampTicketStatus = async (query) => {
+    const { status, id } = query;
+    const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camp-tickets/${id}/status`,
+        { status },
+    );
+
+    return data;
+};
+
 const campTicketsApis = {
     getCampTickets,
     getCampTicket,
+    getCampTicketAdmin,
     getCampTicketsCount,
     createCampTicket,
     cancelCampTicket,
     getCampticketsAdmin,
     getCampTicketHistory,
+    changeCampTicketStatus,
 };
 export default campTicketsApis;

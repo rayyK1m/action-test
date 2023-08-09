@@ -17,6 +17,17 @@ const getCampTicket = async (req, res) => {
     return res.json(item);
 };
 
+const getCampTicketAdmin = async (req, res) => {
+    const { id } = req.query;
+    const { item } = await swcampSdk.getCampTicketAdmin({
+        ticketId: id,
+        userId: req.session?.id,
+        institutionId: req.session?.institutionId,
+    });
+
+    return res.json(item);
+};
+
 const getCampTickets = async (req, res) => {
     const userId = req.session.id;
     const { page = 1, limit = 5, sort, reviewStatus } = req.query;
@@ -87,13 +98,28 @@ const getCampTicketsByProgram = async (req, res) => {
     });
 };
 
+const changeCampTicketStatus = async (req, res) => {
+    const { id } = req.query;
+    const status = req.body;
+
+    const data = await swcampSdk.changeCampTicketStatus({
+        ticketId: id,
+        userId: req.session?.id,
+        institutionId: req.session?.institutionId,
+        status,
+    });
+    return res.json(data);
+};
+
 const campTicketsCtrl = {
     createCampTicket,
     getCampTicket,
+    getCampTicketAdmin,
     getCampTickets,
     cancelCampTicket,
     getCampTicketsCount,
     getCampTicketHistory,
     getCampTicketsByProgram,
+    changeCampTicketStatus,
 };
 export default campTicketsCtrl;

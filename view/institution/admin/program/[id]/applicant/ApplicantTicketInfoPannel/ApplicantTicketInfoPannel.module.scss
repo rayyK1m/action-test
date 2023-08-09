@@ -9,6 +9,13 @@
     gap: 0.5rem;
 }
 
+.headerInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
 .infoCard {
     margin-top: 1.5rem;
 }

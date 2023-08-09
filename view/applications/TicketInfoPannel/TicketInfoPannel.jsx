@@ -31,17 +31,18 @@ import PageHeader from '@/components/PageHeader';
 import useSession from '@/query-hooks/useSession';
 import useToggle from '@/hooks/useToggle';
 import { ErrorCircleIcon } from '@goorm-dev/gds-icons';
-import TicketInfoPannelLoading from './TicketInfoPannel.loading';
+import PannelLoading from '@/components/PannelLoading';
 
 function TicketInfoPannel({ isOpen, onClose, ticketId }) {
     const [isModalOpen, toggle] = useToggle();
 
     const { data: userData } = useSession.GET();
-    /** NOTE : 로딩 시 뷰가 없어 임시 처리되어 있는 상태 - 처리 필요 */
+
     const { data: ticket, isLoading } = useGetCampTicket({
         id: ticketId,
         userId: userData.id,
         isOpen,
+        isAdmin: true,
     });
 
     const cancelTicket = useCancelCampTicket();
@@ -90,7 +91,7 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
 
                 <SidePannel.Body className={styles.drawer}>
                     {isLoading ? (
-                        <TicketInfoPannelLoading />
+                        <PannelLoading />
                     ) : (
                         <div>
                             <PageHeader useHrTag={true}>

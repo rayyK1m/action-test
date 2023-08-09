@@ -33,7 +33,7 @@ const ApplyTargetInput = ({ programTarget }) => {
     const targetSchool = Object.values(programTarget) || {};
 
     return (
-        <FormWrapper label="신청 가능 대상" isRequired>
+        <FormWrapper label="신청 대상" isRequired>
             <div className={styles.checkForm}>
                 {Object.entries(SCHOOL).map(([_, school], index) => (
                     <div className={styles.school} key={school.key}>

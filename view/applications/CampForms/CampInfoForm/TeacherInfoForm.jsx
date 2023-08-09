@@ -38,7 +38,7 @@ const ApplyTargetInput = ({ programTarget }) => {
     const targetSchool = Object.values(programTarget) || {};
 
     return (
-        <FormWrapper label="신청 가능 대상" isRequired>
+        <FormWrapper label="신청 대상" isRequired>
             <div className={styles.checkForm}>
                 {Object.entries(SCHOOL).map(([_, school], index) => (
                     <div className={styles.school} key={school.key}>
@@ -102,7 +102,7 @@ export const ReadOnlyProgramForm = () => {
     );
 };
 
-export const ReadOnlyManagerForm = () => {
+export const ReadOnlyManagerForm = ({ isFoundationPage }) => {
     const { getValues } = useFormContext();
 
     const { userNameKey, schoolNameKey, operateLocationKey, schoolTypeKey } =
@@ -150,7 +150,10 @@ export const ReadOnlyManagerForm = () => {
                 <FormInput
                     label="학교 유형"
                     placeholder="예) 늘봄 학교"
-                    formText="미 입력시 일반 학교로 자동 등록됩니다."
+                    formText={
+                        !isFoundationPage &&
+                        '미 입력시 일반 학교로 자동 등록됩니다.'
+                    }
                     value={getValues(schoolTypeKey) || '일반 학교'}
                     readOnly
                 />
@@ -159,7 +162,7 @@ export const ReadOnlyManagerForm = () => {
     );
 };
 
-export const ReadOnlyTeacherForm = () => {
+export const ReadOnlyTeacherForm = ({ isFoundationPage }) => {
     const { getValues } = useFormContext();
 
     const { mainEducatorKey, subEducatorKey } = CAMP_APPLY_KEYS;
@@ -180,13 +183,15 @@ export const ReadOnlyTeacherForm = () => {
                         readOnly
                     />
                 </div>
-                <CustomAlert
-                    leftIcon={NoticeCircleIcon}
-                    className={styles.alert}
-                >
-                    강사 혹은 보조 강사를 기재하지 않을 경우, 운영 기관에서
-                    배정할 수 있습니다.
-                </CustomAlert>
+                {!isFoundationPage && (
+                    <CustomAlert
+                        leftIcon={NoticeCircleIcon}
+                        className={styles.alert}
+                    >
+                        강사 혹은 보조 강사를 기재하지 않을 경우, 운영 기관에서
+                        배정할 수 있습니다.
+                    </CustomAlert>
+                )}
             </div>
         </div>
     );

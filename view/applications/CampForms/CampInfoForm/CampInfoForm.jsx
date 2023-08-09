@@ -13,21 +13,25 @@ import { ReadOnlyTermsForm } from '../TermForm/TermForm';
 
 import styles from '../CampForms.module.scss';
 
-export const TeacherInfoForm = ({ programTarget }) => (
+export const TeacherInfoForm = ({
+    programTarget,
+    isAdmin = false,
+    isFoundationPage,
+}) => (
     <div className={styles.forms}>
         <ReadOnlyProgramForm />
-        <ReadOnlyManagerForm />
-        <ReadOnlyTeacherForm />
+        <ReadOnlyManagerForm isFoundationPage={isFoundationPage} />
+        <ReadOnlyTeacherForm isFoundationPage={isFoundationPage} />
         <ReadOnlyTargetForm programTarget={programTarget} />
         <ReadOnlyLearningTimeForm />
-        <ReadOnlyTermsForm />
+        {!isAdmin && <ReadOnlyTermsForm />}
     </div>
 );
 
-export const StudentInfoForm = ({ programTarget }) => (
+export const StudentInfoForm = ({ programTarget, isAdmin = false }) => (
     <div className={styles.forms}>
         <ReadOnlyStudentProgramForm />
         <ReadOnlyApplyForm programTarget={programTarget} />
-        <ReadOnlyTermsForm />
+        {!isAdmin && <ReadOnlyTermsForm />}
     </div>
 );

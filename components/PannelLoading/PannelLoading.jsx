@@ -1,7 +1,7 @@
 import PageHeader from '@/components/PageHeader';
-import { SidePannel, Skeleton } from '@goorm-dev/gds-components';
-import styles from './TicketInfoPannel.module.scss';
-import ProgramInfoCard from '../ProgramInfoCard';
+import { Skeleton } from '@goorm-dev/gds-components';
+import styles from './PannelLoading.module.scss';
+import ProgramInfoCard from '@/view/applications/ProgramInfoCard';
 
 const LoadingSkeleton = () => (
     <div className={styles.skeleton}>
@@ -11,7 +11,7 @@ const LoadingSkeleton = () => (
     </div>
 );
 
-function TicketInfoPannelLoading() {
+function PannelLoading() {
     return (
         <div>
             <PageHeader useHrTag={true}>
@@ -37,4 +37,4 @@ function TicketInfoPannelLoading() {
     );
 }
 
-export default TicketInfoPannelLoading;
+export default PannelLoading;

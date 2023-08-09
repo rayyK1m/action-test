@@ -36,6 +36,24 @@ const getCampTicket = async ({ userId, ticketId }) => {
     }
 };
 
+const getCampTicketAdmin = async ({ ticketId, userId, institutionId }) => {
+    try {
+        const { data } = await swcampInstance.get(
+            `${process.env.SWCAMP_API_HOST}/api/v1/camp-tickets/${ticketId}/admin?institutionId=${institutionId}`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const getPrograms = async ({
     page,
     limit,
@@ -364,6 +382,31 @@ const getCampTicketsByProgram = async ({
     }
 };
 
+const changeCampTicketStatus = async ({
+    ticketId,
+    userId,
+    institutionId,
+    status,
+}) => {
+    try {
+        const { data } = await swcampInstance.post(
+            `${process.env.SWCAMP_API_HOST}/api/v1/camp-tickets/${ticketId}/review-status?institutionId=${institutionId}`,
+            status,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        console.log(err.response.data);
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+            // NOTE: 디버깅에 필요한 데이터 넣어두기
+        });
+    }
+};
+
 const getInstitutions = async ({ page, limit, search, active }) => {
     const removedEmptyQuery = removeEmptyValues({
         page,
@@ -499,12 +542,13 @@ const swcampSdk = {
      */
     getCampTickets,
     getCampTicket,
+    getCampTicketAdmin,
     cancelCampTicket,
     getCampTicketsCount,
     createCampTicket,
     getCampTicketHistory,
     getCampTicketsByProgram,
-
+    changeCampTicketStatus,
     /**
      * UserData
      */

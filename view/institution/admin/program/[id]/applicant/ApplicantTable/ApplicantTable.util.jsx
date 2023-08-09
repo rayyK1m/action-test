@@ -9,6 +9,8 @@ import { CAMP_TICKET_STATUS_TEXT } from './ApplicantTable.constants';
 import useHover from '@/hooks/useHover';
 
 import styles from './ApplicantTable.module.scss';
+import useToggle from '@/hooks/useToggle';
+import ApplicantTicketInfoPannel from '../ApplicantTicketInfoPannel/ApplicantTicketInfoPannel';
 
 export const getTableColoums = (division) => {
     const baseColumns = [
@@ -114,7 +116,21 @@ export const getTableColoums = (division) => {
         {
             accessorKey: 'viewDetail',
             header: <></>,
-            cell: () => <Button color="link">신청 정보 확인</Button>,
+            cell: cellHelper(({ rowData }) => {
+                const [isOpen, toggle] = useToggle(false);
+                return (
+                    <>
+                        <Button color="link" onClick={toggle}>
+                            신청 정보 확인
+                        </Button>
+                        <ApplicantTicketInfoPannel
+                            isOpen={isOpen}
+                            onClose={() => toggle(false)}
+                            ticketId={rowData.id}
+                        />
+                    </>
+                );
+            }),
             size: 151,
         },
     ];
@@ -153,7 +169,21 @@ export const getTableColoums = (division) => {
         {
             accessorKey: 'viewDetail',
             header: <></>,
-            cell: () => <Button color="link">신청 정보 확인</Button>,
+            cell: cellHelper(({ rowData }) => {
+                const [isOpen, toggle] = useToggle(false);
+                return (
+                    <>
+                        <Button color="link" onClick={toggle}>
+                            신청 정보 확인
+                        </Button>
+                        <ApplicantTicketInfoPannel
+                            isOpen={isOpen}
+                            onClose={() => toggle(false)}
+                            ticketId={rowData.id}
+                        />
+                    </>
+                );
+            }),
             size: 151,
             minSize: 151,
         },

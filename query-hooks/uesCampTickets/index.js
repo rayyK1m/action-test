@@ -6,6 +6,7 @@ import { toast } from '@goorm-dev/gds-toastify';
 import campTicketsKeys from './keys';
 import campTicketsApis from './apis';
 import useSession from '../useSession';
+import { CAMP_REVIEW_STATUS } from '@/constants/db';
 
 const useGetCampTickets = (filters) => {
     return useQuery({
@@ -19,6 +20,16 @@ const useGetCampTicket = (query) => {
     return useQuery({
         queryKey: campTicketsKeys.itemDetail(),
         queryFn: () => campTicketsApis.getCampTicket({ id, userId }),
+        enabled: isOpen,
+        suspense: false,
+    });
+};
+
+const useGetCampTicketAdmin = (query) => {
+    const { isOpen, id } = query;
+    return useQuery({
+        queryKey: campTicketsKeys.itemDetail(),
+        queryFn: () => campTicketsApis.getCampTicketAdmin({ id }),
         enabled: isOpen,
         suspense: false,
     });
@@ -87,14 +98,45 @@ const useGetCampTicketHistory = (filters) => {
     });
 };
 
+const useChangeCampTicketStatus = () => {
+    const queryClient = useQueryClient();
+    return useMutation(
+        ({ status, id }) =>
+            campTicketsApis.changeCampTicketStatus({ status, id }),
+        {
+            onSuccess: (_, variable) => {
+                const { status } = variable;
+                if (status === CAMP_REVIEW_STATUS.승인.value) {
+                    toast('신청자 승인이 완료되었습니다.', {
+                        type: toast.TYPE.SUCCESS,
+                    });
+                }
+                if (status === CAMP_REVIEW_STATUS.거절.value) {
+                    toast('신청자 승인이 거절되었습니다.');
+                }
+                queryClient.invalidateQueries(campTicketsKeys.itemDetail());
+                queryClient.invalidateQueries(
+                    campTicketsKeys.itemsAdminDetail(),
+                );
+            },
+            onError: () =>
+                toast('승인 상태 변경에 실패했습니다.', {
+                    type: toast.TYPE.ERROR,
+                }),
+        },
+    );
+};
+
 export {
     useGetCampTickets,
     useGetCampTicket,
+    useGetCampTicketAdmin,
     useGetCampTicketsCount,
     useCreateCampTicket,
     useCancelCampTicket,
     useGetCampTicketsAdmin,
     useGetCampTicketHistory,
+    useChangeCampTicketStatus,
     campTicketsApis,
     campTicketsKeys,
 };

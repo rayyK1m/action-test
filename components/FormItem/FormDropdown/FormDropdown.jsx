@@ -49,7 +49,6 @@ const FormDropdown = ({
                     size={size}
                     className={styles.button}
                     disabled
-                    active
                     {...props}
                 >
                     {value}
