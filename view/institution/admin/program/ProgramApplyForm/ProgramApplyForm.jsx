@@ -16,6 +16,7 @@ import { FormWrapper, FormDatePicker } from '@/components/FormItem';
 import {
     PROGRAM_CATEGORIES,
     PROGRAM_DIVISION,
+    PROGRAM_DURATION,
     PROGRAM_OPERATION_LOCATIONS,
 } from '@/constants/db';
 import { PROGRAM_APPLY_KEYS, SCHOOL } from '../program.contants.js';
@@ -36,13 +37,13 @@ import { formatNumberInput } from '@/utils/index.js';
 const ProgramTypeInput = ({ division, typeKey }) => {
     const { setValue, watch } = useFormContext();
 
-    const items = ['장기', '단기'];
+    const items = [PROGRAM_DURATION.지속, PROGRAM_DURATION.단기];
     const [isOpen, toggle] = useToggle(false);
 
     useEffect(() => {
         setValue(typeKey, {
             division,
-            duration: '장기',
+            duration: PROGRAM_DURATION.지속,
         });
     }, []);
 
@@ -281,7 +282,7 @@ const ApplyForm = () => {
                     datePickerKey={applyStartDateKey}
                     timePickerKey={applyStartTimeKey}
                     calendarProps={{
-                        ...(!!applyEndDate
+                        ...(applyEndDate
                             ? {
                                   maxDate: new Date(applyEndDate),
                               }
@@ -294,7 +295,7 @@ const ApplyForm = () => {
                     datePickerKey={applyEndDateKey}
                     timePickerKey={applyEndTimeKey}
                     calendarProps={{
-                        ...(!!applyStartDate
+                        ...(applyStartDate
                             ? {
                                   minDate: new Date(applyStartDate),
                               }
@@ -344,7 +345,7 @@ const EducationForm = ({ division }) => {
                     datePickerKey={educationStartDateKey}
                     timePickerKey={educationStartTimeKey}
                     calendarProps={{
-                        ...(!!educationEndDate
+                        ...(educationEndDate
                             ? {
                                   maxDate: new Date(educationEndDate),
                               }
@@ -357,7 +358,7 @@ const EducationForm = ({ division }) => {
                     datePickerKey={educationEndDateKey}
                     timePickerKey={educationEndTimeKey}
                     calendarProps={{
-                        ...(!!educationStartDate
+                        ...(educationStartDate
                             ? {
                                   minDate: new Date(educationStartDate),
                               }

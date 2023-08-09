@@ -5,6 +5,7 @@ import { useHScrollTable, HScrollTable } from '@goorm-dev/gds-tables';
 import { Skeleton, SearchInput } from '@goorm-dev/gds-components';
 
 import styles from './ProgramTable.module.scss';
+import { PROGRAM_DIVISION, PROGRAM_DURATION } from '@/constants/db';
 
 const getTableData = () => {
     const data = [];
@@ -12,8 +13,8 @@ const getTableData = () => {
         data.push({
             index: '',
             type: {
-                camp: '방문형',
-                duration: '장기',
+                camp: PROGRAM_DIVISION.방문형,
+                duration: PROGRAM_DURATION.지속,
             },
             name: '인간을 돕는 드론 에이전트',
             status: 1,

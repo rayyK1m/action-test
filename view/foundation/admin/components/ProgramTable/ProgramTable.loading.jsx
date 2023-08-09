@@ -13,7 +13,7 @@ const getTableData = () =>
         index: '',
         type: {
             camp: PROGRAM_DIVISION.방문형,
-            duration: '장기',
+            duration: PROGRAM_DURATION.지속,
         },
         name: '인간을 돕는 드론 에이전트',
         status: 1,

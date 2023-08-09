@@ -6,6 +6,7 @@ import { Skeleton, SearchInput } from '@goorm-dev/gds-components';
 
 import styles from './InstitutionsTable.module.scss';
 import { FOUNDATION_ADMIN_INSTITUTIONS_DEFAULT_QUERY } from './InstitutionsTable.constants';
+import { PROGRAM_DIVISION, PROGRAM_DURATION } from '@/constants/db';
 
 const getTableData = () =>
     Array.from(
@@ -13,8 +14,8 @@ const getTableData = () =>
         () => ({
             index: '',
             type: {
-                camp: '방문형',
-                duration: '장기',
+                camp: PROGRAM_DIVISION.방문형,
+                duration: PROGRAM_DURATION.지속,
             },
             name: '인간을 돕는 드론 에이전트',
             status: 1,

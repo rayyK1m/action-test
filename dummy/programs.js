@@ -2,7 +2,7 @@ import {
     PROGRAM_OPERATION_LOCATIONS,
     PROGRAM_CATEGORIES,
 } from '@/constants/db';
-import { PROGRAM_DIVISION } from '@/constants/db';
+import { PROGRAM_DIVISION, PROGRAM_DURATION } from '@/constants/db';
 
 import { getRandomElement } from './utils';
 
@@ -17,7 +17,7 @@ export const PROGRAMS = [
         name: '1-0 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
             camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
-            duration: '장기',
+            duration: PROGRAM_DURATION.지속,
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
         price: 0,
@@ -43,7 +43,7 @@ export const PROGRAMS = [
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
             camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
-            duration: '장기',
+            duration: PROGRAM_DURATION.지속,
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
         price: 0,
@@ -69,7 +69,7 @@ export const PROGRAMS = [
         name: '아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
             camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
-            duration: '장기',
+            duration: PROGRAM_DURATION.지속,
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
         price: 0,
@@ -95,7 +95,7 @@ export const PROGRAMS = [
         name: '1-4 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름 아주 긴 이름',
         type: {
             camp: getRandomElement(Object.values(PROGRAM_DIVISION)),
-            duration: '장기',
+            duration: PROGRAM_DURATION.지속,
         },
         category: getRandomElement(PROGRAM_CATEGORIES),
         price: 0,

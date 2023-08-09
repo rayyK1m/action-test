@@ -10,6 +10,11 @@ export const PROGRAM_DIVISION = {
     집합형: '집합형',
 };
 
+export const PROGRAM_DURATION = {
+    지속: '지속',
+    단기: '단기',
+};
+
 export const PRGRAM_APPLY_STATUS = {
     모집_예정: {
         key: '모집_예정',

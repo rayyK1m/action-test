@@ -13,6 +13,7 @@ import styles from '../program.module.scss';
 import useSession from '@/query-hooks/useSession';
 import { formatData } from './ProgramApplyContainer.utils';
 import { useCreateProgram } from '@/query-hooks/usePrograms';
+import { PROGRAM_DURATION } from '@/constants/db';
 
 function ProgramApplyContainer({ division }) {
     const { data: userData } = useSession.GET();
@@ -22,7 +23,10 @@ function ProgramApplyContainer({ division }) {
     const methods = useForm({
         mode: 'onTouched',
         defaultValues: {
-            [PROGRAM_APPLY_KEYS.typeKey]: { division, duration: '장기' },
+            [PROGRAM_APPLY_KEYS.typeKey]: {
+                division,
+                duration: PROGRAM_DURATION.지속,
+            },
             [PROGRAM_APPLY_KEYS.elementaryTargetKey]: [],
             [PROGRAM_APPLY_KEYS.middleTargetKey]: [],
             [PROGRAM_APPLY_KEYS.highTargetKey]: [],
