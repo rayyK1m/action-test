@@ -38,8 +38,12 @@ const getCampTicket = async ({ userId, ticketId }) => {
 
 const getCampTicketAdmin = async ({ ticketId, userId, institutionId }) => {
     try {
+        const institutionQueryString = institutionId
+            ? `institutionId=${institutionId}`
+            : '';
+
         const { data } = await swcampInstance.get(
-            `${process.env.SWCAMP_API_HOST}/api/v1/camp-tickets/${ticketId}/admin?institutionId=${institutionId}`,
+            `${process.env.SWCAMP_API_HOST}/api/v1/camp-tickets/${ticketId}/admin?${institutionQueryString}`,
             {
                 headers: { ...getAuthHeader(userId) },
             },

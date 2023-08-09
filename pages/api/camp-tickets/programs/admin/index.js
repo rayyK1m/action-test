@@ -10,7 +10,7 @@ const router = createRouter();
 
 // TODO: Joi validation 추가 필요
 router
-    .use(checkAuth({ role: [ROLE.INSTITUTION] }))
+    .use(checkAuth({ role: [ROLE.INSTITUTION, ROLE.FOUNDATION] }))
     .get(campTicketsCtrl.getCampTicketsByProgram);
 
 export default router.handler({

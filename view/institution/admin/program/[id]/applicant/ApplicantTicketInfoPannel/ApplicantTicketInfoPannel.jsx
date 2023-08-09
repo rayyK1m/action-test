@@ -39,7 +39,7 @@ import { useRouter } from 'next/router';
 function ApplicantTicketInfoPannel({ isOpen, onClose, ticketId }) {
     const router = useRouter();
     let isFoundationPage = false;
-    if (router.pathname.split('/')[0] === 'foundation') {
+    if (router.pathname.split('/')[1] === 'foundation') {
         isFoundationPage = true;
     }
 

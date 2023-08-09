@@ -33,7 +33,7 @@ const ApplyTargetInput = ({ programTarget }) => {
     const targetSchool = Object.values(programTarget) || {};
 
     return (
-        <FormWrapper label="신청 대상" isRequired>
+        <FormWrapper label="신청 대상">
             <div className={styles.checkForm}>
                 {Object.entries(SCHOOL).map(([_, school], index) => (
                     <div className={styles.school} key={school.key}>
@@ -116,13 +116,11 @@ export const ReadOnlyApplyForm = ({ programTarget }) => {
             <h5>신청인 정보</h5>
             <div className={styles.divideRow}>
                 <FormInput
-                    isRequired
                     label="이름"
                     value={getValues(userNameKey)}
                     readOnly
                 />
                 <FormInput
-                    isRequired
                     label="연락처"
                     value={getValues(phoneNumberKey)}
                     readOnly
@@ -135,14 +133,12 @@ export const ReadOnlyApplyForm = ({ programTarget }) => {
                     readOnly
                 />
                 <FormDropdown
-                    isRequired
                     label="신청 지역"
                     value={getValues(operateLocationKey)}
                     readOnly
                 />
             </div>
             <FormInput
-                isRequired
                 label="소속 학교"
                 value={getValues(schoolNameKey)}
                 readOnly

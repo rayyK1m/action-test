@@ -38,7 +38,7 @@ const ApplyTargetInput = ({ programTarget }) => {
     const targetSchool = Object.values(programTarget) || {};
 
     return (
-        <FormWrapper label="신청 대상" isRequired>
+        <FormWrapper label="신청 대상">
             <div className={styles.checkForm}>
                 {Object.entries(SCHOOL).map(([_, school], index) => (
                     <div className={styles.school} key={school.key}>
@@ -114,7 +114,6 @@ export const ReadOnlyManagerForm = ({ isFoundationPage }) => {
             <h5>담당자 정보</h5>
             <div className={styles.divideRow}>
                 <FormInput
-                    isRequired
                     label="현장 담당자 명"
                     placeholder="예) 김구름"
                     value={getValues(userNameKey)}
@@ -133,7 +132,6 @@ export const ReadOnlyManagerForm = ({ isFoundationPage }) => {
                     readOnly
                 />
                 <FormInput
-                    isRequired
                     label="소속 학교(교육 장소)"
                     placeholder="소속 학교"
                     value={getValues(schoolNameKey)}
@@ -142,7 +140,6 @@ export const ReadOnlyManagerForm = ({ isFoundationPage }) => {
             </div>
             <div className={styles.divideRow}>
                 <FormDropdown
-                    isRequired
                     label="신청 지역"
                     value={getValues(operateLocationKey)}
                     readOnly
@@ -208,7 +205,6 @@ export const ReadOnlyTargetForm = ({ programTarget }) => {
             <FormInput
                 label="신청 인원"
                 value={getValues(applicantCountKey)}
-                isRequired
                 readOnly
             />
         </div>
@@ -233,14 +229,12 @@ export const ReadOnlyLearningTimeForm = () => {
             <div className={styles.divideRow}>
                 <FormDatePicker
                     label="교육 이수 시작일"
-                    isRequired
                     datePickerKey={startDateKey}
                     timePickerKey={startTimeKey}
                     disabled
                 />
                 <FormDatePicker
                     label="교육 이수 종료일"
-                    isRequired
                     datePickerKey={endDateKey}
                     timePickerKey={endTimeKey}
                     disabled

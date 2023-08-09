@@ -12,6 +12,7 @@ import styles from './ProgramTable.module.scss';
 /**
  * @param {import('./ProgramTable.type').ColumnsOption}
  */
+const BASE_URL = '/foundation/admin/programs';
 export const getTableColoums = (option = {}) => {
     return [
         {
@@ -77,7 +78,7 @@ export const getTableColoums = (option = {}) => {
                 return (
                     <Button
                         color="link"
-                        onClick={() => alert(rowData.id)}
+                        href={`${BASE_URL}/${rowData.id}/applicant`}
                         disabled={isDisabled}
                     >
                         신청자 관리
