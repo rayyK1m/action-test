@@ -30,17 +30,17 @@ export const PRGRAM_APPLY_STATUS = {
 
 export const PROGRAM_REVIEW_STATUS = {
     심사중: {
-        text: '심사중',
+        text: '심사 중',
         key: 'IN_PROGRESS',
         value: 'IN_PROGRESS',
     },
     승인: {
-        text: '승인',
+        text: '승인됨',
         key: 'APPROVE',
         value: 'APPROVE',
     },
     거절: {
-        text: '거절',
+        text: '거절됨',
         key: 'REJECT',
         value: 'REJECT',
     },
@@ -48,22 +48,22 @@ export const PROGRAM_REVIEW_STATUS = {
 
 export const CAMP_REVIEW_STATUS = {
     심사중: {
-        text: '심사중',
+        text: '심사 중',
         key: 'IN_PROGRESS',
         value: 'IN_PROGRESS',
     },
     승인: {
-        text: '승인',
+        text: '승인됨',
         key: 'APPROVE',
         value: 'APPROVE',
     },
     거절: {
-        text: '거절',
+        text: '거절됨',
         key: 'REJECT',
         value: 'REJECT',
     },
     취소: {
-        text: '신청 취소',
+        text: '신청 취소됨',
         key: 'CANCEL',
         value: 'CANCEL',
     },

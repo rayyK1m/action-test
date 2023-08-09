@@ -14,7 +14,7 @@ export const STATUS_BADGE = {
     [CAMP_REVIEW_STATUS.승인.value]: {
         text: CAMP_REVIEW_STATUS.승인.text,
         icon: CheckCircleIcon,
-        color: 'primary',
+        color: 'success',
     },
     [CAMP_REVIEW_STATUS.거절.value]: {
         text: CAMP_REVIEW_STATUS.거절.text,
