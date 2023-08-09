@@ -63,12 +63,12 @@ function CreateCampContextProvider({ children }) {
         () => ({
             submit() {
                 const parsedStudents = students.flat();
-                const isTemporary = checkIsInfoTemporary(campInfo);
+                const isDraft = checkIsInfoTemporary(campInfo);
 
                 createCamp.mutate({
                     ...parseData(campInfo),
                     targetUserIdList: parsedStudents,
-                    isTemporary,
+                    isDraft,
                 });
             },
         }),
