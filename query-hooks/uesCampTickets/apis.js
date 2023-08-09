@@ -79,7 +79,7 @@ export const getCampticketsAdmin = async (query, serverAxios = axios) => {
 const getCampTicketHistory = async (query, axiosInstance = axios) => {
     const { programId } = query;
     const { data } = await axiosInstance.get(
-        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camp-tickets/programs/${programId}`,
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camp-tickets/programs/${programId}/my`,
     );
 
     return data;

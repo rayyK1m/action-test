@@ -331,7 +331,7 @@ const createCamp = async ({ userId, formData }) => {
 const getCampTicketHistory = async ({ userId, programId }) => {
     try {
         const { data } = await swcampInstance.get(
-            `${process.env.SWCAMP_API_HOST}/api/v1/camp-tickets/programs/${programId}`,
+            `${process.env.SWCAMP_API_HOST}/api/v1/camp-tickets/programs/${programId}/my`,
             {
                 headers: { ...getAuthHeader(userId) },
             },
