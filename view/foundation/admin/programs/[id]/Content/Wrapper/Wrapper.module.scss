@@ -1,0 +1,29 @@
+@mixin commonWrapper {
+    display: flex;
+
+    & span {
+        margin: 0;
+    }
+}
+
+.colWrapper {
+    @include commonWrapper;
+
+    flex-direction: column;
+    gap: 1.5rem /* 24px -> 1.5rem */;
+    width: 100%;
+}
+
+.rowWrapper {
+    @include commonWrapper;
+    gap: 2.5rem /* 40px -> 2.5rem */;
+
+    &_isSameRatio {
+        gap: 0;
+
+        & > * {
+            flex: 1;
+            margin-right: 2.5rem /* 40px -> 2.5rem */;
+        }
+    }
+}

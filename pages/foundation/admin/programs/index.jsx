@@ -4,7 +4,7 @@ import qs from 'qs';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 
 import Layout from '@/components/Layout/Layout';
-import { withSessionSsr } from '@/server/utils/auth';
+import { checkAuthSsr } from '@/server/utils/auth';
 
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
 import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
@@ -30,9 +30,12 @@ export default function FoundationAdminProgramsPage() {
     );
 }
 
-export const getServerSideProps = withSessionSsr(async (context) => {
+export const getServerSideProps = checkAuthSsr({
+    shouldLogin: true,
+    roles: ['foundation'],
+})(async (context) => {
     const queryClient = new QueryClient();
-    const { page, limit, search, sort } = context.query;
+    const { page, limit, search, sort, reviewStatus } = context.query;
 
     const isNumber = (value) => {
         if (!value) return false;
@@ -44,12 +47,18 @@ export const getServerSideProps = withSessionSsr(async (context) => {
         return isNumber(query) ? query : FOUNDATION_ADMIN_DEFAULT_QUERY[key];
     };
 
+    const validReviewStatus = /(IN_PROGRESS)|(APPROVE)|(REJECT)/.test(
+        reviewStatus,
+    );
+
     /** query 기본값 설정 */
     if (
         !isNumber(page) ||
         !isNumber(limit) ||
         (!search && typeof search !== 'string') ||
-        sort === undefined
+        sort === undefined ||
+        (!reviewStatus && typeof reviewStatus !== 'string') ||
+        (reviewStatus && !validReviewStatus)
     ) {
         return {
             props: {
@@ -61,6 +70,7 @@ export const getServerSideProps = withSessionSsr(async (context) => {
                     limit: getNumberQuery('limit'),
                     search: search || '',
                     sort: sort || '',
+                    reviewStatus: validReviewStatus ? reviewStatus : '',
                 })}`,
                 permanent: false,
             },
@@ -72,19 +82,24 @@ export const getServerSideProps = withSessionSsr(async (context) => {
         limit: Number(limit),
         search,
         sort,
+        reviewStatus,
     };
 
     const serverAxios = createServerAxios(context);
-
-    await queryClient.prefetchQuery(
-        programsKeys.itemsAdminDetail({ ...DEFAULT_QUERY }),
-        () => programsApis.getProgramsAdmin({ ...DEFAULT_QUERY }, serverAxios),
-    );
 
     if (context.req?.session) {
         await queryClient.prefetchQuery(
             sessionKeys.all(),
             () => context.req.session,
+        );
+
+        await queryClient.prefetchQuery(
+            programsKeys.itemsAdminDetail({ ...DEFAULT_QUERY }),
+            () =>
+                programsApis.getProgramsAdmin(
+                    { ...DEFAULT_QUERY },
+                    serverAxios,
+                ),
         );
     }
 

@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.gap {
+    &_md {
+        gap: 16px /* 1rem -> 16px */;
+    }
+    &_lg {
+        gap: 1.5rem /* 24px -> 1.5rem */;
+    }
+}

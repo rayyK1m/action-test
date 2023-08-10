@@ -1,0 +1,21 @@
+.list {
+    display: flex;
+    gap: 1.5rem /* 24px -> 1.5rem */;
+}
+
+.item {
+    display: flex;
+    gap: 1rem /* 16px -> 1rem */;
+}
+
+.itemText {
+    &_isDisabled {
+        opacity: 0.32;
+    }
+}
+
+.checkBoxSkeleton {
+    position: absolute;
+    left: 0;
+    border-radius: 0.25rem /* 4px -> .25rem */;
+}

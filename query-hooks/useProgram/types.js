@@ -25,7 +25,7 @@
  * @property {number} [learningTime] 총 교육 차시 단위: 시간
  * @property {{ start: string; end: string }} educationDate 교육 기간
  * @property {string} [curriculum] 커리큘럼
- * @property {Array<string>} attachedFiles 첨부파일
+ * @property {Array<{ filename: string; url: string; }>} attachedFiles 첨부파일
  * @property {string} [notice] 안내 사항
  * @property {{ name?: string; address?: string }} [educationLocation] 교육 장소
  * @property {{ id: string; name: string; logo?: { url: string; } }} [institution] 기관 정보

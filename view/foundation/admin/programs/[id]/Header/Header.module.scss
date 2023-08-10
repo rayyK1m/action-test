@@ -1,0 +1,7 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1.5rem /* 24px -> 1.5rem */;
+    border-bottom: 1px solid var(--gray-300);
+    gap: 1.5rem /* 24px -> 1.5rem */;
+}

@@ -1,0 +1,33 @@
+.titleContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.list {
+    & > li:not(:first-child) {
+        border-top: 1px solid var(--gray-300);
+    }
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.125rem /* 18px -> 1.125rem */ 0;
+    gap: 2rem /* 32px -> 2rem */;
+}
+
+.contents {
+    display: flex;
+    gap: 2rem /* 32px -> 2rem */;
+    flex: 1;
+}
+
+.badges {
+    display: inline-flex;
+    gap: 0.25rem /* 4px -> .25rem */;
+}
+
+.badgeSkeleton {
+    border-radius: 9999px;
+}

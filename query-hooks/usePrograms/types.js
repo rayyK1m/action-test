@@ -12,7 +12,7 @@
  * @property {string} lectureIndex
  * @property {number} lectureSequence
  * @property {string} institutionId 기관 id
- * @property {Omit<ReviewStatus, 'CANCEL'>} [reviewStatus] 승인 상태
+ * @property {Exclude<ReviewStatus, 'CANCEL'>} [reviewStatus] 승인 상태
  * @property {{ filename: string; url: string }} [thumbnail]
  * @property {string} name 제목
  * @property {{ division: DivisionType; duration: DurationType }} type 각종 타입
@@ -25,13 +25,21 @@
  * @property {number} [learningTime] 총 교육 차시 단위: 시간
  * @property {{ start: string; end: string }} educationDate 교육 기간
  * @property {string} [curriculum] 커리큘럼
- * @property {Array<string>} attachedFiles 첨부파일
+ * @property {Array<{ url: string; filename: string; }>} attachedFiles 첨부파일
  * @property {string} [notice] 안내 사항
  * @property {string} createdAt
  * @property {string} updatedAt
- * @property {{ name?: string; address?: string }} [educationLocation] 교육 장소
+ * @property {{ name?: string; address?: string }} [educationLocation] 교육 장소 (집합형에만 존재)
  * @property {{ id: string; name: string; logo?: { filename: string; url: string; } }} [institution] 기관 정보
  * @property {number} campCount
+ */
+
+/**
+ * @typedef {Omit<Program, 'lectureIndex' | 'lectureSequence'> & OnlyProgramAdmin} ProgramAdmin
+ *
+ * @typedef OnlyProgramAdmin
+ * @property {{ id: string; name: string; logo?: { filename: string; url: string; } }} [institution] 기관 정보 (이거 필요한 정보인데 안내려주고 있음(기획, 디자인 선행 확인 후 새미에게 데이터 추가 요청)
+ * @property {number} campTicketCount
  */
 
 export default {};

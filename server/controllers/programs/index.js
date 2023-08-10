@@ -88,7 +88,7 @@ const getProgram = async (req, res) => {
 };
 
 const getProgramsAdmin = async (req, res) => {
-    const { page, limit, search, sort } = req.query;
+    const { page, limit, search, sort, reviewStatus } = req.query;
     const { id: userId, role, institutionId } = req.session || {};
 
     const isInstitution = role === ROLE.INSTITUTION;
@@ -102,6 +102,7 @@ const getProgramsAdmin = async (req, res) => {
         limit,
         search,
         sort,
+        reviewStatus,
     });
 
     return res.json({ programs: items, totalCount: total });
@@ -145,6 +146,20 @@ const createProgram = async (req, res) => {
     return res.json(data);
 };
 
+const changeProgramReviewStatus = async (req, res) => {
+    const { id: programId, institutionId } = req.query;
+    const { status } = req.body;
+
+    const { result } = await swcampSdk.changeProgramReviewStatus({
+        userId: req.session?.id,
+        programId,
+        institutionId,
+        status,
+    });
+
+    return res.json({ result });
+};
+
 const programsCtrl = {
     validation,
     getPrograms,
@@ -153,5 +168,6 @@ const programsCtrl = {
     getProgramAdmin,
     patchProgramAdmin,
     createProgram,
+    changeProgramReviewStatus,
 };
 export default programsCtrl;

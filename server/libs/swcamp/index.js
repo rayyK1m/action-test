@@ -102,12 +102,14 @@ const getProgramsAdmin = async ({
     limit,
     search,
     sort,
+    reviewStatus,
 }) => {
     const removedEmptyQuery = removeEmptyValues({
         page,
         limit,
         search,
         sort,
+        reviewStatus,
     });
     const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
     const institutionQueryString = institutionId
@@ -195,6 +197,35 @@ const patchProgramAdmin = async ({
         const { data } = await swcampInstance.patch(
             `${process.env.SWCAMP_API_HOST}/api/v1/programs/${programId}?institutionId=${institutionId}`,
             formData,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+            // NOTE: 디버깅에 필요한 데이터 넣어두기
+        });
+    }
+};
+
+const changeProgramReviewStatus = async ({
+    userId,
+    programId,
+    institutionId,
+    status,
+}) => {
+    try {
+        const queryString = qs.stringify(
+            { institutionId },
+            { skipNulls: true },
+        );
+
+        const { data } = await swcampInstance.post(
+            `/api/v1/programs/${programId}/review-status?${queryString}`,
+            { status },
             {
                 headers: { ...getAuthHeader(userId) },
             },
@@ -528,6 +559,7 @@ const swcampSdk = {
     patchProgramAdmin,
     getProgramsAdmin,
     createProgram,
+    changeProgramReviewStatus,
 
     /**
      * Institution

@@ -31,7 +31,7 @@ function ProgramTable({ columnsOption }) {
         parser: Number,
     });
 
-    const { institutionId, search, sort } = router.query;
+    const { institutionId, search, sort, reviewStatus } = router.query;
     const [searchText, setSearchText] = useState(search);
     const [{ pageIndex, pageSize }, setPagination] = useState({
         pageIndex: page - 1,
@@ -44,9 +44,10 @@ function ProgramTable({ columnsOption }) {
     } = useGetProgramsAdmin({
         institutionId,
         page,
-        limit,
+        limit: pageSize,
         search,
         sort,
+        reviewStatus,
     });
 
     const columns = useMemo(() => getTableColoums(columnsOption), []);

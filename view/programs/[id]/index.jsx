@@ -85,13 +85,8 @@ const ProgramDetail = () => {
                                 </h6>
                                 <ContentWrapper>
                                     <DownloadButton
-                                        tag="a"
+                                        filename="프로그램 교안"
                                         href={programData.attachedFiles[0]}
-                                        download
-                                        color="basic"
-                                        icon={<DownloadIcon />}
-                                        iconSide="right"
-                                        outline
                                     >
                                         첨부파일 다운로드
                                     </DownloadButton>

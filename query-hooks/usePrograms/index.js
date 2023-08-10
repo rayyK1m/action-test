@@ -1,8 +1,7 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import programsKeys from './keys';
 import programsApis from './apis';
-import programKeys from '../useProgram/keys';
 import { useRouter } from 'next/router';
 import { toast } from '@goorm-dev/gds-toastify';
 
@@ -73,6 +72,20 @@ const useCreateProgram = () => {
     });
 };
 
+const useChangeProgramReviewStatus = () => {
+    const router = useRouter();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: programsApis.changeProgramReviewStatus,
+        onSuccess: () => {
+            queryClient.invalidateQueries(
+                programsKeys.itemAdminDetail(router.query.id),
+            );
+        },
+    });
+};
+
 export {
     useGetPrograms,
     useGetProgram,
@@ -80,6 +93,7 @@ export {
     useGetProgramAdmin,
     useCreateProgram,
     usePatchProgramAdmin,
+    useChangeProgramReviewStatus,
     programsApis,
     programsKeys,
 };
