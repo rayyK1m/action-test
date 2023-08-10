@@ -6,7 +6,7 @@ import { Skeleton, SearchInput } from '@goorm-dev/gds-components';
 
 import styles from './ProgramTable.module.scss';
 import { FOUNDATION_ADMIN_DEFAULT_QUERY } from './ProgramTable.constants';
-import { PROGRAM_DIVISION } from '@/constants/db';
+import { PROGRAM_DIVISION, PROGRAM_DURATION } from '@/constants/db';
 
 const getTableData = () =>
     Array.from({ length: FOUNDATION_ADMIN_DEFAULT_QUERY.limit }, () => ({
