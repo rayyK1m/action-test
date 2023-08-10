@@ -148,7 +148,11 @@ function ProgramTable() {
                             ? '검색 결과가 없습니다.'
                             : '등록된 프로그램이 없습니다.'
                     }
-                    imageSrc={isFiltered && EMPTY_IMAGE_TYPE.SEARCH}
+                    imageSrc={
+                        isFiltered
+                            ? EMPTY_IMAGE_TYPE.SEARCH
+                            : EMPTY_IMAGE_TYPE.FOLDER
+                    }
                 />
             ) : (
                 <>
