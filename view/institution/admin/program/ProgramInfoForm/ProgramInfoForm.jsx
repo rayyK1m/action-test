@@ -18,8 +18,6 @@ import {
     FileInputItem,
     ImageFileInputItem,
 } from '@/view/components/ValidateFormItem';
-import { useDaumSearchMap } from '@/query-hooks/useMap';
-import { useId, useState } from 'react';
 
 const ProgramTypeInput = ({ typeKey }) => {
     const { getValues } = useFormContext();

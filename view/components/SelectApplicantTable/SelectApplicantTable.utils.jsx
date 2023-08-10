@@ -4,8 +4,10 @@ import { Button, Tooltip } from '@goorm-dev/gds-components';
 import { getTargetGroupString, ellipsisedString } from '@/utils';
 
 import useHover from '@/hooks/useHover';
+import useToggle from '@/hooks/useToggle';
 
 import styles from './SelectApplicantTable.module.scss';
+import ApplicantTicketInfoPannel from '@/view/institution/admin/program/[id]/applicant/ApplicantTicketInfoPannel/ApplicantTicketInfoPannel';
 
 export const getTableColums = () => {
     return [
@@ -89,7 +91,21 @@ export const getTableColums = () => {
         {
             accessorKey: 'viewDetail',
             header: <></>,
-            cell: () => <Button color="link">신청 정보 확인</Button>,
+            cell: cellHelper(({ rowData }) => {
+                const [isOpen, toggle] = useToggle(false);
+                return (
+                    <>
+                        <Button color="link" onClick={toggle}>
+                            신청 정보 확인
+                        </Button>
+                        <ApplicantTicketInfoPannel
+                            isOpen={isOpen}
+                            onClose={() => toggle(false)}
+                            ticketId={rowData.id}
+                        />
+                    </>
+                );
+            }),
             size: 154,
             minSize: 154,
         },
