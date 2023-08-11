@@ -3,6 +3,7 @@ import styles from './ButtonGroup.module.scss';
 import { useChangeProgramReviewStatus } from '@/query-hooks/usePrograms';
 import { Button } from '@goorm-dev/gds-components';
 import { CheckCircleIcon } from '@goorm-dev/gds-icons';
+import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
 
 function ButtonGroup() {
     const router = useRouter();
@@ -20,14 +21,18 @@ function ButtonGroup() {
 
     return (
         <div className={styles.container}>
-            <Button size="lg" color="danger" onClick={changeStatus('REJECT')}>
+            <Button
+                size="lg"
+                color="danger"
+                onClick={changeStatus(PROGRAM_REVIEW_STATUS.거절됨.key)}
+            >
                 거절하기
             </Button>
             <Button
                 size="lg"
                 color="success"
                 icon={<CheckCircleIcon />}
-                onClick={changeStatus('APPROVE')}
+                onClick={changeStatus(PROGRAM_REVIEW_STATUS.승인됨.key)}
             >
                 승인하기
             </Button>

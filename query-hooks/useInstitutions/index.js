@@ -23,6 +23,19 @@ const useGetInstitution = (id) =>
     });
 
 /**
+ * 운영기관 (어드민) 조회
+ */
+const useGetInstitutionAdmin = () => {
+    const { data: userData } = useSession.GET();
+
+    return useQuery({
+        queryKey: institutionsKeys.itemAdminDetail(userData.institutionId),
+        queryFn: () =>
+            institutionsApis.getInstitutionAdmin(userData.institutionId),
+    });
+};
+
+/**
  * 운영기관 리스트 조회(재단)
  */
 const useGetInstitutionsFoundation = (filters) => {
@@ -45,5 +58,6 @@ export {
      */
     useGetInstitutions,
     useGetInstitution,
+    useGetInstitutionAdmin,
     useGetInstitutionsFoundation,
 };

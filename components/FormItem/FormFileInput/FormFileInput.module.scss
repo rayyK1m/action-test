@@ -5,3 +5,12 @@
         opacity: 0.32;
     }
 }
+
+.isUploaded {
+    margin-top: 0.25rem /* 4px -> .25rem */;
+    display: flex;
+    align-items: center;
+    color: var(--success);
+    gap: 0.25rem /* 4px -> .25rem */;
+    line-height: 1.375rem /* 22px -> 1.375rem */;
+}

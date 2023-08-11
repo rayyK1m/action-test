@@ -12,6 +12,7 @@ import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
 import FoundationAdminPrograms from '@/view/foundation/admin/programs';
 import { FOUNDATION_ADMIN_DEFAULT_QUERY } from '@/view/foundation/admin/components/ProgramTable/ProgramTable.constants';
 import { createServerAxios } from '@/utils';
+import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
 
 export default function FoundationAdminProgramsPage() {
     const { data: userData } = useSession.GET();
@@ -47,9 +48,10 @@ export const getServerSideProps = checkAuthSsr({
         return isNumber(query) ? query : FOUNDATION_ADMIN_DEFAULT_QUERY[key];
     };
 
-    const validReviewStatus = /(IN_PROGRESS)|(APPROVE)|(REJECT)/.test(
-        reviewStatus,
+    const validPattern = new RegExp(
+        `(${PROGRAM_REVIEW_STATUS.심사중.key})|(${PROGRAM_REVIEW_STATUS.승인됨.key})|(${PROGRAM_REVIEW_STATUS.거절됨.key})`,
     );
+    const validReviewStatus = validPattern.test(reviewStatus);
 
     /** query 기본값 설정 */
     if (

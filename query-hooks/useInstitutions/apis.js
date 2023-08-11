@@ -21,6 +21,20 @@ const getInstitution = async (institutionId) => {
 
 /**
  *
+ * @param {string} institutionId
+ * @param {import('axios').AxiosInstance} axiosInstance
+ * @returns {Promise<import('./types').InstitutionAdmin>}
+ */
+const getInstitutionAdmin = async (institutionId, axiosInstance = axios) => {
+    const { data } = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/institutions/${institutionId}/institution`,
+    );
+
+    return data;
+};
+
+/**
+ *
  * @param {*} query
  * @param {import('axios').AxiosRequestConfig} config
  * @returns
@@ -39,6 +53,7 @@ const getInstitutionsFoundation = async (query, config) => {
 const institutionsApis = {
     getInstitutions,
     getInstitution,
+    getInstitutionAdmin,
     getInstitutionsFoundation,
 };
 

@@ -18,6 +18,7 @@ import {
     FileInputItem,
     ImageFileInputItem,
 } from '@/view/components/ValidateFormItem';
+import { PROGRAM_DIVISION } from '@/constants/db';
 
 const ProgramTypeInput = ({ typeKey }) => {
     const { getValues } = useFormContext();
@@ -244,7 +245,7 @@ const ReadOnlyEducationForm = () => {
                 isRequired
                 readOnly
             />
-            {type.division === '집합형' && (
+            {type.division === PROGRAM_DIVISION.집합형 && (
                 <div className={styles.divideRow}>
                     <FormInput
                         label="교육 장소"

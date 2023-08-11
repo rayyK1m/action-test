@@ -482,6 +482,26 @@ const getInstitution = async (institutionId) => {
     }
 };
 
+const getInstitutionAdmin = async ({ institutionId, userId }) => {
+    try {
+        const { data } = await swcampInstance.get(
+            `/api/v1/institutions/${institutionId}/institution`,
+            {
+                headers: {
+                    ...getAuthHeader(userId),
+                },
+            },
+        );
+
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 export const getInstitutionsFoundation = async ({
     userId,
     page,
@@ -568,6 +588,7 @@ const swcampSdk = {
      */
     getInstitutions,
     getInstitution,
+    getInstitutionAdmin,
     getInstitutionsFoundation,
 
     /**

@@ -8,6 +8,7 @@ import ProgramTypeBadge from '@/view/components/ProgramTypeBadge';
 import { STATUS_TEXT } from './ProgramTable.constants';
 
 import styles from './ProgramTable.module.scss';
+import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
 
 /**
  * @param {import('./ProgramTable.type').ColumnsOption}
@@ -73,7 +74,8 @@ export const getTableColoums = (option = {}) => {
             cell: cellHelper(({ rowData }) => {
                 const { reviewStatus } = rowData;
                 const isDisabled =
-                    reviewStatus === 'IN_PROGRESS' || reviewStatus === 'REJECT';
+                    reviewStatus === PROGRAM_REVIEW_STATUS.심사중.key ||
+                    PROGRAM_REVIEW_STATUS.거절됨.key;
 
                 return (
                     <Button
@@ -93,7 +95,8 @@ export const getTableColoums = (option = {}) => {
             cell: cellHelper(({ value: campCount, rowData }) => {
                 const { reviewStatus } = rowData;
                 const isDisabled =
-                    reviewStatus === 'IN_PROGRESS' || reviewStatus === 'REJECT';
+                    reviewStatus === PROGRAM_REVIEW_STATUS.심사중.key ||
+                    PROGRAM_REVIEW_STATUS.거절됨.key;
 
                 return (
                     <Button

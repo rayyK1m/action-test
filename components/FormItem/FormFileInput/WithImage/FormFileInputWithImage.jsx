@@ -2,7 +2,8 @@ import { useMemo, useEffect, useState } from 'react';
 import cn from 'classnames';
 
 import { FileInput } from '@goorm-dev/gds-components';
-import { InfoCircleIcon } from '@goorm-dev/gds-icons';
+import { ConfirmIcon, InfoCircleIcon } from '@goorm-dev/gds-icons';
+import { toast } from '@goorm-dev/gds-toastify';
 
 import useFileInput from '@/hooks/useFileInput';
 import FormWrapper from '../../FormWrapper';
@@ -23,20 +24,19 @@ const FormFileInputWithImage = ({
     pathType = 'program',
 }) => {
     const [imageUrl, setImageUrl] = useState(value ? value.url : '');
+    const defaultFile = useMemo(() => {
+        if (value?.filename && value?.url) {
+            return { name: value.filename, src: value.url };
+        }
+        return undefined;
+    }, [value?.filename, value?.url]);
 
     const {
         getFileInputProps,
         state: { fileMap, fileSize },
     } = useFileInput({
         isMultiple: false,
-        defaultFiles: value
-            ? [
-                  {
-                      name: value.filename,
-                      src: value.url,
-                  },
-              ]
-            : [],
+        defaultFiles: defaultFile ? [defaultFile] : [],
     });
 
     const { deleteFiles, ...fileInputProps } = getFileInputProps();
@@ -57,8 +57,11 @@ const FormFileInputWithImage = ({
     const handleChange = async (file) => {
         if (!file) return;
         if (fileSizeMB > maxFileSize) {
-            onChange({ size: fileSizeMB });
+            toast('용량을 초과하여 파일을 선택할 수 없습니다.', {
+                type: toast.TYPE.ERROR,
+            });
             deleteFiles();
+            uploadFile.reset();
             return;
         }
         /** 현재 GDS FileInput 스펙상 useEffect 내에서 파일 입력 처리하므로 getPresignedUrl을 useQuery를 사용하여 관리할 수 없음.
@@ -114,10 +117,17 @@ const FormFileInputWithImage = ({
                         captionText={errors && errors?.message}
                         isError={errors}
                     />
-                    {errors?.type !== 'maxSize' && (
+                    {(!uploadFile.data || uploadFile.isLoading) && (
                         <div className="d-flex align-items-center form-text text-default">
                             <InfoCircleIcon className="mr-1" />
-                            {`최대 ${maxFileSize}MB 까지 업로드할 수 있습니다.`}
+                            최대 {maxFileSize}MB 까지 업로드할 수 있습니다.
+                        </div>
+                    )}
+                    {uploadFile.data && !uploadFile.isLoading && (
+                        <div className="mt-1 form-text text-success">
+                            <ConfirmIcon className="mr-1" />
+                            선택 완료 ({fileSizeMB}MB/{maxFileSize}
+                            MB)
                         </div>
                     )}
                     <div className="d-flex align-items-center form-text text-default">

@@ -53,7 +53,7 @@ const useFileInput = ({ defaultFiles = [], isMultiple }) => {
         if (isEmpty(defaultFiles)) {
             return {};
         }
-        const files = isMultiple ? defaultFiles : [defaultFiles[0]];
+        const files = isMultiple ? defaultFiles : [...defaultFiles];
         return getFileMap(files, true);
     }, [isMultiple, defaultFiles]);
 

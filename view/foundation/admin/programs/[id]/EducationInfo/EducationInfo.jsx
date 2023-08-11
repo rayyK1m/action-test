@@ -7,6 +7,7 @@ import styles from './EducationInfo.module.scss';
 import Content from '../Content';
 import DownloadButton from '@/components/DownloadButton/DownloadButton';
 import { getFileIcon } from './EducationInfo.utils';
+import { PROGRAM_DIVISION } from '@/constants/db';
 
 function EducationInfo() {
     const router = useRouter();
@@ -17,7 +18,7 @@ function EducationInfo() {
             <Content.Container.Title>교육 정보</Content.Container.Title>
             <Content.Wrapper>
                 <Content.Wrapper isRow isSameRatio>
-                    {program.type.division === '집합형' && (
+                    {program.type.division === PROGRAM_DIVISION.집합형 && (
                         <Content.Box>
                             <Content.Box.Title>교육 장소</Content.Box.Title>
                             <div>

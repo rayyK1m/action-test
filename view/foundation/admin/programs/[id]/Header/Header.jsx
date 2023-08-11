@@ -5,6 +5,7 @@ import ButtonGroup from './ButtonGroup';
 import styles from './Header.module.scss';
 import { useGetProgramAdmin } from '@/query-hooks/usePrograms';
 import ProgramInfo from './ProgramInfo';
+import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
 
 function Header() {
     const router = useRouter();
@@ -13,9 +14,13 @@ function Header() {
     return (
         <div className={styles.container}>
             <BackButton />
-            {program.reviewStatus === 'IN_PROGRESS' && <ButtonGroup />}
-            {(program.reviewStatus === 'APPROVE' ||
-                program.reviewStatus === 'REJECT') && <ProgramInfo />}
+            {program.reviewStatus === PROGRAM_REVIEW_STATUS.심사중.key && (
+                <ButtonGroup />
+            )}
+            {(program.reviewStatus === PROGRAM_REVIEW_STATUS.승인됨.key ||
+                program.reviewStatus === PROGRAM_REVIEW_STATUS.거절됨.key) && (
+                <ProgramInfo />
+            )}
         </div>
     );
 }

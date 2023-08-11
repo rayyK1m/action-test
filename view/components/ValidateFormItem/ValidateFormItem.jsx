@@ -127,7 +127,13 @@ export const InputItem = ({
     );
 };
 
-export const FileInputItem = ({ label, fileKey, maxFileSize, disabled }) => {
+export const FileInputItem = ({
+    label,
+    fileKey,
+    maxFileSize,
+    disabled,
+    defaultValue,
+}) => {
     const {
         control,
         formState: { errors, isDirty },
@@ -144,12 +150,9 @@ export const FileInputItem = ({ label, fileKey, maxFileSize, disabled }) => {
                         isDirty && fieldValue === undefined
                             ? '파일을 업로드해주세요.'
                             : undefined,
-                    maxSize: (fieldValue) =>
-                        fieldValue?.size > maxFileSize
-                            ? `파일 용량이 ${maxFileSize}MB를 초과하였습니다. 파일을 다시 선택해 주세요.`
-                            : undefined,
                 },
             }}
+            defaultValue={defaultValue}
             render={({ field: { value, onChange } }) => {
                 const handleChange = (value) => {
                     onChange(value);
@@ -164,6 +167,7 @@ export const FileInputItem = ({ label, fileKey, maxFileSize, disabled }) => {
                         errors={errors[fileKey]}
                         maxFileSize={maxFileSize}
                         disabled={disabled}
+                        defaultValue={defaultValue}
                     />
                 );
             }}
@@ -192,10 +196,6 @@ export const ImageFileInputItem = ({
                     requiredFile: (fieldValue) =>
                         isDirty && fieldValue === undefined
                             ? '파일을 업로드해주세요.'
-                            : undefined,
-                    maxSize: (fieldValue) =>
-                        fieldValue?.size > maxFileSize
-                            ? `파일 용량이 ${maxFileSize}MB를 초과하였습니다. 파일을 다시 선택해 주세요.`
                             : undefined,
                 },
             }}

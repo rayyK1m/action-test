@@ -25,6 +25,28 @@ const getInstitution = async (req, res) => {
     });
 };
 
+const getInstitutionAdmin = async (req, res) => {
+    const { institutionId } = req.query;
+    const { item } = await swcampSdk.getInstitutionAdmin({
+        institutionId,
+        userId: req.session?.id,
+    });
+
+    return res.json({
+        ...item,
+        reports: {
+            ...(item?.reports && item.reports),
+            /** TODO: temp 값임 DB도 완벽히 적용되면 제거 */
+            // reviewStatus: 'SUBMIT',
+            reviewStatus: 'NOT_SUBMITTED',
+            // reviewStatus: 'APPROVE',
+            // reviewStatus: 'REJECT',
+            // reviewStatus: 'ADDITIONAL',
+        },
+        name: item?.name || '이름 없음',
+    });
+};
+
 const getInstitutionsFoundation = async (req, res) => {
     const { page, limit, search, sort } = req.query;
 
@@ -42,6 +64,7 @@ const getInstitutionsFoundation = async (req, res) => {
 const institutionsCtrl = {
     getInstitutions,
     getInstitution,
+    getInstitutionAdmin,
     getInstitutionsFoundation,
     validation,
 };

@@ -8,6 +8,7 @@ import {
     ChevronRightIcon,
     ErrorCircleIcon,
 } from '@goorm-dev/gds-icons';
+import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
 
 function ProgramInfo() {
     const router = useRouter();
@@ -26,12 +27,12 @@ function ProgramInfo() {
                     <ChevronRightIcon />
                 </div>
             </div>
-            {program.reviewStatus === 'APPROVE' && (
+            {program.reviewStatus === PROGRAM_REVIEW_STATUS.승인됨.key && (
                 <Badge size="lg" color="success" leftIcon={CheckCircleIcon}>
                     승인됨
                 </Badge>
             )}
-            {program.reviewStatus === 'REJECT' && (
+            {program.reviewStatus === PROGRAM_REVIEW_STATUS.거절됨.key && (
                 <Badge
                     size="lg"
                     /** color link 없어서 커스텀함 */

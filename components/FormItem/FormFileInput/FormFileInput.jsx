@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import FormWrapper from '../FormWrapper';
 import { FileInput } from '@goorm-dev/gds-components';
-import { InfoCircleIcon } from '@goorm-dev/gds-icons';
+import { ConfirmIcon, InfoCircleIcon } from '@goorm-dev/gds-icons';
+import { toast } from '@goorm-dev/gds-toastify';
 import FormFileInputWithImage from './WithImage/FormFileInputWithImage';
 import useFileInput from '@/hooks/useFileInput';
 
@@ -17,19 +18,28 @@ const FormFileInput = ({
     onChange,
     errors,
     pathType = 'program',
+    defaultValue,
 }) => {
+    const defaultFile = useMemo(() => {
+        if (value?.filename && value?.url) {
+            return { name: value.filename, src: value.url };
+        }
+        if (defaultValue?.filename && defaultValue?.url) {
+            return { name: defaultValue.filename, src: defaultValue.url };
+        }
+        return undefined;
+    }, [
+        value?.filename,
+        value?.url,
+        defaultValue?.filename,
+        defaultValue?.url,
+    ]);
+
     const {
         getFileInputProps,
         state: { fileMap, fileSize },
     } = useFileInput({
-        defaultFiles: value
-            ? [
-                  {
-                      name: value.filename,
-                      src: value.url,
-                  },
-              ]
-            : [],
+        defaultFiles: defaultFile ? [defaultFile] : [],
     });
 
     const { deleteFiles, ...fileInputProps } = getFileInputProps();
@@ -40,12 +50,16 @@ const FormFileInput = ({
     );
 
     const uploadFile = useUploadFile();
+
     const handleChange = async (file) => {
         if (!file) return;
 
         if (fileSizeMB > maxFileSize) {
-            onChange({ size: fileSizeMB });
+            toast('용량을 초과하여 파일을 선택할 수 없습니다.', {
+                type: toast.TYPE.ERROR,
+            });
             deleteFiles();
+            uploadFile.reset();
             return;
         }
         /** 현재 GDS FileInput 스펙상 useEffect 내에서 파일 입력 처리하므로 getPresignedUrl을 useQuery를 사용하여 관리할 수 없음.
@@ -56,19 +70,37 @@ const FormFileInput = ({
             pathType,
         });
 
-        uploadFile.mutate({ url, file });
-
+        await uploadFile.mutateAsync({ url, file });
         onChange({
             filename: file.name,
             url: path,
         });
     };
 
+    /** 기본값 설정 */
     useEffect(() => {
-        if (disabled || !!Object.values(fileMap)[0]?.src) return;
+        if (value || defaultValue) {
+            onChange(value || defaultValue);
+        }
+    }, [
+        value?.filename,
+        value?.url,
+        defaultValue?.filename,
+        defaultValue?.url,
+    ]);
 
-        const tempFile = Object.values(fileMap)[0]?.file;
-        handleChange(tempFile);
+    useEffect(() => {
+        const fileData = Object.values(fileMap)[0];
+        if (!fileData) return;
+        if (disabled || !!fileData.src) return;
+
+        if (
+            fileData.name === defaultValue?.filename &&
+            fileData.src === defaultValue?.url
+        )
+            return;
+
+        handleChange(fileData.file);
     }, [fileMap, fileSize]);
 
     return (
@@ -79,10 +111,17 @@ const FormFileInput = ({
                 isError={errors}
                 className={disabled && styles.disabledInput}
             />
-            {errors?.type !== 'maxSize' && (
+            {(!uploadFile.data || uploadFile.isLoading) && (
                 <div className="d-flex align-items-center form-text text-default">
                     <InfoCircleIcon className="mr-1" />
-                    {`최대 ${maxFileSize}MB 까지 업로드 가능합니다. (${fileSizeMB}MB/${maxFileSize}MB)`}
+                    최대 {maxFileSize}MB 까지 업로드 가능합니다.
+                </div>
+            )}
+            {uploadFile.data && !uploadFile.isLoading && (
+                <div className="mt-1 form-text text-success">
+                    <ConfirmIcon className="mr-1" />
+                    선택 완료 ({fileSizeMB}MB/{maxFileSize}
+                    MB)
                 </div>
             )}
         </FormWrapper>

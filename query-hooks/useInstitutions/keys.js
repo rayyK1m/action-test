@@ -9,6 +9,12 @@ const institutionsKeys = {
     item: () => [...institutionsKeys.all(), 'item'],
     itemDetail: (id) => [...institutionsKeys.item(), id],
 
+    /**
+     * 기관 개별 조회 (어드민)
+     */
+    itemAdmin: () => [...institutionsKeys.all(), 'itemAdmin'],
+    itemAdminDetail: (id) => [...institutionsKeys.itemAdmin(), id],
+
     // NOTE: 리스트 아이템의 query key는 "items"으로 통일한다. (list x)
     /**
      * 기관 리스트 (institutions)
