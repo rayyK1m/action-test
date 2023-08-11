@@ -1,5 +1,5 @@
 import axios from 'axios';
-import qs from 'qs';
+import qs from 'query-string';
 import { removeEmptyValues } from '@/utils';
 import ForbiddenError from '@/server/utils/error/ForbiddenError';
 
@@ -104,14 +104,16 @@ const getProgramsAdmin = async ({
     sort,
     reviewStatus,
 }) => {
-    const removedEmptyQuery = removeEmptyValues({
-        page,
-        limit,
-        search,
-        sort,
-        reviewStatus,
-    });
-    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
+    const queryString = qs.stringify(
+        {
+            page,
+            limit,
+            search,
+            sort,
+            reviewStatus,
+        },
+        { skipNulls: true, skipEmptyString: true },
+    );
     const institutionQueryString = institutionId
         ? `institutionId=${institutionId}&`
         : '';
@@ -393,10 +395,10 @@ const getCampTicketsByProgram = async ({
                 page,
                 limit,
                 search,
-                ...(sort && { sort }),
-                ...(reviewStatus && { reviewStatus }),
+                sort,
+                reviewStatus,
             },
-            { skipNulls: true },
+            { skipNulls: true, skipEmptyString: true },
         );
         const institutionQueryString = institutionId
             ? `institutionId=${institutionId}&`

@@ -59,6 +59,15 @@ export async function middleware(req) {
 }
 
 export const config = {
+    /*
+     * lodash, qs 의 build time error 해결을 위한 코드
+     * Dynamic Code Evaluation (e. g. 'eval', 'new Function', 'WebAssembly.compile') not allowed in Edge Runtime
+     * Learn More: https://nextjs.org/docs/messages/edge-dynamic-code-evaluation
+     */
+    unstable_allowDynamic: [
+        '/node_modules/lodash/**',
+        '/node_modules/function-bind/**',
+    ],
     matcher: [
         '/login',
         '/logout',

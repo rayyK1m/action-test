@@ -1,5 +1,5 @@
 import axios from 'axios';
-import qs from 'qs';
+import qs from 'query-string';
 
 const getCampTickets = async ({ query }, axiosInstance = axios) => {
     const queryString = qs.stringify(query, { skipNulls: true });

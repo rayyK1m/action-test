@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import qs from 'qs';
+import qs from 'query-string';
 
 import Layout from '@/components/Layout/Layout';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
