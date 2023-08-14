@@ -1,6 +1,5 @@
 import { PROGRAM_DIVISION, CAMP_REVIEW_STATUS } from '@/constants/db';
 import swcampSdk from '@/server/libs/swcamp';
-import _omit from 'lodash/omit';
 
 const createCampTicket = async (req, res) => {
     const { role, userId } = req.query;
@@ -73,7 +72,15 @@ const getCampTicketHistory = async (req, res) => {
 };
 
 const getCampTicketsByProgram = async (req, res) => {
-    const { programId, page, limit, search, sort, reviewStatus } = req.query;
+    const {
+        programId,
+        page,
+        limit,
+        search,
+        sort,
+        reviewStatus,
+        containCampId,
+    } = req.query;
 
     const { items, total } = await swcampSdk.getCampTicketsByProgram({
         userId: req.session?.id,
@@ -88,6 +95,7 @@ const getCampTicketsByProgram = async (req, res) => {
                 ? `${CAMP_REVIEW_STATUS.심사중.value},${CAMP_REVIEW_STATUS.승인.value},${CAMP_REVIEW_STATUS.거절.value}`
                 : reviewStatus,
         ...(search && { search }),
+        containCampId,
     });
 
     return res.json({
@@ -96,6 +104,41 @@ const getCampTicketsByProgram = async (req, res) => {
         programDivision:
             items[0]?.program?.type.division || PROGRAM_DIVISION.방문형,
     });
+};
+
+const getCampParticipants = async (req, res) => {
+    const { campId, page, limit, sort, search } = req.query;
+
+    const { items, total } = await swcampSdk.getCampParticipants({
+        userId: req.session?.id,
+        institutionId: req.session?.institutionId,
+
+        campId,
+        page,
+        limit,
+        sort,
+        ...(search && { search }),
+    });
+
+    return res.json({
+        campParticipants: items || [],
+        totalCount: total || 0,
+    });
+};
+
+const moveCampTickets = async (req, res) => {
+    const { originCampId, newCampId, campTicketIdList } = req.body;
+
+    const { result } = await swcampSdk.moveCampTickets({
+        userId: req.session?.id,
+        institutionId: req.session?.institutionId,
+
+        originCampId,
+        newCampId,
+        campTicketIdList,
+    });
+
+    return res.json(result);
 };
 
 const changeCampTicketStatus = async (req, res) => {
@@ -120,6 +163,9 @@ const campTicketsCtrl = {
     getCampTicketsCount,
     getCampTicketHistory,
     getCampTicketsByProgram,
+    getCampParticipants,
+    moveCampTickets,
     changeCampTicketStatus,
 };
+
 export default campTicketsCtrl;

@@ -4,7 +4,6 @@ import React, {
     useState,
     useRef,
     useCallback,
-    Suspense,
     forwardRef,
 } from 'react';
 import { useRouter } from 'next/router';
@@ -25,6 +24,7 @@ import useRowSelections from '@/hooks/useRowSelections';
 import EmptyTableCard, {
     EMPTY_IMAGE_TYPE,
 } from '@/components/EmptyTableCard/EmptyTableCard';
+import SSRSuspense from '@/components/SSRSuspense';
 
 import { getTableColums } from './SelectApplicantTable.utils';
 import SelectApplicantTableLoading from './SelectApplicantTable.loading';
@@ -49,6 +49,7 @@ const Table = forwardRef(function Table(
     } = useGetCampTicketsAdmin({
         programId: router.query.id,
         reviewStatus: CAMP_REVIEW_STATUS.승인.value,
+        containCampId: false,
         page: pageIndex + 1,
         limit: pageSize,
         search,
@@ -204,13 +205,13 @@ function SelectApplicantTable({ onSelectedRowChange }) {
                 value={searchText}
             />
 
-            <Suspense fallback={<SelectApplicantTableLoading />}>
+            <SSRSuspense fallback={<SelectApplicantTableLoading />}>
                 <Table
                     ref={tableRef}
                     onSelectedRowChange={onSelectedRowChange}
                     setSelectedCount={setSelectedCount}
                 />
-            </Suspense>
+            </SSRSuspense>
         </div>
     );
 }

@@ -128,6 +128,7 @@ export const InputItem = ({
 };
 
 export const FileInputItem = ({
+    isRequired = true,
     label,
     fileKey,
     maxFileSize,
@@ -161,7 +162,7 @@ export const FileInputItem = ({
                 };
                 return (
                     <FormFileInput
-                        isRequired
+                        isRequired={isRequired}
                         label={label}
                         value={value}
                         onChange={handleChange}

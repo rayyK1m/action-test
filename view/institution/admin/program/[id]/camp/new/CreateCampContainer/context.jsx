@@ -62,12 +62,12 @@ function CreateCampContextProvider({ children }) {
     const submitAction = useMemo(
         () => ({
             submit() {
-                const parsedStudents = students.flat();
+                const parsedTicketIds = students.flat();
                 const isDraft = checkIsInfoTemporary(campInfo);
 
                 createCamp.mutate({
                     ...parseData(campInfo),
-                    targetUserIdList: parsedStudents,
+                    campTicketIdList: parsedTicketIds,
                     isDraft,
                 });
             },

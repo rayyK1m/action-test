@@ -32,6 +32,15 @@ export const campTicketsKeys = {
      */
     history: () => [...campTicketsKeys.all(), 'history'],
     historyDetail: (filters) => [...campTicketsKeys.history(), { ...filters }],
+
+    /**
+     * 운영 기관 어드민 - 캠프 상세 페이지의 캠프 참가자 리스트를 받아오는 키
+     */
+    participants: () => [...campTicketsKeys.all(), 'participants'],
+    participantsDetail: (filters) => [
+        ...campTicketsKeys.participants(),
+        { ...filters },
+    ],
 };
 
 export default campTicketsKeys;

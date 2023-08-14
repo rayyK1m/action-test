@@ -3,15 +3,10 @@ import { useFormContext, Controller } from 'react-hook-form';
 import cn from 'classnames';
 import useToggle from '@/hooks/useToggle';
 
-import {
-    FormDatePicker,
-    FormInput,
-    FormWrapper,
-    FormDropdown,
-} from '@/components/FormItem';
+import { FormDatePicker, FormInput, FormWrapper } from '@/components/FormItem';
 import Divider from '@/components/Divider';
 import { Button, Checkbox } from '@goorm-dev/gds-components';
-import { ChevronDownIcon } from '@goorm-dev/gds-icons';
+import { ChevronDownIcon, InfoCircleIcon } from '@goorm-dev/gds-icons';
 import styles from '../CampForms.module.scss';
 
 import { CAMP_KEYS, SCHOOL } from '../CampForms.constants';
@@ -19,6 +14,7 @@ import {
     DropdownInputItem,
     InputItem,
 } from '@/view/components/ValidateFormItem';
+import CustomAlert from '@/components/CustomAlert/CustomAlert';
 import {
     PROGRAM_CATEGORIES,
     PROGRAM_DIVISION,
@@ -29,29 +25,32 @@ import { useGetSchools } from '@/query-hooks/useSchool';
 import SearchSchoolDropdown from '@/view/components/SearchSchoolDropdown/SearchSchoolDropdown';
 import { useDaumSearchMap } from '@/query-hooks/useMap';
 
-const ProgramTypeInput = ({ typeKey }) => {
-    const { getValues } = useFormContext();
-    const { division, duration } = getValues(typeKey);
-
+const ProgramTypeInput = ({ division, duration }) => {
     return (
-        <div className={styles.divideRow}>
-            <FormDropdown
-                label="프로그램 유형"
-                value={division}
-                isRequired
-                disabled
-            />
-            <Button
-                icon={<ChevronDownIcon />}
-                color="select"
-                iconSide="right"
-                size="lg"
-                className={cn(styles.button, styles.dropdown)}
-                disabled
-            >
-                {duration}
-            </Button>
-        </div>
+        <FormWrapper label="프로그램 유형">
+            <div className={styles.divideRow}>
+                <Button
+                    icon={<ChevronDownIcon />}
+                    color="select"
+                    iconSide="right"
+                    size="lg"
+                    className={cn(styles.button, styles.dropdown)}
+                    disabled
+                >
+                    {division}
+                </Button>
+                <Button
+                    icon={<ChevronDownIcon />}
+                    color="select"
+                    iconSide="right"
+                    size="lg"
+                    className={cn(styles.button, styles.dropdown)}
+                    disabled
+                >
+                    {duration}
+                </Button>
+            </div>
+        </FormWrapper>
     );
 };
 const ApplyTargetInput = ({ programTargetGroup }) => {
@@ -70,14 +69,14 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
         (e) => {
             if (e.target.checked) {
                 setValue(schoolKey, [value + 1, ...targetFields[idx]], {
-                    shouldTouch: true,
+                    shouldDirty: true,
                 });
             } else {
                 const values = getValues(schoolKey).filter(
                     (v) => v !== value + 1,
                 );
                 setValue(schoolKey, values, {
-                    shouldTouch: true,
+                    shouldDirty: true,
                 });
             }
         };
@@ -96,6 +95,7 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                                 <Controller
                                     control={control}
                                     name={key}
+                                    key={idx}
                                     render={({ ref }) => {
                                         const disabled = !targetSchool[
                                             index
@@ -112,7 +112,6 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                                                 ]?.includes(idx + 1)}
                                                 ref={ref}
                                                 label={`${idx + 1}학년`}
-                                                key={idx}
                                                 disabled={disabled}
                                                 onChange={handleChange({
                                                     schoolKey: key,
@@ -139,7 +138,9 @@ const SearchSchoolInput = ({ schoolKey }) => {
     const { control, setValue } = useFormContext();
 
     const handleClick = (value) => {
-        setValue(schoolCodeKey, value);
+        setValue(schoolCodeKey, value, {
+            shouldDirty: true,
+        });
     };
     return (
         <FormWrapper label="소속 학교(교육 장소)">
@@ -178,7 +179,10 @@ const CampForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
         <div className={styles.form}>
             <h5>캠프 정보</h5>
             <div className={styles.divideRow}>
-                <ProgramTypeInput typeKey={typeKey} />
+                <ProgramTypeInput
+                    division={getValues(`${typeKey}.division`)}
+                    duration={getValues(`${typeKey}.duration`)}
+                />
                 <FormInput
                     label="캠프 명"
                     value={getValues(programNameKey)}
@@ -237,6 +241,7 @@ const ManagerForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
                     placeholder="예) 010-1234-5678"
                     inputKey={managerPhoneNumberKey}
                     onInput={formatPhoneNumberInput}
+                    maxLength={13}
                 />
             </div>
             {division === PROGRAM_DIVISION.집합형 ? (
@@ -295,6 +300,9 @@ const TeacherForm = () => {
                     inputKey={subEducatorKey}
                 />
             </div>
+            <CustomAlert leftIcon={InfoCircleIcon}>
+                신청자가 강사명을 기재하지 않은 경우, 기관에서 지정합니다.
+            </CustomAlert>
         </div>
     );
 };
@@ -316,7 +324,7 @@ const TargetForm = ({ programTargetGroup }) => {
     );
 };
 
-const TargetEditForm = () => {
+const TargetEditForm = ({ programTargetGroup }) => {
     const { applicantCountKey, classKey } = CAMP_KEYS;
 
     return (
@@ -349,7 +357,9 @@ const EducationForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
 
     const { data: mapSearch } = useDaumSearchMap({
         onComplete: (data) => {
-            setValue(educationLocationAddressKey, data.address);
+            setValue(educationLocationAddressKey, data.address, {
+                shouldDirty: true,
+            });
         },
     });
 

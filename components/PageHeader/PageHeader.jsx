@@ -1,6 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { InfoCircleIcon } from '@goorm-dev/gds-icons';
 import {
@@ -11,9 +12,9 @@ import CustomAlert from '@/components/CustomAlert/CustomAlert';
 
 import styles from './PageHeader.module.scss';
 
-function PageHeader({ children, useHrTag }) {
+function PageHeader({ children, useHrTag, className }) {
     return (
-        <div className={styles.header}>
+        <div className={cn(styles.header, className)}>
             {children}
             {useHrTag && <hr width="100%" className="m-0" />}
         </div>
@@ -25,6 +26,7 @@ function Title({ children, className }) {
 }
 
 function Breadcrumb({ breadcrumbs }) {
+    const router = useRouter();
     // NOTE: PageHeader.Title 내부에서 사용해야 gap (css)가 시안대로 적용됨
 
     return (
@@ -34,7 +36,7 @@ function Breadcrumb({ breadcrumbs }) {
                 const ATag = breadcrumb.active ? 'span' : Link;
                 return (
                     <BreadcrumbItem
-                        key={breadcrumb.to}
+                        key={breadcrumb.to || router.asPath}
                         active={breadcrumb.active}
                         size="md"
                         className={styles.breadcrumbItem}

@@ -1,6 +1,9 @@
 const campsKeys = {
     all: () => ['camps'],
 
+    item: () => [...campsKeys.all(), 'item'],
+    itemDetail: (campId) => [...campsKeys.item(), campId],
+
     /**
      * 캠프 리스트
      */
@@ -20,6 +23,11 @@ const campsKeys = {
         ...campsKeys.itemsProgram(programId),
         { ...filters },
     ],
+
+    /**
+     * 프로그램 별 캠프 분반 정보
+     */
+    classes: (programId) => [...campsKeys.all(), 'classes', programId],
 };
 
 export default campsKeys;

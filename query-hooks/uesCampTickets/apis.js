@@ -95,6 +95,35 @@ const changeCampTicketStatus = async (query) => {
     return data;
 };
 
+const getCampParticipants = async (query, axiosInstance = axios) => {
+    const queryString = qs.stringify(query, {
+        skipNulls: true,
+    });
+    const {
+        data: { campParticipants, totalCount },
+    } = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camp-tickets/participants?${queryString}`,
+    );
+
+    return {
+        campParticipants,
+        totalCount,
+    };
+};
+
+const moveCampTickets = async ({ originCampId, newCampId, targets, meta }) => {
+    const { data } = await axios.patch(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camp-tickets/move`,
+        {
+            originCampId,
+            newCampId,
+            campTicketIdList: targets,
+        },
+    );
+
+    return { result: data, ...meta };
+};
+
 const campTicketsApis = {
     getCampTickets,
     getCampTicket,
@@ -104,6 +133,8 @@ const campTicketsApis = {
     cancelCampTicket,
     getCampticketsAdmin,
     getCampTicketHistory,
+    getCampParticipants,
+    moveCampTickets,
     changeCampTicketStatus,
 };
 export default campTicketsApis;

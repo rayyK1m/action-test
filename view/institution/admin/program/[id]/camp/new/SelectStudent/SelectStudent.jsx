@@ -8,10 +8,10 @@ function SelectStudent() {
     const { updateStudents } = useCreateCampStudentsContext();
 
     useEffect(() => {
-        const selecedStudentIds = Object.values(selectedStudents).map(
-            (students) => students.map((student) => student.userId),
+        const selecedCampTickets = Object.values(selectedStudents).map(
+            (students) => students.map((student) => student.id),
         );
-        updateStudents(selecedStudentIds);
+        updateStudents(selecedCampTickets);
     }, [selectedStudents, updateStudents]);
 
     return (

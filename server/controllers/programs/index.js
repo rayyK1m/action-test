@@ -1,9 +1,10 @@
 import dayjs from 'dayjs';
 
 import swcampSdk from '@/server/libs/swcamp';
-import { getPrgramApplyStatus } from '@/server/utils/common';
 
 import validation from './validation';
+import { getPrgramApplyStatus } from './prgrams.utils';
+
 import { ROLE } from '@/constants/db';
 
 const getPrograms = async (req, res) => {

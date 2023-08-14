@@ -223,3 +223,15 @@ export const getTargetGroupString = (
 
     return targetString;
 };
+
+/**
+ * 인자로 받은 pathname을 파싱하여 /foundation 경로를 포함하고 있는 재단 어드민 페이지인지 확인
+ *
+ * @param {String} pathname
+ * @returns {Boolean}
+ */
+export const checkIsFoundationPage = (pathname) => {
+    const isFoundationPage = pathname.split('/').includes('foundation');
+
+    return isFoundationPage;
+};

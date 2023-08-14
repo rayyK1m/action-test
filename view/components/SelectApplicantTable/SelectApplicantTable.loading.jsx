@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { useHScrollTable, HScrollTable } from '@goorm-dev/gds-tables';
 import { Skeleton, Button } from '@goorm-dev/gds-components';

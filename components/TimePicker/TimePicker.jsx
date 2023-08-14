@@ -98,6 +98,7 @@ const TimePicker = forwardRef(
                 hour: convertedHour,
                 minute: convertedMinute,
             });
+            setIsDirty(true);
         }, [time]);
 
         const toggle = useCallback((e) => {
@@ -144,7 +145,7 @@ const TimePicker = forwardRef(
                             isOpen ? styles.input_focus : '',
                             inputClassName,
                         )}
-                        value={
+                        defaultValue={
                             !isDirty
                                 ? ''
                                 : `${innerTime.ampm} ${innerTime.hour}:${innerTime.minute}`

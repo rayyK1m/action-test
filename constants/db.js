@@ -137,3 +137,81 @@ export const PROGRAM_LOCATION_CATEGORIES = /** @type {const} */ ({
 export const PROGRAM_OPERATION_LOCATIONS = Object.values(
     PROGRAM_LOCATION_CATEGORIES,
 ).flat();
+
+export const CAMP_FILE_LIST = {
+    사전_제출: {
+        id: 'preFileReport',
+        children: {
+            안전_관리_체크리스트: {
+                id: '안전_관리_체크리스트',
+                label: '안전 관리 체크리스트',
+                maxFileSize: 30,
+                isRequired: true,
+            },
+            안전_관리_서약서: {
+                id: '안전_관리_서약서',
+                label: '안전 관리 서약서',
+                maxFileSize: 30,
+                isRequired: true,
+            },
+            성범죄조회_동의서: {
+                id: '성범죄조회_동의서',
+                label: '성범죄조회 동의서',
+                maxFileSize: 30,
+                isRequired: true,
+            },
+            기타: {
+                id: '기타',
+                label: '기타',
+                maxFileSize: 30,
+                isRequired: false,
+            },
+        },
+    },
+    종료_제출: {
+        id: 'postFileReport',
+        children: {
+            결과_보고서: {
+                id: '결과_보고서',
+                label: '결과 보고서',
+                maxFileSize: 30,
+                isRequired: true,
+            },
+            기타: {
+                id: '기타',
+                label: '기타',
+                maxFileSize: 30,
+                isRequired: false,
+            },
+        },
+    },
+    결과_보고: {
+        id: 'postReport',
+        children: {
+            신청_인원: {
+                id: '신청_인원',
+                label: '신청 인원',
+                placeholder: '예) 15',
+                isRequired: true,
+            },
+            참여_인원: {
+                id: '참여_인원',
+                label: '참여 인원',
+                placeholder: '예) 15',
+                isRequired: true,
+            },
+            이수_인원: {
+                id: '이수_인원',
+                label: '이수 인원',
+                placeholder: '예) 15',
+                isRequired: true,
+            },
+            설문_참여_인원: {
+                id: '설문_참여_인원',
+                label: '설문 참여 인원',
+                placeholder: '예) 15',
+                isRequired: true,
+            },
+        },
+    },
+};

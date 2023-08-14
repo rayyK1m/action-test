@@ -1,0 +1,11 @@
+.editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}

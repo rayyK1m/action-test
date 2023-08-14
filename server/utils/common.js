@@ -1,23 +1,33 @@
-import { PRGRAM_APPLY_STATUS } from '@/constants/db';
-
 /**
- * 신청(지원) 가능한 프로그램 판단 유무
+ * key값이 매핑된 변수를 활용해  "inputObject" 에서 "outputObject"로 변환하는 함수
  *
- * @param {Date} start
- * @param {Date} end
- * @returns {string} '모집 중' | '모집 예정' | '모집 종료'
+ * @param {Object} inputObject 변환할 입력 객체입니다.
+ * @param {Object} keyMap 키 매핑 객체로, 입력 키를 출력 키로 변환하는 데 사용됩니다.
+ * @returns {Object} 변환된 출력 객체입니다.
+ *
+ * @example
+ * const input = {
+ *   inputKeyA: 'Value for A' || { ... },
+ *   inputKeyB: 'Value for B' || { ... },
+ *   // ...
+ * };
+ * const keyMap = {
+ *   inputKeyA: 'outputKeyX',
+ *   inputKeyB: 'outputKeyY',
+ *   // ...
+ * };
+ * const output = transformWithKeyMap(input, keyMap);
+ * // { outputKeyX: 'Value for A', outputKeyY: 'Value for B', ... }
  */
-export const getPrgramApplyStatus = (start, end) => [
-    {
-        condition: new Date() < start,
-        type: PRGRAM_APPLY_STATUS.모집_예정.key,
-    },
-    {
-        condition: start <= new Date() && end >= new Date(),
-        type: PRGRAM_APPLY_STATUS.모집_중.key,
-    },
-    {
-        condition: new Date() > end,
-        type: PRGRAM_APPLY_STATUS.모집_종료.key,
-    },
-];
+export const transformWithKeyMap = (inputObject, keyMap) => {
+    const outputObject = {};
+
+    for (const key in inputObject) {
+        if (Object.prototype.hasOwnProperty.call(inputObject, key)) {
+            const outputObjectKey = keyMap[key];
+            outputObject[outputObjectKey] = inputObject[key];
+        }
+    }
+
+    return outputObject;
+};

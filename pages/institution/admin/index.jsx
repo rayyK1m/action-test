@@ -37,7 +37,7 @@ export const getServerSideProps = checkAuthSsr({
     const queryClient = new QueryClient();
     const serverAxios = createServerAxios(context);
     const page = Number(context.query?.page || 1);
-    const limit = Number(context.query?.limit || 5);
+    const limit = Number(context.query?.limit || 10);
 
     await queryClient.prefetchQuery(
         programsKeys.itemsAdminDetail({

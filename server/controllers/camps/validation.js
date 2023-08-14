@@ -9,4 +9,10 @@ const getCamps = {
     },
 };
 
-export default { getCamps };
+const postCampReport = {
+    query: {
+        id: Joi.string(),
+        reportType: Joi.string(),
+    },
+};
+export default { getCamps, postCampReport };

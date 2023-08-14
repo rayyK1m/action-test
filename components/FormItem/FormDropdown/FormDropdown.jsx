@@ -25,6 +25,7 @@ const FormDropdown = ({
     invalid,
     onChange,
     onBlur,
+    className,
     ...props
 }) => {
     const [isOpen, toggle] = useToggle(false);
@@ -39,7 +40,7 @@ const FormDropdown = ({
         }
     };
 
-    if (readOnly) {
+    if (readOnly || disabled) {
         return (
             <FormWrapper label={label} isRequired={isRequired}>
                 <Button
@@ -47,7 +48,10 @@ const FormDropdown = ({
                     color="select"
                     iconSide="right"
                     size={size}
-                    className={styles.button}
+                    className={cn(
+                        styles.button,
+                        readOnly && styles.readOnlyButton,
+                    )}
                     disabled
                     {...props}
                 >
@@ -82,6 +86,7 @@ const FormDropdown = ({
                             styles.button,
                             value === placeholder && styles.button_placeholder,
                             invalid && styles.invalidButton,
+                            className,
                         )}
                         disabled={disabled}
                         onBlur={handleBlur}

@@ -329,6 +329,23 @@ const createCampTicket = async ({ role, userId, formData }) => {
     }
 };
 
+const getCamp = async ({ userId, campId, institutionId }) => {
+    try {
+        const { data } = await swcampInstance.get(
+            `${process.env.SWCAMP_API_HOST}/api/v1/camps/${campId}/admin?institutionId=${institutionId}`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const getCamps = async ({ programId, institutionId, page, limit }) => {
     await delay(DELAY_TIME);
 
@@ -342,11 +359,99 @@ const getCamps = async ({ programId, institutionId, page, limit }) => {
     return newData;
 };
 
+const getCampClasses = async ({ userId, institutionId, programId }) => {
+    const { data } = await swcampInstance.get(
+        `/api/v1/camps/class/programs/${programId}?institutionId=${institutionId}`,
+        {
+            headers: { ...getAuthHeader(userId) },
+        },
+    );
+
+    return data;
+};
+
+const addCampParticipants = async ({
+    userId,
+    institutionId,
+    campId,
+    campTicketIdList,
+}) => {
+    try {
+        const { data } = await swcampInstance.post(
+            `/api/v1/camps/${campId}/students?institutionId=${institutionId}`,
+            {
+                campTicketIdList,
+            },
+            {
+                headers: {
+                    authorization: `bearer ${process.env.SWCAMP_API_TOKEN}`,
+                    ...getAuthHeader(userId),
+                },
+            },
+        );
+
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
+const deleteCampParticipants = async ({
+    userId,
+    institutionId,
+    campId,
+    campTicketIdList,
+}) => {
+    try {
+        const { data } = await swcampInstance.delete(
+            `/api/v1/camps/${campId}/students?institutionId=${institutionId}`,
+            {
+                headers: {
+                    authorization: `bearer ${process.env.SWCAMP_API_TOKEN}`,
+                    ...getAuthHeader(userId),
+                },
+                data: {
+                    campTicketIdList,
+                },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const createCamp = async ({ userId, formData }) => {
     try {
         const { data } = await swcampInstance.post(
             `${process.env.SWCAMP_API_HOST}/api/v1/camps/type/group`,
             formData,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+            // NOTE: 디버깅에 필요한 데이터 넣어두기
+        });
+    }
+};
+
+const patchCamp = async ({ userId, institutionId, campId, formData }) => {
+    try {
+        console.log(formData, userId, institutionId, campId);
+        const { data } = await swcampInstance.patch(
+            `${process.env.SWCAMP_API_HOST}/api/v1/camps/${campId}`,
+            { ...formData, institutionId },
             {
                 headers: { ...getAuthHeader(userId) },
             },
@@ -388,6 +493,7 @@ const getCampTicketsByProgram = async ({
     search,
     sort,
     reviewStatus,
+    containCampId,
 }) => {
     try {
         const queryString = qs.stringify(
@@ -419,6 +525,42 @@ const getCampTicketsByProgram = async ({
     }
 };
 
+const getCampParticipants = async ({
+    userId,
+    institutionId,
+    campId,
+    page,
+    limit,
+    sort,
+    search,
+}) => {
+    try {
+        const queryString = qs.stringify(
+            {
+                institutionId,
+                page,
+                limit,
+                sort,
+                search,
+            },
+            { skipNulls: true },
+        );
+
+        const { data } = await swcampInstance.get(
+            `/api/v1/camp-tickets/camps/${campId}?${queryString}`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const changeCampTicketStatus = async ({
     ticketId,
     userId,
@@ -433,13 +575,44 @@ const changeCampTicketStatus = async ({
                 headers: { ...getAuthHeader(userId) },
             },
         );
+
         return data;
     } catch (err) {
-        console.log(err.response.data);
         throw new ExternalResponseError({
             message: 'SWCAMP API',
             res: { status: err.response.status, data: err.response.data },
-            // NOTE: 디버깅에 필요한 데이터 넣어두기
+        });
+    }
+};
+
+const moveCampTickets = async ({
+    userId,
+    institutionId,
+    originCampId,
+    newCampId,
+    campTicketIdList,
+}) => {
+    try {
+        const { data } = await swcampInstance.patch(
+            `/api/v1/camp-tickets/move?institutionId=${institutionId}`,
+            {
+                originCampId,
+                newCampId,
+                campTicketIdList,
+            },
+            {
+                headers: {
+                    authorization: `bearer ${process.env.SWCAMP_API_TOKEN}`,
+                    ...getAuthHeader(userId),
+                },
+            },
+        );
+
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
         });
     }
 };
@@ -571,6 +744,38 @@ const getSchools = async ({ name, userId }) => {
     }
 };
 
+const postCampReport = async ({
+    /**
+     * reportType = "preFileReport" | "postFileReport" | "postReport"
+     */
+    reportType,
+    userId,
+    institutionId,
+    campId,
+    formData,
+}) => {
+    try {
+        const { data } = await swcampInstance.post(
+            `/api/v1/camps/${campId}/reports?institutionId=${institutionId}`,
+            {
+                [reportType]: { ...formData },
+            },
+            {
+                headers: {
+                    ...getAuthHeader(userId),
+                },
+            },
+        );
+
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const swcampSdk = {
     /**
      * Program
@@ -594,8 +799,15 @@ const swcampSdk = {
     /**
      * Camp
      */
+    getCamp,
     getCamps,
+    getCampClasses,
+    addCampParticipants,
+    deleteCampParticipants,
     createCamp,
+    patchCamp,
+    postCampReport,
+
     /**
      * CampTicket
      */
@@ -607,7 +819,10 @@ const swcampSdk = {
     createCampTicket,
     getCampTicketHistory,
     getCampTicketsByProgram,
+    getCampParticipants,
+    moveCampTickets,
     changeCampTicketStatus,
+
     /**
      * UserData
      */

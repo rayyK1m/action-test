@@ -98,6 +98,45 @@ const useGetCampTicketHistory = (filters) => {
     });
 };
 
+const useGetCampParticipants = (filters) => {
+    return useQuery({
+        queryKey: campTicketsKeys.participantsDetail({ ...filters }),
+        queryFn: () => campTicketsApis.getCampParticipants({ ...filters }),
+        enabled: !!filters.campId,
+    });
+};
+
+const useMoveCampTickets = () => {
+    const queryClient = useQueryClient();
+    return useMutation(
+        ({ originCampId, newCampId, targets, meta }) =>
+            campTicketsApis.moveCampTickets({
+                originCampId,
+                newCampId,
+                targets,
+                meta,
+            }),
+        {
+            onSuccess: (data) => {
+                if (!data.result) {
+                    throw Error();
+                }
+                toast(
+                    `'${data.userName}' 참가자가 ${data.newClass}분반으로 변경되었습니다.`,
+                    {
+                        type: toast.TYPE.SUCCESS,
+                    },
+                );
+                queryClient.invalidateQueries(campTicketsKeys.participants());
+            },
+            onError: () =>
+                toast('분반 변경에 실패했습니다.', {
+                    type: toast.TYPE.ERROR,
+                }),
+        },
+    );
+};
+
 const useChangeCampTicketStatus = () => {
     const queryClient = useQueryClient();
     return useMutation(
@@ -136,6 +175,8 @@ export {
     useCancelCampTicket,
     useGetCampTicketsAdmin,
     useGetCampTicketHistory,
+    useGetCampParticipants,
+    useMoveCampTickets,
     useChangeCampTicketStatus,
     campTicketsApis,
     campTicketsKeys,

@@ -53,6 +53,8 @@ export const getTableColums = () => {
                     middleSchool,
                     highSchool,
                 );
+                const needEllipsis = targetString.length > 15;
+
                 return (
                     <>
                         <div
@@ -63,7 +65,7 @@ export const getTableColums = () => {
                         </div>
                         <Tooltip
                             target={targetGroupRef}
-                            isOpen={isHover}
+                            isOpen={needEllipsis && isHover}
                             placement="bottom-start"
                         >
                             {targetString}

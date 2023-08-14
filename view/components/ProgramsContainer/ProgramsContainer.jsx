@@ -13,7 +13,7 @@ import { CloseIcon, RefreshIcon } from '@goorm-dev/gds-icons';
 
 import GridContainer from '@/components/GridContainer';
 import SSRSuspense from '@/components/SSRSuspense';
-import Nav from '@/components/Nav';
+import CustomNav from '@/components/CustomNav';
 import CustomDropdownItem from '@/components/CustomDropdownItem';
 import CustomDropdowMenu from '@/components/CustomDropdownMenu';
 
@@ -297,30 +297,28 @@ export default function ProgramsContainer() {
 
                 {/* 방문형, 집합형 선택 */}
                 <div>
-                    <Nav tabs size="lg" className={styles.navTabs}>
-                        <Nav.Item className={styles.navItem}>
-                            <Nav.Link
+                    <CustomNav tabs size="lg">
+                        <CustomNav.Item>
+                            <CustomNav.Link
                                 tag="span"
                                 data-id={PROGRAM_DIVISION.방문형}
-                                className={styles.navLink}
                                 active={campType === PROGRAM_DIVISION.방문형}
                                 onClick={handleNavLink}
                             >
                                 선생님용 (방문형)
-                            </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item className={styles.navItem}>
-                            <Nav.Link
+                            </CustomNav.Link>
+                        </CustomNav.Item>
+                        <CustomNav.Item>
+                            <CustomNav.Link
                                 tag="span"
                                 data-id={PROGRAM_DIVISION.집합형}
-                                className={styles.navLink}
                                 active={campType === PROGRAM_DIVISION.집합형}
                                 onClick={handleNavLink}
                             >
                                 학생용 (집합형)
-                            </Nav.Link>
-                        </Nav.Item>
-                    </Nav>
+                            </CustomNav.Link>
+                        </CustomNav.Item>
+                    </CustomNav>
                 </div>
             </section>
 
