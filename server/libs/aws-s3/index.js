@@ -19,7 +19,12 @@ const PRESIGNED_URL_EXPIRATION = 5; // 초
 
 const PATH_TYPE = {
     PROGRAM: 'newsac/programs',
-    INSTITUTION: 'newsac/institution',
+    CAMP: 'newsac/camp',
+};
+
+const BUCKET_TYPE = {
+    thumbnail: IMAGE_BUCKET,
+    default: DEFAULT_BUCKET,
 };
 
 /**
@@ -29,7 +34,7 @@ const PATH_TYPE = {
  * @param {string} contentType - 파일의 컨텐츠 타입
  * @returns {Promise<{ url: string, path: string }>} - 생성된 Presigned URL과 경로
  */
-const createPresignedUrl = async (pathType, contentType) => {
+const createPresignedUrl = async (pathType, contentType, fileType) => {
     const s3 = new aws.S3();
 
     const fileExtension = mime.getExtension(contentType);
@@ -37,9 +42,7 @@ const createPresignedUrl = async (pathType, contentType) => {
         PATH_TYPE[pathType.toUpperCase()]
     }/${uuidv4()}.${fileExtension}`;
 
-    const bucket = contentType.startsWith('image/')
-        ? IMAGE_BUCKET
-        : DEFAULT_BUCKET;
+    const bucket = BUCKET_TYPE[fileType];
 
     const params = {
         Bucket: bucket,
@@ -57,6 +60,7 @@ const createPresignedUrlWithPath = async (path) => {
     const params = {
         Bucket: DEFAULT_BUCKET,
         Key: path,
+        Expires: PRESIGNED_URL_EXPIRATION,
     };
     const url = await s3.getSignedUrlPromise('getObject', params);
     return url;

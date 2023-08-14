@@ -374,7 +374,7 @@ const EducationForm = ({ division }) => {
             <FileInputItem
                 label="프로그램 교안 첨부 파일"
                 isRequired
-                maxFileSize={2}
+                maxFileSize={30}
                 fileKey={attachedFilesKey}
             />
             <InputItem

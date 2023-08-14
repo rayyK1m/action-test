@@ -22,6 +22,7 @@ const FormFileInputWithImage = ({
     errors,
     disabled,
     pathType = 'program',
+    fileType = 'thumbnail',
 }) => {
     const [imageUrl, setImageUrl] = useState(value ? value.url : '');
     const defaultFile = useMemo(() => {
@@ -70,6 +71,7 @@ const FormFileInputWithImage = ({
         const { url, path } = await fileApis.getPresignedUrl({
             file,
             pathType,
+            fileType,
         });
 
         await uploadFile.mutateAsync({ url, file });

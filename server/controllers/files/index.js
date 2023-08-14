@@ -2,11 +2,11 @@ import awsS3Sdk from '@/server/libs/aws-s3';
 import validation from './validation';
 
 const getPresignedUrl = async (req, res) => {
-    const { pathType, contentType } = req.query;
-    //console.log(pathType, contentType);
+    const { pathType, contentType, fileType } = req.query;
     const { url, path } = await awsS3Sdk.createPresignedUrl(
         pathType,
         contentType,
+        fileType,
     );
     return res.json({ url, path });
 };

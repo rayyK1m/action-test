@@ -133,6 +133,7 @@ export const FileInputItem = ({
     maxFileSize,
     disabled,
     defaultValue,
+    ...props
 }) => {
     const {
         control,
@@ -168,6 +169,7 @@ export const FileInputItem = ({
                         maxFileSize={maxFileSize}
                         disabled={disabled}
                         defaultValue={defaultValue}
+                        {...props}
                     />
                 );
             }}
@@ -180,6 +182,7 @@ export const ImageFileInputItem = ({
     fileKey,
     maxFileSize,
     disabled,
+    ...props
 }) => {
     const {
         control,
@@ -211,8 +214,9 @@ export const ImageFileInputItem = ({
                         value={value}
                         onChange={handleChange}
                         errors={errors[fileKey]}
-                        maxFileSize={2}
+                        maxFileSize={maxFileSize}
                         disabled={disabled}
+                        {...props}
                     />
                 );
             }}

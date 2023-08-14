@@ -18,6 +18,7 @@ const FormFileInput = ({
     onChange,
     errors,
     pathType = 'program',
+    fileType = 'default',
     defaultValue,
 }) => {
     const defaultFile = useMemo(() => {
@@ -68,6 +69,7 @@ const FormFileInput = ({
         const { url, path } = await fileApis.getPresignedUrl({
             file,
             pathType,
+            fileType,
         });
 
         await uploadFile.mutateAsync({ url, file });
