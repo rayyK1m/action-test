@@ -39,12 +39,12 @@ export const PROGRAM_REVIEW_STATUS = /** @type {const} */ ({
         key: 'IN_PROGRESS',
         value: 'IN_PROGRESS',
     },
-    승인됨: {
+    승인: {
         text: '승인됨',
         key: 'APPROVE',
         value: 'APPROVE',
     },
-    거절됨: {
+    거절: {
         text: '거절됨',
         key: 'REJECT',
         value: 'REJECT',
