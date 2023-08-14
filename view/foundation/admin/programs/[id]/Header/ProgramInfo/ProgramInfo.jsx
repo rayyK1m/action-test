@@ -27,12 +27,12 @@ function ProgramInfo() {
                     <ChevronRightIcon />
                 </div>
             </div>
-            {program.reviewStatus === PROGRAM_REVIEW_STATUS.승인됨.key && (
+            {program.reviewStatus === PROGRAM_REVIEW_STATUS.승인.key && (
                 <Badge size="lg" color="success" leftIcon={CheckCircleIcon}>
                     승인됨
                 </Badge>
             )}
-            {program.reviewStatus === PROGRAM_REVIEW_STATUS.거절됨.key && (
+            {program.reviewStatus === PROGRAM_REVIEW_STATUS.거절.key && (
                 <Badge
                     size="lg"
                     /** color link 없어서 커스텀함 */

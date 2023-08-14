@@ -63,7 +63,7 @@ export const getTableColoums = () => {
             cell: cellHelper(({ rowData }) => {
                 const { reviewStatus, id } = rowData;
                 const isApproved =
-                    reviewStatus === PROGRAM_REVIEW_STATUS.승인됨.value;
+                    reviewStatus === PROGRAM_REVIEW_STATUS.승인.value;
                 return (
                     <Button
                         color="link"
@@ -83,7 +83,7 @@ export const getTableColoums = () => {
             cell: cellHelper(({ rowData }) => {
                 const { reviewStatus, id } = rowData;
                 const isApproved =
-                    reviewStatus === PROGRAM_REVIEW_STATUS.승인됨.value;
+                    reviewStatus === PROGRAM_REVIEW_STATUS.승인.value;
 
                 return (
                     <Button
@@ -109,7 +109,7 @@ export const getTableColoums = () => {
             cell: cellHelper(({ rowData }) => {
                 const { reviewStatus } = rowData;
                 const isApproved =
-                    reviewStatus === PROGRAM_REVIEW_STATUS.승인됨.value;
+                    reviewStatus === PROGRAM_REVIEW_STATUS.승인.value;
                 return (
                     <Button
                         color="link"

@@ -17,8 +17,8 @@ function Header() {
             {program.reviewStatus === PROGRAM_REVIEW_STATUS.심사중.key && (
                 <ButtonGroup />
             )}
-            {(program.reviewStatus === PROGRAM_REVIEW_STATUS.승인됨.key ||
-                program.reviewStatus === PROGRAM_REVIEW_STATUS.거절됨.key) && (
+            {(program.reviewStatus === PROGRAM_REVIEW_STATUS.승인.key ||
+                program.reviewStatus === PROGRAM_REVIEW_STATUS.거절.key) && (
                 <ProgramInfo />
             )}
         </div>

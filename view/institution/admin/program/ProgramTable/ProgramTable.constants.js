@@ -6,13 +6,13 @@ import {
 import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
 
 export const STATUS_TEXT = {
-    [PROGRAM_REVIEW_STATUS.승인됨.value]: {
-        text: PROGRAM_REVIEW_STATUS.승인됨.text,
+    [PROGRAM_REVIEW_STATUS.승인.value]: {
+        text: PROGRAM_REVIEW_STATUS.승인.text,
         icon: CheckCircleIcon,
         color: 'success',
     },
-    [PROGRAM_REVIEW_STATUS.거절됨.value]: {
-        text: PROGRAM_REVIEW_STATUS.거절됨.text,
+    [PROGRAM_REVIEW_STATUS.거절.value]: {
+        text: PROGRAM_REVIEW_STATUS.거절.text,
         icon: ErrorCircleIcon,
         color: 'info',
     },

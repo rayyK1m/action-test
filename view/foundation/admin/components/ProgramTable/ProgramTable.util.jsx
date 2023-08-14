@@ -75,7 +75,7 @@ export const getTableColoums = (option = {}) => {
                 const { reviewStatus } = rowData;
                 const isDisabled =
                     reviewStatus === PROGRAM_REVIEW_STATUS.심사중.key ||
-                    PROGRAM_REVIEW_STATUS.거절됨.key;
+                    PROGRAM_REVIEW_STATUS.거절.key;
 
                 return (
                     <Button
@@ -96,7 +96,7 @@ export const getTableColoums = (option = {}) => {
                 const { reviewStatus } = rowData;
                 const isDisabled =
                     reviewStatus === PROGRAM_REVIEW_STATUS.심사중.key ||
-                    PROGRAM_REVIEW_STATUS.거절됨.key;
+                    PROGRAM_REVIEW_STATUS.거절.key;
 
                 return (
                     <Button

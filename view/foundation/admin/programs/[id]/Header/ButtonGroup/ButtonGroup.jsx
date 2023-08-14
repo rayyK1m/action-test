@@ -24,7 +24,7 @@ function ButtonGroup() {
             <Button
                 size="lg"
                 color="danger"
-                onClick={changeStatus(PROGRAM_REVIEW_STATUS.거절됨.key)}
+                onClick={changeStatus(PROGRAM_REVIEW_STATUS.거절.key)}
             >
                 거절하기
             </Button>
@@ -32,7 +32,7 @@ function ButtonGroup() {
                 size="lg"
                 color="success"
                 icon={<CheckCircleIcon />}
-                onClick={changeStatus(PROGRAM_REVIEW_STATUS.승인됨.key)}
+                onClick={changeStatus(PROGRAM_REVIEW_STATUS.승인.key)}
             >
                 승인하기
             </Button>

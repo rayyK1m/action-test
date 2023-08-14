@@ -49,7 +49,7 @@ export const getServerSideProps = checkAuthSsr({
     };
 
     const validPattern = new RegExp(
-        `(${PROGRAM_REVIEW_STATUS.심사중.key})|(${PROGRAM_REVIEW_STATUS.승인됨.key})|(${PROGRAM_REVIEW_STATUS.거절됨.key})`,
+        `(${PROGRAM_REVIEW_STATUS.심사중.key})|(${PROGRAM_REVIEW_STATUS.승인.key})|(${PROGRAM_REVIEW_STATUS.거절.key})`,
     );
     const validReviewStatus = validPattern.test(reviewStatus);
 
