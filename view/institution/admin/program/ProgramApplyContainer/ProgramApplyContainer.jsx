@@ -1,32 +1,33 @@
+import { useRouter } from 'next/router';
 import { useForm, FormProvider } from 'react-hook-form';
+
+import useSession from '@/query-hooks/useSession';
+import { useCreateProgram } from '@/query-hooks/usePrograms';
 
 import Layout from '@/components/Layout/Layout';
 import PageHeader from '@/components/PageHeader';
-import EditForm from '@/view/institution/admin/program/ProgramApplyForm';
+import ApplyForm from '@/view/institution/admin/program/ProgramApplyForm';
 import GridContainer from '@/components/GridContainer';
-
-import { PROGRAM_APPLY_KEYS } from '@/view/institution/admin/program/program.contants';
 
 import { Form, Button, Badge } from '@goorm-dev/gds-components';
 import { BackPageIcon } from '@goorm-dev/gds-icons';
 import styles from '../program.module.scss';
-import useSession from '@/query-hooks/useSession';
 import { formatData } from './ProgramApplyContainer.utils';
-import { useCreateProgram } from '@/query-hooks/usePrograms';
-import { PROGRAM_DURATION } from '@/constants/db';
+
+import { PROGRAM_DIVISION, PROGRAM_DURATION } from '@/constants/db';
+import { PROGRAM_APPLY_KEYS } from '@/view/institution/admin/program/program.contants';
 
 function ProgramApplyContainer({ division }) {
+    const router = useRouter();
     const { data: userData } = useSession.GET();
+    const isStudent = division === PROGRAM_DIVISION.집합형;
 
     const createProgram = useCreateProgram();
 
     const methods = useForm({
         mode: 'onTouched',
         defaultValues: {
-            [PROGRAM_APPLY_KEYS.typeKey]: {
-                division,
-                duration: PROGRAM_DURATION.지속,
-            },
+            [PROGRAM_APPLY_KEYS.durationKey]: PROGRAM_DURATION.지속,
             [PROGRAM_APPLY_KEYS.elementaryTargetKey]: [],
             [PROGRAM_APPLY_KEYS.middleTargetKey]: [],
             [PROGRAM_APPLY_KEYS.highTargetKey]: [],
@@ -34,13 +35,14 @@ function ProgramApplyContainer({ division }) {
     });
 
     const onSubmit = (data) => {
-        const formData = formatData(data);
+        const formData = formatData(data, division);
         createProgram.mutate({
             userId: userData.id,
             institutionId: userData.institutionId,
             formData,
         });
     };
+
     return (
         <Layout>
             <Layout.Header userData={userData} />
@@ -66,12 +68,22 @@ function ProgramApplyContainer({ division }) {
                                     icon={<BackPageIcon />}
                                     className="mr-2"
                                     color="link"
+                                    onClick={() =>
+                                        router.push('/institution/admin')
+                                    }
                                 />
                                 <div className="d-flex align-items-center">
                                     <h3 className="d-inline">
                                         새 프로그램 등록하기
                                     </h3>
-                                    <Badge size="md" className="ml-1">
+                                    <Badge
+                                        size="md"
+                                        className="ml-1"
+                                        color={
+                                            isStudent ? 'success' : 'primary'
+                                        }
+                                        pill
+                                    >
                                         {division}
                                     </Badge>
                                 </div>
@@ -83,12 +95,12 @@ function ProgramApplyContainer({ division }) {
                             onSubmit={methods.handleSubmit(onSubmit)}
                             className={styles.forms}
                         >
-                            <EditForm division={division} />
+                            <ApplyForm division={division} />
                             <Button
                                 type="submit"
                                 size="xl"
-                                // NOTE: setError로 에러 처리한 fileInput, checkbox는 따로 valid 처리해줘야함
                                 disabled={!methods.formState.isValid}
+                                color="primary"
                             >
                                 승인 요청하기
                             </Button>

@@ -1,8 +1,6 @@
-//import { useState } from 'react';m
 import dynamic from 'next/dynamic';
 import FormWrapper from '../FormWrapper';
 import styles from './FormEditor.module.scss';
-//import cn from 'classnames';
 
 const QuillEditor = dynamic(() => import('react-quill'), {
     ssr: false,

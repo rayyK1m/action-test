@@ -40,10 +40,18 @@ import { TermsForm } from '../CampForms/TermForm/TermForm';
 import Link from 'next/link';
 import useToggle from '@/hooks/useToggle';
 import { useRouter } from 'next/router';
+import { useGetUserInfo } from '@/query-hooks/useUserInfo';
 
 function CampApplyContainer({ userData, programId }) {
     const router = useRouter();
     const [isOpen, toggle] = useToggle(false);
+    const {
+        data: {
+            swcampUserData: { schoolCode = '', schoolName = '' },
+            // userCertificateData: { phoneNumber },
+        },
+    } = useGetUserInfo();
+
     const {
         data: { count },
     } = useGetCampTicketsCount({ userId: userData?.id });
@@ -88,8 +96,8 @@ function CampApplyContainer({ userData, programId }) {
             [CAMP_APPLY_KEYS.middleTargetKey]: [],
             [CAMP_APPLY_KEYS.highTargetKey]: [],
             /** 유저 데이터 연결 안해서 임시로 지정해둔 상태, 수정 예정 */
-            [CAMP_APPLY_KEYS.schoolNameKey]: '가락중학교',
-            [CAMP_APPLY_KEYS.schoolCodeKey]: '7130165',
+            [CAMP_APPLY_KEYS.schoolNameKey]: schoolName,
+            [CAMP_APPLY_KEYS.schoolCodeKey]: schoolCode,
             [CAMP_APPLY_KEYS.userNameKey]: '김구름',
         },
     });

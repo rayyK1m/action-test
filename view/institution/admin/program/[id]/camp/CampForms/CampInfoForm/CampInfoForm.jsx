@@ -66,7 +66,7 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
     const targetSchool = Object.values(programTargetGroup) || {};
 
     return (
-        <FormWrapper label="신청 가능 대상">
+        <FormWrapper label="신청 대상">
             <div className={styles.checkForm}>
                 {Object.entries(SCHOOL).map(([_, school], index) => (
                     <div className={styles.school} key={school.key}>
@@ -226,21 +226,25 @@ const ReadOnlyTeacherForm = () => {
     return (
         <div className={styles.form}>
             <h5>강사 정보</h5>
-            <div className={styles.divideRow}>
-                <InputItem
-                    label="강사명"
-                    inputKey={mainEducatorKey}
-                    placeholder="예) 김구름"
-                />
-                <InputItem
-                    label="보조 강사명"
-                    inputKey={subEducatorKey}
-                    placeholder="예) 김구름"
-                />
+            <div>
+                <div className={styles.divideRow}>
+                    <InputItem
+                        label="강사명"
+                        inputKey={mainEducatorKey}
+                        placeholder="예) 김구름"
+                        readOnly
+                    />
+                    <InputItem
+                        label="보조 강사명"
+                        inputKey={subEducatorKey}
+                        placeholder="예) 김구름"
+                        readOnly
+                    />
+                </div>
+                <CustomAlert leftIcon={InfoCircleIcon} className="mt-3 mb-0">
+                    신청자가 강사명을 기재하지 않은 경우, 기관에서 지정합니다.
+                </CustomAlert>
             </div>
-            <CustomAlert leftIcon={InfoCircleIcon}>
-                신청자가 강사명을 기재하지 않은 경우, 기관에서 지정합니다.
-            </CustomAlert>
         </div>
     );
 };

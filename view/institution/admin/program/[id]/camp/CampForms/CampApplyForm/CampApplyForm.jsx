@@ -19,22 +19,24 @@ import {
     PROGRAM_CATEGORIES,
     PROGRAM_DIVISION,
     PROGRAM_OPERATION_LOCATIONS,
+    PROGRAM_SCHOOL_TYPE,
 } from '@/constants/db';
 import { formatNumberInput, formatPhoneNumberInput } from '@/utils';
 import { useGetSchools } from '@/query-hooks/useSchool';
 import SearchSchoolDropdown from '@/view/components/SearchSchoolDropdown/SearchSchoolDropdown';
 import { useDaumSearchMap } from '@/query-hooks/useMap';
+import useDebounce from '@/hooks/useDebounce';
 
 const ProgramTypeInput = ({ division, duration }) => {
     return (
-        <FormWrapper label="프로그램 유형">
+        <FormWrapper label="캠프 유형">
             <div className={styles.divideRow}>
                 <Button
                     icon={<ChevronDownIcon />}
                     color="select"
                     iconSide="right"
                     size="lg"
-                    className={cn(styles.button, styles.dropdown)}
+                    className={styles.typeButton}
                     disabled
                 >
                     {division}
@@ -84,7 +86,7 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
     const targetSchool = Object.values(programTargetGroup) || {};
 
     return (
-        <FormWrapper label="신청 가능 대상">
+        <FormWrapper label="신청 대상">
             <div className={styles.checkForm}>
                 {Object.entries(SCHOOL).map(([key, school], index) => (
                     <div className={styles.school} key={school.key}>
@@ -135,7 +137,7 @@ const SearchSchoolInput = ({ schoolKey }) => {
     const { schoolNameKey, schoolCodeKey } = schoolKey;
     const [isInputOpen, toggleInput] = useToggle();
 
-    const { control, setValue } = useFormContext();
+    const { control, trigger, setValue } = useFormContext();
 
     const handleClick = (value) => {
         setValue(schoolCodeKey, value, {
@@ -147,11 +149,19 @@ const SearchSchoolInput = ({ schoolKey }) => {
             <Controller
                 control={control}
                 name={schoolNameKey}
-                render={({ field: { ref, value, onChange, onBlur } }) => {
+                rules={{
+                    required: true,
+                }}
+                render={({ field: { ref, value, onChange } }) => {
                     const debouncedName = useDebounce(value, 500);
                     const { data = { items: [], total: 0 } } = useGetSchools({
                         name: debouncedName,
                     });
+
+                    const handleChange = (value) => {
+                        onChange(value);
+                        trigger(schoolNameKey);
+                    };
 
                     return (
                         <SearchSchoolDropdown
@@ -160,9 +170,8 @@ const SearchSchoolInput = ({ schoolKey }) => {
                             isOpenDropdown={isInputOpen}
                             schoolName={value}
                             toggle={toggleInput}
-                            onChangeSchoolName={onChange}
+                            onChangeSchoolName={handleChange}
                             onClickDropdownItem={handleClick}
-                            onBlur={onBlur}
                         />
                     );
                 }}
@@ -177,7 +186,7 @@ const CampForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
     const { getValues } = useFormContext();
     return (
         <div className={styles.form}>
-            <h5>캠프 정보</h5>
+            <h5 className="text-gray-700">캠프 정보</h5>
             <div className={styles.divideRow}>
                 <ProgramTypeInput
                     division={getValues(`${typeKey}.division`)}
@@ -229,7 +238,7 @@ const ManagerForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
 
     return (
         <div className={styles.form}>
-            <h5>담당자 정보</h5>
+            <h5 className="text-gray-700">담당자 정보</h5>
             <div className={styles.divideRow}>
                 <InputItem
                     label="현장 담당자 명"
@@ -270,11 +279,13 @@ const ManagerForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
                             label="운영 지역"
                             dropdownKey={operateLocationKey}
                             items={PROGRAM_OPERATION_LOCATIONS}
+                            placeholder="운영 지역 선택"
                         />
-                        <InputItem
+                        <DropdownInputItem
                             label="학교 유형"
-                            placeholder="예) 늘봄 학교"
-                            inputKey={schoolTypeKey}
+                            dropdownKey={schoolTypeKey}
+                            items={PROGRAM_SCHOOL_TYPE}
+                            placeholder="학교 유형 선택"
                         />
                     </div>
                 </>
@@ -288,21 +299,23 @@ const TeacherForm = () => {
     return (
         <div className={styles.form}>
             <h5>강사 정보</h5>
-            <div className={styles.divideRow}>
-                <InputItem
-                    label="강사명"
-                    placeholder="예) 김구름"
-                    inputKey={mainEducatorKey}
-                />
-                <InputItem
-                    label="보조 강사명"
-                    placeholder="예) 김구름"
-                    inputKey={subEducatorKey}
-                />
+            <div>
+                <div className={styles.divideRow}>
+                    <InputItem
+                        label="강사명"
+                        placeholder="예) 김구름"
+                        inputKey={mainEducatorKey}
+                    />
+                    <InputItem
+                        label="보조 강사명"
+                        placeholder="예) 김구름"
+                        inputKey={subEducatorKey}
+                    />
+                </div>
+                <CustomAlert leftIcon={InfoCircleIcon} className="mt-3 mb-0">
+                    신청자가 강사명을 기재하지 않은 경우, 기관에서 지정합니다.
+                </CustomAlert>
             </div>
-            <CustomAlert leftIcon={InfoCircleIcon}>
-                신청자가 강사명을 기재하지 않은 경우, 기관에서 지정합니다.
-            </CustomAlert>
         </div>
     );
 };
@@ -312,7 +325,7 @@ const TargetForm = ({ programTargetGroup }) => {
 
     return (
         <div className={styles.form}>
-            <h5>신청 대상 정보</h5>
+            <h5 className="text-gray-700">신청 대상 정보</h5>
             <ApplyTargetInput programTargetGroup={programTargetGroup} />
             <InputItem
                 label="신청 인원"
@@ -374,7 +387,7 @@ const EducationForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
 
     return (
         <div className={styles.form}>
-            <h5>교육 정보</h5>
+            <h5 className="text-gray-700">교육 정보</h5>
             <InputItem
                 label="총 교육 차시"
                 placeholder="예) 8"

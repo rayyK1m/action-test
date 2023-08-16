@@ -123,12 +123,12 @@ const getProgramAdmin = async (req, res) => {
 };
 
 const patchProgramAdmin = async (req, res) => {
-    const { institutionId, userId, id } = req.query;
+    const { id: programId } = req.query;
     const formData = req.body;
     const data = await swcampSdk.patchProgramAdmin({
-        institutionId,
-        userId,
-        programId: id,
+        institutionId: req.session?.institutionId,
+        userId: req.session?.id,
+        programId,
         formData,
     });
 

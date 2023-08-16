@@ -71,3 +71,14 @@
 .divider {
     margin-right: 1rem;
 }
+
+.location {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.searchButton {
+    align-self: end;
+    width: 6rem;
+}

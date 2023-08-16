@@ -46,7 +46,7 @@ const FormFileInput = ({
     const { deleteFiles, ...fileInputProps } = getFileInputProps();
 
     const fileSizeMB = useMemo(
-        () => Number((fileSize / 1024 / 1024).toFixed(2)) || 0,
+        () => Number((fileSize / 1000 / 1000).toFixed(2)) || 0,
         [fileSize],
     );
 
@@ -116,7 +116,7 @@ const FormFileInput = ({
             {(!uploadFile.data || uploadFile.isLoading) && (
                 <div className="d-flex align-items-center form-text text-default">
                     <InfoCircleIcon className="mr-1" />
-                    최대 {maxFileSize}MB 까지 업로드 가능합니다.
+                    {maxFileSize}MB 이하로 업로드 가능합니다.
                 </div>
             )}
             {uploadFile.data && !uploadFile.isLoading && (

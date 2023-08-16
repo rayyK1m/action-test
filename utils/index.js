@@ -9,6 +9,11 @@ export const formatDate = (date) => {
     return formattedDate;
 };
 
+export const addDay = (date, day) => {
+    if (!date || !day) return null;
+    return dayjs(new Date(date)).add(day, 'day').format();
+};
+
 export const setDateWithTime = (date, time) => {
     const h = dayjs(time).get('hour');
     const m = dayjs(time).get('minute');

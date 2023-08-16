@@ -36,7 +36,7 @@ import { CAMP_REVIEW_STATUS, PROGRAM_DIVISION } from '@/constants/db';
 import PannelLoading from '@/components/PannelLoading';
 import { useRouter } from 'next/router';
 
-function ApplicantTicketInfoPannel({ isOpen, onClose, ticketId }) {
+function ApplicantTicketInfoPannel({ isOpen, onClose, ticketId, title }) {
     const router = useRouter();
     let isFoundationPage = false;
     if (router.pathname.split('/')[1] === 'foundation') {
@@ -100,7 +100,7 @@ function ApplicantTicketInfoPannel({ isOpen, onClose, ticketId }) {
     return (
         <>
             <SidePannel isOpen={isOpen} onClose={onClose}>
-                <SidePannel.Header>신청자 관리</SidePannel.Header>
+                <SidePannel.Header>{title}</SidePannel.Header>
 
                 <SidePannel.Body className={styles.drawer}>
                     {isLoading ? (
@@ -147,12 +147,14 @@ function ApplicantTicketInfoPannel({ isOpen, onClose, ticketId }) {
                                         </div>
                                     </div>
                                 </PageHeader.Title>
-                                {!isFoundationPage && (
-                                    <PageHeader.Description>
-                                        방문형의 경우, 신청자 승인을 하면 캠프가
-                                        바로 생성됩니다.
-                                    </PageHeader.Description>
-                                )}
+                                {!isFoundationPage &&
+                                    ticket?.program.type.division ===
+                                        PROGRAM_DIVISION.방문형 && (
+                                        <PageHeader.Description>
+                                            방문형의 경우, 신청자 승인을 하면
+                                            캠프가 바로 생성됩니다.
+                                        </PageHeader.Description>
+                                    )}
                             </PageHeader>
                             <FormProvider {...methods}>
                                 <Form className="mt-4">{ticketForm}</Form>

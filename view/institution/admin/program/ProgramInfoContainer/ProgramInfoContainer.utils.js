@@ -80,7 +80,7 @@ export const getDefaultValues = (program) => {
     return {
         [PROGRAM_APPLY_KEYS.nameKey]: program.name,
         [PROGRAM_APPLY_KEYS.thumbnailKey]: program.thumbnail,
-        [PROGRAM_APPLY_KEYS.typeKey]: program.type,
+        [PROGRAM_APPLY_KEYS.durationKey]: program.type.duration,
         [PROGRAM_APPLY_KEYS.categoryKey]: program.category,
         [PROGRAM_APPLY_KEYS.descriptionKey]: program.description,
         [PROGRAM_APPLY_KEYS.operateLocationKey]: program.operateLocation,
@@ -108,9 +108,9 @@ export const getDefaultValues = (program) => {
     };
 };
 
-export const formatProgramData = (data) => {
+export const formatProgramData = (data, division) => {
     const {
-        type,
+        duration,
         applyStartDate,
         applyStartTime,
         applyEndDate,
@@ -136,7 +136,7 @@ export const formatProgramData = (data) => {
     );
     const educationEnd = setDateWithTime(educationEndDate, educationEndTime);
     const formData = {
-        type: { duration: type.duration },
+        type: { duration },
         targetGroup: {
             elementarySchool,
             middleSchool,
@@ -151,7 +151,7 @@ export const formatProgramData = (data) => {
             end: educationEnd,
         },
         attachedFiles: [attachedFiles],
-        ...(type === PROGRAM_DIVISION.집합형
+        ...(division === PROGRAM_DIVISION.집합형
             ? {
                   educationLocation: {
                       name: educationLocationName,

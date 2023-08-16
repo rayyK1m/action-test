@@ -1,8 +1,9 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useId, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import _isEmpty from 'lodash/isEmpty';
 
 import useToggle from '@/hooks/useToggle';
+import { useDaumSearchMap } from '@/query-hooks/useMap';
 
 import {
     InputItem,
@@ -12,14 +13,6 @@ import {
     ImageFileInputItem,
 } from '@/view/components/ValidateFormItem';
 import { FormWrapper, FormDatePicker } from '@/components/FormItem';
-
-import {
-    PROGRAM_CATEGORIES,
-    PROGRAM_DIVISION,
-    PROGRAM_DURATION,
-    PROGRAM_OPERATION_LOCATIONS,
-} from '@/constants/db';
-import { PROGRAM_APPLY_KEYS, SCHOOL } from '../program.contants.js';
 
 import {
     UncontrolledDropdown,
@@ -32,22 +25,23 @@ import {
 import { ChevronDownIcon } from '@goorm-dev/gds-icons';
 import Divider from '@/components/Divider';
 import styles from '../program.module.scss';
-import { formatNumberInput } from '@/utils/index.js';
 
-const ProgramTypeInput = ({ division, typeKey }) => {
+import { formatNumberInput, addDay } from '@/utils/index.js';
+import {
+    PROGRAM_CATEGORIES,
+    PROGRAM_DIVISION,
+    PROGRAM_DURATION,
+    PROGRAM_OPERATION_LOCATIONS,
+} from '@/constants/db';
+import { PROGRAM_APPLY_KEYS, SCHOOL } from '../program.contants.js';
+
+const ProgramTypeInput = ({ division, durationKey }) => {
     const { setValue, watch } = useFormContext();
 
     const items = [PROGRAM_DURATION.지속, PROGRAM_DURATION.단기];
     const [isOpen, toggle] = useToggle(false);
 
-    useEffect(() => {
-        setValue(typeKey, {
-            division,
-            duration: PROGRAM_DURATION.지속,
-        });
-    }, []);
-
-    const { duration } = watch(typeKey);
+    const duration = watch(durationKey);
 
     return (
         <FormWrapper label="프로그램 유형" isRequired>
@@ -82,14 +76,13 @@ const ProgramTypeInput = ({ division, typeKey }) => {
                             {duration}
                         </Button>
                     </DropdownToggle>
-                    <DropdownMenu>
+                    <DropdownMenu className="w-100">
                         {items.map((item) => (
                             <DropdownItem
                                 key={item}
                                 onClick={() =>
-                                    setValue(typeKey, {
-                                        division,
-                                        duration: item,
+                                    setValue(durationKey, item, {
+                                        shouldDirty: true,
                                     })
                                 }
                             >
@@ -138,7 +131,7 @@ const ApplyTargetInput = () => {
         if (isError) {
             setError('targetGroup', {
                 type: 'required',
-                message: '필수 항목을 입력해주세요.',
+                message: '필수 항목을 선택해주세요.',
             });
         } else {
             clearErrors('targetGroup');
@@ -150,6 +143,7 @@ const ApplyTargetInput = () => {
         (e) => {
             if (e.target.checked) {
                 setValue(schoolKey, [value + 1, ...targetFields[idx]], {
+                    shouldDirty: true,
                     shouldTouch: true,
                 });
             } else {
@@ -157,6 +151,7 @@ const ApplyTargetInput = () => {
                     (v) => v !== value + 1,
                 );
                 setValue(schoolKey, values, {
+                    shouldDirty: true,
                     shouldTouch: true,
                 });
             }
@@ -175,18 +170,20 @@ const ApplyTargetInput = () => {
                         <Divider height="0.75rem" className={styles.divider} />
                         <div className={styles.schoolGrade}>
                             {school.value.map((_, idx) => (
-                                <Checkbox
-                                    label={`${idx + 1}학년`}
-                                    key={idx}
-                                    defaultChecked={targetFields[
-                                        index
-                                    ]?.includes(idx + 1)}
-                                    onChange={handleChange({
-                                        schoolKey: key,
-                                        value: idx,
-                                        idx: index,
-                                    })}
-                                />
+                                <div className="d-flex">
+                                    <Checkbox
+                                        key={idx}
+                                        defaultChecked={targetFields[
+                                            index
+                                        ]?.includes(idx + 1)}
+                                        onChange={handleChange({
+                                            schoolKey: key,
+                                            value: idx,
+                                            idx: index,
+                                        })}
+                                    />
+                                    <span>{idx + 1}학년</span>
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -202,7 +199,7 @@ const BasicForm = ({ division }) => {
         nameKey,
         categoryKey,
         operateLocationKey,
-        typeKey,
+        durationKey,
         descriptionKey,
         contactKey,
     } = PROGRAM_APPLY_KEYS;
@@ -222,8 +219,12 @@ const BasicForm = ({ division }) => {
                     label="프로그램 명"
                     placeholder="예) 신나는 로봇 코딩"
                     inputKey={nameKey}
+                    maxLength={50}
                 />
-                <ProgramTypeInput division={division} typeKey={typeKey} />
+                <ProgramTypeInput
+                    division={division}
+                    durationKey={durationKey}
+                />
             </div>
             <div className={styles.divideRow}>
                 <DropdownInputItem
@@ -265,11 +266,13 @@ const ApplyForm = () => {
         applyStartTimeKey,
         applyEndDateKey,
         applyEndTimeKey,
+        educationStartDateKey,
     } = PROGRAM_APPLY_KEYS;
 
-    const [applyStartDate, applyEndDate] = watch([
+    const [applyStartDate, applyEndDate, educationStartDate] = watch([
         applyStartDateKey,
         applyEndDateKey,
+        educationStartDateKey,
     ]);
 
     return (
@@ -300,6 +303,13 @@ const ApplyForm = () => {
                                   minDate: new Date(applyStartDate),
                               }
                             : {}),
+                        ...(educationStartDate
+                            ? {
+                                  maxDate: new Date(
+                                      addDay(educationStartDate, -1),
+                                  ),
+                              }
+                            : {}),
                     }}
                 />
             </div>
@@ -309,7 +319,7 @@ const ApplyForm = () => {
 };
 
 const EducationForm = ({ division }) => {
-    const { watch } = useFormContext();
+    const { watch, setValue } = useFormContext();
     const {
         attachedFilesKey,
         learningTimeKey,
@@ -321,12 +331,35 @@ const EducationForm = ({ division }) => {
         educationStartTimeKey,
         educationEndDateKey,
         educationEndTimeKey,
+        applyEndDateKey,
     } = PROGRAM_APPLY_KEYS;
 
-    const [educationStartDate, educationEndDate] = watch([
-        educationStartDateKey,
-        educationEndDateKey,
-    ]);
+    const [educationStartDate, educationEndDate, applyEndDate, learningTime] =
+        watch([
+            educationStartDateKey,
+            educationEndDateKey,
+            applyEndDateKey,
+            learningTimeKey,
+        ]);
+
+    const { data: mapSearch } = useDaumSearchMap({
+        onComplete: (data) => {
+            setValue(educationLocationAddressKey, data.address, {
+                shouldDirty: true,
+            });
+        },
+    });
+
+    const mapPopupKey = useId();
+    const handleOpen = () => {
+        mapSearch?.open({
+            popupKey: mapPopupKey,
+            left: window.screen.width / 2 - mapSearch.width / 2,
+            top: window.screen.height / 2 - mapSearch.height / 2,
+        });
+    };
+
+    const validateLearningTime = learningTime <= 36;
 
     return (
         <div className={styles.form}>
@@ -334,9 +367,19 @@ const EducationForm = ({ division }) => {
             <InputItem
                 isRequired
                 label="총 교육 차시"
-                placeholder="예) 8차시"
+                placeholder="예) 8"
                 inputKey={learningTimeKey}
                 onInput={formatNumberInput}
+                validate={{
+                    max: {
+                        value: 36,
+                        message: '36차시 이내로 입력해주세요.',
+                    },
+                }}
+                formText={
+                    validateLearningTime &&
+                    '교육 차시는 최대 36차시까지 등록할 수 있습니다.'
+                }
             />
             <div className={styles.divideRow}>
                 <FormDatePicker
@@ -348,6 +391,11 @@ const EducationForm = ({ division }) => {
                         ...(educationEndDate
                             ? {
                                   maxDate: new Date(educationEndDate),
+                              }
+                            : {}),
+                        ...(applyEndDate
+                            ? {
+                                  minDate: new Date(addDay(applyEndDate, 1)),
                               }
                             : {}),
                     }}
@@ -393,12 +441,24 @@ const EducationForm = ({ division }) => {
                         placeholder="예) 구름 타운홀"
                         inputKey={educationLocationNameKey}
                     />
-                    <InputItem
-                        isRequired
-                        label="교육 주소"
-                        placeholder="교육 주소"
-                        inputKey={educationLocationAddressKey}
-                    />
+                    <div className={styles.location}>
+                        <InputItem
+                            isRequired
+                            label="교육 주소"
+                            placeholder="교육 주소"
+                            inputKey={educationLocationAddressKey}
+                            readOnly
+                        />
+                        <Button
+                            outline
+                            color="basic"
+                            size="lg"
+                            onClick={handleOpen}
+                            className={styles.searchButton}
+                        >
+                            검색하기
+                        </Button>
+                    </div>
                 </div>
             )}
         </div>

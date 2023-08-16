@@ -79,7 +79,7 @@ export const EditorInputItem = ({ editorKey, label, placeholder }) => {
                         onBlur={onBlur}
                     />
                     {errors[editorKey] && (
-                        <div className="d-flex algin-items-center text-danger mt-1">
+                        <div className="d-flex align-items-center text-danger mt-1">
                             <NoticeCircleIcon />
                             <p className="ml-1">{errors[editorKey]?.message}</p>
                         </div>

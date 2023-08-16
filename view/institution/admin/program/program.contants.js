@@ -5,7 +5,7 @@ export const PROGRAM_APPLY_KEYS = {
     operateLocationKey: 'operateLocation', // 운영 지역
     learningTimeKey: 'learningTime', // 총 교육 차시
     attachedFilesKey: 'attachedFiles', // 프로그램 교안 첨부파일
-    typeKey: 'type', // 프로그램 카테고리
+    durationKey: 'duration',
     priceKey: 'price', // 비용
     descriptionKey: 'description', // 프로그램 소개
     contactKey: 'contact', // 문의처(기관)

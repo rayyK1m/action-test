@@ -5,8 +5,6 @@ import programsApis from './apis';
 import { useRouter } from 'next/router';
 import { toast } from '@goorm-dev/gds-toastify';
 
-import useSession from '../useSession';
-
 const useGetPrograms = (filters) => {
     return useQuery({
         queryKey: programsKeys.itemsDetail({ ...filters }),
@@ -36,21 +34,18 @@ const useGetProgramAdmin = (id) => {
 };
 
 const usePatchProgramAdmin = () => {
-    const { data: userData } = useSession.GET();
     return useMutation(
-        ({ id, formData }) =>
+        ({ programId, formData }) =>
             programsApis.patchProgramAdmin({
-                userId: userData.id,
-                institutionId: userData.institutionId,
-                programId: id,
+                programId,
                 formData,
             }),
         {
-            onSuccess: () =>
+            onSuccess: () => {
                 toast('승인 요청이 완료되었습니다.', {
                     type: toast.TYPE.SUCCESS,
-                }),
-
+                });
+            },
             onError: () =>
                 toast('프로그램 수정에 실패했습니다.', {
                     type: toast.TYPE.ERROR,

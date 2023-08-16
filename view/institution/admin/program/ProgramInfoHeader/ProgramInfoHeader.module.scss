@@ -10,7 +10,16 @@
     gap: 1rem;
 }
 
+.disabledText {
+    opacity: 0.32;
+    pointer-events: none;
+}
+
 .boldText {
-    margin-right: 0.25rem;
     font-weight: 700;
+}
+
+.textButton {
+    padding: 0;
+    color: var(--gray-700);
 }

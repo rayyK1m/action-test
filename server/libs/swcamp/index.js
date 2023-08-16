@@ -195,6 +195,7 @@ const patchProgramAdmin = async ({
     programId,
     formData,
 }) => {
+    console.log(institutionId, userId);
     try {
         const { data } = await swcampInstance.patch(
             `${process.env.SWCAMP_API_HOST}/api/v1/programs/${programId}?institutionId=${institutionId}`,

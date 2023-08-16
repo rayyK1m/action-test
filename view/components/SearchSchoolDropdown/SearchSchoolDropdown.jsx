@@ -8,7 +8,6 @@ import {
     DropdownItem,
     DropdownToggle,
 } from '@goorm-dev/gds-components';
-import useOnClickOutside from '@/hooks/useOnClickOutside';
 
 const SearchSchoolDropdown = forwardRef(
     (
@@ -17,7 +16,6 @@ const SearchSchoolDropdown = forwardRef(
             schoolList,
             schoolName,
             onClickDropdownItem = () => {},
-            onBlur,
             onChangeSchoolName,
             errors,
             toggle,
@@ -25,18 +23,29 @@ const SearchSchoolDropdown = forwardRef(
         ref,
     ) => {
         const sectionRef = useRef(null);
+        const dropdownMenuRef = useRef(null);
         const [isFocus, setIsFocus] = useState(false);
 
-        const handleBlur = () => {
-            onBlur();
-            onChangeSchoolName('');
-            setIsFocus(false);
+        const handleBlur = (e) => {
+            if (
+                dropdownMenuRef.current &&
+                !dropdownMenuRef.current.contains(e.relatedTarget)
+            ) {
+                onChangeSchoolName('');
+                setIsFocus(false);
+            }
+        };
+
+        const handlePressEnter = (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
         };
 
         return (
             <div ref={sectionRef}>
                 <Dropdown isOpen={isOpenDropdown} toggle={toggle}>
-                    <DropdownToggle tag="div">
+                    <DropdownToggle tag="div" onKeyDown={handlePressEnter}>
                         <Input
                             ref={ref}
                             className={styles.input}
@@ -58,11 +67,14 @@ const SearchSchoolDropdown = forwardRef(
                         )}
                     </DropdownToggle>
                     <DropdownMenu className={styles.dropdownMenu}>
-                        <SearchDropdown
-                            schoolList={schoolList}
-                            onClickDropdownItem={onClickDropdownItem}
-                            onChangeSchoolName={onChangeSchoolName}
-                        />
+                        <div ref={dropdownMenuRef}>
+                            <SearchDropdown
+                                schoolList={schoolList}
+                                onClickDropdownItem={onClickDropdownItem}
+                                onChangeSchoolName={onChangeSchoolName}
+                                dropdownMenuRef={dropdownMenuRef}
+                            />
+                        </div>
                     </DropdownMenu>
                 </Dropdown>
             </div>
@@ -110,20 +122,6 @@ const SearchDropdownItem = ({
     onClickDropdownItem,
     onChangeSchoolName,
 }) => {
-    const onKeyDown = (event) => {
-        event.preventDefault();
-        const keyCode = event.keyCode || event.which;
-
-        // 드롭다운 항목에 포커스 가 있는 상태에서, 엔터 입력시 학교 선택
-        switch (keyCode) {
-            case 13:
-                onClickDropdownItem(schoolCode);
-                break;
-            default:
-                break;
-        }
-    };
-
     // 항목 클릭시 학교 선택
     const onClickItem = () => {
         onClickDropdownItem(schoolCode);
@@ -133,7 +131,6 @@ const SearchDropdownItem = ({
         <DropdownItem
             className={styles.itemContainer}
             onClick={(e) => onClickItem(e.target)}
-            onKeyDown={onKeyDown}
         >
             <div className={styles.item}>
                 <p>{schoolName}</p>

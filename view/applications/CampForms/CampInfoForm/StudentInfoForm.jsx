@@ -75,7 +75,7 @@ export const ReadOnlyStudentProgramForm = () => {
 
     return (
         <div className={styles.form}>
-            <h5>프로그램 정보</h5>
+            <h5 className="text-gray-700">프로그램 정보</h5>
             <div className={styles.divideRow}>
                 <FormInput
                     label="운영 기관 명"
@@ -113,7 +113,7 @@ export const ReadOnlyApplyForm = ({ programTarget }) => {
 
     return (
         <div className={styles.form}>
-            <h5>신청인 정보</h5>
+            <h5 className="text-gray-700">신청인 정보</h5>
             <div className={styles.divideRow}>
                 <FormInput
                     label="이름"

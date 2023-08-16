@@ -66,10 +66,9 @@ const getProgramAdmin = async (programId, axiosInstance = axios) => {
 };
 
 const patchProgramAdmin = async (query) => {
-    const { userId, institutionId, programId, formData } = query;
-    const queryString = qs.stringify({ userId, institutionId, programId });
+    const { programId, formData } = query;
     const { data } = await axios.patch(
-        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/programs/${programId}/admin?${queryString}`,
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/programs/${programId}/admin`,
         formData,
     );
     return data;

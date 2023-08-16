@@ -127,6 +127,7 @@ export const getTableColoums = (division) => {
                             isOpen={isOpen}
                             onClose={() => toggle(false)}
                             ticketId={rowData.id}
+                            title="신청자 관리"
                         />
                     </>
                 );
@@ -180,6 +181,7 @@ export const getTableColoums = (division) => {
                             isOpen={isOpen}
                             onClose={() => toggle(false)}
                             ticketId={rowData.id}
+                            title="신청자 관리"
                         />
                     </>
                 );

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import _isEmpty from 'lodash/isEmpty';
 import useToggle from '@/hooks/useToggle';
@@ -16,7 +16,6 @@ import {
     usePatchProgramAdmin,
 } from '@/query-hooks/usePrograms';
 import ProgramInfoHeader from '../ProgramInfoHeader/ProgramInfoHeader';
-import { PROGRAM_APPLY_KEYS } from '../program.contants';
 import {
     getDefaultValues,
     formatProgramData,
@@ -30,29 +29,22 @@ function ProgramInfoContainer({ programId, userData }) {
     const patchProgram = usePatchProgramAdmin();
 
     const methods = useForm({
-        mode: 'onTouched',
+        mode: 'all',
         defaultValues: getDefaultValues(program),
     });
 
-    const targetFields = methods.watch([
-        PROGRAM_APPLY_KEYS.elementaryTargetKey,
-        PROGRAM_APPLY_KEYS.middleTargetKey,
-        PROGRAM_APPLY_KEYS.highTargetKey,
-    ]);
-    const isTargetError = useMemo(
-        () => _isEmpty(targetFields.flat()),
-        [targetFields],
-    );
-
     const onSubmit = () => {
         const data = methods.getValues();
-        const formData = formatProgramData(data);
-        patchProgram.mutate({
-            id: programId,
-            formData,
-        });
-
-        setIsEdit(false);
+        const formData = formatProgramData(data, program.type.division);
+        patchProgram.mutate(
+            {
+                programId,
+                formData,
+            },
+            {
+                onSuccess: () => setIsEdit(false),
+            },
+        );
     };
 
     return (
@@ -73,7 +65,7 @@ function ProgramInfoContainer({ programId, userData }) {
                             {isEdit ? (
                                 <EditForm division={program.type.division} />
                             ) : (
-                                <InfoForm />
+                                <InfoForm division={program.type.division} />
                             )}
                         </Form>
                     </FormProvider>
@@ -81,16 +73,13 @@ function ProgramInfoContainer({ programId, userData }) {
                         <>
                             <hr width="100%" className="mt-4 mb-4" />
                             <div className="d-flex justify-content-end">
-                                <Button color="link" size="xl" className="mr-3">
-                                    임시 저장하기
-                                </Button>
                                 <Button
+                                    color="primary"
                                     size="xl"
                                     onClick={toggle}
                                     disabled={
-                                        !methods.formState.isDirty ||
-                                        !methods.formState.isValid ||
-                                        isTargetError
+                                        !_isEmpty(methods.formState.errors) ||
+                                        !methods.formState.isDirty
                                     }
                                 >
                                     승인 요청하기
@@ -98,7 +87,10 @@ function ProgramInfoContainer({ programId, userData }) {
                                 <ApplyModal
                                     isOpen={isOpen}
                                     toggle={toggle}
-                                    handleClick={onSubmit}
+                                    handleClick={() => {
+                                        onSubmit();
+                                        toggle();
+                                    }}
                                 />
                             </div>
                         </>

@@ -95,11 +95,10 @@ const FormDropdown = ({
                         {value}
                     </Button>
                 </DropdownToggle>
-                <DropdownMenu className="w-100">
+                <DropdownMenu className={styles.dropdownMenu}>
                     <div ref={dropdownRef}>
                         {items?.map((item) => (
                             <DropdownItem
-                                //className="w-100"
                                 key={item}
                                 onClick={() => onChange(item)}
                             >

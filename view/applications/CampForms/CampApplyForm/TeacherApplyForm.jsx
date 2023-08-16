@@ -21,7 +21,10 @@ import {
     SCHOOL,
     USER_KEYS,
 } from '../CampForms.constants';
-import { PROGRAM_OPERATION_LOCATIONS } from '@/constants/db';
+import {
+    PROGRAM_OPERATION_LOCATIONS,
+    PROGRAM_SCHOOL_TYPE,
+} from '@/constants/db';
 import FormDatePicker from '@/components/FormItem/FormDatePicker/FormDatePicker';
 import { formatNumberInput } from '@/utils';
 
@@ -140,6 +143,7 @@ const SearchSchoolInput = ({ userId, schoolKey }) => {
 
     const {
         control,
+        trigger,
         formState: { errors },
         setValue,
     } = useFormContext();
@@ -153,14 +157,19 @@ const SearchSchoolInput = ({ userId, schoolKey }) => {
                 control={control}
                 name={schoolNameKey}
                 rules={{
-                    required: '필수 항목을 입력해주세요.',
+                    required: '필수 항목을 선택해주세요.',
                 }}
-                render={({ field: { ref, value, onChange, onBlur } }) => {
+                render={({ field: { ref, value, onChange } }) => {
                     const debouncedName = useDebounce(value, 500);
                     const { data = { items: [], total: 0 } } = useGetSchools({
                         userId,
                         name: debouncedName,
                     });
+
+                    const handleChange = (value) => {
+                        onChange(value);
+                        trigger(schoolNameKey);
+                    };
 
                     return (
                         <SearchSchoolDropdown
@@ -169,9 +178,8 @@ const SearchSchoolInput = ({ userId, schoolKey }) => {
                             isOpenDropdown={isInputOpen}
                             schoolName={value}
                             toggle={toggleInput}
-                            onChangeSchoolName={onChange}
+                            onChangeSchoolName={handleChange}
                             onClickDropdownItem={handleClick}
-                            onBlur={onBlur}
                             errors={errors[schoolNameKey]}
                         />
                     );
@@ -262,11 +270,12 @@ export const ManagerForm = ({ userId }) => {
                     items={PROGRAM_OPERATION_LOCATIONS}
                     placeholder="지역 선택"
                 />
-                <InputItem
+                <DropdownInputItem
                     label="학교 유형"
-                    placeholder="예) 늘봄 학교"
-                    formText="미 입력시 일반 학교로 자동 등록됩니다."
-                    inputKey={schoolTypeKey}
+                    isRequired
+                    dropdownKey={schoolTypeKey}
+                    items={PROGRAM_SCHOOL_TYPE}
+                    placeholder="학교 유형 선택"
                 />
             </div>
         </div>
@@ -364,9 +373,7 @@ export const LearningTimeForm = ({ educationDate }) => {
                             minDate: new Date(educationDate.start),
                             ...(!!endDate
                                 ? {
-                                      maxDate: new Date(
-                                          dayjs(endDate).subtract(1, 'day'),
-                                      ),
+                                      maxDate: new Date(endDate),
                                   }
                                 : {}),
                         }}
@@ -383,9 +390,7 @@ export const LearningTimeForm = ({ educationDate }) => {
                         calendarProps={{
                             ...(!!startDate
                                 ? {
-                                      minDate: new Date(
-                                          dayjs(startDate).add(1, 'day'),
-                                      ),
+                                      minDate: new Date(startDate),
                                   }
                                 : {}),
                             maxDate: new Date(educationDate.end),

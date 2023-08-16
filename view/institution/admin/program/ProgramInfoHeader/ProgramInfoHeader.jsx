@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router';
+import cn from 'classnames';
 
 import PageHeader from '@/components/PageHeader';
 import { getBreadcrumbs } from './ProgramInfoHeader.utils';
 
-import { Button } from '@goorm-dev/gds-components';
+import { Button, TextButton, Tooltip } from '@goorm-dev/gds-components';
 import {
     EditIcon,
     BackPageIcon,
@@ -12,9 +13,34 @@ import {
 } from '@goorm-dev/gds-icons';
 import Divider from '@/components/Divider';
 import styles from './ProgramInfoHeader.module.scss';
+import { slugify } from '@/utils';
+import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
+import useHover from '@/hooks/useHover';
 
 function ProgramInfoHeader({ program, isEdit, setIsEdit }) {
     const router = useRouter();
+    const currentPath = router.asPath;
+    const [buttonRef, isHover] = useHover();
+
+    const handlePushLecturePage = () => {
+        router.push(
+            `${process.env.SWCAMP_CONTENTS_CHANNEL}/v2/teach/lecture/${
+                program.lectureSequence
+            }/${slugify(program.name)}`,
+        );
+    };
+
+    const handlePushApplicantPage = () => {
+        router.push(`${currentPath}/applicant`);
+    };
+
+    const handlePushCampMangePage = () => {
+        router.push(`${currentPath}/camp`);
+    };
+
+    const isReviewApprove =
+        program.reviewStatus === PROGRAM_REVIEW_STATUS.승인.value;
+
     return (
         <PageHeader useHrTag={true}>
             <PageHeader.Title>
@@ -30,35 +56,89 @@ function ProgramInfoHeader({ program, isEdit, setIsEdit }) {
                         <h3 className="d-inline">프로그램 정보</h3>
                     </div>
                     <div className={styles.guideContainer}>
-                        <div className={styles.guideText}>
+                        <div
+                            className={cn(
+                                styles.guideText,
+                                !isReviewApprove && styles.disabledText,
+                            )}
+                        >
                             <div className="d-flex align-items-center">
-                                <span className="mr-2">신청자</span>
-                                <span className={styles.boldText}>132명</span>
-                                <ChevronRightIcon width="1rem" height="1rem" />
-                            </div>
-                            <Divider height="1rem" />
-                            <div className="d-flex align-items-center">
-                                <span className="mr-2">신청자</span>
-                                <span className={styles.boldText}>32개</span>
-                                <ChevronRightIcon width="1rem" height="1rem" />
-                            </div>
-                            <Divider height="1rem" />
-                            <div className="d-flex align-items-center">
-                                <span className="mr-2">콘텐츠</span>
-                                <span className={styles.boldText}>
-                                    바로가기
+                                <span className="mr-2 text-gray-700">
+                                    신청자
                                 </span>
-                                <SubmitModeIcon width="1rem" height="1rem" />
+                                <TextButton
+                                    icon={ChevronRightIcon}
+                                    iconSide="right"
+                                    color="dark"
+                                    size="md"
+                                    className={cn(
+                                        styles.boldText,
+                                        styles.textButton,
+                                    )}
+                                    onClick={handlePushApplicantPage}
+                                >
+                                    {program.campTicketCount}개
+                                </TextButton>
+                            </div>
+                            <Divider height="1rem" />
+                            <div className="d-flex align-items-center">
+                                <span className="mr-2 text-gray-700">캠프</span>
+                                <TextButton
+                                    icon={ChevronRightIcon}
+                                    iconSide="right"
+                                    color="dark"
+                                    size="md"
+                                    className={cn(
+                                        styles.boldText,
+                                        styles.textButton,
+                                    )}
+                                    onClick={handlePushCampMangePage}
+                                >
+                                    {program.campCount}개
+                                </TextButton>
+                            </div>
+                            <Divider height="1rem" />
+                            <div className="d-flex align-items-center">
+                                <span className="mr-2 text-gray-700">
+                                    콘텐츠
+                                </span>
+                                <TextButton
+                                    icon={SubmitModeIcon}
+                                    iconSide="right"
+                                    color="dark"
+                                    size="md"
+                                    className={cn(
+                                        styles.boldText,
+                                        styles.textButton,
+                                    )}
+                                    onClick={handlePushLecturePage}
+                                >
+                                    바로가기
+                                </TextButton>
                             </div>
                         </div>
                         {!isEdit && (
-                            <Button
-                                icon={<EditIcon />}
-                                color="link"
-                                onClick={() => setIsEdit(true)}
-                            >
-                                수정하기
-                            </Button>
+                            <>
+                                <div ref={buttonRef}>
+                                    <Button
+                                        icon={<EditIcon />}
+                                        color="link"
+                                        size="lg"
+                                        onClick={() => setIsEdit(true)}
+                                        disabled={!isReviewApprove}
+                                    >
+                                        수정하기
+                                    </Button>
+                                </div>
+                                <Tooltip
+                                    target={buttonRef}
+                                    isOpen={!isReviewApprove && isHover}
+                                    placement="top"
+                                >
+                                    심사 중인 프로그램은 내용 수정이
+                                    불가능합니다
+                                </Tooltip>
+                            </>
                         )}
                     </div>
                 </div>

@@ -13,35 +13,40 @@ import { Button, Checkbox } from '@goorm-dev/gds-components';
 import { ChevronDownIcon } from '@goorm-dev/gds-icons';
 
 import { PROGRAM_APPLY_KEYS, SCHOOL } from '../program.contants';
-import cn from 'classnames';
+
 import {
     FileInputItem,
     ImageFileInputItem,
 } from '@/view/components/ValidateFormItem';
-import { PROGRAM_DIVISION } from '@/constants/db';
 
-const ProgramTypeInput = ({ typeKey }) => {
+const ProgramTypeInput = ({ division, durationKey }) => {
     const { getValues } = useFormContext();
 
     return (
-        <div className={styles.divideRow}>
-            <FormDropdown
-                label="프로그램 유형"
-                value={getValues(`${typeKey}.division`)}
-                isRequired
-                readOnly
-            />
-            <Button
-                icon={<ChevronDownIcon />}
-                color="select"
-                iconSide="right"
-                size="lg"
-                className={cn(styles.button, styles.dropdown)}
-                disabled
-            >
-                {getValues(`${typeKey}.duration`)}
-            </Button>
-        </div>
+        <FormWrapper label="프로그램 유형" isRequired>
+            <div className={styles.divideRow}>
+                <Button
+                    icon={<ChevronDownIcon />}
+                    color="select"
+                    iconSide="right"
+                    size="lg"
+                    className={styles.typeButton}
+                    disabled
+                >
+                    {division}
+                </Button>
+                <Button
+                    icon={<ChevronDownIcon />}
+                    color="select"
+                    iconSide="right"
+                    size="lg"
+                    className={styles.button}
+                    disabled
+                >
+                    {getValues(durationKey)}
+                </Button>
+            </div>
+        </FormWrapper>
     );
 };
 
@@ -83,13 +88,13 @@ const ApplyTargetInput = () => {
     );
 };
 
-const ReadOnlyBasicForm = () => {
+const ReadOnlyBasicForm = ({ division }) => {
     const { getValues } = useFormContext();
     const {
         thumbnailKey,
         nameKey,
         categoryKey,
-        typeKey,
+        durationKey,
         operateLocationKey,
         descriptionKey,
         contactKey,
@@ -112,7 +117,10 @@ const ReadOnlyBasicForm = () => {
                     value={getValues(nameKey)}
                     readOnly
                 />
-                <ProgramTypeInput typeKey={typeKey} />
+                <ProgramTypeInput
+                    division={division}
+                    durationKey={durationKey}
+                />
             </div>
             <div className={styles.divideRow}>
                 <FormDropdown
@@ -179,7 +187,7 @@ const ReadOnlyApplyForm = () => {
     );
 };
 
-const ReadOnlyEducationForm = () => {
+const ReadOnlyEducationForm = ({ division }) => {
     const { getValues } = useFormContext();
     const {
         attachedFilesKey,
@@ -188,14 +196,11 @@ const ReadOnlyEducationForm = () => {
         noticeKey,
         educationLocationNameKey,
         educationLocationAddressKey,
-        typeKey,
         educationStartDateKey,
         educationStartTimeKey,
         educationEndDateKey,
         educationEndTimeKey,
     } = PROGRAM_APPLY_KEYS;
-
-    const type = getValues(typeKey);
 
     return (
         <div className={styles.form}>
@@ -245,7 +250,7 @@ const ReadOnlyEducationForm = () => {
                 isRequired
                 readOnly
             />
-            {type.division === PROGRAM_DIVISION.집합형 && (
+            {division === '집합형' && (
                 <div className={styles.divideRow}>
                     <FormInput
                         label="교육 장소"
@@ -265,11 +270,11 @@ const ReadOnlyEducationForm = () => {
     );
 };
 
-const InfoForm = () => (
+const InfoForm = ({ division }) => (
     <>
-        <ReadOnlyBasicForm />
+        <ReadOnlyBasicForm division={division} />
         <ReadOnlyApplyForm />
-        <ReadOnlyEducationForm />
+        <ReadOnlyEducationForm division={division} />
     </>
 );
 

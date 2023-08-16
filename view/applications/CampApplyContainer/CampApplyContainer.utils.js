@@ -22,7 +22,7 @@ export const formatTeacherData = (data) => {
             ? {
                   educator: {
                       ...(mainEducator ? { main: mainEducator } : {}),
-                      ...(subEducator ? { sub: subEducator } : {}),
+                      ...(subEducator ? { sub: [subEducator] } : {}),
                   },
               }
             : {}),

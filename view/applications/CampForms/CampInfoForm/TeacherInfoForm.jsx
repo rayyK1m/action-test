@@ -80,7 +80,7 @@ export const ReadOnlyProgramForm = () => {
 
     return (
         <div className={styles.form}>
-            <h5>프로그램 정보</h5>
+            <h5 className="text-gray-700">프로그램 정보</h5>
             <FormInput
                 label="운영 기관 명"
                 value={getValues(institutionKey)}
@@ -111,7 +111,7 @@ export const ReadOnlyManagerForm = ({ isFoundationPage }) => {
 
     return (
         <div className={styles.form}>
-            <h5>담당자 정보</h5>
+            <h5 className="text-gray-700">담당자 정보</h5>
             <div className={styles.divideRow}>
                 <FormInput
                     label="현장 담당자 명"
@@ -166,7 +166,7 @@ export const ReadOnlyTeacherForm = ({ isFoundationPage }) => {
 
     return (
         <div className={styles.form}>
-            <h5>강사 정보</h5>
+            <h5 className="text-gray-700">강사 정보</h5>
             <div>
                 <div className={styles.divideRow}>
                     <FormInput
@@ -219,7 +219,7 @@ export const ReadOnlyLearningTimeForm = () => {
 
     return (
         <div className={styles.form}>
-            <h5>교육 시간</h5>
+            <h5 className="text-gray-700">교육 시간</h5>
             <FormInput
                 label="총 교육 차시"
                 placeholder="8차시"

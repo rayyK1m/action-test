@@ -1,9 +1,9 @@
 import { PROGRAM_DIVISION } from '@/constants/db';
 import { setDateWithTime } from '@/utils';
 
-export const formatData = (data) => {
+export const formatData = (data, division) => {
     const {
-        type,
+        duration,
         applyStartDate,
         applyStartTime,
         applyEndDate,
@@ -29,7 +29,7 @@ export const formatData = (data) => {
     );
     const educationEnd = setDateWithTime(educationEndDate, educationEndTime);
     const formData = {
-        type,
+        type: { division, duration },
         targetGroup: {
             elementarySchool,
             middleSchool,
@@ -44,7 +44,7 @@ export const formatData = (data) => {
             end: educationEnd,
         },
         attachedFiles: [attachedFiles],
-        ...(type === PROGRAM_DIVISION.집합형
+        ...(division === PROGRAM_DIVISION.집합형
             ? {
                   educationLocation: {
                       name: educationLocationName,

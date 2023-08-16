@@ -125,7 +125,7 @@ const SearchSchoolInput = ({ userId, schoolKey }) => {
                 control={control}
                 name={schoolNameKey}
                 rules={{
-                    required: '필수 항목을 입력해주세요.',
+                    required: '필수 항목을 선택해주세요.',
                 }}
                 render={({ field: { ref, value, onChange, onBlur } }) => {
                     const debouncedName = useDebounce(value, 500);
