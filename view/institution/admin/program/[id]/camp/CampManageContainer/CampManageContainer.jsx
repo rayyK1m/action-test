@@ -250,6 +250,8 @@ function CampManageContainer() {
                                                         size="lg"
                                                         color="primary"
                                                         icon={<PlusIcon />}
+                                                        tag={Link}
+                                                        href={`/institution/admin/program/${programId}/camp/new`}
                                                     >
                                                         캠프 생성하기
                                                     </Button>
