@@ -15,9 +15,11 @@ import { useGetCamp } from '@/query-hooks/useCamps';
 import CampFunnel from '../CampFunnel';
 import { getCampBreadcrumbs } from './CampContainer.utils';
 
+import { ROLE } from '@/constants/db';
+
 function CampContainer() {
     const router = useRouter();
-    const { id: programId, campId } = router.query;
+    const { id: programId, campId, institutionId } = router.query;
 
     const { data: userData } = useSession.GET();
     const { data: program } = useGetProgramAdmin(programId);
@@ -34,13 +36,21 @@ function CampContainer() {
                         <PageHeader className="mb-4">
                             <PageHeader.Title>
                                 <PageHeader.Breadcrumb
-                                    breadcrumbs={getCampBreadcrumbs(program)}
+                                    breadcrumbs={getCampBreadcrumbs({
+                                        program,
+                                        institutionId,
+                                        role: userData.role,
+                                    })}
                                 />
                                 <div className="d-flex align-items-center">
                                     <Button
                                         color="link"
                                         tag={Link}
-                                        href={`/institution/admin/program/${program.id}/camp`}
+                                        href={
+                                            userData.role === ROLE.INSTITUTION
+                                                ? `/institution/admin/program/${programId}/camp?division=${program.type.division}`
+                                                : `/foundation/admin/programs/${programId}/camps?division=${program.type.division}&institutionId=${institutionId}`
+                                        }
                                         className="d-flex justify-content-center mr-2"
                                         icon={<BackPageIcon />}
                                     />
