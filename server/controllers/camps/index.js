@@ -2,18 +2,23 @@ import swcampSdk from '@/server/libs/swcamp';
 import { transformWithKeyMap } from '@/server/utils/common';
 
 import validation from './validation';
-import { getEducationStatus, getSDKKeyMap } from './camps.utils';
+import {
+    getEducationStatus,
+    getSDKKeyMap,
+    getCampSortMapKey,
+} from './camps.utils';
 
 import { CAMP_FILE_LIST, PROGRAM_DIVISION } from '@/constants/db';
 
 const getCamp = async (req, res) => {
-    const { id: campId } = req.query;
+    const { id: campId, institutionId } = req.query;
+
     const {
         item: { preFileReport, postFileReport, postReport, ...rest },
     } = await swcampSdk.getCamp({
         userId: req.session?.id,
         campId,
-        institutionId: req.session?.institutionId,
+        institutionId,
     });
 
     const convertedPreFileReports = preFileReport.map((item) => {
@@ -74,27 +79,53 @@ const getCamp = async (req, res) => {
 };
 
 const getCamps = async (req, res) => {
-    const { programId, institutionId, page = 1, limit = 10 } = req.query;
+    const {
+        programId,
+        institutionId,
+        page = 1,
+        limit = 10,
+        sort,
+        division,
+    } = req.query;
+
+    const sortKey = sort.replace('-', '');
+    const convertedSort = !getCampSortMapKey(division)[sortKey]
+        ? sortKey
+        : sort.replace(sortKey, getCampSortMapKey(division)[sortKey]);
 
     const { items, total } = await swcampSdk.getCamps({
+        userId: req.session?.id,
         programId,
         institutionId,
         page,
         limit,
+        sort: convertedSort,
     });
 
+    /**
+     * FE 컴포넌트 형식에 맞게 변경
+     *
+     * - 방문형: classroom(교육 장소) = schoolName(학교명)
+     * - 집합형: classroom(교육 장소) = educationLocation.name(교실 이름)
+     */
     const newItems = items.map((item) => {
         const {
             id,
             class: classNumber,
-            name,
             type,
+
             educationDate,
             educationLocation,
-            submitPreFileReport,
-            submitPostFileReport,
-            schoolIndex,
-            isTemporary,
+
+            channelIndex,
+            schoolName,
+
+            preFileReport,
+            postFileReport,
+            postReport,
+
+            isDraft,
+            campTicketCount,
         } = item;
         return {
             id,
@@ -105,39 +136,54 @@ const getCamps = async (req, res) => {
             classNumberStr: `${classNumber}분반`,
 
             /** 교육 장소 */
-            // TODO: 방문형의 경우 교육장소는 소속학교로 표기하기 (임시로 school index)
             classroom:
                 type.division === PROGRAM_DIVISION.방문형
-                    ? schoolIndex
+                    ? schoolName
                     : educationLocation.name,
-
-            /** 캠프명 */
-            name,
 
             /** 교육 진행 상태 */
             classStatus: getEducationStatus(
-                educationDate.start,
-                educationDate.end,
+                new Date(educationDate.start),
+                new Date(educationDate.end),
             ).find((i) => i.condition).status,
 
-            /** 사전 자료 */
-            submitPreFileReport,
+            /** 사전 자료 제출 유무 */
+            submitPreFileReport: preFileReport.length > 0,
 
-            /** 종료 자료 */
-            submitPostFileReport,
+            /** 종료 자료 제출 유무 */
+            submitPostFileReport: postFileReport.length > 0,
 
-            /** 필수 정보 입력 여부 */
-            isTemporary:
+            /** 결과보고 제출 유무 */
+            submitPostReport: postReport.length > 0,
+
+            /** 정보입력 및 학생 선택 완료 여부 */
+            inputCompleted:
                 type.division === PROGRAM_DIVISION.집합형
-                    ? isTemporary
+                    ? !isDraft && campTicketCount !== 0
                     : undefined,
 
-            /** 채널 링크 */
-            channelLink: `https://${schoolIndex}.goorm.io`,
+            /** 채널 링크 Url */
+            channelUrl:
+                process.env.NODE_ENV === 'development'
+                    ? `https://${channelIndex}.dev.goorm.io`
+                    : `https://${channelIndex}.goorm.io`,
         };
     });
 
     return res.json({ items: newItems, total });
+};
+
+const copyCamp = async (req, res) => {
+    const { id: campId } = req.query;
+    const { institutionId } = req.body;
+
+    const data = await swcampSdk.copyCamp({
+        userId: req.session?.id,
+        campId,
+        institutionId,
+    });
+
+    return res.json(data);
 };
 
 const getCampClasses = async (req, res) => {
@@ -197,6 +243,18 @@ const createCamp = async (req, res) => {
     return res.json(data);
 };
 
+const deleteCamps = async (req, res) => {
+    const { campIds, institutionId } = req.query;
+
+    const data = await swcampSdk.deleteCamps({
+        userId: req.session?.id,
+        campIds,
+        institutionId,
+    });
+
+    return res.json(data);
+};
+
 const patchCamp = async (req, res) => {
     const { id: campId } = req.query;
     const formData = req.body;
@@ -235,6 +293,8 @@ export default {
     /** controller methods */
     getCamps,
     getCamp,
+    copyCamp,
+    deleteCamps,
     createCamp,
     patchCamp,
     getCampClasses,

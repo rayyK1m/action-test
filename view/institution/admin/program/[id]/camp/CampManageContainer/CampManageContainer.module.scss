@@ -1,14 +1,12 @@
 .subHeader {
     margin: 1.25rem 0 /* 20px -> 1.25rem */;
 }
-.searchInput {
-    width: 21.4375rem /* 343px -> 21.4375rem */;
-}
-.buttons {
+.deleteWrapper {
     display: flex;
-    gap: 0.625rem; /* 10px -> .625rem */
+    align-items: center;
+    gap: 1rem;
 }
-.moreButton {
-    width: 2rem;
-    height: 2rem;
+.deleteWrapperButtons {
+    display: flex;
+    gap: 0.5rem;
 }

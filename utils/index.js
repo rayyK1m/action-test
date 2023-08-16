@@ -169,7 +169,7 @@ export const slugify = (text) => {
 /**
  * 문자열과 최대 길이를 받아서 최대 길이를 넘어갈 경우 '...'으로 변경한 값을 반환한다.
  *
- * @param {String}} string
+ * @param {String} string
  * @param {Number} maxLength
  * @returns {String}
  */
@@ -196,6 +196,17 @@ export const joinToGradeString = (target, joinUnit, prefix) => {
 
     return prefix + arrayWithGrade.join(joinUnit);
 };
+
+/**
+ * query 객체를 queryString으로 변환한다.
+ *
+ * @param {Object} query
+ * @returns {String}
+ */
+export const queryStringify = (query) =>
+    Object.keys(query)
+        .map((key) => `${key}=${query[key]}`)
+        .join('&');
 
 /**
  *

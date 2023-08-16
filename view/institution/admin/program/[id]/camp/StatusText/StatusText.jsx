@@ -6,7 +6,7 @@ const ClassStatusText = {
     '교육 종료': () => <p className="text-hint">교육 종료</p>,
 };
 
-const SubmitText = {
+const SubmitedText = {
     제출: () => <p className="text-hint">제출</p>,
     미제출: () => (
         <span className="d-flex align-items-center text-warning">
@@ -16,9 +16,20 @@ const SubmitText = {
     ),
 };
 
+const CompletedText = {
+    완료: () => <p className="text-hint">완료</p>,
+    미완료: () => (
+        <span className="d-flex align-items-center text-warning">
+            <NoticeCircleIcon className="mr-2" />
+            <p>미완료</p>
+        </span>
+    ),
+};
+
 const getKeyOfText = (status) => ({
-    classStatus: ClassStatusText[status],
-    submit: SubmitText[status],
+    '교육 진행 여부': ClassStatusText[status],
+    '제출 여부': SubmitedText[status],
+    '완료 여부': CompletedText[status],
 });
 
 const StatusText = ({ type, status }) => {

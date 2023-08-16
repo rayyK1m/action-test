@@ -11,7 +11,7 @@ function CampFunnel({ division }) {
     const router = useRouter();
     const {
         asPath,
-        query: { campTabId },
+        query: { campTabId, institutionId },
     } = router;
 
     const activeTabPath = `/${campTabId}`;
@@ -29,7 +29,11 @@ function CampFunnel({ division }) {
      *  - '/report-post'
      */
     const handleChangeTabs = (subPath) => {
-        router.push(`${basePath}${subPath}`);
+        if (institutionId) {
+            router.push(`${basePath}${subPath}?institutionId=${institutionId}`);
+        } else {
+            router.push(`${basePath}${subPath}`);
+        }
     };
 
     return (

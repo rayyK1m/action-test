@@ -14,21 +14,23 @@ import { CAMP_TABS } from '@/constants/navigations';
 
 export const getServerSideProps = checkAuthSsr({
     shouldLogin: true,
-    roles: [ROLE.INSTITUTION],
+    roles: [ROLE.FOUNDATION],
 })(async (context) => {
     const queryClient = new QueryClient();
-    const { id: programId, campId, campTabId } = context.params;
+    const {
+        query: { institutionId },
+        params: { id: programId, campId, campTabId },
+    } = context;
     const serverAxios = createServerAxios(context);
 
     /**
      * [캠프 상세 페이지 Path 비즈니스 로직 2]
      *
-     * - 특정 sub path가 아닌 경우에는 404
-     * - 특정 sub path: CAMP_TABS
-     *
-     * @see ../index.jsx
+     * - 특정 sub path(CAMP_TABS)가 아닌 경우에는 404
+     * @see 참고 `../index.jsx`
      */
     if (
+        !institutionId ||
         !Object.values(CAMP_TABS)
             .map(({ path }) => path.slice(1))
             .some((i) => i === campTabId)
@@ -55,10 +57,7 @@ export const getServerSideProps = checkAuthSsr({
 
     /** 캠프 개별 조회 */
     await queryClient.prefetchQuery(campsKeys.itemDetail(campId), () =>
-        campsApis.getCamp(
-            { campId, institutionId: session.institutionId },
-            serverAxios,
-        ),
+        campsApis.getCamp({ campId, institutionId }, serverAxios),
     );
 
     return {

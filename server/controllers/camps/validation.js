@@ -6,6 +6,22 @@ const getCamps = {
         institutionId: Joi.string(),
         page: Joi.number(),
         limit: Joi.number(),
+        sort: Joi.string(),
+        division: Joi.string(),
+    },
+};
+
+const copyCamp = {
+    query: {
+        id: Joi.string(),
+        institutionId: Joi.string(),
+    },
+};
+
+const deleteCamps = {
+    query: {
+        campIds: Joi.string(),
+        institutionId: Joi.string(),
     },
 };
 
@@ -15,4 +31,5 @@ const postCampReport = {
         reportType: Joi.string(),
     },
 };
-export default { getCamps, postCampReport };
+
+export default { getCamps, postCampReport, copyCamp, deleteCamps };

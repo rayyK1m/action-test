@@ -13,7 +13,7 @@ import styles from './CampFunnelTabs.module.scss';
 function CampFunnelTabs({ division }) {
     const {
         asPath,
-        query: { campId, campTabId },
+        query: { campId, campTabId, institutionId },
     } = useRouter();
     const {
         data: { campTicketCount },
@@ -34,7 +34,11 @@ function CampFunnelTabs({ division }) {
                     <CustomNav.Item className={styles.navItem} key={id}>
                         <CustomNav.Link
                             tag={Link}
-                            href={`${basePath}${path}`}
+                            href={
+                                institutionId
+                                    ? `${basePath}${path}?institutionId=${institutionId}`
+                                    : `${basePath}${path}`
+                            }
                             active={campTabId === path.substring(1)}
                         >
                             {text}

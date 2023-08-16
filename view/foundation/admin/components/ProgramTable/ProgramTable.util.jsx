@@ -75,11 +75,12 @@ export const getTableColoums = (option = {}) => {
                 const { reviewStatus } = rowData;
                 const isDisabled =
                     reviewStatus === PROGRAM_REVIEW_STATUS.심사중.key ||
-                    reviewStatus === PROGRAM_REVIEW_STATUS.거절됨.key;
+                    reviewStatus === PROGRAM_REVIEW_STATUS.거절.key;
 
                 return (
                     <Button
                         color="link"
+                        tag={Link}
                         href={`${BASE_URL}/${rowData.id}/applicant`}
                         disabled={isDisabled}
                     >
@@ -93,15 +94,22 @@ export const getTableColoums = (option = {}) => {
             accessorKey: 'campCount',
             header: '',
             cell: cellHelper(({ value: campCount, rowData }) => {
-                const { reviewStatus } = rowData;
+                const {
+                    id: programId,
+                    reviewStatus,
+                    type,
+                    institutionId,
+                } = rowData;
+                const { division } = type;
                 const isDisabled =
                     reviewStatus === PROGRAM_REVIEW_STATUS.심사중.key ||
-                    reviewStatus === PROGRAM_REVIEW_STATUS.거절됨.key;
+                    reviewStatus === PROGRAM_REVIEW_STATUS.거절.key;
 
                 return (
                     <Button
                         color="link"
-                        onClick={() => alert(campCount)}
+                        tag={Link}
+                        href={`${BASE_URL}/${programId}/camps?division=${division}&institutionId=${institutionId}`}
                         iconSide={'right'}
                         icon={<ChevronRightIcon />}
                         disabled={isDisabled}

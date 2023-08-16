@@ -10,6 +10,21 @@ export const PROGRAM_DIVISION = {
     집합형: '집합형',
 };
 
+export const EDUCATION_STATUS = {
+    교육_예정: {
+        key: '교육_예정',
+        text: '교육 예정',
+    },
+    교육_진행_중: {
+        key: '교육_진행_중',
+        text: '교육 진행 중',
+    },
+    교육_종료: {
+        key: '교육_종료',
+        text: '교육 종료',
+    },
+};
+
 export const PROGRAM_DURATION = {
     지속: '지속',
     단기: '단기',
@@ -221,4 +236,11 @@ export const CAMP_FILE_LIST = {
             },
         },
     },
+};
+
+/** 캠프 관리 페이지 default query */
+export const CAMPS_DEFAULT_QUERY = {
+    page: 1,
+    limit: 10,
+    sort: '-createdAt',
 };

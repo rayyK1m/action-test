@@ -12,6 +12,7 @@ import styles from './ProgramTable.module.scss';
 import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
 
 const BASE_URL = '/institution/admin';
+
 export const getTableColoums = () => {
     const columns = [
         {
@@ -81,7 +82,9 @@ export const getTableColoums = () => {
             accessorKey: 'camp',
             header: <div>캠프 관리</div>,
             cell: cellHelper(({ rowData }) => {
-                const { reviewStatus, id } = rowData;
+                const { reviewStatus, id, type } = rowData;
+                const { division } = type;
+
                 const isApproved =
                     reviewStatus === PROGRAM_REVIEW_STATUS.승인.value;
 
@@ -89,7 +92,7 @@ export const getTableColoums = () => {
                     <Button
                         color="link"
                         tag={Link}
-                        href={`${BASE_URL}/program/${id}/camp`}
+                        href={`${BASE_URL}/program/${id}/camp?division=${division}`}
                         disabled={!isApproved}
                         icon={<ChevronRightIcon />}
                         iconSide="right"

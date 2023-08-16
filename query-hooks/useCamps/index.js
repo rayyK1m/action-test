@@ -1,34 +1,76 @@
-import { useRouter } from 'next/router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 
 import { toast } from '@goorm-dev/gds-toastify';
-import { campTicketsKeys } from '../uesCampTickets';
 
+import useSession from '../useSession';
+import { campTicketsKeys } from '../uesCampTickets';
 import campsKeys from './keys';
 import campsApis from './apis';
 
-const useGetProgramCamps = (programId, filters) => {
-    const { page, limit, institutionId } = filters;
-
+/** 프로그램에 속한 캠프 리스트 조회 */
+const useGetProgramCamps = (programId, query) => {
     return useQuery({
-        queryKey: campsKeys.itemsProgramDetail(programId, {
-            page,
-            limit,
-            institutionId,
-        }),
-        queryFn: () =>
-            campsApis.getCamps(programId, {
-                page,
-                limit,
-                institutionId,
-            }),
+        queryKey: campsKeys.itemsProgramDetail(programId, { ...query }),
+        queryFn: () => campsApis.getCamps(programId, { ...query }),
+    });
+};
+
+/** 캠프 단일 복사 */
+const useCopyCamp = () => {
+    const queryClient = useQueryClient();
+    const {
+        query: { id: programId },
+    } = useRouter();
+
+    return useMutation({
+        mutationFn: campsApis.copyCamp,
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: campsKeys.itemsProgram(programId),
+            });
+            toast('캠프 복사가 완료됐습니다.', {
+                type: toast.TYPE.SUCCESS,
+            });
+        },
+        onError: (error) => {
+            console.log(error);
+        },
+    });
+};
+
+/** 캠프 리스트 삭제 */
+const useDeleteCamps = () => {
+    const queryClient = useQueryClient();
+    const {
+        query: { id: programId },
+    } = useRouter();
+
+    return useMutation({
+        mutationFn: campsApis.deleteCamps,
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: campsKeys.itemsProgram(programId),
+            });
+            toast('캠프 삭제가 완료됐습니다.', {
+                type: toast.TYPE.SUCCESS,
+            });
+        },
+        onError: (error) => {
+            console.log(error);
+        },
     });
 };
 
 const useGetCamp = (campId) => {
+    const { query } = useRouter();
+    const { data: userData } = useSession.GET();
+
+    const institutionId = query.institutionId || userData.id;
+
     return useQuery({
         queryKey: campsKeys.itemDetail(campId),
-        queryFn: () => campsApis.getCamp(campId),
+        queryFn: () => campsApis.getCamp({ campId, institutionId }),
         refetchOnWindowFocus: true,
         staleTime: 5 * 60 * 1000,
     });
@@ -155,6 +197,8 @@ export {
      * custom hooks
      */
     useGetProgramCamps,
+    useCopyCamp,
+    useDeleteCamps,
     useGetCamp,
     useGetCampClasses,
     useAddCampParticipants,

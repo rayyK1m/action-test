@@ -5,13 +5,13 @@ const campsKeys = {
     itemDetail: (campId) => [...campsKeys.item(), campId],
 
     /**
-     * 캠프 리스트
+     * 단일 캠프 (Camp)
      */
-    items: () => [...campsKeys.all(), 'items'],
-    itemsDetail: (filters) => [...campsKeys.items(), { ...filters }],
+    item: () => [...campsKeys.all(), 'item'],
+    itemDetail: (campId) => [...campsKeys.item(), campId],
 
     /**
-     * 프로그램 별 캠프 리스트
+     * 프로그램에 속한 캠프 리스트 (ProgramCamps)
      */
     itemsProgram: (programId) => [
         ...campsKeys.all(),

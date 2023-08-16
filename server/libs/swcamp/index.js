@@ -1,16 +1,11 @@
 import axios from 'axios';
 import qs from 'query-string';
 import { removeEmptyValues } from '@/utils';
-import ForbiddenError from '@/server/utils/error/ForbiddenError';
 
-import { delay, paginateArray } from '@/dummy/utils';
-import { CAMPS } from '@/dummy/camps';
-
+import ForbiddenError from '../../utils/error/ForbiddenError';
 import ExternalResponseError from '../../utils/error/ExternalResponseError';
 import { getAuthHeader } from '../../utils/auth';
 import { REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
-
-const DELAY_TIME = 500;
 
 const swcampInstance = axios.create({
     baseURL: process.env.SWCAMP_API_HOST,
@@ -331,6 +326,41 @@ const createCampTicket = async ({ role, userId, formData }) => {
     }
 };
 
+/** 캠프 리스트 조회 (어드민용) */
+const getCamps = async ({
+    userId,
+    programId,
+    institutionId,
+    page,
+    limit,
+    sort,
+}) => {
+    const removedEmptyQuery = removeEmptyValues({
+        institutionId,
+        page,
+        limit,
+        sort,
+    });
+    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
+    try {
+        const { data } = await swcampInstance.get(
+            `/api/v1/camps/programs/${programId}/admin?${queryString}`,
+            {
+                headers: {
+                    ...getAuthHeader(userId),
+                },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
+/** 캠프 개별 조회 (어드민용) */
 const getCamp = async ({ userId, campId, institutionId }) => {
     try {
         const { data } = await swcampInstance.get(
@@ -348,17 +378,58 @@ const getCamp = async ({ userId, campId, institutionId }) => {
     }
 };
 
-const getCamps = async ({ programId, institutionId, page, limit }) => {
-    await delay(DELAY_TIME);
+/** 캠프 복사 */
+const copyCamp = async ({ userId, campId, institutionId }) => {
+    const removedEmptyQuery = removeEmptyValues({
+        institutionId,
+    });
 
-    const data = CAMPS;
-    const filteredData = data.filter(({ institutionId: dataInstitutionId }) =>
-        institutionId ? institutionId === dataInstitutionId : true,
-    );
-    const paginatedData = paginateArray(filteredData, page, limit);
-    const newData = { items: paginatedData, total: filteredData.length };
+    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
 
-    return newData;
+    try {
+        const { data } = await swcampInstance.post(
+            `/api/v1/camps/${campId}/copy?${queryString}`,
+            {},
+            {
+                headers: {
+                    ...getAuthHeader(userId),
+                },
+            },
+        );
+
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
+/** 캠프 삭제 */
+const deleteCamps = async ({ userId, campIds, institutionId }) => {
+    const removedEmptyQuery = removeEmptyValues({
+        campId: campIds,
+        institutionId,
+    });
+
+    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
+
+    try {
+        const { data } = await swcampInstance.delete(
+            `/api/v1/camps?${queryString}`,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
 };
 
 const getCampClasses = async ({ userId, institutionId, programId }) => {
@@ -450,7 +521,6 @@ const createCamp = async ({ userId, formData }) => {
 
 const patchCamp = async ({ userId, institutionId, campId, formData }) => {
     try {
-        console.log(formData, userId, institutionId, campId);
         const { data } = await swcampInstance.patch(
             `${process.env.SWCAMP_API_HOST}/api/v1/camps/${campId}`,
             { ...formData, institutionId },
@@ -889,6 +959,8 @@ const swcampSdk = {
      */
     getCamp,
     getCamps,
+    copyCamp,
+    deleteCamps,
     getCampClasses,
     addCampParticipants,
     deleteCampParticipants,

@@ -14,11 +14,17 @@ export const EMPTY_IMAGE_TYPE = {
  * @param {<T> | String} imageSrc EMPTY_IMAGE_TYPE | string
  * @param {Boolean} useBg 백그라운드 박스 사용 여부
  */
-function EmptyTableCard({ text, imageSrc, useBg = false }) {
+function EmptyTableCard({
+    text,
+    imageSrc = EMPTY_IMAGE_TYPE.FOLDER,
+    useBg = false,
+}) {
     return (
         <div className={cn(styles.container, useBg && 'bg-gray-100')}>
             <Image src={imageSrc} alt="empty view" width={160} height={120} />
-            <div className="text-gray-800 mt-2">{text}</div>
+            <div className="text-gray-800 mt-2">
+                {text || '등록된 데이터가 없습니다.'}
+            </div>
         </div>
     );
 }

@@ -1,0 +1,9 @@
+.modalHeader button::after {
+    font-size: 1.25rem /* 20px -> 1.25rem */;
+}
+.warningIcon {
+    width: 6.25rem /* 100px -> 6.25rem */;
+    height: 6.25rem /* 100px -> 6.25rem */;
+    margin: 0 auto;
+    color: var(--danger);
+}

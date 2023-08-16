@@ -1,72 +1,37 @@
-import { useMemo } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import qs from 'query-string';
 
-import {
-    HScrollTable,
-    HScrollTablePagination,
-    useHScrollTable,
-    TYPES,
-} from '@goorm-dev/gds-tables';
+import { HScrollTable, HScrollTablePagination } from '@goorm-dev/gds-tables';
 
 import styles from './CampManageTable.module.scss';
+import { useEffect } from 'react';
 
-const columns = [
-    {
-        accessorKey: 'classNumberStr',
-        header: '분반',
-        cell: (info) => info.getValue(),
-        size: 92,
-        enableSorting: true,
-    },
-    {
-        accessorKey: 'classroom',
-        header: '교육장소',
-        cell: (info) => info.getValue(),
-        size: 130,
-    },
-    {
-        accessorKey: 'name',
-        header: '캠프 명',
-        cell: (info) => info.getValue(),
-    },
-    {
-        accessorKey: 'classStatus',
-        header: '교육 진행',
-        cell: (info) => info.getValue(),
-        size: 115,
-    },
-    {
-        accessorKey: 'submitPreFileReport',
-        header: '사전 자료',
-        cell: (info) => info.getValue(),
-        size: 115,
-    },
-    {
-        accessorKey: 'submitPostFileReport',
-        header: '종료 자료',
-        cell: (info) => info.getValue(),
-        size: 115,
-    },
-    {
-        accessorKey: 'buttons',
-        header: '',
-        cell: (info) => info.getValue(),
-        size: 200,
-    },
-];
+function CampManageTable({ getTableProps, getPaginationProps }) {
+    const router = useRouter();
+    const [query, setQuery] = useState(router.query);
 
-function CampManageTable({ data, total }) {
-    const page = 1;
-    const memoizationColumns = useMemo(() => columns, []);
-    const { getTableProps, getPaginationProps } = useHScrollTable({
-        data,
-        columns: memoizationColumns,
-        usePagination: true,
-        manualPagination: true,
-        extraColumnType: TYPES.EXTRA_COLUMN_TYPE.INDEX,
-        pageCount: Math.ceil(total / 5),
-        pageIndex: page - 1,
-        pageSize: 5,
-    });
+    const basePath = router.asPath.substring(0, router.asPath.lastIndexOf('?')); // 쿼리 스트링을 제외한 basePath
+
+    useEffect(() => {
+        setQuery(router.query);
+    }, [router.query]);
+
+    const onPageChange = (page) => {
+        // eslint-disable-next-line no-unused-vars
+        const { id: noUsedProgramId, ...restQuery } = query;
+
+        const queryString = qs.stringify({
+            /**
+             * programId는 querystring에서 제외된다.
+             */
+            ...restQuery,
+            page,
+        });
+
+        // TODO: sorting 했을 때, router.push 하면, query key가 그대로 유지되는 문제 해결하기
+        router.push(`${basePath}?${queryString}`);
+    };
 
     return (
         <div className={styles.container}>
@@ -74,6 +39,7 @@ function CampManageTable({ data, total }) {
             <HScrollTablePagination
                 paginationProps={{
                     ...getPaginationProps(),
+                    onPageChangeHandler: onPageChange,
                 }}
             />
         </div>
