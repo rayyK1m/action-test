@@ -98,7 +98,7 @@ function CampApplyContainer({ userData, programId }) {
             /** 유저 데이터 연결 안해서 임시로 지정해둔 상태, 수정 예정 */
             [CAMP_APPLY_KEYS.schoolNameKey]: schoolName,
             [CAMP_APPLY_KEYS.schoolCodeKey]: schoolCode,
-            [CAMP_APPLY_KEYS.userNameKey]: '김구름',
+            [CAMP_APPLY_KEYS.userNameKey]: userData.name,
         },
     });
 

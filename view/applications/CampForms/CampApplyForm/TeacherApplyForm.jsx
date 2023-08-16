@@ -109,22 +109,23 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                                             index
                                         ].includes(idx + 1);
                                         return (
-                                            <Checkbox
-                                                className={
-                                                    disabled
-                                                        ? styles.disabled
-                                                        : ''
-                                                }
-                                                ref={ref}
-                                                label={`${idx + 1}학년`}
-                                                key={idx}
-                                                disabled={disabled}
-                                                onChange={handleChange({
-                                                    schoolKey: key,
-                                                    value: idx,
-                                                    idx: index,
-                                                })}
-                                            />
+                                            <div className="d-flex" key={idx}>
+                                                <Checkbox
+                                                    className={
+                                                        disabled
+                                                            ? styles.disabled
+                                                            : ''
+                                                    }
+                                                    ref={ref}
+                                                    disabled={disabled}
+                                                    onChange={handleChange({
+                                                        schoolKey: key,
+                                                        value: idx,
+                                                        idx: index,
+                                                    })}
+                                                />
+                                                <span>{idx + 1}학년</span>
+                                            </div>
                                         );
                                     }}
                                 />

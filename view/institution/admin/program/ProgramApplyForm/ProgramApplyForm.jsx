@@ -170,7 +170,7 @@ const ApplyTargetInput = () => {
                         <Divider height="0.75rem" className={styles.divider} />
                         <div className={styles.schoolGrade}>
                             {school.value.map((_, idx) => (
-                                <div className="d-flex">
+                                <div className="d-flex" key={idx}>
                                     <Checkbox
                                         key={idx}
                                         defaultChecked={targetFields[

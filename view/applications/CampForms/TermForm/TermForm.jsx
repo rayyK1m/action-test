@@ -34,20 +34,23 @@ export const TermsForm = ({ terms, setTerms }) => {
         <div className={styles.form}>
             <h5>약관 동의</h5>
             <div className={styles.checkForm}>
-                <Checkbox
-                    label="전체 동의"
-                    name="all"
-                    checked={thirdPartyInfoTerm && personalInfoTerm}
-                    onChange={(e) => handleChange(e.target)}
-                />
-                <div className="d-flex align-items-center">
+                <div className="d-flex">
                     <Checkbox
-                        label="[필수] 개인정보 수집 및 이용"
-                        className="mr-4"
-                        name="personalInfoTerm"
-                        checked={personalInfoTerm}
+                        name="all"
+                        checked={thirdPartyInfoTerm && personalInfoTerm}
                         onChange={(e) => handleChange(e.target)}
                     />
+                    <span>전체 동의</span>
+                </div>
+                <div className="d-flex align-items-center">
+                    <div className="d-flex mr-4">
+                        <Checkbox
+                            name="personalInfoTerm"
+                            checked={personalInfoTerm}
+                            onChange={(e) => handleChange(e.target)}
+                        />
+                        <span>[필수] 개인정보 수집 및 이용</span>
+                    </div>
                     <TextButton
                         color="link"
                         size="sm"
@@ -59,13 +62,14 @@ export const TermsForm = ({ terms, setTerms }) => {
                     </TextButton>
                 </div>
                 <div className="d-flex align-items-center">
-                    <Checkbox
-                        label="[필수] 제 3자 정보 제공 동의"
-                        className="mr-4"
-                        name="thirdPartyInfoTerm"
-                        checked={thirdPartyInfoTerm}
-                        onChange={(e) => handleChange(e.target)}
-                    />
+                    <div className="d-flex mr-4">
+                        <Checkbox
+                            name="thirdPartyInfoTerm"
+                            checked={thirdPartyInfoTerm}
+                            onChange={(e) => handleChange(e.target)}
+                        />
+                        <span>[필수] 제 3자 정보 제공 동의</span>
+                    </div>
                     <TextButton
                         color="link"
                         size="sm"

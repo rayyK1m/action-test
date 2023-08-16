@@ -316,9 +316,6 @@ const TeacherForm = () => {
                     신청자가 강사명을 기재하지 않은 경우, 기관에서 지정합니다.
                 </CustomAlert>
             </div>
-            <CustomAlert leftIcon={InfoCircleIcon}>
-                신청자가 강사명을 기재하지 않은 경우, 기관에서 지정합니다.
-            </CustomAlert>
         </div>
     );
 };
