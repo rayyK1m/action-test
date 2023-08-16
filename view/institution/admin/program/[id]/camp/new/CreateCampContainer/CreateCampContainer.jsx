@@ -39,7 +39,7 @@ const STEP_ITEMS = [
     {
         key: 'campInfo',
         icon: EditIcon,
-        text: '정보 입력',
+        text: '정보입력',
     },
     {
         key: 'selectStudent',

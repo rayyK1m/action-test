@@ -50,11 +50,13 @@ const deleteCampParticipants = async ({ campId, targets, meta }) => {
 };
 
 export const createCamp = async (formData) => {
-    const { data } = await axios.post(
+    const {
+        data: { item },
+    } = await axios.post(
         `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camps/new`,
         formData,
     );
-    return data;
+    return item;
 };
 
 export const patchCamp = async ({ campId, formData }) => {

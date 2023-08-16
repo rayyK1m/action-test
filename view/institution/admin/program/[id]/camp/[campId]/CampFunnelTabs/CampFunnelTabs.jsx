@@ -1,28 +1,32 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import CustomNav from '@/components/CustomNav';
+import { Badge } from '@goorm-dev/gds-components';
 
 import { CAMP_TABS } from '@/constants/navigations';
+import { PROGRAM_DIVISION } from '@/constants/db';
+import { useGetCamp } from '@/query-hooks/useCamps';
+import CustomNav from '@/components/CustomNav';
 
 import styles from './CampFunnelTabs.module.scss';
-import { PROGRAM_DIVISION } from '@/constants/db';
 
 function CampFunnelTabs({ division }) {
     const {
         asPath,
-        query: { campTabId },
+        query: { campId, campTabId },
     } = useRouter();
-
+    const {
+        data: { campTicketCount },
+    } = useGetCamp(campId);
     const basePath = asPath.substring(0, asPath.lastIndexOf('/'));
 
     return (
         <CustomNav tabs className="mb-4">
             {Object.values(CAMP_TABS)
-                .filter((campTab) => {
+                .filter(({ id: campTabId }) => {
                     const 방문형이고_캠프_참가자_탭인가 =
                         division === PROGRAM_DIVISION.방문형 &&
-                        campTab.id === CAMP_TABS.캠프_참가자.id;
+                        campTabId === CAMP_TABS.캠프_참가자.id;
 
                     return !방문형이고_캠프_참가자_탭인가;
                 })
@@ -34,6 +38,15 @@ function CampFunnelTabs({ division }) {
                             active={campTabId === path.substring(1)}
                         >
                             {text}
+                            {id === CAMP_TABS.캠프_참가자.id && (
+                                <Badge
+                                    className="ml-1"
+                                    size="sm"
+                                    color="primary"
+                                >
+                                    {campTicketCount}
+                                </Badge>
+                            )}
                         </CustomNav.Link>
                     </CustomNav.Item>
                 ))}

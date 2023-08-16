@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useQueryClient } from '@tanstack/react-query';
+import cn from 'classnames';
 
 import {
     useHScrollTable,
@@ -25,13 +26,19 @@ import SSRSuspense from '@/components/SSRSuspense';
 import CampParticipantTableLoading from './CampParticipantTable.loading';
 import { checkIsFoundationPage, routerPushShallow } from '@/utils';
 
-const Table = ({ programId, campId, onSetTotalCount, isFoundationPage }) => {
+const Table = ({
+    programId,
+    campId,
+    onSetTotalCount,
+    isFoundationPage,
+    page,
+}) => {
     const router = useRouter();
     const queryClient = useQueryClient();
     const { search } = router.query;
 
     const [{ pageIndex, pageSize }, setPagination] = useState({
-        pageIndex: 0,
+        pageIndex: page,
         pageSize: 10,
     });
     const [sorting, setSorting] = useState([]);
@@ -71,6 +78,13 @@ const Table = ({ programId, campId, onSetTotalCount, isFoundationPage }) => {
     });
 
     useEffect(() => {
+        setPagination((prev) => ({
+            ...prev,
+            pageIndex: page,
+        }));
+    }, [page]);
+
+    useEffect(() => {
         onSetTotalCount(totalCount);
     }, [totalCount, onSetTotalCount]);
 
@@ -107,6 +121,8 @@ const Table = ({ programId, campId, onSetTotalCount, isFoundationPage }) => {
 
 function CampParticipantTable() {
     const router = useRouter();
+    const { search } = router.query;
+
     const isFoundationPage = useMemo(
         () => checkIsFoundationPage(router.pathname),
         [router.pathname],
@@ -115,6 +131,7 @@ function CampParticipantTable() {
 
     const [totalCount, setTotalCount] = useState(0);
     const [searchText, setSearchText] = useState('');
+    const [page, setPage] = useState(0);
 
     const handleSearchChange = useCallback((e) => {
         const {
@@ -126,15 +143,25 @@ function CampParticipantTable() {
     const handleSearchKeyDown = useCallback((key, value) => {
         if (key === ENTER_KEY) {
             routerPushShallow(router, { search: value });
+            setPage(0);
         }
     }, []);
 
+    const isEmptyData = useMemo(() => totalCount === 0, [totalCount]);
+    const isFiltered = useMemo(() => !!search, [search]);
     return (
         <div className={styles.container}>
             <div className="d-flex align-items-center justify-content-between">
                 <h5 className="d-flex">
-                    캠프 참가자{' '}
-                    <p className="text-blue-500 ml-1">{totalCount}</p>
+                    {isFiltered ? `'${search}' 참가자` : '캠프 참가자'}{' '}
+                    <p
+                        className={cn(
+                            'ml-1',
+                            isEmptyData ? 'text-gray-600' : 'text-blue-500',
+                        )}
+                    >
+                        {totalCount}
+                    </p>
                 </h5>
                 {!isFoundationPage && (
                     <Button
@@ -166,6 +193,7 @@ function CampParticipantTable() {
                     campId={campId}
                     onSetTotalCount={setTotalCount}
                     isFoundationPage={isFoundationPage}
+                    page={page}
                 />
             </SSRSuspense>
         </div>

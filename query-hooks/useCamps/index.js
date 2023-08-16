@@ -96,8 +96,11 @@ const useCreateCamp = (returnPath) => {
     const queryClient = useQueryClient();
     return useMutation((formData) => campsApis.createCamp(formData), {
         onError: () => toast('캠프 생성에 실패했습니다.'),
-        onSuccess: () => {
+        onSuccess: (data) => {
             router.push(returnPath);
+            toast(`'${data.class}분반' 캠프 생성이 완료되었습니다.`, {
+                type: toast.TYPE.SUCCESS,
+            });
             queryClient.invalidateQueries(campsKeys.classes());
         },
     });

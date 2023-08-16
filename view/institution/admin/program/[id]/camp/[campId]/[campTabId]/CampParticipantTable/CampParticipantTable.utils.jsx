@@ -48,7 +48,7 @@ const ClassDropdown = ({ camp, campTicket }) => {
     return (
         <ButtonDropdown isOpen={isOpen} toggle={toggle}>
             <DropdownToggle color="link" caret>
-                {campClass} 분반
+                {campClass}분반
             </DropdownToggle>
             <TableDropdownPortal>
                 <CustomDropdownMenu>

@@ -113,7 +113,7 @@ function ProgramTable() {
         <div>
             <div className={styles.title}>
                 <h6>
-                    전체 프로그램{' '}
+                    {isFiltered ? `'${search}' 프로그램` : '전체 프로그램'}{' '}
                     <span
                         className={
                             isEmptyData ? 'text-gray-600' : 'text-blue-500'

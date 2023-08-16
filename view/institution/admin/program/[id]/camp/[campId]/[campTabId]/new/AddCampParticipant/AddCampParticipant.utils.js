@@ -1,5 +1,4 @@
 import { ellipsisedString } from '@/utils';
-import ProgramTypeBadge from '@/view/components/ProgramTypeBadge';
 
 export const getBreadcrumbs = (program, campId) => {
     return [
@@ -16,16 +15,7 @@ export const getBreadcrumbs = (program, campId) => {
             to: `/institution/admin/program/${program.id}/camp`,
         },
         {
-            children: (
-                <>
-                    <span>{ellipsisedString(program.name, 20)}</span>
-                    <ProgramTypeBadge
-                        className="ml-1"
-                        division={program.type.division}
-                        duration={program.type.duration}
-                    />
-                </>
-            ),
+            children: '캠프 상세',
             to: `/institution/admin/program/${program.id}/camp/${campId}`,
         },
         {

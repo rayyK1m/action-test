@@ -15,8 +15,6 @@ import { useGetCamp } from '@/query-hooks/useCamps';
 import CampFunnel from '../CampFunnel';
 import { getCampBreadcrumbs } from './CampContainer.utils';
 
-import styles from './CampContainer.module.scss';
-
 function CampContainer() {
     const router = useRouter();
     const { id: programId, campId } = router.query;
@@ -31,7 +29,7 @@ function CampContainer() {
         <Layout>
             <Layout.Header userData={userData} />
             <Layout.Main>
-                <GridContainer>
+                <GridContainer colProps={{ xs: { size: 10, offset: 1 } }}>
                     <div className="d-flex flex-column">
                         <PageHeader className="mb-4">
                             <PageHeader.Title>

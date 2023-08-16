@@ -174,6 +174,9 @@ export const slugify = (text) => {
  * @returns {String}
  */
 export const ellipsisedString = (string, maxLength) => {
+    if (!string) {
+        return '';
+    }
     if (string.length <= maxLength) {
         return string;
     } else {
