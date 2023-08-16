@@ -45,8 +45,10 @@ import styles from './CampManageContainer.module.scss';
 function CampManageContainer() {
     const queryClient = useQueryClient();
     const router = useRouter();
-    const { asPath, query } = router;
-    const { id: programId, division, page, limit, sort } = query;
+    const {
+        asPath,
+        query: { id: programId, division, page, limit, sort },
+    } = router;
     const basePath = asPath.substring(0, asPath.lastIndexOf('?')); // 쿼리 스트링을 제외한 basePath
     const itemLimit = limit * 1;
 
