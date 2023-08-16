@@ -15,6 +15,7 @@ import styles from './DownloadButton.module.scss';
  * @returns
  */
 const DownloadButton = ({
+    isZip = false,
     filename = '',
     isText = false,
     href: defaultHref,
@@ -38,7 +39,6 @@ const DownloadButton = ({
      */
     const downloadFile = (convertedHref) => {
         const $downloadAnchor = document.createElement('a');
-        $downloadAnchor.download = true;
         $downloadAnchor.href = convertedHref;
         $downloadAnchor.download = filename;
         $downloadAnchor.click();
@@ -51,14 +51,29 @@ const DownloadButton = ({
 
     /**
      * 단일 파일 href를 생성하는 메서드
-     * @param {string} currentHref
+     * @param {string} url
      */
-    const createSingleHref = async (currentHref) => {
-        const { data: blob } = await axios.get(currentHref, {
-            responseType: 'blob',
-        });
+    const createSingleFileHref = async (url) => {
+        const isPublicUrl = url.startsWith('https://');
 
-        return URL.createObjectURL(blob);
+        if (isPublicUrl) {
+            const { data: blob } = await axios.get(url, {
+                responseType: 'blob',
+            });
+
+            return URL.createObjectURL(blob);
+        } else {
+            const { data: validUrl } = await axios.get('/api/files/download', {
+                params: {
+                    path: encodeURIComponent(url), // 사전에 약속된 업로드될 디렉토리 타입
+                },
+            });
+
+            const { data: blob } = await axios.get(validUrl, {
+                responseType: 'blob',
+            });
+            return URL.createObjectURL(blob);
+        }
     };
 
     /**
@@ -70,13 +85,31 @@ const DownloadButton = ({
 
         await Promise.all(
             hrefList.map(async ({ filename, url }) => {
-                const { data: blob } = await axios.get(url, {
-                    responseType: 'blob',
-                });
+                const isPublicUrl = url.startsWith('https://');
 
-                zip.file(filename, blob);
+                if (isPublicUrl) {
+                    const { data: blob } = await axios.get(url, {
+                        responseType: 'blob',
+                    });
 
-                return URL.createObjectURL(blob);
+                    zip.file(filename, blob);
+                    return URL.createObjectURL(blob);
+                } else {
+                    const { data: validUrl } = await axios.get(
+                        '/api/files/download',
+                        {
+                            params: {
+                                path: encodeURIComponent(url), // 사전에 약속된 업로드될 디렉토리 타입
+                            },
+                        },
+                    );
+
+                    const { data: blob } = await axios.get(validUrl, {
+                        responseType: 'blob',
+                    });
+                    zip.file(filename, blob);
+                    return URL.createObjectURL(blob);
+                }
             }),
         );
 
@@ -118,10 +151,10 @@ const DownloadButton = ({
             `);
         }
 
-        if (hrefList.length > 1) {
+        if (isZip) {
             return await createZipHref(hrefList);
         } else {
-            return await createSingleHref(hrefList[0].url);
+            return await createSingleFileHref(hrefList[0].url);
         }
     };
 

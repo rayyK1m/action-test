@@ -44,7 +44,8 @@ function InstitutionsTable() {
         sort,
     });
 
-    const columns = useMemo(() => getTableColoums(), []);
+    // const columns = useMemo(() => getTableColoums(), []);
+    const columns = useMemo(() => getTableColoums(), [institutions]);
 
     const { getTableProps, getPaginationProps } = useHScrollTable({
         columns,
@@ -129,7 +130,7 @@ function InstitutionsTable() {
                 <form onSubmit={searchTable}>
                     <SearchInput
                         className={styles.searchInput}
-                        placeholder="기관 명, 캠프 명으로 검색"
+                        placeholder="기관 명으로 검색"
                         size="lg"
                         value={searchText}
                         onChange={(e) => {

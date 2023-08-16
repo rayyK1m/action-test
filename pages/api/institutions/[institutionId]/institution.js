@@ -8,7 +8,7 @@ import { ROLE } from '@/constants/db';
 const router = createRouter();
 
 router
-    .use(checkAuth({ roles: [ROLE.INSTITUTION] }))
+    .use(checkAuth({ roles: [ROLE.INSTITUTION, ROLE.FOUNDATION] }))
     .get(institutionsCtrl.getInstitutionAdmin);
 
 export default router.handler({

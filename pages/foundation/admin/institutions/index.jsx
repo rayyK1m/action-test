@@ -3,7 +3,7 @@ import qs from 'query-string';
 
 import Layout from '@/components/Layout/Layout';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
-import { withSessionSsr } from '@/server/utils/auth';
+import { checkAuthSsr } from '@/server/utils/auth';
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
 import FoundationAdminInstitutions from '@/view/foundation/admin/institutions';
 import { FOUNDATION_ADMIN_INSTITUTIONS_DEFAULT_QUERY } from '@/view/foundation/admin/institutions/InstitutionsTable/InstitutionsTable.constants';
@@ -11,6 +11,7 @@ import {
     institutionsApis,
     institutionsKeys,
 } from '@/query-hooks/useInstitutions';
+import { ROLE } from '@/constants/db';
 
 export default function FoundationAdminInstitutionsPage() {
     const { data: userData } = useSession.GET();
@@ -29,7 +30,10 @@ export default function FoundationAdminInstitutionsPage() {
     );
 }
 
-export const getServerSideProps = withSessionSsr(async (context) => {
+export const getServerSideProps = checkAuthSsr({
+    shouldLogin: true,
+    roles: [ROLE.FOUNDATION],
+})(async (context) => {
     const queryClient = new QueryClient();
 
     /** session 세팅 */

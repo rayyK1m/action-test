@@ -1,10 +1,14 @@
 import { useGetInstitutionAdmin } from '@/query-hooks/useInstitutions';
+import useSession from '@/query-hooks/useSession';
 import { FileInputItem } from '@/view/components/ValidateFormItem';
 
 import styles from './Editable.module.scss';
 
 function Editable() {
-    const { data: instituionAdmin } = useGetInstitutionAdmin();
+    const { data: userData } = useSession.GET();
+    const { data: instituionAdmin } = useGetInstitutionAdmin(
+        userData.institutionId,
+    );
 
     const {
         reports: { fileObject },

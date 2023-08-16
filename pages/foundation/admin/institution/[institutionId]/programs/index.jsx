@@ -4,7 +4,7 @@ import qs from 'query-string';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 
 import Layout from '@/components/Layout/Layout';
-import { withSessionSsr } from '@/server/utils/auth';
+import { checkAuthSsr } from '@/server/utils/auth';
 
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
 import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
@@ -12,6 +12,7 @@ import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
 import FoundationAdminInstitutionPrograms from '@/view/foundation/admin/institution/[institutionId]/programs';
 import { FOUNDATION_ADMIN_DEFAULT_QUERY } from '@/view/foundation/admin/components/ProgramTable/ProgramTable.constants';
 import { createServerAxios } from '@/utils';
+import { ROLE } from '@/constants/db';
 
 export default function FoundationAdminInstitutionProgramsPage() {
     const { data: userData } = useSession.GET();
@@ -30,7 +31,10 @@ export default function FoundationAdminInstitutionProgramsPage() {
     );
 }
 
-export const getServerSideProps = withSessionSsr(async (context) => {
+export const getServerSideProps = checkAuthSsr({
+    shouldLogin: true,
+    roles: [ROLE.FOUNDATION],
+})(async (context) => {
     const queryClient = new QueryClient();
     const { institutionId, page, limit, search, sort } = context.query;
 

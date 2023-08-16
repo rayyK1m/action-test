@@ -8,7 +8,12 @@ import sessionKeys from './keys';
  * @typedef UserData
  * @property {string} id
  * @property {string} name
+ * @property {string} email
+ * @property {number} level
  * @property {Role} role
+ * @property {string | null} institutionId
+ * @property {boolean} isInstitution
+ * @property {boolean} isTeacher
  */
 
 /**

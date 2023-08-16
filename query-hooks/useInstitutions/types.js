@@ -11,7 +11,7 @@
  */
 
 /**
- * @typedef FileMap
+ * @typedef FileObject
  * @property {string} label
  * @property {string} name
  * @property {string} url
@@ -21,7 +21,7 @@
  * @typedef Reports
  * @property {ReviewStatus} reviewStatus
  * @property {string} feedback
- * @property {{ [key: string]: FileMap }} fileObject
+ * @property {{ [key: string]: FileObject }} fileObject
  */
 
 /**
@@ -33,5 +33,16 @@
  * @property {Logo} logo
  * @property {Reports} reports
  */
+
+/**
+ * @typedef InstitutionFoundation
+ * @property {string} id 기관 id
+ * @property {string} name
+ * @property {Logo} logo
+ * @property {ReviewStatus} submitFileStatus
+ * @property {number} programCount
+ */
+
+/** @typedef {Array<InstitutionFoundation>} InstitutionsFoundation */
 
 export default {};

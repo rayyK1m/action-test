@@ -8,6 +8,7 @@ import { CAMPS } from '@/dummy/camps';
 
 import ExternalResponseError from '../../utils/error/ExternalResponseError';
 import { getAuthHeader } from '../../utils/auth';
+import { REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
 
 const DELAY_TIME = 500;
 
@@ -707,6 +708,88 @@ export const getInstitutionsFoundation = async ({
     }
 };
 
+const submitReports = async ({ userId, institutionId, fileObject }) => {
+    try {
+        const { data } = await swcampInstance.post(
+            `/api/v1/institutions/${institutionId}/reports`,
+            { fileObject },
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
+const patchReports = async ({ userId, institutionId, fileObject }) => {
+    try {
+        const { data } = await swcampInstance.patch(
+            `/api/v1/institutions/${institutionId}/reports`,
+            { fileObject },
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
+const submitExtraReports = async ({ userId, institutionId, fileObject }) => {
+    try {
+        const { data } = await swcampInstance.post(
+            `/api/v1/institutions/${institutionId}/extra-reports`,
+            { fileObject },
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
+const submitReportReview = async ({
+    userId,
+    institutionId,
+    reviewStatus,
+    feedback,
+}) => {
+    try {
+        const body =
+            reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.승인됨.key
+                ? { reviewStatus }
+                : { reviewStatus, feedback };
+
+        const { data } = await swcampInstance.post(
+            `/api/v1/institutions/${institutionId}/review-status`,
+            body,
+            {
+                headers: { ...getAuthHeader(userId) },
+            },
+        );
+        return data;
+    } catch (err) {
+        throw new ExternalResponseError({
+            message: 'SWCAMP API',
+            res: { status: err.response.status, data: err.response.data },
+        });
+    }
+};
+
 const getUserInfo = async ({ userId }) => {
     try {
         const res = await fetch(
@@ -796,6 +879,10 @@ const swcampSdk = {
     getInstitution,
     getInstitutionAdmin,
     getInstitutionsFoundation,
+    submitReports,
+    patchReports,
+    submitExtraReports,
+    submitReportReview,
 
     /**
      * Camp

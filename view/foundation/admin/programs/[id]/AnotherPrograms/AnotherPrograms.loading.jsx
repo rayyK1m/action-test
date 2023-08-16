@@ -9,7 +9,7 @@ function AnotherProgramsLoading() {
     return (
         <Content.Container gap="lg">
             <Content.Container.Title>
-                심사중인 다른 프로그램
+                심사 중인 프로그램
             </Content.Container.Title>
             <ul className={styles.list}>
                 {Array.from({ length: 2 }, (_, index) => {

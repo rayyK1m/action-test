@@ -2,6 +2,7 @@ import { REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
 
 export const TEXT_MAP = /** @type {const} */ ({
     [REQUIRED_FILE_SUBMIT_STATUS.제출.key]: '필수 자료 제출 내역',
+    [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key]: '필수 자료 제출 내역',
     [REQUIRED_FILE_SUBMIT_STATUS.미제출.key]: '필수 자료 제출하기',
     [REQUIRED_FILE_SUBMIT_STATUS.승인됨.key]: '필수 자료 제출 내역',
     [REQUIRED_FILE_SUBMIT_STATUS.거절됨.key]: '필수 자료 제출 내역',
@@ -10,6 +11,7 @@ export const TEXT_MAP = /** @type {const} */ ({
 
 export const COLOR_MAP = /** @type {const} */ ({
     [REQUIRED_FILE_SUBMIT_STATUS.제출.key]: 'basic',
+    [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key]: 'basic',
     [REQUIRED_FILE_SUBMIT_STATUS.미제출.key]: 'primary',
     [REQUIRED_FILE_SUBMIT_STATUS.승인됨.key]: 'basic',
     [REQUIRED_FILE_SUBMIT_STATUS.거절됨.key]: 'danger',
@@ -18,6 +20,7 @@ export const COLOR_MAP = /** @type {const} */ ({
 
 export const TOOLTIP_ISSHOW_MAP = /** @type {const} */ ({
     [REQUIRED_FILE_SUBMIT_STATUS.제출.key]: false,
+    [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key]: false,
     [REQUIRED_FILE_SUBMIT_STATUS.미제출.key]: true,
     [REQUIRED_FILE_SUBMIT_STATUS.승인됨.key]: false,
     [REQUIRED_FILE_SUBMIT_STATUS.거절됨.key]: true,

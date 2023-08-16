@@ -86,7 +86,7 @@ const ProgramDetail = () => {
                                 <ContentWrapper>
                                     <DownloadButton
                                         filename="프로그램 교안"
-                                        href={programData.attachedFiles[0]}
+                                        href={programData.attachedFiles[0].url}
                                     >
                                         첨부파일 다운로드
                                     </DownloadButton>

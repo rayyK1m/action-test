@@ -5,6 +5,7 @@ import useProgram from '@/query-hooks/useProgram';
 import Table from '../Table/Table';
 import styles from './EducationLocation.module.scss';
 import { PROGRAM_DIVISION } from '@/constants/db';
+import Map from '@/components/Map/Map';
 
 const EducationLocation = () => {
     const router = useRouter();
@@ -18,6 +19,9 @@ const EducationLocation = () => {
 
     return (
         <div className={styles.container}>
+            {programData.type.division === PROGRAM_DIVISION.집합형 && (
+                <Map address={programData.educationLocation.address} />
+            )}
             <Table>
                 <tbody>
                     <tr>

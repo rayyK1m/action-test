@@ -8,10 +8,14 @@ import useToggle from '@/hooks/useToggle';
 
 import styles from './RegistNewProgramButton.module.scss';
 import { PROGRAM_DIVISION, REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
+import useSession from '@/query-hooks/useSession';
 
 function RegistNewProgramButton() {
+    const { data: userData } = useSession.GET();
     const [isOpenDropdown, toggleDropdown] = useToggle();
-    const { data: instituionAdmin } = useGetInstitutionAdmin();
+    const { data: instituionAdmin } = useGetInstitutionAdmin(
+        userData.institutionId,
+    );
 
     const {
         reports: { reviewStatus },
@@ -19,6 +23,7 @@ function RegistNewProgramButton() {
 
     const isDisabled = !(
         reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key ||
+        reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key ||
         reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.승인됨.key
     );
 

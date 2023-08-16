@@ -12,7 +12,7 @@ import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
 import FoundationAdminPrograms from '@/view/foundation/admin/programs';
 import { FOUNDATION_ADMIN_DEFAULT_QUERY } from '@/view/foundation/admin/components/ProgramTable/ProgramTable.constants';
 import { createServerAxios } from '@/utils';
-import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
+import { PROGRAM_REVIEW_STATUS, ROLE } from '@/constants/db';
 
 export default function FoundationAdminProgramsPage() {
     const { data: userData } = useSession.GET();
@@ -33,7 +33,7 @@ export default function FoundationAdminProgramsPage() {
 
 export const getServerSideProps = checkAuthSsr({
     shouldLogin: true,
-    roles: ['foundation'],
+    roles: [ROLE.FOUNDATION],
 })(async (context) => {
     const queryClient = new QueryClient();
     const { page, limit, search, sort, reviewStatus } = context.query;

@@ -9,23 +9,31 @@ import {
     ErrorCircleIcon,
 } from '@goorm-dev/gds-icons';
 import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
+import Link from 'next/link';
 
 function ProgramInfo() {
     const router = useRouter();
-    const { data: program } = useGetProgramAdmin(router.query.id);
+    const { id: programId } = router.query;
+    const { data: program } = useGetProgramAdmin(programId);
 
     return (
         <div className={styles.container}>
             <div className={styles.wrapper}>
-                <div className={styles.item}>
+                <Link
+                    className={styles.item}
+                    href={`/foundation/admin/programs/${programId}/applicant`}
+                >
                     <span>신청자</span> <b>{program.campTicketCount}명</b>
                     <ChevronRightIcon />
-                </div>
+                </Link>
                 <div className={styles.divider} />
-                <div className={styles.item}>
+                <Link
+                    className={styles.item}
+                    href={`/foundation/admin/programs/${programId}/camps`}
+                >
                     <span>캠프</span> <b>{program.campCount}개</b>
                     <ChevronRightIcon />
-                </div>
+                </Link>
             </div>
             {program.reviewStatus === PROGRAM_REVIEW_STATUS.승인.key && (
                 <Badge size="lg" color="success" leftIcon={CheckCircleIcon}>

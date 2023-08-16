@@ -47,21 +47,6 @@ const getProgramAdmin = async (programId, axiosInstance = axios) => {
 
     return {
         ...data,
-        /** TODO: jade presignedUrl 작업 완료되면 로직 수정 */
-        attachedFiles: [
-            {
-                url: 'https://statics.goorm.io/images/swcamp/beginner_thumbnail.png',
-                filename: 'file-1.png',
-            },
-            {
-                url: 'https://statics.goorm.io/images/swcamp/beginner_thumbnail.png',
-                filename: 'file-2.png',
-            },
-            {
-                url: 'https://statics.goorm.io/images/swcamp/beginner_thumbnail.png',
-                filename: 'file-3.png',
-            },
-        ],
     };
 };
 

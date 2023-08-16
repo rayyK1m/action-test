@@ -14,7 +14,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 
 import CustomAlert from '@/components/CustomAlert/CustomAlert';
-import { useGetInstitutionAdmin } from '@/query-hooks/useInstitutions';
+import {
+    useGetInstitutionAdmin,
+    usePatchReports,
+    useSubmitExtraReports,
+    useSubmitReports,
+} from '@/query-hooks/useInstitutions';
 
 import {
     ALERT_TEXT_MAP,
@@ -30,18 +35,67 @@ import styles from './SubmitModal.module.scss';
 
 import { TEXT_MAP } from '../RequiredFileSubmitButton.constants';
 import { REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
+import useSession from '@/query-hooks/useSession';
 
 function SubmitModal({ isOpen, toggle }) {
+    const { data: userData } = useSession.GET();
     const methods = useForm({});
-    const { data: instituionAdmin } = useGetInstitutionAdmin();
+    const { data: instituionAdmin } = useGetInstitutionAdmin(
+        userData.institutionId,
+    );
+
+    const submitReports = useSubmitReports();
+    const patchReports = usePatchReports();
+    const submitExtraReports = useSubmitExtraReports();
 
     const {
-        reports: { reviewStatus, feedback },
+        reports: { reviewStatus, feedback, fileObject },
     } = instituionAdmin;
     const [isEditable, setIsEditable] = useState(EDITABLE_MAP[reviewStatus]);
 
-    const onSubmit = (data) => {
-        console.log({ dataBeforeSubmit: data });
+    const onSubmit = async (formData) => {
+        const { institutionId } = userData;
+
+        const finalFileObject = Object.entries(formData).reduce(
+            (acc, [key, { filename, url }]) => {
+                if (
+                    (REQUIRED_FILE_SUBMIT_STATUS.거절됨.key ||
+                        REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key) &&
+                    fileObject[key].url === url
+                ) {
+                    return acc;
+                }
+
+                acc[key] = { name: filename, url };
+                return acc;
+            },
+            {},
+        );
+
+        switch (reviewStatus) {
+            case REQUIRED_FILE_SUBMIT_STATUS.미제출.key:
+                await submitReports.mutateAsync({
+                    institutionId,
+                    fileObject: finalFileObject,
+                });
+                break;
+
+            case REQUIRED_FILE_SUBMIT_STATUS.거절됨.key:
+                await patchReports.mutateAsync({
+                    institutionId,
+                    fileObject: finalFileObject,
+                });
+                break;
+
+            case REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key:
+                await submitExtraReports.mutateAsync({
+                    institutionId,
+                    fileObject: finalFileObject,
+                });
+                break;
+        }
+
+        toggle();
     };
 
     useEffect(() => {

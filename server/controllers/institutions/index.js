@@ -1,5 +1,6 @@
 import swcampSdk from '@/server/libs/swcamp';
 import validation from './validation';
+import { REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
 
 const getInstitutions = async (req, res) => {
     const { page, limit = 16, search, active = false } = req.query;
@@ -36,12 +37,17 @@ const getInstitutionAdmin = async (req, res) => {
         ...item,
         reports: {
             ...(item?.reports && item.reports),
-            /** TODO: temp 값임 DB도 완벽히 적용되면 제거 */
-            // reviewStatus: 'SUBMIT',
-            reviewStatus: 'NOT_SUBMITTED',
-            // reviewStatus: 'APPROVE',
-            // reviewStatus: 'REJECT',
-            // reviewStatus: 'ADDITIONAL',
+            reviewStatus:
+                item?.reports?.reviewStatus ||
+                REQUIRED_FILE_SUBMIT_STATUS.미제출.key,
+            fileObject: item?.reports?.fileObject || {
+                ['institution-A']: {
+                    label: '참여 인력 업무 분장',
+                },
+                ['institution-B']: {
+                    label: '안전 관리 계획서',
+                },
+            },
         },
         name: item?.name || '이름 없음',
     });
@@ -61,11 +67,68 @@ const getInstitutionsFoundation = async (req, res) => {
     return res.json({ items, totalCount: total });
 };
 
+const submitReports = async (req, res) => {
+    const { institutionId } = req.query;
+    const { id: userId } = req.session || {};
+
+    const fileObject = req.body;
+    const data = await swcampSdk.submitReports({
+        userId,
+        institutionId,
+        fileObject,
+    });
+    return res.json(data);
+};
+
+const patchReports = async (req, res) => {
+    const { institutionId } = req.query;
+    const { id: userId } = req.session || {};
+
+    const fileObject = req.body;
+    const data = await swcampSdk.patchReports({
+        userId,
+        institutionId,
+        fileObject,
+    });
+    return res.json(data);
+};
+
+const submitExtraReports = async (req, res) => {
+    const { institutionId } = req.query;
+    const { id: userId } = req.session || {};
+
+    const fileObject = req.body;
+    const data = await swcampSdk.submitExtraReports({
+        userId,
+        institutionId,
+        fileObject,
+    });
+    return res.json(data);
+};
+
+const submitReportReview = async (req, res) => {
+    const { institutionId } = req.query;
+    const { id: userId } = req.session || {};
+
+    const { reviewStatus, feedback } = req.body;
+    const data = await swcampSdk.submitReportReview({
+        userId,
+        institutionId,
+        reviewStatus,
+        feedback,
+    });
+    return res.json(data);
+};
+
 const institutionsCtrl = {
     getInstitutions,
     getInstitution,
     getInstitutionAdmin,
     getInstitutionsFoundation,
+    submitReports,
+    patchReports,
+    submitExtraReports,
+    submitReportReview,
     validation,
 };
 

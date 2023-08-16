@@ -1,0 +1,17 @@
+.alert {
+    font-size: 0.75rem /* 12px -> .75rem */;
+    line-height: 1.125rem /* 18px -> 1.125rem */;
+    margin: 0;
+    min-height: 2.625rem /* 42px -> 2.625rem */;
+
+    & svg {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+
+.modalBody {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem /* 16px -> 1rem */;
+}

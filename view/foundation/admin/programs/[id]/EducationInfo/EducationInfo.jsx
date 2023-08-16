@@ -52,6 +52,7 @@ function EducationInfo() {
                     <Content.Box.Title>프로그램 교안</Content.Box.Title>
                     <div>
                         <DownloadButton
+                            isZip
                             filename="프로그램 교안"
                             href={program.attachedFiles}
                             size="sm"

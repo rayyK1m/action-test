@@ -17,10 +17,14 @@ import styles from './RequiredFileSubmitButton.module.scss';
 
 import SubmitModal from './SubmitModal/SubmitModal';
 import CustomTooltip from './CustomTooltip';
+import useSession from '@/query-hooks/useSession';
 
 function RequiredFileSubmitButton() {
+    const { data: userData } = useSession.GET();
     const [isOpenModal, toggleModal] = useToggle();
-    const { data: instituionAdmin } = useGetInstitutionAdmin();
+    const { data: instituionAdmin } = useGetInstitutionAdmin(
+        userData.institutionId,
+    );
 
     const {
         reports: { reviewStatus },
