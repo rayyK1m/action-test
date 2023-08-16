@@ -32,14 +32,14 @@ import SelectApplicantTableLoading from './SelectApplicantTable.loading';
 import styles from './SelectApplicantTable.module.scss';
 
 const Table = forwardRef(function Table(
-    { setSelectedCount, onSelectedRowChange, page },
+    { setSelectedCount, onSelectedRowChange },
     ref,
 ) {
     const router = useRouter();
     const { search } = router.query;
 
     const [{ pageIndex, pageSize }, setPagination] = useState({
-        pageIndex: page,
+        pageIndex: 0,
         pageSize: 10,
     });
     const [sorting, setSorting] = useState([]);
@@ -80,9 +80,10 @@ const Table = forwardRef(function Table(
     useEffect(() => {
         setPagination((prev) => ({
             ...prev,
-            pageIndex: page,
+            pageIndex: 0,
         }));
-    }, [page]);
+    }, [search]);
+
     useEffect(() => {
         ref.current.resetRowSelection = resetRowSelection;
     }, [ref, resetRowSelection]);
@@ -149,7 +150,6 @@ function SelectApplicantTable({ onSelectedRowChange }) {
      */
     const tableRef = useRef({}); // NOTE: <Table /> 에서만 접근 가능한 함수(resetRowSelection)를 사용하기 위한 ref
     const [searchText, setSearchText] = useState('');
-    const [page, setPage] = useState(0);
     const [selectedCount, setSelectedCount] = useState(0);
 
     const handleSearchChange = useCallback((e) => {
@@ -165,7 +165,6 @@ function SelectApplicantTable({ onSelectedRowChange }) {
                 routerPushShallow(memoizedRouter, {
                     search: value,
                 });
-                setPage(0);
             }
         },
         [memoizedRouter],
@@ -218,7 +217,6 @@ function SelectApplicantTable({ onSelectedRowChange }) {
                     ref={tableRef}
                     onSelectedRowChange={onSelectedRowChange}
                     setSelectedCount={setSelectedCount}
-                    page={page}
                 />
             </SSRSuspense>
         </div>
