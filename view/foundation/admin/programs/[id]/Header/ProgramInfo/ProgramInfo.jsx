@@ -29,7 +29,7 @@ function ProgramInfo() {
                 <div className={styles.divider} />
                 <Link
                     className={styles.item}
-                    href={`/foundation/admin/programs/${programId}/camps`}
+                    href={`/foundation/admin/programs/${programId}/camps?page=1&limit=10&sort=-createdAt&division=방문형&institutionId=inst1`}
                 >
                     <span>캠프</span> <b>{program.campCount}개</b>
                     <ChevronRightIcon />
