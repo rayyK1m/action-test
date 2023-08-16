@@ -45,10 +45,8 @@ import styles from './CampManageContainer.module.scss';
 function CampManageContainer() {
     const queryClient = useQueryClient();
     const router = useRouter();
-    const {
-        asPath,
-        query: { id: programId, division, page, limit, sort },
-    } = router;
+    const { asPath, query } = router;
+    const { id: programId, division, page, limit, sort } = query;
     const basePath = asPath.substring(0, asPath.lastIndexOf('?')); // 쿼리 스트링을 제외한 basePath
     const itemLimit = limit * 1;
 
@@ -65,7 +63,7 @@ function CampManageContainer() {
     const campCopyMutation = useCopyCamp();
     const { data: userData } = useSession.GET();
 
-    const institutionId = userData.institutionId || query.institutionId;
+    const institutionId = userData.institutionId || router.query.institutionId;
     const { data } = useGetProgramCamps(programId, {
         institutionId,
         page: page,
