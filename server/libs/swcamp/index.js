@@ -351,6 +351,7 @@ const getCamps = async ({
                 },
             },
         );
+
         return data;
     } catch (err) {
         throw new ExternalResponseError({

@@ -35,13 +35,6 @@ const deleteCamps = async ({ campIds, institutionId }) => {
     return data;
 };
 
-const getCamp = async ({ campId, institutionId }, axiosInstance = axios) => {
-    const { data } = await axiosInstance.get(
-        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camps/${campId}?institutionId=${institutionId}`,
-    );
-    return data;
-};
-
 const getCampClasses = async (programId, axiosInstance = axios) => {
     const { data } = await axiosInstance.get(
         `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camps/class?programId=${programId}`,
@@ -72,6 +65,13 @@ const deleteCampParticipants = async ({ campId, targets, meta }) => {
     );
 
     return { result: data, ...meta };
+};
+
+const getCamp = async ({ campId, institutionId }, axiosInstance = axios) => {
+    const { data } = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camps/${campId}?institutionId=${institutionId}`,
+    );
+    return data;
 };
 
 const createCamp = async (formData) => {

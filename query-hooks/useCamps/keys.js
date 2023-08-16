@@ -1,9 +1,6 @@
 const campsKeys = {
     all: () => ['camps'],
 
-    item: () => [...campsKeys.all(), 'item'],
-    itemDetail: (campId) => [...campsKeys.item(), campId],
-
     /**
      * 단일 캠프 (Camp)
      */

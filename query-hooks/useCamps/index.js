@@ -63,14 +63,9 @@ const useDeleteCamps = () => {
 };
 
 const useGetCamp = (campId) => {
-    const { query } = useRouter();
-    const { data: userData } = useSession.GET();
-
-    const institutionId = query.institutionId || userData.id;
-
     return useQuery({
         queryKey: campsKeys.itemDetail(campId),
-        queryFn: () => campsApis.getCamp({ campId, institutionId }),
+        queryFn: () => campsApis.getCamp(campId),
         refetchOnWindowFocus: true,
         staleTime: 5 * 60 * 1000,
     });
