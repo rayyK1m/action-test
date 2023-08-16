@@ -59,12 +59,12 @@ function ConfirmModal({ isOpen, toggle, rowData }) {
                     {requiredFeedback &&
                         submitFileStatus ===
                             (REQUIRED_FILE_SUBMIT_STATUS.제출.key ||
-                                REQUIRED_FILE_SUBMIT_STATUS.거절됨.key) && (
+                                REQUIRED_FILE_SUBMIT_STATUS.거절.key) && (
                             <span>거절 사유 작성하기</span>
                         )}
                     {requiredFeedback &&
                         submitFileStatus ===
-                            REQUIRED_FILE_SUBMIT_STATUS.승인됨.key && (
+                            REQUIRED_FILE_SUBMIT_STATUS.승인.key && (
                             <span>추가 자료 요청하기</span>
                         )}
                     <Badge />

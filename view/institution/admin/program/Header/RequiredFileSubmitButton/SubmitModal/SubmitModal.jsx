@@ -59,7 +59,7 @@ function SubmitModal({ isOpen, toggle }) {
         const finalFileObject = Object.entries(formData).reduce(
             (acc, [key, { filename, url }]) => {
                 if (
-                    (REQUIRED_FILE_SUBMIT_STATUS.거절됨.key ||
+                    (REQUIRED_FILE_SUBMIT_STATUS.거절.key ||
                         REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key) &&
                     fileObject[key].url === url
                 ) {
@@ -80,7 +80,7 @@ function SubmitModal({ isOpen, toggle }) {
                 });
                 break;
 
-            case REQUIRED_FILE_SUBMIT_STATUS.거절됨.key:
+            case REQUIRED_FILE_SUBMIT_STATUS.거절.key:
                 await patchReports.mutateAsync({
                     institutionId,
                     fileObject: finalFileObject,
@@ -125,7 +125,7 @@ function SubmitModal({ isOpen, toggle }) {
                                 reviewStatus ===
                                     REQUIRED_FILE_SUBMIT_STATUS.미제출.key ||
                                 reviewStatus ===
-                                    REQUIRED_FILE_SUBMIT_STATUS.승인됨.key
+                                    REQUIRED_FILE_SUBMIT_STATUS.승인.key
                             ) && (
                                 <Badge
                                     size="md"
@@ -139,7 +139,7 @@ function SubmitModal({ isOpen, toggle }) {
 
                         <ModalBody className={styles.modalBody}>
                             {reviewStatus !==
-                                REQUIRED_FILE_SUBMIT_STATUS.승인됨.key && (
+                                REQUIRED_FILE_SUBMIT_STATUS.승인.key && (
                                 <CustomAlert
                                     leftIcon={NoticeCircleIcon}
                                     className={styles.alert}
@@ -149,7 +149,7 @@ function SubmitModal({ isOpen, toggle }) {
                             )}
 
                             {reviewStatus ===
-                                REQUIRED_FILE_SUBMIT_STATUS.거절됨.key && (
+                                REQUIRED_FILE_SUBMIT_STATUS.거절.key && (
                                 <FormContent.Box>
                                     <FormContent.Box.Title>
                                         거절 사유

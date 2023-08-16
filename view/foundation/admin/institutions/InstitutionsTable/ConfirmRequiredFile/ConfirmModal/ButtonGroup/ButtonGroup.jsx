@@ -37,7 +37,7 @@ function ButtonGroup() {
     const approve = async () => {
         await submitReportReview.mutateAsync({
             institutionId,
-            reviewStatus: REQUIRED_FILE_SUBMIT_STATUS.승인됨.key,
+            reviewStatus: REQUIRED_FILE_SUBMIT_STATUS.승인.key,
         });
         toggle();
     };
@@ -46,14 +46,14 @@ function ButtonGroup() {
         await submitReportReview.mutateAsync({
             institutionId,
             feedback: formData.feedback,
-            reviewStatus: REQUIRED_FILE_SUBMIT_STATUS.거절됨.key,
+            reviewStatus: REQUIRED_FILE_SUBMIT_STATUS.거절.key,
         });
         toggle();
     };
 
     switch (submitFileStatus) {
         case REQUIRED_FILE_SUBMIT_STATUS.제출.key:
-        case REQUIRED_FILE_SUBMIT_STATUS.거절됨.key:
+        case REQUIRED_FILE_SUBMIT_STATUS.거절.key:
             return requiredFeedback ? (
                 <Button
                     size="lg"
@@ -98,7 +98,7 @@ function ButtonGroup() {
                     승인하기
                 </Button>
             );
-        case REQUIRED_FILE_SUBMIT_STATUS.승인됨.key:
+        case REQUIRED_FILE_SUBMIT_STATUS.승인.key:
             return (
                 <Button
                     size="lg"

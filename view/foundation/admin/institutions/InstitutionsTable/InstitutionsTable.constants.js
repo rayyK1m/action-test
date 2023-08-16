@@ -18,13 +18,13 @@ export const STATUS_TEXT = /** @type {const} */ ({
         icon: NoticeCircleIcon,
         color: 'warning',
     },
-    [REQUIRED_FILE_SUBMIT_STATUS.승인됨.key]: {
-        text: REQUIRED_FILE_SUBMIT_STATUS.승인됨.text,
+    [REQUIRED_FILE_SUBMIT_STATUS.승인.key]: {
+        text: REQUIRED_FILE_SUBMIT_STATUS.승인.text,
         icon: CheckCircleIcon,
         color: 'success',
     },
-    [REQUIRED_FILE_SUBMIT_STATUS.거절됨.key]: {
-        text: REQUIRED_FILE_SUBMIT_STATUS.거절됨.text,
+    [REQUIRED_FILE_SUBMIT_STATUS.거절.key]: {
+        text: REQUIRED_FILE_SUBMIT_STATUS.거절.text,
         icon: ErrorCircleIcon,
         color: 'danger',
     },

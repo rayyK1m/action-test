@@ -840,7 +840,7 @@ const submitReportReview = async ({
 }) => {
     try {
         const body =
-            reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.승인됨.key
+            reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.승인.key
                 ? { reviewStatus }
                 : { reviewStatus, feedback };
 

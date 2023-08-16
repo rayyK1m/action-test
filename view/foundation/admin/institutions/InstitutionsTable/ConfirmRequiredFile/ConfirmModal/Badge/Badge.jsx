@@ -19,7 +19,7 @@ function Badge() {
                     수정 요청됨
                 </GDSBadge>
             );
-        case REQUIRED_FILE_SUBMIT_STATUS.승인됨.key:
+        case REQUIRED_FILE_SUBMIT_STATUS.승인.key:
             return (
                 <GDSBadge
                     className="ml-2"
@@ -27,11 +27,11 @@ function Badge() {
                     color="success"
                     leftIcon={CheckCircleIcon}
                 >
-                    {REQUIRED_FILE_SUBMIT_STATUS.승인됨.text}
+                    {REQUIRED_FILE_SUBMIT_STATUS.승인.text}
                 </GDSBadge>
             );
         case REQUIRED_FILE_SUBMIT_STATUS.제출.key:
-        case REQUIRED_FILE_SUBMIT_STATUS.거절됨.key:
+        case REQUIRED_FILE_SUBMIT_STATUS.거절.key:
         default:
             return <></>;
     }

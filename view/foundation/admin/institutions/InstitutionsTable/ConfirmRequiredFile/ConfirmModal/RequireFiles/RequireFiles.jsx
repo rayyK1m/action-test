@@ -42,7 +42,7 @@ function RequireFiles() {
                         </div>
                     </FormContent.Box>
                 ))}
-            {(submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.거절됨.key ||
+            {(submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.거절.key ||
                 submitFileStatus ===
                     REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key ||
                 submitFileStatus ===

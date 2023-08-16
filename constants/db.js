@@ -100,12 +100,12 @@ export const REQUIRED_FILE_SUBMIT_STATUS = {
         key: 'NOT_SUBMITTED',
         value: 'NOT_SUBMITTED',
     },
-    승인됨: {
+    승인: {
         text: '승인됨',
         key: 'APPROVE',
         value: 'APPROVE',
     },
-    거절됨: {
+    거절: {
         text: '거절됨',
         key: 'REJECT',
         value: 'REJECT',

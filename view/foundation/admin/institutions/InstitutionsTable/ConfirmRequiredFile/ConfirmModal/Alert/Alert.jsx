@@ -12,7 +12,7 @@ function Alert() {
 
     switch (submitFileStatus) {
         case REQUIRED_FILE_SUBMIT_STATUS.제출.key:
-        case REQUIRED_FILE_SUBMIT_STATUS.거절됨.key:
+        case REQUIRED_FILE_SUBMIT_STATUS.거절.key:
             return (
                 <CustomAlert
                     leftIcon={NoticeCircleIcon}
@@ -23,7 +23,7 @@ function Alert() {
                         : '운영 기관이 제출한 문서를 확인 후 승인하거나, 거절 사유를 작성하여 수정 요청해 주세요.'}
                 </CustomAlert>
             );
-        case REQUIRED_FILE_SUBMIT_STATUS.승인됨.key:
+        case REQUIRED_FILE_SUBMIT_STATUS.승인.key:
             return (
                 <CustomAlert
                     leftIcon={NoticeCircleIcon}

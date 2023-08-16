@@ -24,7 +24,7 @@ function RegistNewProgramButton() {
     const isDisabled = !(
         reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key ||
         reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key ||
-        reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.승인됨.key
+        reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.승인.key
     );
 
     return (

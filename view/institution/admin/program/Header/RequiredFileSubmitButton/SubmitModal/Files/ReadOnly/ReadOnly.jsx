@@ -45,7 +45,7 @@ function ReadOnly() {
                     </FormContent.Box>
                 ))}
 
-            {(reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.거절됨.key ||
+            {(reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.거절.key ||
                 reviewStatus ===
                     REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key ||
                 reviewStatus ===

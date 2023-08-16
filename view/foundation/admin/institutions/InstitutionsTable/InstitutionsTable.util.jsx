@@ -70,7 +70,7 @@ export const getTableColoums = () => {
                     submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.제출.key ||
                     submitFileStatus ===
                         REQUIRED_FILE_SUBMIT_STATUS.미제출.key ||
-                    submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.거절됨.key;
+                    submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.거절.key;
 
                 return (
                     <Button
