@@ -10,6 +10,7 @@ import {
 } from '@goorm-dev/gds-icons';
 import { PROGRAM_REVIEW_STATUS } from '@/constants/db';
 import Link from 'next/link';
+import qs from 'query-string';
 
 function ProgramInfo() {
     const router = useRouter();
@@ -29,7 +30,12 @@ function ProgramInfo() {
                 <div className={styles.divider} />
                 <Link
                     className={styles.item}
-                    href={`/foundation/admin/programs/${programId}/camps?page=1&limit=10&sort=-createdAt&division=방문형&institutionId=inst1`}
+                    href={`/foundation/admin/programs/${programId}/camps?${qs.stringify(
+                        {
+                            institutionId: program.institution.id,
+                            division: program.type.division,
+                        },
+                    )}`}
                 >
                     <span>캠프</span> <b>{program.campCount}개</b>
                     <ChevronRightIcon />

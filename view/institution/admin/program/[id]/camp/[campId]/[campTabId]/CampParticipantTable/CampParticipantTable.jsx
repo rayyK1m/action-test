@@ -26,19 +26,13 @@ import SSRSuspense from '@/components/SSRSuspense';
 import CampParticipantTableLoading from './CampParticipantTable.loading';
 import { checkIsFoundationPage, routerPushShallow } from '@/utils';
 
-const Table = ({
-    programId,
-    campId,
-    onSetTotalCount,
-    isFoundationPage,
-    page,
-}) => {
+const Table = ({ programId, campId, onSetTotalCount, isFoundationPage }) => {
     const router = useRouter();
     const queryClient = useQueryClient();
     const { search } = router.query;
 
     const [{ pageIndex, pageSize }, setPagination] = useState({
-        pageIndex: page,
+        pageIndex: 0,
         pageSize: 10,
     });
     const [sorting, setSorting] = useState([]);
@@ -80,9 +74,9 @@ const Table = ({
     useEffect(() => {
         setPagination((prev) => ({
             ...prev,
-            pageIndex: page,
+            pageIndex: 0,
         }));
-    }, [page]);
+    }, [search]);
 
     useEffect(() => {
         onSetTotalCount(totalCount);
@@ -131,7 +125,6 @@ function CampParticipantTable() {
 
     const [totalCount, setTotalCount] = useState(0);
     const [searchText, setSearchText] = useState('');
-    const [page, setPage] = useState(0);
 
     const handleSearchChange = useCallback((e) => {
         const {
@@ -143,7 +136,6 @@ function CampParticipantTable() {
     const handleSearchKeyDown = useCallback((key, value) => {
         if (key === ENTER_KEY) {
             routerPushShallow(router, { search: value });
-            setPage(0);
         }
     }, []);
 
@@ -193,7 +185,6 @@ function CampParticipantTable() {
                     campId={campId}
                     onSetTotalCount={setTotalCount}
                     isFoundationPage={isFoundationPage}
-                    page={page}
                 />
             </SSRSuspense>
         </div>
