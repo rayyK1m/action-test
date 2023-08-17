@@ -66,7 +66,7 @@ function SubmitModal({ isOpen, toggle }) {
                     return acc;
                 }
 
-                acc[key] = { name: filename, url };
+                acc[key] = { filename, url };
                 return acc;
             },
             {},

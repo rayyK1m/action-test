@@ -13,7 +13,7 @@
 /**
  * @typedef FileObject
  * @property {string} label
- * @property {string} name
+ * @property {string} filename
  * @property {string} url
  */
 
