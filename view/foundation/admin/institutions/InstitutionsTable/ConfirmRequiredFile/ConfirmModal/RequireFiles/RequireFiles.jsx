@@ -25,8 +25,8 @@ function RequireFiles() {
     return (
         <>
             {Object.entries(fileObject)
-                .filter(([_, { name, url }]) => !!(name && url))
-                .map(([key, { label, name, url }]) => (
+                .filter(([_, { filename, url }]) => !!(filename && url))
+                .map(([key, { label, filename, url }]) => (
                     <FormContent.Box key={`${key}-readonly`}>
                         <FormContent.Box.Title isRequired>
                             {label}
@@ -35,9 +35,9 @@ function RequireFiles() {
                             <DownloadButton
                                 size="lg"
                                 href={url}
-                                filename={name}
+                                filename={filename}
                             >
-                                {name}
+                                {filename}
                             </DownloadButton>
                         </div>
                     </FormContent.Box>

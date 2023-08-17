@@ -16,21 +16,20 @@ function Editable() {
 
     return (
         <>
-            {Object.entries(fileObject).map(([key, { label, name, url }]) => {
-                return (
-                    <FileInputItem
-                        key={`${key}-editable`}
-                        fileKey={key}
-                        label={label}
-                        isRequired
-                        maxFileSize={30}
-                        defaultValue={{
-                            filename: name,
-                            url,
-                        }}
-                    />
-                );
-            })}
+            {Object.entries(fileObject).map(
+                ([key, { label, filename, url }]) => {
+                    return (
+                        <FileInputItem
+                            key={`${key}-editable`}
+                            fileKey={key}
+                            label={label}
+                            isRequired
+                            maxFileSize={30}
+                            defaultValue={{ filename, url }}
+                        />
+                    );
+                },
+            )}
         </>
     );
 }

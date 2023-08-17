@@ -23,8 +23,8 @@ function ReadOnly() {
     return (
         <>
             {Object.entries(fileObject)
-                .filter(([_, { name, url }]) => !!(name && url))
-                .map(([key, { label, name, url }]) => (
+                .filter(([_, { filename, url }]) => !!(filename && url))
+                .map(([key, { label, filename, url }]) => (
                     <FormContent.Box key={`${key}-readonly`}>
                         <FormContent.Box.Title isRequired>
                             {label}
@@ -32,14 +32,14 @@ function ReadOnly() {
                         <div>
                             <DownloadButton
                                 href={url}
-                                filename={name}
+                                filename={filename}
                                 icon={<DownloadIcon />}
                                 iconSide="right"
                                 color="basic"
                                 size="lg"
                                 outline
                             >
-                                {name}
+                                {filename}
                             </DownloadButton>
                         </div>
                     </FormContent.Box>
