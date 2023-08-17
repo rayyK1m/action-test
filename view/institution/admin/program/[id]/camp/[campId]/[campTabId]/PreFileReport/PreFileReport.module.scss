@@ -1,5 +1,8 @@
 .formItems {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem; /* 24px -> 1.5rem */
+}
+.formItem {
+    width: fit-content;
 }

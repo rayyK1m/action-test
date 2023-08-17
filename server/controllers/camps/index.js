@@ -27,17 +27,8 @@ const getCamp = async (req, res) => {
             getSDKKeyMap(CAMP_FILE_LIST.사전_제출.id, false),
         );
 
-        // TODO: SDK server에서 label->filename으로 수정돼야함.
-        const temp = {};
-        for (const key in convertedPreFileReport) {
-            temp[key] = {
-                filename: convertedPreFileReport[key].url,
-                url: convertedPreFileReport[key].url,
-            };
-        }
-
         return {
-            ...temp,
+            ...convertedPreFileReport,
         };
     });
     const convertedPostFileReports = postFileReport.map((item) => {
@@ -46,17 +37,8 @@ const getCamp = async (req, res) => {
             getSDKKeyMap(CAMP_FILE_LIST.종료_제출.id, false),
         );
 
-        // TODO: SDK server에서 label->filename으로 수정돼야함.
-        const temp = {};
-        for (const key in convertedPostFileReport) {
-            temp[key] = {
-                filename: convertedPostFileReport[key].url,
-                url: convertedPostFileReport[key].url,
-            };
-        }
-
         return {
-            ...temp,
+            ...convertedPostFileReport,
         };
     });
     const convertedPostReports = postReport.map((item) => {

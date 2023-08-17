@@ -1,18 +1,21 @@
 import { useRouter } from 'next/router';
 import { FormProvider, useForm } from 'react-hook-form';
+import cn from 'classnames';
 
-import { Form, Button } from '@goorm-dev/gds-components';
+import { Form, Button, Label } from '@goorm-dev/gds-components';
 
+import DownloadButton from '@/components/DownloadButton/DownloadButton';
 import { FileInputItem } from '@/view/components/ValidateFormItem';
 import { useGetCamp, useSubmitCampReport } from '@/query-hooks/useCamps';
+import useSession from '@/query-hooks/useSession';
 
 import styles from './PostFileReport.module.scss';
 
-import { CAMP_FILE_LIST } from '@/constants/db';
+import { CAMP_FILE_LIST, ROLE } from '@/constants/db';
 
 function PostFileReport() {
     const {
-        종료_제출: { children: postFileInputs },
+        종료_제출: { children: POST_FILE_INPUTS },
     } = CAMP_FILE_LIST;
 
     const {
@@ -21,64 +24,131 @@ function PostFileReport() {
 
     /** server state */
     const { mutate } = useSubmitCampReport();
-    const { data } = useGetCamp(campId);
-    const postFileReportValues = data.postFileReport[0];
+    const { data: postFileReport } = useGetCamp(campId);
+    const {
+        data: { role },
+    } = useSession.GET();
+    const postFileReportValues = postFileReport[0];
 
     /** 지역 state */
-    const postFileFormObject = useForm({
+    const forms = useForm({
         values: {
-            [postFileInputs.결과_보고서.id]: postFileReportValues
-                ? [postFileInputs.결과_보고서.id]
+            [POST_FILE_INPUTS.결과_보고서.id]: postFileReportValues
+                ? [POST_FILE_INPUTS.결과_보고서.id]
                 : undefined,
-            [postFileInputs.기타.id]: postFileReportValues
-                ? [postFileInputs.기타.id]
+            [POST_FILE_INPUTS.기타.id]: postFileReportValues
+                ? [POST_FILE_INPUTS.기타.id]
                 : undefined,
         },
     });
-
-    // TODO: postFileFormObject.watch(['결과_보고서', '기타', .. ]) 안먹는 문제 해결하기
-    const { 기타, ...requiredFileInputs } = postFileFormObject.watch();
-    const isDisabledSaveButton = Object.values(requiredFileInputs).some(
-        (i) => i === undefined,
-    );
+    const { watch, getValues } = forms;
+    const formValues = getValues();
+    const isRequiredFieldsFilled = !Object.values(POST_FILE_INPUTS)
+        .filter(({ isRequired }) => isRequired)
+        .every(({ id }) => watch(id));
 
     const handleButtonClick = async () => {
-        const formData = postFileFormObject.getValues();
-        mutate({ campId, formData, reportType: CAMP_FILE_LIST.종료_제출.id });
+        mutate({
+            campId,
+            formData: formValues,
+            reportType: CAMP_FILE_LIST.종료_제출.id,
+        });
     };
 
     return (
         <div className="d-flex flex-column">
             <h5 className="mb-4">종료 제출</h5>
-            <FormProvider {...postFileFormObject}>
+            <FormProvider {...forms}>
                 <Form>
                     <div className={styles.formItems}>
-                        {Object.keys(postFileInputs).map((item) => (
-                            <FileInputItem
-                                key={postFileInputs[item].id}
-                                fileKey={postFileInputs[item].id}
-                                label={postFileInputs[item].label}
-                                maxFileSize={postFileInputs[item].maxFileSize}
-                                isRequired={
-                                    postFileInputs[item].id !==
-                                    postFileInputs.기타.id
+                        {role === ROLE.INSTITUTION ? (
+                            <>
+                                {
+                                    /**
+                                     * [운영 기관 Adimn] 파일 업로드 및 수정이 가능한 FileInput 노출
+                                     */
+                                    Object.keys(POST_FILE_INPUTS).map(
+                                        (item) => (
+                                            <FileInputItem
+                                                key={POST_FILE_INPUTS[item].id}
+                                                fileKey={
+                                                    POST_FILE_INPUTS[item].id
+                                                }
+                                                label={
+                                                    POST_FILE_INPUTS[item].label
+                                                }
+                                                maxFileSize={
+                                                    POST_FILE_INPUTS[item]
+                                                        .maxFileSize
+                                                }
+                                                isRequired={
+                                                    POST_FILE_INPUTS[item]
+                                                        .isRequired
+                                                }
+                                                pathType="camp"
+                                            />
+                                        ),
+                                    )
                                 }
-                                pathType="camp"
-                            />
-                        ))}
+                            </>
+                        ) : (
+                            <>
+                                {
+                                    /**
+                                     * [재단 Admin] 파일 다운로드가 가능한 Button 노출
+                                     */
+                                    Object.keys(formValues).map((key) => {
+                                        const { filename, url } =
+                                            formValues[key] || {};
+                                        const { label } = POST_FILE_INPUTS[key];
+
+                                        return (
+                                            <div
+                                                key={key}
+                                                className={cn(
+                                                    'd-flex flex-column',
+                                                    styles.formItem,
+                                                )}
+                                            >
+                                                <Label>{label}</Label>
+
+                                                {filename ? (
+                                                    <DownloadButton
+                                                        key={filename}
+                                                        size="md"
+                                                        href={url}
+                                                        filename={filename}
+                                                    >
+                                                        {filename}
+                                                    </DownloadButton>
+                                                ) : (
+                                                    <p className="subtitle-1 text-gray-600">
+                                                        없음
+                                                    </p>
+                                                )}
+                                            </div>
+                                        );
+                                    })
+                                }
+                            </>
+                        )}
                     </div>
 
-                    <hr className="w-100 my-4" />
-                    <div className="d-flex justify-content-end">
-                        <Button
-                            size="xl"
-                            color="primary"
-                            disabled={isDisabledSaveButton}
-                            onClick={handleButtonClick}
-                        >
-                            등록하기
-                        </Button>
-                    </div>
+                    {role === ROLE.INSTITUTION && (
+                        <>
+                            <hr className="w-100 my-4" />
+                            <div className="d-flex justify-content-end">
+                                <Button
+                                    size="xl"
+                                    color="primary"
+                                    disabled={isRequiredFieldsFilled}
+                                    onClick={handleButtonClick}
+                                >
+                                    등록하기
+                                </Button>
+                            </div>
+                        </>
+                    )}
                 </Form>
             </FormProvider>
         </div>

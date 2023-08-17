@@ -10,14 +10,15 @@ import {
 } from '@goorm-dev/gds-components';
 
 import { useGetCamp, useSubmitCampReport } from '@/query-hooks/useCamps';
+import useSession from '@/query-hooks/useSession';
 
 import styles from './PostReport.module.scss';
 
-import { CAMP_FILE_LIST } from '@/constants/db';
+import { CAMP_FILE_LIST, ROLE } from '@/constants/db';
 
 function PostReport() {
     const {
-        결과_보고: { children: postReport },
+        결과_보고: { children: POST_INPUTS },
     } = CAMP_FILE_LIST;
 
     const {
@@ -26,8 +27,12 @@ function PostReport() {
 
     /** server state */
     const { mutate, isLoading: isSubmittingReport } = useSubmitCampReport();
-    const { data, isFetching: isGettingReport } = useGetCamp(campId);
-    const postReportValues = data.postReport[0];
+    const {
+        data: { postReport },
+        isFetching: isGettingReport,
+    } = useGetCamp(campId);
+    const { data: userData } = useSession.GET();
+    const postReportValues = postReport[0];
 
     /** 지역 state */
     const {
@@ -48,53 +53,66 @@ function PostReport() {
 
     return (
         <div className="d-flex flex-column">
-            <h5 className="mb-4">종료 제출</h5>
+            <h5 className="mb-4">결과 보고</h5>
 
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.formGroups}>
-                    {Object.keys(postReport).map((item) => (
-                        <FormGroup key={postReport[item].id} className="mb-0">
-                            <Label for={postReport[item].id}>
-                                {postReport[item].label}
+                    {Object.keys(POST_INPUTS).map((item) => (
+                        <FormGroup key={POST_INPUTS[item].id} className="mb-0">
+                            <Label for={POST_INPUTS[item].id}>
+                                {POST_INPUTS[item].label}
 
-                                {postReport[item].isRequired && (
+                                {POST_INPUTS[item].isRequired && (
                                     <span className="ml-1 text-danger">*</span>
                                 )}
                             </Label>
+
                             <Input
+                                readOnly={userData.role === ROLE.FOUNDATION}
                                 defaultValue={
-                                    postReportValues
-                                        ? postReportValues[postReport[item].id]
-                                        : undefined
+                                    userData.role === ROLE.INSTITUTION
+                                        ? postReportValues?.[
+                                              POST_INPUTS[item].id
+                                          ]
+                                        : postReportValues?.[
+                                              POST_INPUTS[item].id
+                                          ] || '0000'
                                 }
                                 type="number"
                                 min={0}
+                                max={1000}
                                 bsSize="lg"
-                                data-required={postReport[item].isRequired}
-                                id={postReport[item].id}
-                                placeholder={postReport[item].placeholder}
+                                data-required={POST_INPUTS[item].isRequired}
+                                id={POST_INPUTS[item].id}
+                                placeholder={POST_INPUTS[item].placeholder}
                                 disabled={isSubmittingReport || isGettingReport}
-                                {...register(postReport[item].id, {
-                                    required: postReport[item].isRequired,
+                                {...register(POST_INPUTS[item].id, {
+                                    required: POST_INPUTS[item].isRequired,
                                     valueAsNumber: true,
                                 })}
                             />
                         </FormGroup>
                     ))}
                 </div>
-                <hr className="w-100 my-4" />
-                <div className="d-flex justify-content-end">
-                    <Button
-                        size="xl"
-                        color="primary"
-                        disabled={
-                            !isValid || isSubmittingReport || isGettingReport
-                        }
-                        type="submit"
-                    >
-                        등록하기
-                    </Button>
-                </div>
+                {userData.role === ROLE.INSTITUTION && (
+                    <>
+                        <hr className="w-100 my-4" />
+                        <div className="d-flex justify-content-end">
+                            <Button
+                                size="xl"
+                                color="primary"
+                                disabled={
+                                    !isValid ||
+                                    isSubmittingReport ||
+                                    isGettingReport
+                                }
+                                type="submit"
+                            >
+                                등록하기
+                            </Button>
+                        </div>
+                    </>
+                )}
             </Form>
         </div>
     );
