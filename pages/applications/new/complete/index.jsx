@@ -1,9 +1,13 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-
-import CompleteView from '@/view/components/CompleteView/CompleteView';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
 
 import { Button } from '@goorm-dev/gds-components';
+
+import CompleteView from '@/view/components/CompleteView/CompleteView';
+import { checkAuthSsr } from '@/server/utils/auth';
+import { sessionKeys } from '@/query-hooks/useSession';
+import { ROLE } from '@/constants/db';
 
 function Page() {
     const router = useRouter();
@@ -43,5 +47,21 @@ function Page() {
         </>
     );
 }
+
+export const getServerSideProps = checkAuthSsr({shouldLogin: true, roles: [ROLE.STUDENT, ROLE.TEACHER]})(async (context) => {
+    const queryClient = new QueryClient();
+    
+    const session = context.req.session;
+    if (session) {
+        /** session 정보 세팅 */
+        await queryClient.prefetchQuery(sessionKeys.all(), () => session);
+    }
+
+    return {
+        props: {
+            dehydratedState: dehydrate(queryClient),
+        },
+    };
+})
 
 export default Page;
