@@ -1,6 +1,7 @@
 export const CAMP_KEYS = {
     typeKey: 'type',
     categoryKey: 'category',
+    difficultyKey: 'difficulty',
     managerNameKey: 'managerName',
     managerPhoneNumberKey: 'managerPhoneNumber',
     managerEmailKey: 'managerEmail',
@@ -29,6 +30,7 @@ export const CAMP_KEYS = {
 export const CAMP_INFO_KEYS = {
     typeKey: 'type',
     categoryKey: 'category',
+    difficultyKey: 'difficulty',
     managerNameKey: 'managerName',
     managerPhoneNumberKey: 'managerPhoneNumber',
     managerEmailKey: 'managerEmail',

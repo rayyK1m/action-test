@@ -76,16 +76,24 @@ const ApplyTargetInput = ({ programTarget }) => {
 export const ReadOnlyProgramForm = () => {
     const { getValues } = useFormContext();
 
-    const { institutionKey, typeKey, nameKey } = PROGRAM_KEYS;
+    const { institutionKey, typeKey, nameKey, difficultyKey } = PROGRAM_KEYS;
 
     return (
         <div className={styles.form}>
             <h5 className="text-gray-700">프로그램 정보</h5>
-            <FormInput
-                label="운영 기관 명"
-                value={getValues(institutionKey)}
-                readOnly
-            />
+            <div className={styles.divideRow}>
+                <FormInput
+                    label="운영 기관 명"
+                    value={getValues(institutionKey)}
+                    readOnly
+                />
+                <FormInput
+                    label="프로그램 명"
+                    value={getValues(nameKey)}
+                    readOnly
+                />
+            </div>
+
             <div className={styles.divideRow}>
                 <FormInput
                     label="프로그램 유형"
@@ -93,8 +101,8 @@ export const ReadOnlyProgramForm = () => {
                     readOnly
                 />
                 <FormInput
-                    label="프로그램 명"
-                    value={getValues(nameKey)}
+                    label="프로그램 수준"
+                    value={getValues(difficultyKey)}
                     readOnly
                 />
             </div>

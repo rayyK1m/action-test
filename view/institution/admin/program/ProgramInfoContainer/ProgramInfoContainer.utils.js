@@ -82,6 +82,7 @@ export const getDefaultValues = (program) => {
         [PROGRAM_APPLY_KEYS.thumbnailKey]: program.thumbnail,
         [PROGRAM_APPLY_KEYS.durationKey]: program.type.duration,
         [PROGRAM_APPLY_KEYS.categoryKey]: program.category,
+        [PROGRAM_APPLY_KEYS.difficultyKey]: program.difficulty,
         [PROGRAM_APPLY_KEYS.descriptionKey]: program.description,
         [PROGRAM_APPLY_KEYS.operateLocationKey]: program.operateLocation,
         [PROGRAM_APPLY_KEYS.contactKey]: program.contact,

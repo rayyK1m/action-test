@@ -66,6 +66,7 @@ function ApplicantTicketInfoPannel({ isOpen, onClose, ticketId, title }) {
             [PROGRAM_KEYS.nameKey]: ticket?.program.name,
             [PROGRAM_KEYS.typeKey]: `${ticket?.program.type.division} / ${ticket?.program.type.duration}`,
             [PROGRAM_KEYS.learningTimeKey]: ticket?.program.learningTime,
+            [PROGRAM_KEYS.difficultyKey]: ticket?.program.difficulty,
             [CAMP_APPLY_KEYS.elementaryTargetKey]:
                 ticket?.targetGroup.elementarySchool,
             [CAMP_APPLY_KEYS.middleTargetKey]: ticket?.targetGroup.middleSchool,

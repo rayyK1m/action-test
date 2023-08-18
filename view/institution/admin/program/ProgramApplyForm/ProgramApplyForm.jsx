@@ -26,9 +26,10 @@ import { ChevronDownIcon } from '@goorm-dev/gds-icons';
 import Divider from '@/components/Divider';
 import styles from '../program.module.scss';
 
-import { formatNumberInput, addDay } from '@/utils/index.js';
+import { formatNumberInput, addDay, numberMaxLength } from '@/utils/index.js';
 import {
     PROGRAM_CATEGORIES,
+    PROGRAM_DIFFICULTY,
     PROGRAM_DIVISION,
     PROGRAM_DURATION,
     PROGRAM_OPERATION_LOCATIONS,
@@ -198,6 +199,7 @@ const BasicForm = ({ division }) => {
         thumbnailKey,
         nameKey,
         categoryKey,
+        difficultyKey,
         operateLocationKey,
         durationKey,
         descriptionKey,
@@ -220,6 +222,7 @@ const BasicForm = ({ division }) => {
                     placeholder="예) 신나는 로봇 코딩"
                     inputKey={nameKey}
                     maxLength={50}
+                    onInput={numberMaxLength}
                 />
                 <ProgramTypeInput
                     division={division}
@@ -236,12 +239,19 @@ const BasicForm = ({ division }) => {
                 />
                 <DropdownInputItem
                     isRequired
-                    label="운영 지역"
-                    placeholder="운영 지역 선택"
-                    items={PROGRAM_OPERATION_LOCATIONS}
-                    dropdownKey={operateLocationKey}
+                    label="프로그램 수준"
+                    dropdownKey={difficultyKey}
+                    placeholder="수준 선택"
+                    items={Object.values(PROGRAM_DIFFICULTY)}
                 />
             </div>
+            <DropdownInputItem
+                isRequired
+                label="운영 지역"
+                placeholder="운영 지역 선택"
+                items={PROGRAM_OPERATION_LOCATIONS}
+                dropdownKey={operateLocationKey}
+            />
             <EditorInputItem
                 label="프로그램 소개"
                 placeholder="예) 프로그래밍의 순차와 반복에 대해 학습하며 컴퓨팅 사고력을 키운다."

@@ -35,7 +35,7 @@ function ProgramInfoHeader({ program, isEdit, setIsEdit }) {
     };
 
     const handlePushCampMangePage = () => {
-        router.push(`${currentPath}/camp`);
+        router.push(`${currentPath}/camp?division=${program.type.division}`);
     };
 
     const isReviewApprove =
@@ -53,7 +53,7 @@ function ProgramInfoHeader({ program, isEdit, setIsEdit }) {
                             color="link"
                             onClick={() => router.push('/institution/admin')}
                         />
-                        <h3 className="d-inline">프로그램 정보</h3>
+                        <h3 className="d-inline">{program.name}</h3>
                     </div>
                     <div className={styles.guideContainer}>
                         <div

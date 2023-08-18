@@ -67,30 +67,37 @@ function PostReport() {
                                 )}
                             </Label>
 
-                            <Input
-                                readOnly={userData.role === ROLE.FOUNDATION}
-                                defaultValue={
-                                    userData.role === ROLE.INSTITUTION
-                                        ? postReportValues?.[
-                                              POST_INPUTS[item].id
-                                          ]
-                                        : postReportValues?.[
-                                              POST_INPUTS[item].id
-                                          ] || '0000'
-                                }
-                                type="number"
-                                min={0}
-                                max={1000}
-                                bsSize="lg"
-                                data-required={POST_INPUTS[item].isRequired}
-                                id={POST_INPUTS[item].id}
-                                placeholder={POST_INPUTS[item].placeholder}
-                                disabled={isSubmittingReport || isGettingReport}
-                                {...register(POST_INPUTS[item].id, {
-                                    required: POST_INPUTS[item].isRequired,
-                                    valueAsNumber: true,
-                                })}
-                            />
+                            {userData.role === ROLE.FOUNDATION &&
+                            !postReportValues?.[POST_INPUTS[item].id] ? (
+                                <p className="text-gray-600">없음</p>
+                            ) : (
+                                <Input
+                                    readOnly={userData.role === ROLE.FOUNDATION}
+                                    defaultValue={
+                                        userData.role === ROLE.INSTITUTION
+                                            ? postReportValues?.[
+                                                  POST_INPUTS[item].id
+                                              ]
+                                            : postReportValues?.[
+                                                  POST_INPUTS[item].id
+                                              ] || '0000'
+                                    }
+                                    type="number"
+                                    min={0}
+                                    max={1000}
+                                    bsSize="lg"
+                                    data-required={POST_INPUTS[item].isRequired}
+                                    id={POST_INPUTS[item].id}
+                                    placeholder={POST_INPUTS[item].placeholder}
+                                    disabled={
+                                        isSubmittingReport || isGettingReport
+                                    }
+                                    {...register(POST_INPUTS[item].id, {
+                                        required: POST_INPUTS[item].isRequired,
+                                        valueAsNumber: true,
+                                    })}
+                                />
+                            )}
                         </FormGroup>
                     ))}
                 </div>

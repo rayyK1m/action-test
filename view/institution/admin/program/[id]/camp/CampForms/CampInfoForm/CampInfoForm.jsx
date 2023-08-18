@@ -1,10 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
-import {
-    FormDropdown,
-    FormWrapper,
-    FormDatePicker,
-} from '@/components/FormItem';
+import { FormWrapper, FormDatePicker } from '@/components/FormItem';
 import {
     DropdownInputItem,
     InputItem,
@@ -25,7 +21,7 @@ import CustomAlert from '@/components/CustomAlert/CustomAlert';
 
 const ProgramTypeInput = ({ division, duration }) => {
     return (
-        <FormWrapper label="프로그램 유형">
+        <FormWrapper label="캠프 유형">
             <div className={styles.divideRow}>
                 <Button
                     icon={<ChevronDownIcon />}
@@ -101,23 +97,30 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
     );
 };
 
-const ReadOnlyCampForm = ({ onClickEdit, division }) => {
-    const { typeKey, programNameKey, categoryKey, operateLocationKey } =
-        CAMP_INFO_KEYS;
+const ReadOnlyCampForm = ({ onClickEdit, division, isFoundationPage }) => {
+    const {
+        typeKey,
+        programNameKey,
+        categoryKey,
+        difficultyKey,
+        operateLocationKey,
+    } = CAMP_INFO_KEYS;
     const { getValues } = useFormContext();
 
     return (
         <div className={styles.form}>
             <div className="d-flex justify-content-between align-items-center">
                 <h5>캠프 정보</h5>
-                <Button
-                    icon={<EditIcon />}
-                    onClick={onClickEdit}
-                    size="lg"
-                    color="link"
-                >
-                    수정하기
-                </Button>
+                {!isFoundationPage && (
+                    <Button
+                        icon={<EditIcon />}
+                        onClick={onClickEdit}
+                        size="lg"
+                        color="link"
+                    >
+                        수정하기
+                    </Button>
+                )}
             </div>
             <div className={styles.divideRow}>
                 <ProgramTypeInput
@@ -126,25 +129,25 @@ const ReadOnlyCampForm = ({ onClickEdit, division }) => {
                 />
                 <InputItem label="캠프 명" inputKey={programNameKey} disabled />
             </div>
-            {division === PROGRAM_DIVISION.방문형 ? (
+
+            <div className={styles.divideRow}>
                 <DropdownInputItem
                     label="캠프 카테고리"
                     dropdownKey={categoryKey}
                     readOnly
                 />
-            ) : (
-                <div className={styles.divideRow}>
-                    <DropdownInputItem
-                        label="운영 지역"
-                        dropdownKey={operateLocationKey}
-                        readOnly
-                    />
-                    <DropdownInputItem
-                        label="캠프 카테고리"
-                        dropdownKey={categoryKey}
-                        readOnly
-                    />
-                </div>
+                <DropdownInputItem
+                    label="캠프 수준"
+                    dropdownKey={difficultyKey}
+                    disabled
+                />
+            </div>
+            {division === PROGRAM_DIVISION.집합형 && (
+                <DropdownInputItem
+                    label="운영 지역"
+                    dropdownKey={operateLocationKey}
+                    readOnly
+                />
             )}
         </div>
     );
@@ -242,7 +245,7 @@ const ReadOnlyTeacherForm = () => {
                     />
                 </div>
                 <CustomAlert leftIcon={InfoCircleIcon} className="mt-3 mb-0">
-                    신청자가 강사명을 기재하지 않은 경우, 기관에서 지정합니다.
+                    강사 정보는 운영 기관에서 직접 입력해야 합니다.
                 </CustomAlert>
             </div>
         </div>
@@ -323,7 +326,7 @@ const ReadOnlyEducationForm = ({ division }) => {
 };
 
 /** 캠프 정보 */
-export const CampInfoForm = ({ program, onClickEdit }) => {
+export const CampInfoForm = ({ program, onClickEdit, isFoundationPage }) => {
     const {
         type: { division },
         targetGroup,
@@ -331,7 +334,11 @@ export const CampInfoForm = ({ program, onClickEdit }) => {
 
     return (
         <div className={styles.infoForms}>
-            <ReadOnlyCampForm division={division} onClickEdit={onClickEdit} />
+            <ReadOnlyCampForm
+                division={division}
+                onClickEdit={onClickEdit}
+                isFoundationPage={isFoundationPage}
+            />
             <ReadOnlyManagerForm division={division} />
             <ReadOnlyTeacherForm division={division} />
             <ReadOnlyTargetForm programTargetGroup={targetGroup} />

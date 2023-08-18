@@ -14,6 +14,7 @@ export const getDefaultValues = ({ isEdit, data }) => {
         return {
             ...camp,
             [CAMP_INFO_KEYS.programNameKey]: program.name,
+            [CAMP_KEYS.categoryKey]: camp.category || program.category,
         };
 
     const {
@@ -25,8 +26,8 @@ export const getDefaultValues = ({ isEdit, data }) => {
             division: camp.type.division,
             duration: camp.type.duration,
         },
+        [CAMP_KEYS.categoryKey]: camp.category || program.category,
         [CAMP_KEYS.programNameKey]: program.name,
-        [CAMP_KEYS.categoryKey]: camp.category,
         [CAMP_KEYS.operateLocationKey]: camp.operateLocationKey,
         [CAMP_KEYS.managerNameKey]: camp?.managerName,
         [CAMP_KEYS.managerEmailKey]: camp?.managerEmail,

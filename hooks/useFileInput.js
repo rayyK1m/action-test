@@ -71,7 +71,10 @@ const useFileInput = ({ defaultFiles = [], isMultiple }) => {
             const fileList = Array.from(files);
             if (!isMultiple) {
                 // reset
-                setFileMap(() => getFileMap(fileList));
+                if (fileList.length > 0) {
+                    console.log(fileList);
+                    setFileMap(() => getFileMap(fileList));
+                }
             } else {
                 // add
                 setFileMap((prev) => ({ ...prev, ...getFileMap(fileList) }));

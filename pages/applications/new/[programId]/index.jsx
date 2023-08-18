@@ -28,7 +28,7 @@ export default Page;
 
 export const getServerSideProps = checkAuthSsr({
     shouldLogin: true,
-    roles: [ROLE.TEACHER, ROLE.TEACHER],
+    roles: [ROLE.STUDENT, ROLE.TEACHER],
 })(async (context) => {
     const queryClient = new QueryClient();
     const programId = context.params.programId;

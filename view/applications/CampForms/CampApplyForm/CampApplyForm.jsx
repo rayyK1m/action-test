@@ -1,7 +1,6 @@
 import {
     ProgramForm,
     ManagerForm,
-    TeacherForm,
     TargetForm,
     LearningTimeForm,
 } from './TeacherApplyForm';
@@ -13,7 +12,6 @@ export const TeacherTypeCamp = {
         <>
             <ProgramForm />
             <ManagerForm userId={userData.id} />
-            <TeacherForm />
             <TargetForm programTargetGroup={program.targetGroup} />
             <LearningTimeForm educationDate={program.educationDate} />
         </>

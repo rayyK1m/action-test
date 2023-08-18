@@ -104,7 +104,7 @@ export const getTableColums = () => {
                             isOpen={isOpen}
                             onClose={() => toggle(false)}
                             ticketId={rowData.id}
-                            title="참가자 추가하기"
+                            title="캠프 생성하기"
                         />
                     </>
                 );

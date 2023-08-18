@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -16,11 +16,16 @@ import { CampEditForm } from '../../../CampForms/CampApplyForm/CampApplyForm';
 import { Form, Button } from '@goorm-dev/gds-components';
 import styles from './Info.module.scss';
 import { PROGRAM_DIVISION } from '@/constants/db';
+import { checkIsFoundationPage } from '@/utils';
 
 function Info({ onChangeTabs }) {
     const router = useRouter();
     const { id, campId } = router.query;
     const [isEdit, setIsEdit] = useState(false);
+    const isFoundationPage = useMemo(
+        () => checkIsFoundationPage(router.pathname),
+        [router.pathname],
+    );
 
     const { data: program } = useGetProgramAdmin(id);
     const { data: camp } = useGetCamp(campId);
@@ -89,6 +94,7 @@ function Info({ onChangeTabs }) {
                     <CampInfoForm
                         program={program}
                         onClickEdit={() => setIsEdit(true)}
+                        isFoundationPage={isFoundationPage}
                     />
                 )}
             </Form>

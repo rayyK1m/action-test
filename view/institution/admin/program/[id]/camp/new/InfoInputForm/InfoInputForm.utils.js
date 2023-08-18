@@ -9,6 +9,7 @@ export const getDefaultValues = (campInfo, program) => {
             [CAMP_KEYS.programNameKey]: program.name,
             [CAMP_KEYS.operateLocationKey]: program.operateLocation,
             [CAMP_KEYS.categoryKey]: program.category,
+            [CAMP_KEYS.difficultyKey]: program.difficulty,
             [CAMP_KEYS.elementaryTargetKey]: [],
             [CAMP_KEYS.middleTargetKey]: [],
             [CAMP_KEYS.highTargetKey]: [],

@@ -45,12 +45,7 @@ import { useGetUserInfo } from '@/query-hooks/useUserInfo';
 function CampApplyContainer({ userData, programId }) {
     const router = useRouter();
     const [isOpen, toggle] = useToggle(false);
-    const {
-        data: {
-            swcampUserData: { schoolCode = '', schoolName = '' },
-            // userCertificateData: { phoneNumber },
-        },
-    } = useGetUserInfo();
+    const { data: userInfo } = useGetUserInfo();
 
     const {
         data: { count },
@@ -75,29 +70,27 @@ function CampApplyContainer({ userData, programId }) {
     } = useGetProgram({ id: programId });
     const createTicket = useCreateCampTicket();
 
-    {
-        /* NOTE: 010-1234-1234는 캠프 신청을 위한 임시방편(핸드폰 번호가 형식에 맞지 않으면 캠프 신청이 안됨)
-        테스트 유저에는 userCertification 정보가 없어서, 핸드폰 번호를 못 가져오므로 일단 임시로 추가해둠. 
-        유저 데이터에 추가되도록 수정 예정 */
-    }
     const methods = useForm({
         mode: 'onTouched',
         defaultValues: {
             [PROGRAM_KEYS.institutionKey]: program.institution.name,
             [PROGRAM_KEYS.typeKey]: program.type,
             [PROGRAM_KEYS.nameKey]: program.name,
+            [PROGRAM_KEYS.difficultyKey]: program.difficulty,
             [PROGRAM_KEYS.learningTimeKey]: program.learningTime,
             [USER_KEYS.phoneNumberKey]:
                 program.type.division === PROGRAM_DIVISION.방문형
-                    ? userData?.phoneNumber || '010-1234-1234'
+                    ? userInfo?.userCertificateData?.phoneNumber || ''
                     : '',
             [USER_KEYS.emailKey]: userData?.email,
             [CAMP_APPLY_KEYS.elementaryTargetKey]: [],
             [CAMP_APPLY_KEYS.middleTargetKey]: [],
             [CAMP_APPLY_KEYS.highTargetKey]: [],
             /** 유저 데이터 연결 안해서 임시로 지정해둔 상태, 수정 예정 */
-            [CAMP_APPLY_KEYS.schoolNameKey]: schoolName,
-            [CAMP_APPLY_KEYS.schoolCodeKey]: schoolCode,
+            [CAMP_APPLY_KEYS.schoolNameKey]:
+                userInfo.swcampUserData?.schoolName || '',
+            [CAMP_APPLY_KEYS.schoolCodeKey]:
+                userInfo.swcampUserData?.schoolCode || '',
             [CAMP_APPLY_KEYS.userNameKey]: userData.name,
         },
     });

@@ -31,4 +31,30 @@ body {
 
 :root {
     --newsac-primary: #b6cf52;
+    --newsac-banner-bg: #f1f1f1;
+}
+
+/** reactQuill Editor style*/
+/** placholder*/
+.quill > .ql-container > .ql-editor.ql-blank::before {
+    font-size: 0.875rem;
+    font-style: normal;
+    color: var(--hint);
+}
+
+/** border*/
+.quill > .ql-container {
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    border: 0.0625rem solid var(--gray-300) !important;
+}
+
+.quill > .ql-toolbar {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    border: 0.0625rem solid var(--gray-300) !important;
+}
+
+.quill > .ql-toolbar.ql-snow + .ql-container.ql-snow {
+    border-top: none !important;
 }

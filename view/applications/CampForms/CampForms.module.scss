@@ -28,7 +28,7 @@
 
 .disabled {
     pointer-events: none;
-    > label {
+    > span {
         opacity: 0.3;
     }
 }

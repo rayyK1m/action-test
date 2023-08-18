@@ -15,13 +15,14 @@ import {
 } from '@/query-hooks/useInstitutions';
 
 export const INSTITUTION_DEFAULT_QUERY = {
-    campType: PROGRAM_DIVISION.방문형,
+    campType: PROGRAM_DIVISION.집합형,
     limit: 8,
     page: 1,
     category: '',
     operateLocation: '',
     search: '',
     active: false,
+    sort: '-updatedAt',
 };
 
 export const getServerSideProps = withSessionSsr(async (context) => {
