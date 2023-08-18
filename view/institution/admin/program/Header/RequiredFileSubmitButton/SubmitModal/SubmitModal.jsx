@@ -89,6 +89,7 @@ function SubmitModal({ isOpen, toggle }) {
                 await patchReports.mutateAsync({
                     institutionId,
                     fileObject: finalFileObject,
+                    reviewStatus: 'SUBMIT',
                 });
                 break;
             case REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key:
