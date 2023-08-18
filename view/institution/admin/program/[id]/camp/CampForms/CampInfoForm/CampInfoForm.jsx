@@ -273,11 +273,13 @@ const ReadOnlyTargetForm = ({ programTargetGroup, isFoundationPage }) => {
                     label="최초 신청 인원"
                     inputKey={applicantCountKey}
                     disabled={!isFoundationPage}
+                    readOnly={isFoundationPage}
                 />
                 <InputItem
                     label="분반"
                     inputKey={classKey}
                     disabled={!isFoundationPage}
+                    readOnly={isFoundationPage}
                 />
             </div>
         </div>
@@ -305,7 +307,8 @@ const ReadOnlyEducationForm = ({ division, isFoundationPage }) => {
             <InputItem
                 label="총 교육 차시"
                 inputKey={learningTimeKey}
-                disabled
+                disabled={!isFoundationPage}
+                readOnly={isFoundationPage}
             />
             <div className={styles.divideRow}>
                 <FormDatePicker
@@ -313,12 +316,14 @@ const ReadOnlyEducationForm = ({ division, isFoundationPage }) => {
                     datePickerKey={educationStartDateKey}
                     timePickerKey={educationStartTimeKey}
                     disabled={!isFoundationPage}
+                    readOnly={isFoundationPage}
                 />
                 <FormDatePicker
                     label="교육 종료일"
                     datePickerKey={educationEndDateKey}
                     timePickerKey={educationEndTimeKey}
                     disabled={!isFoundationPage}
+                    readOnly={isFoundationPage}
                 />
             </div>
             {division === PROGRAM_DIVISION.집합형 && (
