@@ -15,10 +15,9 @@ import { useGetCamp } from '@/query-hooks/useCamps';
 
 import CampFunnel from '../CampFunnel';
 import { getCampBreadcrumbs } from './CampContainer.utils';
-
-import { ROLE } from '@/constants/db';
-import styles from './CampContainer.module.scss';
 import { checkIsFoundationPage } from '@/utils';
+
+import styles from './CampContainer.module.scss';
 
 function CampContainer() {
     const router = useRouter();

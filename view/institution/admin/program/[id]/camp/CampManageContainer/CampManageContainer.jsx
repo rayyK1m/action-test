@@ -117,7 +117,10 @@ function CampManageContainer() {
         columns: memoizationColumns,
         usePagination: true,
         manualPagination: true,
-        extraColumnType: TYPES.EXTRA_COLUMN_TYPE.CHECK_INDEX,
+        extraColumnType:
+            userData.role === ROLE.INSTITUTION
+                ? TYPES.EXTRA_COLUMN_TYPE.CHECK_INDEX
+                : undefined,
         pageCount: Math.ceil(total / itemLimit),
         pageIndex: page * 1 - 1,
         pageSize: itemLimit,
@@ -285,36 +288,37 @@ function CampManageContainer() {
                                     </span>
                                 </h5>
 
-                                {selectedRowCount !== 0 && (
-                                    <div className={styles.deleteWrapper}>
-                                        <h6 className="text-primary">
-                                            {selectedRowCount}건 선택됨
-                                        </h6>
+                                {userData.role === ROLE.INSTITUTION &&
+                                    selectedRowCount !== 0 && (
+                                        <div className={styles.deleteWrapper}>
+                                            <h6 className="text-primary">
+                                                {selectedRowCount}건 선택됨
+                                            </h6>
 
-                                        <div
-                                            className={
-                                                styles.deleteWrapperButtons
-                                            }
-                                        >
-                                            <Button
-                                                size="lg"
-                                                color="link"
-                                                icon={<RefreshIcon />}
-                                                onClick={resetRowSelection}
+                                            <div
+                                                className={
+                                                    styles.deleteWrapperButtons
+                                                }
                                             >
-                                                초기화
-                                            </Button>
-                                            <Button
-                                                size="lg"
-                                                color="danger"
-                                                icon={<TrashIcon />}
-                                                onClick={onToggleModal}
-                                            >
-                                                삭제하기
-                                            </Button>
+                                                <Button
+                                                    size="lg"
+                                                    color="link"
+                                                    icon={<RefreshIcon />}
+                                                    onClick={resetRowSelection}
+                                                >
+                                                    초기화
+                                                </Button>
+                                                <Button
+                                                    size="lg"
+                                                    color="danger"
+                                                    icon={<TrashIcon />}
+                                                    onClick={onToggleModal}
+                                                >
+                                                    삭제하기
+                                                </Button>
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
                             </div>
 
                             {total === 0 ? (
