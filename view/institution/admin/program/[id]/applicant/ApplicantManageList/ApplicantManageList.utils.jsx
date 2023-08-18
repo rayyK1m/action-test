@@ -1,14 +1,7 @@
 import { ellipsisedString } from '@/utils';
 import ProgramTypeBadge from '@/view/components/ProgramTypeBadge';
-import { useRouter } from 'next/router';
 
-export const getBreadcrumbs = (program) => {
-    const router = useRouter();
-    let isFoundationPage = false;
-    if (router.pathname.split('/')[1] === 'foundation') {
-        isFoundationPage = true;
-    }
-
+export const getBreadcrumbs = (program, isFoundationPage) => {
     return [
         {
             children: '프로그램 관리',

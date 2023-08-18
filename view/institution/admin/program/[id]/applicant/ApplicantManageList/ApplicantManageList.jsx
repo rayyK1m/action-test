@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { BackPageIcon } from '@goorm-dev/gds-icons';
 import { Button } from '@goorm-dev/gds-components';
 import { PROGRAM_DIVISION } from '@/constants/db';
+import { checkIsFoundationPage } from '@/utils';
 import { useGetProgramAdmin } from '@/query-hooks/usePrograms';
 import GridContainer from '@/components/GridContainer';
 import PageHeader from '@/components/PageHeader';
@@ -19,18 +20,26 @@ function ApplicantManageList() {
     const { id } = router.query;
     const { data: program } = useGetProgramAdmin(id);
 
+    const isFoundationPage = useMemo(
+        () => checkIsFoundationPage(router.pathname),
+        [router.pathname],
+    );
     return (
         <GridContainer fluid="xxl">
             <PageHeader useHrTag={true}>
                 <PageHeader.Title>
                     <PageHeader.Breadcrumb
-                        breadcrumbs={getBreadcrumbs(program)}
+                        breadcrumbs={getBreadcrumbs(program, isFoundationPage)}
                     />
                     <div className="d-flex align-items-center">
                         <Button
                             color="link"
                             tag={Link}
-                            href={'/institution/admin'}
+                            href={
+                                isFoundationPage
+                                    ? '/foundation/admin/programs'
+                                    : '/institution/admin'
+                            }
                             className="d-flex justify-content-center mr-2"
                             icon={<BackPageIcon />}
                         />
