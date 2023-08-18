@@ -105,7 +105,7 @@ const Header = ({ userData, className, children, ...props }) => {
                                     right
                                     className={styles.dropdownMenu}
                                 >
-                                    <DropdownItem>
+                                    <DropdownItem tag="a" href="/change_info">
                                         <Avatar
                                             name={userData.name}
                                             size="md"

@@ -38,6 +38,11 @@ export async function middleware(req) {
         return expireAllCookies(`${process.env.NEXT_PUBLIC_MAIN_HOST}`);
     }
 
+    // 내 정보 수정
+    if (req.nextUrl.pathname.startsWith('/change_info')) {
+        return NextResponse.redirect(`${process.env.ACCOUNT_HOST}/change_info`);
+    }
+
     // SSO 콜백
     if (req.nextUrl.pathname.startsWith('/auth/goorm/callback')) {
         const url = `${
@@ -73,5 +78,6 @@ export const config = {
         '/logout',
         '/auth/goorm/callback',
         '/foundation/admin/:path*',
+        '/change_info',
     ],
 };
