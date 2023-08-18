@@ -28,8 +28,12 @@ const ProgramTypeInput = ({ division, duration, isFoundationPage }) => {
                     color="select"
                     iconSide="right"
                     size="lg"
-                    className={cn(styles.button, styles.dropdown)}
-                    disabled={!isFoundationPage}
+                    className={cn(
+                        styles.button,
+                        styles.dropdown,
+                        isFoundationPage && styles.readOnlyButton,
+                    )}
+                    disabled
                 >
                     {division}
                 </Button>
@@ -38,8 +42,12 @@ const ProgramTypeInput = ({ division, duration, isFoundationPage }) => {
                     color="select"
                     iconSide="right"
                     size="lg"
-                    className={cn(styles.button, styles.dropdown)}
-                    disabled={!isFoundationPage}
+                    className={cn(
+                        styles.button,
+                        styles.dropdown,
+                        isFoundationPage && styles.readOnlyButton,
+                    )}
+                    disabled
                 >
                     {duration}
                 </Button>
@@ -132,6 +140,7 @@ const ReadOnlyCampForm = ({ onClickEdit, division, isFoundationPage }) => {
                     label="캠프 명"
                     inputKey={programNameKey}
                     disabled={!isFoundationPage}
+                    readOnly={isFoundationPage}
                 />
             </div>
 
