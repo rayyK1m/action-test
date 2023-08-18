@@ -36,7 +36,16 @@
 }
 
 .link {
-    background-color: transparent;
+    &:not(:hover) {
+        background-color: transparent;
+    }
+
+    &_active {
+        &:not(:hover) {
+            background-color: transparent !important;
+            color: var(--primary) !important;
+        }
+    }
 }
 
 .avatar {
