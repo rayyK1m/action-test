@@ -29,6 +29,7 @@ import {
     EDITABLE_MAP,
     FEEDBACK_SHOW_MAP,
     FEEDBACK_TITLE,
+    BADGE_ICON_MAP,
 } from './SubmitModal.constants';
 
 import FormContent from './FormContent';
@@ -132,6 +133,7 @@ function SubmitModal({ isOpen, toggle }) {
                                     <Badge
                                         size="md"
                                         color={BADGE_COLOR_MAP[reviewStatus]}
+                                        leftIcon={BADGE_ICON_MAP[reviewStatus]}
                                     >
                                         {BADGE_TEXT_MAP[reviewStatus]}
                                     </Badge>
