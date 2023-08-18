@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { Button } from '@goorm-dev/gds-components';
@@ -16,6 +17,8 @@ import CampFunnel from '../CampFunnel';
 import { getCampBreadcrumbs } from './CampContainer.utils';
 
 import { ROLE } from '@/constants/db';
+import styles from './CampContainer.module.scss';
+import { checkIsFoundationPage } from '@/utils';
 
 function CampContainer() {
     const router = useRouter();
@@ -26,6 +29,8 @@ function CampContainer() {
     const {
         data: { class: classNumber },
     } = useGetCamp(campId);
+
+    const isFoundationPage = checkIsFoundationPage(router.pathname);
 
     return (
         <Layout>
@@ -42,22 +47,42 @@ function CampContainer() {
                                         role: userData.role,
                                     })}
                                 />
-                                <div className="d-flex align-items-center">
+                                <div className={styles.container}>
                                     <Button
                                         color="link"
                                         tag={Link}
                                         href={
-                                            userData.role === ROLE.INSTITUTION
-                                                ? `/institution/admin/program/${programId}/camp?division=${program.type.division}`
-                                                : `/foundation/admin/programs/${programId}/camps?division=${program.type.division}&institutionId=${institutionId}`
+                                            isFoundationPage
+                                                ? `/foundation/admin/programs/${programId}/camps?division=${program.type.division}&institutionId=${institutionId}`
+                                                : `/institution/admin/program/${programId}/camp?division=${program.type.division}`
                                         }
                                         className="d-flex justify-content-center mr-2"
                                         icon={<BackPageIcon />}
                                     />
-
-                                    <h3>
-                                        ({classNumber}분반) {program.name}
-                                    </h3>
+                                    <div className={styles.contentWrapper}>
+                                        <h3>
+                                            ({classNumber}분반) {program.name}
+                                        </h3>
+                                        {isFoundationPage && (
+                                            <div
+                                                className={
+                                                    styles.institutionWrapper
+                                                }
+                                            >
+                                                <Image
+                                                    src={
+                                                        program.institution.logo
+                                                            .url
+                                                    }
+                                                    alt="institution"
+                                                    width={24}
+                                                    height={24}
+                                                    className={styles.logo}
+                                                />
+                                                {program.institution.name}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </PageHeader.Title>
                         </PageHeader>

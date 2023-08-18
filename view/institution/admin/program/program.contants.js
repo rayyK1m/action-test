@@ -2,6 +2,7 @@ export const PROGRAM_APPLY_KEYS = {
     nameKey: 'name', // 프로그램 명
     categoryKey: 'category', // 프로그램 카테고리
     thumbnailKey: 'thumbnail', // 프로그램 썸네일
+    difficultyKey: 'difficulty', // 프로그램 수준
     operateLocationKey: 'operateLocation', // 운영 지역
     learningTimeKey: 'learningTime', // 총 교육 차시
     attachedFilesKey: 'attachedFiles', // 프로그램 교안 첨부파일

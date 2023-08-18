@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import cn from 'classnames';
 import { Controller, useFormContext } from 'react-hook-form';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -9,10 +10,8 @@ import {
 import { FormInput, FormWrapper } from '@/components/FormItem';
 
 import Divider from '@/components/Divider/Divider';
-import CustomAlert from '@/components/CustomAlert/CustomAlert';
 
 import { Checkbox } from '@goorm-dev/gds-components';
-import { NoticeCircleIcon } from '@goorm-dev/gds-icons';
 import styles from '../CampForms.module.scss';
 
 import {
@@ -109,13 +108,16 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                                             index
                                         ].includes(idx + 1);
                                         return (
-                                            <div className="d-flex" key={idx}>
+                                            <div
+                                                key={idx}
+                                                className={cn(
+                                                    'd-flex',
+                                                    disabled
+                                                        ? styles.disabled
+                                                        : '',
+                                                )}
+                                            >
                                                 <Checkbox
-                                                    className={
-                                                        disabled
-                                                            ? styles.disabled
-                                                            : ''
-                                                    }
                                                     ref={ref}
                                                     disabled={disabled}
                                                     onChange={handleChange({
@@ -192,18 +194,25 @@ const SearchSchoolInput = ({ userId, schoolKey }) => {
 
 export const ProgramForm = () => {
     const { getValues } = useFormContext();
-    const { institutionKey, typeKey, nameKey } = PROGRAM_KEYS;
+    const { institutionKey, typeKey, nameKey, difficultyKey } = PROGRAM_KEYS;
 
     const { division, duration } = getValues(typeKey);
 
     return (
         <div className={styles.form}>
             <h5>프로그램 정보</h5>
-            <FormInput
-                label="운영 기관 명"
-                value={getValues(institutionKey)}
-                disabled
-            />
+            <div className={styles.divideRow}>
+                <FormInput
+                    label="운영 기관 명"
+                    value={getValues(institutionKey)}
+                    disabled
+                />
+                <FormInput
+                    label="프로그램 명"
+                    value={getValues(nameKey)}
+                    disabled
+                />
+            </div>
             <div className={styles.divideRow}>
                 <FormInput
                     label="프로그램 유형"
@@ -211,8 +220,8 @@ export const ProgramForm = () => {
                     disabled
                 />
                 <FormInput
-                    label="프로그램 명"
-                    value={getValues(nameKey)}
+                    label="프로그램 수준"
+                    value={getValues(difficultyKey)}
                     disabled
                 />
             </div>
@@ -278,37 +287,6 @@ export const ManagerForm = ({ userId }) => {
                     items={PROGRAM_SCHOOL_TYPE}
                     placeholder="학교 유형 선택"
                 />
-            </div>
-        </div>
-    );
-};
-
-export const TeacherForm = () => {
-    const { mainEducatorKey, subEducatorKey } = CAMP_APPLY_KEYS;
-
-    return (
-        <div className={styles.form}>
-            <h5>강사 정보</h5>
-            <div>
-                <div className={styles.divideRow}>
-                    <InputItem
-                        label="강사 명"
-                        placeholder="예) 김구름"
-                        inputKey={mainEducatorKey}
-                    />
-                    <InputItem
-                        label="보조 강사 명"
-                        placeholder="예) 김구름"
-                        inputKey={subEducatorKey}
-                    />
-                </div>
-                <CustomAlert
-                    leftIcon={NoticeCircleIcon}
-                    className={styles.alert}
-                >
-                    강사 혹은 보조 강사를 기재하지 않을 경우, 운영 기관에서
-                    배정할 수 있습니다.
-                </CustomAlert>
             </div>
         </div>
     );

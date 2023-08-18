@@ -145,7 +145,7 @@ const TimePicker = forwardRef(
                             isOpen ? styles.input_focus : '',
                             inputClassName,
                         )}
-                        defaultValue={
+                        value={
                             !isDirty
                                 ? ''
                                 : `${innerTime.ampm} ${innerTime.hour}:${innerTime.minute}`

@@ -70,7 +70,7 @@ const CustomDatePicker = forwardRef(
                                 isOpen ? styles.input_focus : '',
                                 inputClassName,
                             )}
-                            defaultValue={
+                            value={
                                 !date ? '' : dayjs(date).format('YYYY.MM.DD')
                             }
                             onFocus={() => document.activeElement.blur()}

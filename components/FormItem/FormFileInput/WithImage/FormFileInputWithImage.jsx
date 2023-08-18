@@ -76,7 +76,7 @@ const FormFileInputWithImage = ({
 
         await uploadFile.mutateAsync({ url, file });
 
-        const fullUrl = `https://grm-newsac-photo.s3.ap-northeast-2.amazonaws.com/${path}`;
+        const fullUrl = `${process.env.SWCAMP_THUMBNAIL_DOMAIN}/path}`;
 
         onChange({
             filename: file?.name,

@@ -17,11 +17,16 @@ import {
 import CustomAlert from '@/components/CustomAlert/CustomAlert';
 import {
     PROGRAM_CATEGORIES,
+    PROGRAM_DIFFICULTY,
     PROGRAM_DIVISION,
     PROGRAM_OPERATION_LOCATIONS,
     PROGRAM_SCHOOL_TYPE,
 } from '@/constants/db';
-import { formatNumberInput, formatPhoneNumberInput } from '@/utils';
+import {
+    formatNumberInput,
+    formatPhoneNumberInput,
+    numberMaxLength,
+} from '@/utils';
 import { useGetSchools } from '@/query-hooks/useSchool';
 import SearchSchoolDropdown from '@/view/components/SearchSchoolDropdown/SearchSchoolDropdown';
 import { useDaumSearchMap } from '@/query-hooks/useMap';
@@ -181,8 +186,13 @@ const SearchSchoolInput = ({ schoolKey }) => {
 };
 
 const CampForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
-    const { typeKey, programNameKey, operateLocationKey, categoryKey } =
-        CAMP_KEYS;
+    const {
+        typeKey,
+        programNameKey,
+        operateLocationKey,
+        difficultyKey,
+        categoryKey,
+    } = CAMP_KEYS;
     const { getValues } = useFormContext();
     return (
         <div className={styles.form}>
@@ -198,28 +208,29 @@ const CampForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
                     disabled
                 />
             </div>
-            {division === PROGRAM_DIVISION.방문형 ? (
+
+            <div className={styles.divideRow}>
                 <DropdownInputItem
                     label="캠프 카테고리"
                     placeholder="카테고리 선택"
                     dropdownKey={categoryKey}
                     items={PROGRAM_CATEGORIES}
                 />
-            ) : (
-                <div className={styles.divideRow}>
-                    <DropdownInputItem
-                        label="운영 지역"
-                        placeholder="운영 지역 선택"
-                        dropdownKey={operateLocationKey}
-                        items={PROGRAM_OPERATION_LOCATIONS}
-                    />
-                    <DropdownInputItem
-                        label="캠프 카테고리"
-                        placeholder="카테고리 선택"
-                        dropdownKey={categoryKey}
-                        items={PROGRAM_CATEGORIES}
-                    />
-                </div>
+                <DropdownInputItem
+                    label="캠프 수준"
+                    placeholder="수준 선택"
+                    dropdownKey={difficultyKey}
+                    items={Object.values(PROGRAM_DIFFICULTY)}
+                    disabled
+                />
+            </div>
+            {division === PROGRAM_DIVISION.집합형 && (
+                <DropdownInputItem
+                    label="운영 지역"
+                    placeholder="운영 지역 선택"
+                    dropdownKey={operateLocationKey}
+                    items={PROGRAM_OPERATION_LOCATIONS}
+                />
             )}
         </div>
     );
@@ -313,7 +324,7 @@ const TeacherForm = () => {
                     />
                 </div>
                 <CustomAlert leftIcon={InfoCircleIcon} className="mt-3 mb-0">
-                    신청자가 강사명을 기재하지 않은 경우, 기관에서 지정합니다.
+                    강사 정보는 운영 기관에서 직접 입력해야 합니다.
                 </CustomAlert>
             </div>
         </div>

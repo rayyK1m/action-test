@@ -82,3 +82,15 @@
     align-self: end;
     width: 6rem;
 }
+
+.skeletonContainer {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+}
+.skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}

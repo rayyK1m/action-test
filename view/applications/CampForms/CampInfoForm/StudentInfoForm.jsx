@@ -71,7 +71,8 @@ const ApplyTargetInput = ({ programTarget }) => {
 export const ReadOnlyStudentProgramForm = () => {
     const { getValues } = useFormContext();
 
-    const { institutionKey, typeKey, nameKey, learningTimeKey } = PROGRAM_KEYS;
+    const { institutionKey, typeKey, nameKey, learningTimeKey, difficultyKey } =
+        PROGRAM_KEYS;
 
     return (
         <div className={styles.form}>
@@ -95,11 +96,16 @@ export const ReadOnlyStudentProgramForm = () => {
                     readOnly
                 />
                 <FormInput
-                    label="총 교육 차시"
-                    value={getValues(learningTimeKey)}
+                    label="프로그램 수준"
+                    value={getValues(difficultyKey)}
                     readOnly
                 />
             </div>
+            <FormInput
+                label="총 교육 차시"
+                value={getValues(learningTimeKey)}
+                readOnly
+            />
         </div>
     );
 };

@@ -9,6 +9,7 @@ import useSession from '@/query-hooks/useSession';
 import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
 import { createServerAxios } from '@/utils';
 import SSRSuspense from '@/components/SSRSuspense';
+import ProgramInfoContainerLoading from '@/view/institution/admin/program/ProgramInfoContainer/ProgramInfoContainer.loading';
 
 function Page() {
     const router = useRouter();
@@ -20,7 +21,10 @@ function Page() {
         <>
             <Head>SW CAMP</Head>
             {/* TODO: loading 구현되면 교체 */}
-            <SSRSuspense fallback={<p>loading...</p>} key={router.asPath}>
+            <SSRSuspense
+                fallback={<ProgramInfoContainerLoading />}
+                key={router.asPath}
+            >
                 <ProgramInfoContainer programId={id} userData={userData} />
             </SSRSuspense>
         </>

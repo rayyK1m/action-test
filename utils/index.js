@@ -254,3 +254,10 @@ export const checkIsFoundationPage = (pathname) => {
 
     return isFoundationPage;
 };
+
+/** Input maxLength 제한이 적용되지 않는 문제를 해결하기 위한 유틸함수  */
+export const numberMaxLength = (e) => {
+    if (e.target.value.length > e.target.maxLength) {
+        e.target.value = e.target.value.slice(0, e.target.maxLength);
+    }
+};

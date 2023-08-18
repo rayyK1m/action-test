@@ -24,6 +24,7 @@ function ProgramInfoCard({ program, notice, className }) {
                     <li>{`교육 기간 : ${formatDate(
                         program?.educationDate.start,
                     )} ~ ${formatDate(program?.educationDate.end)}`}</li>
+                    <li>{`프로그램 수준: ${program?.difficulty}`}</li>
                     <li>
                         {`총 교육 차시 : ${program?.learningTime}차시(${program?.type.duration})`}{' '}
                     </li>

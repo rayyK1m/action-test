@@ -51,6 +51,7 @@ const formatData = (data) => {
         /** programName, learningTime은 body에 포함되지 않음. */
         programName,
         learningTime,
+        difficulty,
         ...rest
     } = data;
 

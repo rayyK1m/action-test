@@ -25,6 +25,7 @@ export const PROGRAM_KEYS = {
     nameKey: 'programName',
     typeKey: 'type',
     learningTimeKey: 'learningTime',
+    difficultyKey: 'difficulty',
 };
 
 export const USER_KEYS = {

@@ -30,7 +30,7 @@ function ProgramInfoContainer({ programId, userData }) {
 
     const methods = useForm({
         mode: 'all',
-        defaultValues: getDefaultValues(program),
+        values: getDefaultValues(program),
     });
 
     const onSubmit = () => {

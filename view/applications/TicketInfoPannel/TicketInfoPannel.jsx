@@ -60,6 +60,7 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
             [PROGRAM_KEYS.institutionKey]: ticket?.institution[0].name,
             [PROGRAM_KEYS.nameKey]: ticket?.program.name,
             [PROGRAM_KEYS.typeKey]: `${ticket?.program.type.division} / ${ticket?.program.type.duration}`,
+            [PROGRAM_KEYS.difficultyKey]: ticket?.program.difficulty,
             [PROGRAM_KEYS.learningTimeKey]: ticket?.program.learningTime,
             [CAMP_APPLY_KEYS.elementaryTargetKey]:
                 ticket?.targetGroup.elementarySchool,

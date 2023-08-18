@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import _isEmpty from 'lodash/isEmpty';
+import cn from 'classnames';
 
 import {
     DropdownInputItem,
@@ -20,7 +21,7 @@ import {
     SCHOOL,
     USER_KEYS,
 } from '../CampForms.constants';
-import { formatPhoneNumberInput } from '@/utils';
+import { formatPhoneNumberInput, numberMaxLength } from '@/utils';
 import useToggle from '@/hooks/useToggle';
 import useDebounce from '@/hooks/useDebounce';
 
@@ -79,23 +80,27 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                                     idx + 1,
                                 );
                                 return (
-                                    <Radio
-                                        className={
-                                            disabled ? styles.disabled : ''
-                                        }
-                                        label={`${idx + 1}학년`}
+                                    <div
                                         key={idx}
-                                        name={index}
-                                        disabled={disabled}
-                                        defaultChecked={targetFields[
-                                            index
-                                        ]?.includes(idx + 1)}
-                                        onChange={() =>
-                                            setValue(key, [idx + 1], {
-                                                shouldTouch: true,
-                                            })
-                                        }
-                                    />
+                                        className={cn(
+                                            'd-flex',
+                                            disabled ? styles.disabled : '',
+                                        )}
+                                    >
+                                        <Radio
+                                            name={index}
+                                            disabled={disabled}
+                                            defaultChecked={targetFields[
+                                                index
+                                            ]?.includes(idx + 1)}
+                                            onChange={() =>
+                                                setValue(key, [idx + 1], {
+                                                    shouldTouch: true,
+                                                })
+                                            }
+                                        />
+                                        <span>{`${idx + 1}학년`}</span>
+                                    </div>
                                 );
                             })}
                         </div>
@@ -155,7 +160,8 @@ const SearchSchoolInput = ({ userId, schoolKey }) => {
 
 export const StudentProgramForm = () => {
     const { getValues } = useFormContext();
-    const { institutionKey, typeKey, nameKey, learningTimeKey } = PROGRAM_KEYS;
+    const { institutionKey, typeKey, nameKey, difficultyKey, learningTimeKey } =
+        PROGRAM_KEYS;
 
     const { division, duration } = getValues(typeKey);
 
@@ -181,11 +187,16 @@ export const StudentProgramForm = () => {
                     disabled
                 />
                 <FormInput
-                    label="총 교육 차시"
-                    value={getValues(learningTimeKey)}
+                    label="프로그램 수준"
+                    value={getValues(difficultyKey)}
                     disabled
                 />
             </div>
+            <FormInput
+                label="총 교육 차시"
+                value={getValues(learningTimeKey)}
+                disabled
+            />
         </div>
     );
 };
@@ -219,7 +230,8 @@ export const ApplyForm = ({ programTargetGroup, userId }) => {
                             message: '2글자 이상을 입력해주세요',
                         },
                     }}
-                    maxLength="25"
+                    maxLength={25}
+                    onInput={numberMaxLength}
                 />
                 <InputItem
                     isRequired

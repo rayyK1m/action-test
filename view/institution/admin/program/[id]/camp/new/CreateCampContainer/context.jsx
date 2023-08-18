@@ -50,7 +50,7 @@ function CreateCampContextProvider({ children }) {
     const [campInfo, setCampInfo] = useState({});
     const [students, setStudents] = useState([]); // targetUserIdList {Array<string>}
 
-    const returnPath = `/institution/admin/program/${campInfo.programId}/camp`;
+    const returnPath = `/institution/admin/program/${campInfo.programId}/camp?division=${campInfo?.type?.division}`;
     const createCamp = useCreateCamp(returnPath);
 
     const updateCampInfo = useCallback((formData) => {

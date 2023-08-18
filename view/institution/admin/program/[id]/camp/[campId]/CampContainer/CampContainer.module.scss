@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.contentWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem /* 4px -> .25rem */;
+    width: 100%;
+}
+
+.institutionWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem /* 8px -> .5rem */;
+}
+
+.logo {
+    border-radius: 50%;
+}

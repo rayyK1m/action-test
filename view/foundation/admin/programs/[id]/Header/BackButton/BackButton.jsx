@@ -27,7 +27,7 @@ function BackButton() {
                 <h3>{program.name}</h3>
                 <div className={styles.institutionWrapper}>
                     <Image
-                        src="https://s3.ap-northeast-2.amazonaws.com/statics.goorm.io/images/favicon/goormedu/favicon-96x96.png"
+                        src={program.institution.logo.url}
                         alt="institution"
                         width={24}
                         height={24}

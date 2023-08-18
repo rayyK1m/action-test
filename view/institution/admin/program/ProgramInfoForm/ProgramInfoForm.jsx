@@ -94,6 +94,7 @@ const ReadOnlyBasicForm = ({ division }) => {
         thumbnailKey,
         nameKey,
         categoryKey,
+        difficultyKey,
         durationKey,
         operateLocationKey,
         descriptionKey,
@@ -130,13 +131,20 @@ const ReadOnlyBasicForm = ({ division }) => {
                     readOnly
                 />
                 <FormDropdown
-                    label="운영 지역"
-                    value={getValues(operateLocationKey)}
-                    dropdownKey={operateLocationKey}
+                    label="프로그램 수준"
+                    value={getValues(difficultyKey)}
+                    dropdownKey={difficultyKey}
                     isRequired
                     readOnly
                 />
             </div>
+            <FormDropdown
+                label="운영 지역"
+                value={getValues(operateLocationKey)}
+                dropdownKey={operateLocationKey}
+                isRequired
+                readOnly
+            />
             <FormEditor
                 label="프로그램 소개"
                 value={getValues(descriptionKey)}
