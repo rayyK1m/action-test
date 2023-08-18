@@ -74,7 +74,6 @@ function CreateCampContainer() {
         <GridContainer fluid="xxl" colProps={{ xs: { size: 10, offset: 1 } }}>
             <PageHeader>
                 <PageHeader.Title>
-                    {/* TODO: breadcrumb 사용하려면 programs 읽어야함 */}
                     <PageHeader.Breadcrumb
                         breadcrumbs={getBreadcrumbs(program)}
                     />
