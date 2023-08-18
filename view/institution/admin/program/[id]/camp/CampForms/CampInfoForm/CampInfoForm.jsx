@@ -154,6 +154,7 @@ const ReadOnlyCampForm = ({ onClickEdit, division, isFoundationPage }) => {
                     label="캠프 수준"
                     dropdownKey={difficultyKey}
                     disabled={!isFoundationPage}
+                    readOnly={isFoundationPage}
                 />
             </div>
             {division === PROGRAM_DIVISION.집합형 && (
