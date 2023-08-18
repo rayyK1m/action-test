@@ -10,6 +10,11 @@ export const PROGRAM_DIVISION = /** @type {const} */ ({
     집합형: '집합형',
 });
 
+export const PROGRAM_DIFFICULTY = {
+    기초: '기초',
+    심화: '심화',
+};
+
 export const EDUCATION_STATUS = /** @type {const} */ ({
     교육_예정: {
         key: '교육_예정',
