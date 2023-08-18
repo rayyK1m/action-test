@@ -15,6 +15,7 @@ export const getDefaultValues = ({ isEdit, data }) => {
             ...camp,
             [CAMP_INFO_KEYS.programNameKey]: program.name,
             [CAMP_KEYS.categoryKey]: camp.category || program.category,
+            [CAMP_KEYS.difficultyKey]: program.difficulty,
         };
 
     const {
@@ -27,6 +28,7 @@ export const getDefaultValues = ({ isEdit, data }) => {
             duration: camp.type.duration,
         },
         [CAMP_KEYS.categoryKey]: camp.category || program.category,
+        [CAMP_KEYS.difficultyKey]: program.difficulty,
         [CAMP_KEYS.programNameKey]: program.name,
         [CAMP_KEYS.operateLocationKey]: camp.operateLocationKey,
         [CAMP_KEYS.managerNameKey]: camp?.managerName,
