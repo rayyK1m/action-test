@@ -19,7 +19,7 @@ import { CAMP_INFO_KEYS, SCHOOL } from '../CampForms.constants';
 import { PROGRAM_DIVISION } from '@/constants/db';
 import CustomAlert from '@/components/CustomAlert/CustomAlert';
 
-const ProgramTypeInput = ({ division, duration }) => {
+const ProgramTypeInput = ({ division, duration, isFoundationPage }) => {
     return (
         <FormWrapper label="캠프 유형">
             <div className={styles.divideRow}>
@@ -29,7 +29,7 @@ const ProgramTypeInput = ({ division, duration }) => {
                     iconSide="right"
                     size="lg"
                     className={cn(styles.button, styles.dropdown)}
-                    disabled
+                    disabled={!isFoundationPage}
                 >
                     {division}
                 </Button>
@@ -39,7 +39,7 @@ const ProgramTypeInput = ({ division, duration }) => {
                     iconSide="right"
                     size="lg"
                     className={cn(styles.button, styles.dropdown)}
-                    disabled
+                    disabled={!isFoundationPage}
                 >
                     {duration}
                 </Button>
@@ -126,8 +126,13 @@ const ReadOnlyCampForm = ({ onClickEdit, division, isFoundationPage }) => {
                 <ProgramTypeInput
                     division={getValues(`${typeKey}.division`)}
                     duration={getValues(`${typeKey}.duration`)}
+                    isFoundationPage={isFoundationPage}
                 />
-                <InputItem label="캠프 명" inputKey={programNameKey} disabled />
+                <InputItem
+                    label="캠프 명"
+                    inputKey={programNameKey}
+                    disabled={!isFoundationPage}
+                />
             </div>
 
             <div className={styles.divideRow}>
@@ -139,7 +144,7 @@ const ReadOnlyCampForm = ({ onClickEdit, division, isFoundationPage }) => {
                 <DropdownInputItem
                     label="캠프 수준"
                     dropdownKey={difficultyKey}
-                    disabled
+                    disabled={!isFoundationPage}
                 />
             </div>
             {division === PROGRAM_DIVISION.집합형 && (
@@ -252,7 +257,7 @@ const ReadOnlyTeacherForm = () => {
     );
 };
 
-const ReadOnlyTargetForm = ({ programTargetGroup }) => {
+const ReadOnlyTargetForm = ({ programTargetGroup, isFoundationPage }) => {
     const { applicantCountKey, classKey } = CAMP_INFO_KEYS;
     return (
         <div className={styles.form}>
@@ -262,15 +267,19 @@ const ReadOnlyTargetForm = ({ programTargetGroup }) => {
                 <InputItem
                     label="최초 신청 인원"
                     inputKey={applicantCountKey}
-                    disabled
+                    disabled={!isFoundationPage}
                 />
-                <InputItem label="분반" inputKey={classKey} disabled />
+                <InputItem
+                    label="분반"
+                    inputKey={classKey}
+                    disabled={!isFoundationPage}
+                />
             </div>
         </div>
     );
 };
 
-const ReadOnlyEducationForm = ({ division }) => {
+const ReadOnlyEducationForm = ({ division, isFoundationPage }) => {
     const {
         learningTimeKey,
         educationStartDateKey,
@@ -298,13 +307,13 @@ const ReadOnlyEducationForm = ({ division }) => {
                     label="교육 시작일"
                     datePickerKey={educationStartDateKey}
                     timePickerKey={educationStartTimeKey}
-                    disabled
+                    disabled={!isFoundationPage}
                 />
                 <FormDatePicker
                     label="교육 종료일"
                     datePickerKey={educationEndDateKey}
                     timePickerKey={educationEndTimeKey}
-                    disabled
+                    disabled={!isFoundationPage}
                 />
             </div>
             {division === PROGRAM_DIVISION.집합형 && (
@@ -341,8 +350,14 @@ export const CampInfoForm = ({ program, onClickEdit, isFoundationPage }) => {
             />
             <ReadOnlyManagerForm division={division} />
             <ReadOnlyTeacherForm division={division} />
-            <ReadOnlyTargetForm programTargetGroup={targetGroup} />
-            <ReadOnlyEducationForm division={division} />
+            <ReadOnlyTargetForm
+                programTargetGroup={targetGroup}
+                isFoundationPage={isFoundationPage}
+            />
+            <ReadOnlyEducationForm
+                division={division}
+                isFoundationPage={isFoundationPage}
+            />
         </div>
     );
 };

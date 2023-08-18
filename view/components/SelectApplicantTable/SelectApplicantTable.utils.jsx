@@ -8,6 +8,7 @@ import useToggle from '@/hooks/useToggle';
 
 import styles from './SelectApplicantTable.module.scss';
 import ApplicantTicketInfoPannel from '@/view/institution/admin/program/[id]/applicant/ApplicantTicketInfoPannel/ApplicantTicketInfoPannel';
+import { useRouter } from 'next/router';
 
 export const getTableColums = () => {
     return [
@@ -95,6 +96,8 @@ export const getTableColums = () => {
             header: <></>,
             cell: cellHelper(({ rowData }) => {
                 const [isOpen, toggle] = useToggle(false);
+                const router = useRouter();
+                const isCampPage = !!router.query.campTabId;
                 return (
                     <>
                         <Button color="link" onClick={toggle}>
@@ -104,7 +107,9 @@ export const getTableColums = () => {
                             isOpen={isOpen}
                             onClose={() => toggle(false)}
                             ticketId={rowData.id}
-                            title="캠프 생성하기"
+                            title={
+                                isCampPage ? '참가자 추가하기' : '캠프 생성하기'
+                            }
                         />
                     </>
                 );
