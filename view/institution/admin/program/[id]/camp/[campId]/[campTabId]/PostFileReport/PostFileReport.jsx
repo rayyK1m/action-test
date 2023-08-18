@@ -24,7 +24,9 @@ function PostFileReport() {
 
     /** server state */
     const { mutate } = useSubmitCampReport();
-    const { data: postFileReport } = useGetCamp(campId);
+    const { data } = useGetCamp(campId);
+    const { postFileReport } = data;
+
     const {
         data: { role },
     } = useSession.GET();
@@ -34,10 +36,10 @@ function PostFileReport() {
     const forms = useForm({
         values: {
             [POST_FILE_INPUTS.결과_보고서.id]: postFileReportValues
-                ? [POST_FILE_INPUTS.결과_보고서.id]
+                ? postFileReportValues[POST_FILE_INPUTS.결과_보고서.id]
                 : undefined,
             [POST_FILE_INPUTS.기타.id]: postFileReportValues
-                ? [POST_FILE_INPUTS.기타.id]
+                ? postFileReportValues[POST_FILE_INPUTS.기타.id]
                 : undefined,
         },
     });
@@ -54,6 +56,8 @@ function PostFileReport() {
             reportType: CAMP_FILE_LIST.종료_제출.id,
         });
     };
+
+    console.log(postFileReportValues);
 
     return (
         <div className="d-flex flex-column">
