@@ -66,7 +66,7 @@ function PreFileReport() {
 
     return (
         <div className="d-flex flex-column">
-            <h5 className="mb-4">사전 제출</h5>
+            <h5 className="mb-4 text-gray-700">사전 제출</h5>
             <FormProvider {...forms}>
                 <Form>
                     <div className={styles.formItems}>

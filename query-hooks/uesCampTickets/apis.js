@@ -2,7 +2,7 @@ import axios from 'axios';
 import qs from 'query-string';
 
 const getCampTickets = async ({ query }, axiosInstance = axios) => {
-    const queryString = qs.stringify(query, { skipNulls: true });
+    const queryString = qs.stringify(query, { skipNull: true });
     const {
         data: { campTickets, campType, totalCount },
     } = await axiosInstance.get(
@@ -60,7 +60,7 @@ const cancelCampTicket = async (query) => {
 
 export const getCampticketsAdmin = async (query, serverAxios = axios) => {
     const queryString = qs.stringify(query, {
-        skipNulls: true,
+        skipNull: true,
     });
 
     const {
@@ -97,7 +97,7 @@ const changeCampTicketStatus = async (query) => {
 
 const getCampParticipants = async (query, axiosInstance = axios) => {
     const queryString = qs.stringify(query, {
-        skipNulls: true,
+        skipNull: true,
     });
     const {
         data: { campParticipants, totalCount },

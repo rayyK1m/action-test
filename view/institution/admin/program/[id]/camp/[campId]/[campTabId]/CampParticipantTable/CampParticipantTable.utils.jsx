@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { cellHelper } from '@goorm-dev/gds-tables';
 import {
     Button,
@@ -32,8 +32,10 @@ import ApplicantTicketInfoPannel from '../../../../applicant/ApplicantTicketInfo
 const ClassDropdown = ({ camp, campTicket }) => {
     const { programId, id: campId, class: campClass } = camp;
     const { id: campTicketId, userName } = campTicket;
+    const selectedClass = useRef(null);
 
     const [isOpen, toggle] = useToggle();
+    const [isModalOpen, toggleModal] = useToggle();
 
     const { data: classes, isLoading } = useGetCampClasses(programId);
     const moveClass = useMoveCampTickets();
@@ -46,35 +48,67 @@ const ClassDropdown = ({ camp, campTicket }) => {
         );
     }
     return (
-        <ButtonDropdown isOpen={isOpen} toggle={toggle}>
-            <DropdownToggle color="link" caret>
-                {campClass}분반
-            </DropdownToggle>
-            <TableDropdownPortal>
-                <CustomDropdownMenu>
-                    {classes.map((item) => {
-                        return (
-                            <CustomDropdownItem
-                                key={item.id}
-                                onClick={() => {
-                                    moveClass.mutate({
-                                        originCampId: campId,
-                                        newCampId: item.id,
-                                        targets: [campTicketId],
-                                        meta: {
-                                            userName,
-                                            newClass: item.class,
-                                        },
-                                    });
-                                }}
-                            >
-                                {item.class}분반
-                            </CustomDropdownItem>
-                        );
-                    })}
-                </CustomDropdownMenu>
-            </TableDropdownPortal>
-        </ButtonDropdown>
+        <>
+            <ButtonDropdown isOpen={isOpen} toggle={toggle}>
+                <DropdownToggle color="link" caret>
+                    {campClass}분반
+                </DropdownToggle>
+                <TableDropdownPortal>
+                    <CustomDropdownMenu>
+                        {classes.map((item) => {
+                            return (
+                                <CustomDropdownItem
+                                    key={item.id}
+                                    onClick={() => {
+                                        selectedClass.current = {
+                                            id: item.id,
+                                            class: item.class,
+                                        };
+                                        toggleModal();
+                                    }}
+                                >
+                                    {item.class}분반
+                                </CustomDropdownItem>
+                            );
+                        })}
+                    </CustomDropdownMenu>
+                </TableDropdownPortal>
+            </ButtonDropdown>
+
+            {selectedClass.current && (
+                <Modal isOpen={isModalOpen} toggle={toggleModal} centered>
+                    <ModalHeader toggle={toggleModal}>
+                        분반 변경하기
+                    </ModalHeader>
+                    <ModalBody>
+                        {`'${userName}' 참가자를 [${campClass}] 분반에서 [${selectedClass.current.class}] 분반으로 변경하시겠어요?`}
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button size="lg" color="link" onClick={toggleModal}>
+                            취소
+                        </Button>
+                        <Button
+                            size="lg"
+                            color="primary"
+                            onClick={() => {
+                                moveClass.mutate({
+                                    originCampId: campId,
+                                    newCampId: selectedClass.current.id,
+                                    targets: [campTicketId],
+                                    meta: {
+                                        userName,
+                                        newClass: selectedClass.current.class,
+                                    },
+                                });
+                                toggleModal();
+                            }}
+                        >
+                            변경하기
+                        </Button>
+                    </ModalFooter>
+                </Modal>
+            )}
+        </>
     );
 };
 const MemoizedClassDropdown = React.memo(ClassDropdown);
@@ -84,9 +118,13 @@ export const getTableColums = (camp, isFoundationPage) => {
         {
             accessorKey: 'class',
             header: <>분반</>,
-            cell: cellHelper(({ rowData }) => (
-                <MemoizedClassDropdown camp={camp} campTicket={rowData} />
-            )),
+            cell: cellHelper(({ rowData }) =>
+                isFoundationPage ? (
+                    <div>{camp.class}분반</div>
+                ) : (
+                    <MemoizedClassDropdown camp={camp} campTicket={rowData} />
+                ),
+            ),
             size: 120,
             minSize: 120,
         },

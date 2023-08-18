@@ -33,8 +33,17 @@ const useCopyCamp = () => {
                 type: toast.TYPE.SUCCESS,
             });
         },
-        onError: (error) => {
-            console.log(error);
+        onError: ({ response }) => {
+            const message = response?.data?.meta?.res?.data?.message;
+            toast(
+                <span>
+                    <strong>캠프 복사에 실패했습니다.</strong> <br />
+                    {message}
+                </span>,
+                {
+                    type: toast.TYPE.ERROR,
+                },
+            );
         },
     });
 };
@@ -56,8 +65,17 @@ const useDeleteCamps = () => {
                 type: toast.TYPE.SUCCESS,
             });
         },
-        onError: (error) => {
-            console.log(error);
+        onError: ({ response }) => {
+            const message = response?.data?.meta?.res?.data?.message;
+            toast(
+                <span>
+                    <strong>캠프 삭제에 실패했습니다.</strong> <br />
+                    {message}
+                </span>,
+                {
+                    type: toast.TYPE.ERROR,
+                },
+            );
         },
     });
 };

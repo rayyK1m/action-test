@@ -82,6 +82,7 @@ function CampManageContainer() {
     const onClickMoreButton = async (e) => {
         /** 테이블 더보기 Button의 DropdownItem 클릭 이벤트 handler */
         const { id, campId, classNumberStr } = e.target.dataset;
+        resetRowSelection();
 
         if (id === 'delete') {
             onToggleModal();
@@ -95,7 +96,7 @@ function CampManageContainer() {
     };
     const memoizationColumns = useMemo(
         () => TABLE_HEADER(division, userData.role),
-        [],
+        [division, userData.role],
     );
     const memoizationData = useMemo(
         () =>
@@ -273,7 +274,13 @@ function CampManageContainer() {
                             >
                                 <h5>
                                     &apos;{program?.name}&apos; 캠프{' '}
-                                    <span className="text-primary">
+                                    <span
+                                        className={cn(
+                                            total === 0
+                                                ? 'text-hint'
+                                                : 'text-primary',
+                                        )}
+                                    >
                                         {total}
                                     </span>
                                 </h5>

@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 
 import SSRSuspense from '@/components/SSRSuspense';
 import CampManageContainer from '@/view/institution/admin/program/[id]/camp/CampManageContainer';
@@ -114,17 +113,12 @@ export const getServerSideProps = checkAuthSsr({
 });
 
 function Page() {
-    const router = useRouter();
-
     return (
         <>
             <Head>
                 <title>SW CAMP HOME</title>
             </Head>
-            <SSRSuspense
-                key={router.asPath}
-                fallback={<CampManageContainerLoading />}
-            >
+            <SSRSuspense fallback={<CampManageContainerLoading />}>
                 <CampManageContainer />
             </SSRSuspense>
         </>
