@@ -17,7 +17,7 @@ import LinkWithRole from './LinkWithRole/LinkWithRole';
 
 import styles from './Header.module.scss';
 
-import { LOGO_IMAGE } from '@/constants/common';
+import { LOGO_IMAGE, LOGO_LINK } from '@/constants/common';
 import { ROLE } from '@/constants/db';
 
 /**
@@ -40,7 +40,7 @@ const Header = ({ userData, className, children, ...props }) => {
         <header className={cn(styles.container, className)} {...props}>
             <div className={styles.wrapper}>
                 <div className={styles.leftAreaContainer}>
-                    <Link href="/" className="mr-4">
+                    <Link href={LOGO_LINK} className="mr-4">
                         <Image
                             src={LOGO_IMAGE}
                             alt="디지털 새싹 로고"

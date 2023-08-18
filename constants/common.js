@@ -12,8 +12,7 @@ export const DEFAULT_AVATAR_IMAGE_LG =
 export const BANNER_IAMGE =
     'https://statics.goorm.io/images/newsac/newsac_main_banner.svg';
 
-// TODO: 실제 url로 변경 필요
-export const LOGO_LINK = 'https://newsac.goorm.io';
+export const LOGO_LINK = process.env.NEXT_PUBLIC_MAIN_HOST;
 
 export const ENTER_KEY = 'Enter';
 
