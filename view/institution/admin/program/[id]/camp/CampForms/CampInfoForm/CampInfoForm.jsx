@@ -229,7 +229,7 @@ const ReadOnlyManagerForm = ({ division }) => {
     );
 };
 
-const ReadOnlyTeacherForm = () => {
+const ReadOnlyTeacherForm = ({ isFoundationPage }) => {
     const { mainEducatorKey, subEducatorKey } = CAMP_INFO_KEYS;
     return (
         <div className={styles.form}>
@@ -249,9 +249,14 @@ const ReadOnlyTeacherForm = () => {
                         readOnly
                     />
                 </div>
-                <CustomAlert leftIcon={InfoCircleIcon} className="mt-3 mb-0">
-                    강사 정보는 운영 기관에서 직접 입력해야 합니다.
-                </CustomAlert>
+                {!isFoundationPage && (
+                    <CustomAlert
+                        leftIcon={InfoCircleIcon}
+                        className="mt-3 mb-0"
+                    >
+                        강사 정보는 운영 기관에서 직접 입력해야 합니다.
+                    </CustomAlert>
+                )}
             </div>
         </div>
     );
@@ -349,7 +354,7 @@ export const CampInfoForm = ({ program, onClickEdit, isFoundationPage }) => {
                 isFoundationPage={isFoundationPage}
             />
             <ReadOnlyManagerForm division={division} />
-            <ReadOnlyTeacherForm division={division} />
+            <ReadOnlyTeacherForm isFoundationPage={isFoundationPage} />
             <ReadOnlyTargetForm
                 programTargetGroup={targetGroup}
                 isFoundationPage={isFoundationPage}
