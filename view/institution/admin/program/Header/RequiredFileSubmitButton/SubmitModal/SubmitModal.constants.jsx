@@ -1,4 +1,5 @@
 import { REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
+import { CheckCircleIcon } from '@goorm-dev/gds-icons';
 
 export const EDITABLE_MAP = /** @type {const} */ ({
     [REQUIRED_FILE_SUBMIT_STATUS.제출.key]: false,
@@ -59,6 +60,10 @@ export const BADGE_TEXT_MAP = /** @type {const} */ ({
     [REQUIRED_FILE_SUBMIT_STATUS.승인.key]: '승인됨',
     [REQUIRED_FILE_SUBMIT_STATUS.거절.key]: '거절됨',
     [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key]: '자료 추가 요청됨',
+});
+
+export const BADGE_ICON_MAP = /** @type {const} */ ({
+    [REQUIRED_FILE_SUBMIT_STATUS.승인.key]: CheckCircleIcon,
 });
 
 export const FEEDBACK_TITLE = {
