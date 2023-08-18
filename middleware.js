@@ -5,6 +5,11 @@ import { checkAuth } from './server/middlewares/auth';
 
 /** @type {import('next/server').NextMiddleware}*/
 export async function middleware(req) {
+    // ping check
+    if(req.nextUrl.pathname.startsWith('/ping')) {
+        return NextResponse.json({ result: true });
+    }
+
     // 로그인
     if (req.nextUrl.pathname.startsWith('/login')) {
         const { isAuthenticated } = await checkAuthentication(req);
@@ -74,6 +79,7 @@ export const config = {
         '/node_modules/function-bind/**',
     ],
     matcher: [
+        '/ping',
         '/login',
         '/logout',
         '/auth/goorm/callback',
