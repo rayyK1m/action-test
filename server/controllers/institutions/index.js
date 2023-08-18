@@ -1,6 +1,9 @@
 import swcampSdk from '@/server/libs/swcamp';
 import validation from './validation';
-import { REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
+import {
+    DEFAULT_FILE_OBJECT,
+    REQUIRED_FILE_SUBMIT_STATUS,
+} from '@/constants/db';
 
 const getInstitutions = async (req, res) => {
     const { page, limit = 16, search, active = false } = req.query;
@@ -33,6 +36,25 @@ const getInstitutionAdmin = async (req, res) => {
         userId: req.session?.id,
     });
 
+    const fileObject = item?.reports?.fileObject
+        ? Object.entries(item.reports.fileObject).reduce(
+              (acc, [key, value]) => {
+                  /** NOTE
+                   * 현재 *server에서 로직 수정*하기에는 리소스가 부족해서 BFF에서 임시 조치하기로 함
+                   *
+                   * server에서 수정해야하는 로직 요약
+                   * query에 현재 programId를 담아서 보내면 필터링한 후 limit만큼 받고 싶으나,
+                   * 현재 리소스 부족으로 인해 3개를 받아온 후 프론트에서 필터링하고 있음
+                   * */
+                  if (value.label !== '추가 자료') {
+                      acc[key] = value;
+                  }
+                  return acc;
+              },
+              {},
+          )
+        : DEFAULT_FILE_OBJECT;
+
     return res.json({
         ...item,
         reports: {
@@ -40,14 +62,7 @@ const getInstitutionAdmin = async (req, res) => {
             reviewStatus:
                 item?.reports?.reviewStatus ||
                 REQUIRED_FILE_SUBMIT_STATUS.미제출.key,
-            fileObject: item?.reports?.fileObject || {
-                ['institution-A']: {
-                    label: '참여 인력 업무 분장',
-                },
-                ['institution-B']: {
-                    label: '안전 관리 계획서',
-                },
-            },
+            fileObject,
         },
         name: item?.name || '이름 없음',
     });
@@ -81,14 +96,15 @@ const submitReports = async (req, res) => {
 };
 
 const patchReports = async (req, res) => {
-    const { institutionId } = req.query;
+    const { institutionId, reviewStatus } = req.query;
     const { id: userId } = req.session || {};
 
-    const fileObject = req.body;
+    const { fileObject } = req.body;
     const data = await swcampSdk.patchReports({
         userId,
         institutionId,
         fileObject,
+        reviewStatus,
     });
     return res.json(data);
 };

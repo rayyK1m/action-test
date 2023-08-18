@@ -8,7 +8,7 @@ import styles from './ReadOnly.module.scss';
 import FormContent from '../../FormContent';
 import useSession from '@/query-hooks/useSession';
 import { REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
-import { Input } from '@goorm-dev/gds-components';
+import { FEEDBACK_TITLE } from './ReadOnly.constants';
 
 function ReadOnly() {
     const { data: userData } = useSession.GET();
@@ -22,6 +22,18 @@ function ReadOnly() {
 
     return (
         <>
+            {(reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.거절.key ||
+                reviewStatus ===
+                    REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key) && (
+                <FormContent.Box>
+                    <FormContent.Box.Title>
+                        {FEEDBACK_TITLE[reviewStatus]}
+                    </FormContent.Box.Title>
+                    <FormContent.Box.Summary>
+                        {instituionAdmin.reports?.feedback || '없음'}
+                    </FormContent.Box.Summary>
+                </FormContent.Box>
+            )}
             {Object.entries(fileObject)
                 .filter(([_, { filename, url }]) => !!(filename && url))
                 .map(([key, { label, filename, url }]) => (
@@ -44,23 +56,6 @@ function ReadOnly() {
                         </div>
                     </FormContent.Box>
                 ))}
-
-            {(reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.거절.key ||
-                reviewStatus ===
-                    REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key ||
-                reviewStatus ===
-                    REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key) && (
-                <FormContent.Box>
-                    <FormContent.Box.Title>거절 사유</FormContent.Box.Title>
-                    <Input
-                        type="textarea"
-                        size="lg"
-                        rows={4}
-                        value={instituionAdmin.reports.feedback || ''}
-                        onChange={() => instituionAdmin.reports.feedback || ''}
-                    />
-                </FormContent.Box>
-            )}
         </>
     );
 }

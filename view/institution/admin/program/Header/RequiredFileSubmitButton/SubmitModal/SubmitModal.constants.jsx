@@ -38,16 +38,21 @@ export const ALERT_TEXT_MAP = /** @type {const} */ ({
         '재단이 요청한 내용을 확인 후 자료를 추가하여 제출해 주세요.',
 });
 
+export const BADGE_VIEW_MAP = /** @type {const } */ ({
+    [REQUIRED_FILE_SUBMIT_STATUS.제출.key]: false,
+    [REQUIRED_FILE_SUBMIT_STATUS.미제출.key]: false,
+    [REQUIRED_FILE_SUBMIT_STATUS.승인.key]: false,
+    [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key]: false,
+    [REQUIRED_FILE_SUBMIT_STATUS.거절.key]: true,
+    [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key]: true,
+});
+
 export const BADGE_COLOR_MAP = /** @type {const } */ ({
-    [REQUIRED_FILE_SUBMIT_STATUS.제출.key]: 'primary',
-    [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key]: 'primary',
     [REQUIRED_FILE_SUBMIT_STATUS.거절.key]: 'danger',
     [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key]: 'warning',
 });
 
 export const BADGE_TEXT_MAP = /** @type {const} */ ({
-    [REQUIRED_FILE_SUBMIT_STATUS.제출.key]: '제출됨',
-    [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key]: '제출됨',
     [REQUIRED_FILE_SUBMIT_STATUS.거절.key]: '거절됨',
     [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key]: '자료 추가 요청됨',
 });

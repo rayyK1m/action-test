@@ -66,14 +66,15 @@ const submitReports = async (param) => {
 };
 
 /**
- * @param {{ institutionId: string; fileObject: { [key: string]: Omit<import('./types').FileObject, 'label'> } }} param
+ * @param {{ institutionId: string; fileObject: { [key: string]: Omit<import('./types').FileObject, 'label'> }; reviewStatus: Exclude<import('./types').ReviewStatus, "SUBMIT" | "NOT_SUBMITTED" | "APPROVE" | "REJECT" | "ADDITIONAL"> }} param
  */
 const patchReports = async (param) => {
-    const { institutionId, fileObject } = param;
+    const { institutionId, fileObject, reviewStatus } = param;
+    const queryString = qs.stringify({ reviewStatus }, { skipNulls: true });
 
     const { data } = await axios.patch(
-        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/institutions/${institutionId}/reports`,
-        fileObject,
+        `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/institutions/${institutionId}/reports?${queryString}`,
+        { fileObject },
     );
 
     return data;

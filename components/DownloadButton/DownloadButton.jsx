@@ -220,7 +220,7 @@ const DownloadButton = ({
                 if (typeof onClick === 'function') onClick(e);
             }}
         >
-            {children}
+            <div className={styles.ellipsisContainer}>{children}</div>
         </ButtonComponent>
     );
 };

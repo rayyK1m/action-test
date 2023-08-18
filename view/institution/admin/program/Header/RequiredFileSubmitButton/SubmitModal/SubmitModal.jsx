@@ -17,7 +17,6 @@ import CustomAlert from '@/components/CustomAlert/CustomAlert';
 import {
     useGetInstitutionAdmin,
     usePatchReports,
-    useSubmitExtraReports,
     useSubmitReports,
 } from '@/query-hooks/useInstitutions';
 
@@ -25,6 +24,7 @@ import {
     ALERT_TEXT_MAP,
     BADGE_COLOR_MAP,
     BADGE_TEXT_MAP,
+    BADGE_VIEW_MAP,
     CONFIRM_BUTTON_CASE_MAP,
     EDITABLE_MAP,
 } from './SubmitModal.constants';
@@ -46,7 +46,6 @@ function SubmitModal({ isOpen, toggle }) {
 
     const submitReports = useSubmitReports();
     const patchReports = usePatchReports();
-    const submitExtraReports = useSubmitExtraReports();
 
     const {
         reports: { reviewStatus, feedback, fileObject },
@@ -72,6 +71,10 @@ function SubmitModal({ isOpen, toggle }) {
             {},
         );
 
+        if (Object.keys(finalFileObject).length === 0) {
+            return;
+        }
+
         switch (reviewStatus) {
             case REQUIRED_FILE_SUBMIT_STATUS.미제출.key:
                 await submitReports.mutateAsync({
@@ -86,11 +89,11 @@ function SubmitModal({ isOpen, toggle }) {
                     fileObject: finalFileObject,
                 });
                 break;
-
             case REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key:
-                await submitExtraReports.mutateAsync({
+                await patchReports.mutateAsync({
                     institutionId,
                     fileObject: finalFileObject,
+                    reviewStatus: 'ADDITIONAL_SUBMIT',
                 });
                 break;
         }
@@ -120,21 +123,17 @@ function SubmitModal({ isOpen, toggle }) {
                 <Modal isOpen={isOpen} toggle={toggle} centered>
                     <Form onSubmit={methods.handleSubmit(onSubmit)}>
                         <ModalHeader toggle={toggle}>
-                            <span>{TEXT_MAP[reviewStatus]}</span>
-                            {!(
-                                reviewStatus ===
-                                    REQUIRED_FILE_SUBMIT_STATUS.미제출.key ||
-                                reviewStatus ===
-                                    REQUIRED_FILE_SUBMIT_STATUS.승인.key
-                            ) && (
-                                <Badge
-                                    size="md"
-                                    className="ml-2"
-                                    color={BADGE_COLOR_MAP[reviewStatus]}
-                                >
-                                    {BADGE_TEXT_MAP[reviewStatus]}
-                                </Badge>
-                            )}
+                            <div className={styles.modalHeader}>
+                                <span>{TEXT_MAP[reviewStatus]}</span>
+                                {BADGE_VIEW_MAP[reviewStatus] && (
+                                    <Badge
+                                        size="md"
+                                        color={BADGE_COLOR_MAP[reviewStatus]}
+                                    >
+                                        {BADGE_TEXT_MAP[reviewStatus]}
+                                    </Badge>
+                                )}
+                            </div>
                         </ModalHeader>
 
                         <ModalBody className={styles.modalBody}>

@@ -1,3 +1,11 @@
 .downloadButton {
     cursor: pointer;
 }
+
+.ellipsisContainer {
+    display: block;
+    max-width: 24.5rem /* 392px -> 24.5rem */;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

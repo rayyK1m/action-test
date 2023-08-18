@@ -797,10 +797,17 @@ const submitReports = async ({ userId, institutionId, fileObject }) => {
     }
 };
 
-const patchReports = async ({ userId, institutionId, fileObject }) => {
+const patchReports = async ({
+    userId,
+    institutionId,
+    fileObject,
+    reviewStatus,
+}) => {
+    const queryString = qs.stringify({ reviewStatus }, { skipNulls: true });
+
     try {
         const { data } = await swcampInstance.patch(
-            `/api/v1/institutions/${institutionId}/reports`,
+            `/api/v1/institutions/${institutionId}/reports?${queryString}`,
             { fileObject },
             {
                 headers: { ...getAuthHeader(userId) },
