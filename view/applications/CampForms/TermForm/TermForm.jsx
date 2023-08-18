@@ -2,7 +2,9 @@ import cn from 'classnames';
 
 import { Checkbox, TextButton } from '@goorm-dev/gds-components';
 import { ChevronRightIcon } from '@goorm-dev/gds-icons';
+
 import styles from '../CampForms.module.scss';
+import { POLICY_AND_TERMS_LINK } from '@/constants/common';
 
 export const TermsForm = ({ terms, setTerms }) => {
     const { thirdPartyInfoTerm, personalInfoTerm } = terms;
@@ -24,10 +26,14 @@ export const TermsForm = ({ terms, setTerms }) => {
 
     const handleTermClick = (e) => {
         e.preventDefault();
-        /** NOTE: 해당 링크 확정적이지 않음. 수정 예정 */
-        window.open(
-            'https://www.notion.so/goorm/SWCAMP_LMS-f82c89246ff147bc96a74ab02a2991ae',
-        );
+
+        const { id } = e.target.dataset;
+
+        if (id === '개인정보 수집 및 이용 동의') {
+            window.open(POLICY_AND_TERMS_LINK.개인정보_수집_및_이용_동의);
+        } else if (id === '개인정보 제3자 제공 동의') {
+            window.open(POLICY_AND_TERMS_LINK.개인정보_제_3자_제공동의);
+        }
     };
 
     return (
@@ -49,13 +55,14 @@ export const TermsForm = ({ terms, setTerms }) => {
                             checked={personalInfoTerm}
                             onChange={(e) => handleChange(e.target)}
                         />
-                        <span>[필수] 개인정보 수집 및 이용</span>
+                        <span>[필수] 개인정보 수집 및 이용 동의</span>
                     </div>
                     <TextButton
                         color="link"
                         size="sm"
                         icon={ChevronRightIcon}
                         iconSide="right"
+                        data-id="개인정보 수집 및 이용 동의"
                         onClick={handleTermClick}
                     >
                         더보기
@@ -68,13 +75,14 @@ export const TermsForm = ({ terms, setTerms }) => {
                             checked={thirdPartyInfoTerm}
                             onChange={(e) => handleChange(e.target)}
                         />
-                        <span>[필수] 제 3자 정보 제공 동의</span>
+                        <span>[필수] 개인정보 제3자 제공 동의</span>
                     </div>
                     <TextButton
                         color="link"
                         size="sm"
                         icon={ChevronRightIcon}
                         iconSide="right"
+                        data-id="개인정보 제3자 제공 동의"
                         onClick={handleTermClick}
                     >
                         더보기
@@ -88,11 +96,16 @@ export const TermsForm = ({ terms, setTerms }) => {
 export const ReadOnlyTermsForm = () => {
     const handleTermClick = (e) => {
         e.preventDefault();
-        /** NOTE: 해당 링크 확정적이지 않음. 수정 예정 */
-        window.open(
-            'https://www.notion.so/goorm/SWCAMP_LMS-f82c89246ff147bc96a74ab02a2991ae',
-        );
+
+        const { id } = e.target.dataset;
+
+        if (id === '개인정보 수집 및 이용 동의') {
+            window.open(POLICY_AND_TERMS_LINK.개인정보_수집_및_이용_동의);
+        } else if (id === '개인정보 제3자 제공 동의') {
+            window.open(POLICY_AND_TERMS_LINK.개인정보_제_3자_제공동의);
+        }
     };
+
     return (
         <div className={styles.form}>
             <h5>약관 동의</h5>
@@ -105,7 +118,7 @@ export const ReadOnlyTermsForm = () => {
                 />
                 <div className="d-flex align-items-center">
                     <Checkbox
-                        label="[필수] 개인정보 수집 및 이용"
+                        label="[필수] 개인정보 수집 및 이용 동의"
                         className={cn('mr-4', styles.readOnly)}
                         checked
                         readOnly
@@ -115,6 +128,7 @@ export const ReadOnlyTermsForm = () => {
                         size="sm"
                         icon={ChevronRightIcon}
                         iconSide="right"
+                        data-id="개인정보 수집 및 이용 동의"
                         onClick={handleTermClick}
                     >
                         더보기
@@ -122,7 +136,7 @@ export const ReadOnlyTermsForm = () => {
                 </div>
                 <div className="d-flex align-items-center">
                     <Checkbox
-                        label="[필수] 제 3자 정보 제공 동의"
+                        label="[필수] 개인정보 제3자 제공 동의"
                         className={cn('mr-4', styles.readOnly)}
                         checked
                         readOnly
@@ -132,6 +146,7 @@ export const ReadOnlyTermsForm = () => {
                         size="sm"
                         icon={ChevronRightIcon}
                         iconSide="right"
+                        data-id="개인정보 제3자 제공 동의"
                         onClick={handleTermClick}
                     >
                         더보기

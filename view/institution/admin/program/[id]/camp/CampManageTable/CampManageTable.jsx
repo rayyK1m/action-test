@@ -9,17 +9,17 @@ import { useEffect } from 'react';
 
 function CampManageTable({ getTableProps, getPaginationProps }) {
     const router = useRouter();
-    const [query, setQuery] = useState(router.query);
+    // const [query, setQuery] = useState(router.query);
 
     const basePath = router.asPath.substring(0, router.asPath.lastIndexOf('?')); // 쿼리 스트링을 제외한 basePath
 
-    useEffect(() => {
-        setQuery(router.query);
-    }, [router.query]);
+    // useEffect(() => {
+    //     setQuery(router.query);
+    // }, [router.query]);
 
     const onPageChange = (page) => {
         // eslint-disable-next-line no-unused-vars
-        const { id: noUsedProgramId, ...restQuery } = query;
+        const { id: noUsedProgramId, ...restQuery } = router.query;
 
         const queryString = qs.stringify({
             /**
@@ -30,7 +30,7 @@ function CampManageTable({ getTableProps, getPaginationProps }) {
         });
 
         // TODO: sorting 했을 때, router.push 하면, query key가 그대로 유지되는 문제 해결하기
-        router.push(`${basePath}?${queryString}`);
+        router.push(`${basePath}?${queryString}`, undefined, { shallow: true });
     };
 
     return (

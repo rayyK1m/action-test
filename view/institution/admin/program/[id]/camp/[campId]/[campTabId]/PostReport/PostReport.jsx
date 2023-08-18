@@ -53,7 +53,7 @@ function PostReport() {
 
     return (
         <div className="d-flex flex-column">
-            <h5 className="mb-4">결과 보고</h5>
+            <h5 className="mb-4 text-gray-700">결과 보고</h5>
 
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.formGroups}>
