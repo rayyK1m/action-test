@@ -55,8 +55,12 @@ const Table = ({ programId, campId, onSetTotalCount, isFoundationPage }) => {
         suspense: false,
     });
 
+    const columns = useMemo(
+        () => getTableColums(camp, isFoundationPage),
+        [camp, isFoundationPage],
+    );
     const { getTableProps, getPaginationProps } = useHScrollTable({
-        columns: getTableColums(camp, isFoundationPage),
+        columns,
         data: campParticipants || [],
 
         extraColumnType: 'index',

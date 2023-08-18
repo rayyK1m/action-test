@@ -8,13 +8,14 @@ import { STATUS_BADGE } from './ListItem.constants';
 
 import styles from './ListItem.module.scss';
 import TicketInfoPannel from '../TicketInfoPannel/TicketInfoPannel';
+import Link from 'next/link';
 
 function ListItem({ data }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const {
         id,
-        program: { thumbnail, name, applyDate, educationDate },
+        program: { id: programId, thumbnail, name, applyDate, educationDate },
         channelIndex,
         reviewStatus,
     } = data;
@@ -46,7 +47,9 @@ function ListItem({ data }) {
                 >
                     {STATUS_BADGE[reviewStatus].text}
                 </Badge>
-                <h5 className="mb-2">{name}</h5>
+                <h5 className="mb-2">
+                    <Link href={`/programs/${programId}`}>{name}</Link>
+                </h5>
                 <div className="subtitle-2 mb-1">
                     <span className="text-gray-600">신청 기간</span>
                     <span className="text-gray-700 ml-2">

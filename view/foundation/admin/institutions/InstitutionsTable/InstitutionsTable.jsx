@@ -44,9 +44,7 @@ function InstitutionsTable() {
         sort,
     });
 
-    // const columns = useMemo(() => getTableColoums(), []);
     const columns = useMemo(() => getTableColoums(), [institutions]);
-
     const { getTableProps, getPaginationProps } = useHScrollTable({
         columns,
         data: institutions,

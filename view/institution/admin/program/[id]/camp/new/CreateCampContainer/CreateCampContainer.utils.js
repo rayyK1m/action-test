@@ -25,7 +25,7 @@ export const getBreadcrumbs = (program) => {
         },
         {
             children: '캠프 관리',
-            to: `/institution/admin/program/${program.id}/camp`,
+            to: `/institution/admin/program/${program.id}/camp?division=집합형`,
         },
         {
             children: '캠프 생성하기',

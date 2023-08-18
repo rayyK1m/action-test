@@ -180,15 +180,15 @@ function SelectApplicantTable({ onSelectedRowChange }) {
                 <div className={styles.title}>
                     <h5>캠프에 소속될 학생을 선택해주세요.</h5>
                     <div className="text-gray-600 paragraph-sm">
-                        신청자 관리에서 승인된 신청자만 선택할 수 있습니다.
+                        아래 목록에는 신청자 관리에서 승인된 학생만 표시됩니다.
                     </div>
                 </div>
 
                 {selectedCount !== 0 && (
                     <div className="ml-auto d-flex align-items-center">
-                        <p className="text-blue-500 mr-3">
+                        <h6 className="text-blue-500 mr-3">
                             {selectedCount}명 선택됨
-                        </p>
+                        </h6>
                         <Button
                             size="lg"
                             color="link"
