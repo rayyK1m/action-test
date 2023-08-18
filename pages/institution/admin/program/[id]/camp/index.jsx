@@ -116,7 +116,7 @@ function Page() {
     return (
         <>
             <Head>
-                <title>SW CAMP HOME</title>
+                <title>디지털새싹</title>
             </Head>
             <SSRSuspense fallback={<CampManageContainerLoading />}>
                 <CampManageContainer />

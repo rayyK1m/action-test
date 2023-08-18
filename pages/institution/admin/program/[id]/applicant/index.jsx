@@ -1,4 +1,5 @@
 import { QueryClient, dehydrate } from '@tanstack/query-core';
+import Head from 'next/head';
 
 import Layout from '@/components/Layout/Layout';
 import ApplicantManageList from '@/view/institution/admin/program/[id]/applicant/ApplicantManageList';
@@ -14,6 +15,9 @@ export default function InstitutionAdminApplicantPage() {
 
     return (
         <Layout>
+            <Head>
+                <title>디지털새싹</title>
+            </Head>
             <Layout.Header userData={userData} />
             <Layout.Main>
                 <ApplicantManageList />

@@ -13,7 +13,9 @@ function Page() {
 
     return (
         <>
-            <Head>SW CAMP</Head>
+            <Head>
+                <title>디지털새싹</title>
+            </Head>
             <ProgramApplyContainer division={type} />
         </>
     );

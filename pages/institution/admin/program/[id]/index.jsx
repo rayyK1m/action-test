@@ -19,7 +19,9 @@ function Page() {
 
     return (
         <>
-            <Head>SW CAMP</Head>
+            <Head>
+                <title>디지털새싹</title>
+            </Head>
             {/* TODO: loading 구현되면 교체 */}
             <SSRSuspense
                 fallback={<ProgramInfoContainerLoading />}

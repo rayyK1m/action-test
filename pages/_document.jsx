@@ -4,7 +4,7 @@ export default function Document() {
     return (
         <Html lang="ko">
             <Head>
-                <meta name="description" content="SW CAMP" />
+                <meta name="description" content="디지털새싹" />
 
                 <link rel="shortcut-icon" href="/favicon.ico" />
                 <link

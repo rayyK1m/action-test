@@ -1,5 +1,6 @@
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 import { checkAuthSsr } from '@/server/utils/auth';
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
@@ -18,6 +19,9 @@ export default function ApplicationsPage() {
 
     return (
         <Layout>
+            <Head>
+                <title>디지털새싹</title>
+            </Head>
             <Layout.Header userData={userData} />
 
             <Layout.Main>

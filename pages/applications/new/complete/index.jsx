@@ -14,7 +14,9 @@ function Page() {
 
     return (
         <>
-            <Head>SW CAMP</Head>
+            <Head>
+                <title>디지털새싹</title>
+            </Head>
             <CompleteView
                 title="신청이 완료되었습니다"
                 description={
@@ -48,9 +50,12 @@ function Page() {
     );
 }
 
-export const getServerSideProps = checkAuthSsr({shouldLogin: true, roles: [ROLE.STUDENT, ROLE.TEACHER]})(async (context) => {
+export const getServerSideProps = checkAuthSsr({
+    shouldLogin: true,
+    roles: [ROLE.STUDENT, ROLE.TEACHER],
+})(async (context) => {
     const queryClient = new QueryClient();
-    
+
     const session = context.req.session;
     if (session) {
         /** session 정보 세팅 */
@@ -62,6 +67,6 @@ export const getServerSideProps = checkAuthSsr({shouldLogin: true, roles: [ROLE.
             dehydratedState: dehydrate(queryClient),
         },
     };
-})
+});
 
 export default Page;

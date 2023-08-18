@@ -18,7 +18,7 @@ export default function ProgramDetailPage() {
     return (
         <Layout>
             <Head>
-                <title>SW CAMP PROGRAM DETAIL</title>
+                <title>디지털새싹</title>
             </Head>
             <Layout.Header userData={userData} />
             <Layout.Banner imgSrc={BANNER_IAMGE} />

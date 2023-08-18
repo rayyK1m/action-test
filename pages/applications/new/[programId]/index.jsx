@@ -16,7 +16,9 @@ function Page() {
 
     return (
         <>
-            <Head>SW CAMP</Head>
+            <Head>
+                <title>디지털새싹</title>
+            </Head>
             <SSRSuspense fallback={<p>loading...</p>} key={router.asPath}>
                 <CampApplyContainer programId={programId} userData={userData} />
             </SSRSuspense>
