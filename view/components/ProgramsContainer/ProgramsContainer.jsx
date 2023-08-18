@@ -301,21 +301,21 @@ export default function ProgramsContainer() {
                         <CustomNav.Item>
                             <CustomNav.Link
                                 tag="span"
-                                data-id={PROGRAM_DIVISION.방문형}
-                                active={campType === PROGRAM_DIVISION.방문형}
-                                onClick={handleNavLink}
-                            >
-                                선생님용 (방문형)
-                            </CustomNav.Link>
-                        </CustomNav.Item>
-                        <CustomNav.Item>
-                            <CustomNav.Link
-                                tag="span"
                                 data-id={PROGRAM_DIVISION.집합형}
                                 active={campType === PROGRAM_DIVISION.집합형}
                                 onClick={handleNavLink}
                             >
                                 학생용 (집합형)
+                            </CustomNav.Link>
+                        </CustomNav.Item>
+                        <CustomNav.Item>
+                            <CustomNav.Link
+                                tag="span"
+                                data-id={PROGRAM_DIVISION.방문형}
+                                active={campType === PROGRAM_DIVISION.방문형}
+                                onClick={handleNavLink}
+                            >
+                                선생님용 (방문형)
                             </CustomNav.Link>
                         </CustomNav.Item>
                     </CustomNav>

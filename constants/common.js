@@ -9,6 +9,8 @@ export const DEFAULT_AVATAR_IMAGE =
     'https://statics.goorm.io/images/newsac/newsac_avatar.svg';
 export const DEFAULT_AVATAR_IMAGE_LG =
     'https://statics.goorm.io/images/newsac/newsac_avatar_150_150.svg';
+export const BANNER_IAMGE =
+    'https://statics.goorm.io/images/newsac/newsac_main_banner.svg';
 
 // TODO: 실제 url로 변경 필요
 export const LOGO_LINK = 'https://newsac.goorm.io';

@@ -5,13 +5,15 @@ import SSRSuspense from '@/components/SSRSuspense';
 
 import ProgramsContainer from '../components/ProgramsContainer';
 
+import { BANNER_IAMGE } from '@/constants/common';
+
 export default function Programs() {
     const { data: userData } = useSession.GET();
 
     return (
         <Layout>
             <Layout.Header userData={userData} />
-            <Layout.Banner />
+            <Layout.Banner imgSrc={BANNER_IAMGE} />
             <Layout.Main>
                 <SSRSuspense>
                     <ProgramsContainer />

@@ -10,6 +10,8 @@ import Layout from '@/components/Layout/Layout';
 import { campTicketsApis, campTicketsKeys } from '@/query-hooks/uesCampTickets';
 import { createServerAxios } from '@/utils';
 
+import { BANNER_IAMGE } from '@/constants/common';
+
 export default function ProgramDetailPage() {
     const { data: userData } = useSession.GET();
 
@@ -19,7 +21,7 @@ export default function ProgramDetailPage() {
                 <title>SW CAMP PROGRAM DETAIL</title>
             </Head>
             <Layout.Header userData={userData} />
-            <Layout.Banner />
+            <Layout.Banner imgSrc={BANNER_IAMGE} />
             <Layout.Main>
                 {/* TODO: loading 구현되면 교체 */}
                 <Suspense fallback={<div>...loading</div>}>
