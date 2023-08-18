@@ -76,7 +76,7 @@ const getPrograms = async ({
         institutionId,
         'applyDate.end': endApplyDate,
     });
-    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
+    const queryString = qs.stringify(removedEmptyQuery, { skipNull: true });
 
     try {
         const { data } = await swcampInstance.get(
@@ -108,7 +108,7 @@ const getProgramsAdmin = async ({
             sort,
             reviewStatus,
         },
-        { skipNulls: true, skipEmptyString: true },
+        { skipNull: true, skipEmptyString: true },
     );
     const institutionQueryString = institutionId
         ? `institutionId=${institutionId}&`
@@ -191,7 +191,6 @@ const patchProgramAdmin = async ({
     programId,
     formData,
 }) => {
-    console.log(institutionId, userId);
     try {
         const { data } = await swcampInstance.patch(
             `${process.env.SWCAMP_API_HOST}/api/v1/programs/${programId}?institutionId=${institutionId}`,
@@ -217,10 +216,7 @@ const changeProgramReviewStatus = async ({
     status,
 }) => {
     try {
-        const queryString = qs.stringify(
-            { institutionId },
-            { skipNulls: true },
-        );
+        const queryString = qs.stringify({ institutionId }, { skipNull: true });
 
         const { data } = await swcampInstance.post(
             `/api/v1/programs/${programId}/review-status?${queryString}`,
@@ -247,7 +243,7 @@ const getCampTickets = async ({ userId, page, limit, sort, reviewStatus }) => {
             ...(sort && { sort }),
             ...(reviewStatus && { reviewStatus }),
         },
-        { skipNulls: true },
+        { skipNull: true },
     );
     try {
         const { data } = await swcampInstance.get(
@@ -341,7 +337,7 @@ const getCamps = async ({
         limit,
         sort,
     });
-    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
+    const queryString = qs.stringify(removedEmptyQuery, { skipNull: true });
     try {
         const { data } = await swcampInstance.get(
             `/api/v1/camps/programs/${programId}/admin?${queryString}`,
@@ -385,7 +381,7 @@ const copyCamp = async ({ userId, campId, institutionId }) => {
         institutionId,
     });
 
-    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
+    const queryString = qs.stringify(removedEmptyQuery, { skipNull: true });
 
     try {
         const { data } = await swcampInstance.post(
@@ -414,7 +410,7 @@ const deleteCamps = async ({ userId, campIds, institutionId }) => {
         institutionId,
     });
 
-    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
+    const queryString = qs.stringify(removedEmptyQuery, { skipNull: true });
 
     try {
         const { data } = await swcampInstance.delete(
@@ -577,7 +573,7 @@ const getCampTicketsByProgram = async ({
                 sort,
                 reviewStatus,
             },
-            { skipNulls: true, skipEmptyString: true },
+            { skipNull: true, skipEmptyString: true },
         );
         const institutionQueryString = institutionId
             ? `institutionId=${institutionId}&`
@@ -616,7 +612,7 @@ const getCampParticipants = async ({
                 sort,
                 search,
             },
-            { skipNulls: true },
+            { skipNull: true, skipEmptyString: true },
         );
 
         const { data } = await swcampInstance.get(
@@ -761,7 +757,7 @@ export const getInstitutionsFoundation = async ({
         search,
         sort,
     });
-    const queryString = qs.stringify(removedEmptyQuery, { skipNulls: true });
+    const queryString = qs.stringify(removedEmptyQuery, { skipNull: true });
 
     try {
         const { data } = await swcampInstance.get(
@@ -803,7 +799,7 @@ const patchReports = async ({
     fileObject,
     reviewStatus,
 }) => {
-    const queryString = qs.stringify({ reviewStatus }, { skipNulls: true });
+    const queryString = qs.stringify({ reviewStatus }, { skipNull: true });
 
     try {
         const { data } = await swcampInstance.patch(

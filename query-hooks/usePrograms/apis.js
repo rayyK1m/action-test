@@ -2,7 +2,7 @@ import axios from 'axios';
 import qs from 'query-string';
 
 const getPrograms = async (query) => {
-    const queryString = qs.stringify(query, { skipNulls: true });
+    const queryString = qs.stringify(query, { skipNull: true });
 
     const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/programs?${queryString}`,
@@ -27,7 +27,7 @@ const getProgram = async (query) => {
  * @returns {Promise<{ programs: Array<import('./types').ProgramAdmin>; totalCount: number; }>}
  */
 const getProgramsAdmin = async (query, axiosInstance = axios) => {
-    const queryString = qs.stringify(query, { skipNulls: true });
+    const queryString = qs.stringify(query, { skipNull: true });
     const { data } = await axiosInstance.get(
         `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/programs/admin?${queryString}`,
     );
@@ -80,7 +80,7 @@ const changeProgramReviewStatus = async ({
     institutionId,
     status,
 }) => {
-    const queryString = qs.stringify({ institutionId }, { skipNulls: true });
+    const queryString = qs.stringify({ institutionId }, { skipNull: true });
 
     const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/programs/${programId}/review-status?${queryString}`,

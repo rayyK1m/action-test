@@ -3,7 +3,7 @@ import axios from 'axios';
 import qs from 'query-string';
 
 const getInstitutions = async (query) => {
-    const queryString = qs.stringify(query, { skipNulls: true });
+    const queryString = qs.stringify(query, { skipNull: true });
 
     const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/institutions?${queryString}`,
@@ -41,7 +41,7 @@ const getInstitutionAdmin = async (institutionId, axiosInstance = axios) => {
  * @returns
  */
 const getInstitutionsFoundation = async (query, config) => {
-    const queryString = qs.stringify(query, { skipNulls: true });
+    const queryString = qs.stringify(query, { skipNull: true });
 
     const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/institutions/foundation?${queryString}`,
@@ -70,7 +70,7 @@ const submitReports = async (param) => {
  */
 const patchReports = async (param) => {
     const { institutionId, fileObject, reviewStatus } = param;
-    const queryString = qs.stringify({ reviewStatus }, { skipNulls: true });
+    const queryString = qs.stringify({ reviewStatus }, { skipNull: true });
 
     const { data } = await axios.patch(
         `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/institutions/${institutionId}/reports?${queryString}`,
@@ -105,7 +105,7 @@ const submitExtraReports = async (param) => {
  */
 const submitReportReview = async (param) => {
     const { institutionId, reviewStatus, feedback } = param;
-    const queryString = qs.stringify({ institutionId }, { skipNulls: true });
+    const queryString = qs.stringify({ institutionId }, { skipNull: true });
 
     const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/institutions/${institutionId}/review-status?${queryString}`,

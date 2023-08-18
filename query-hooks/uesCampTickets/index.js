@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
 import { toast } from '@goorm-dev/gds-toastify';
 
+import { CAMP_REVIEW_STATUS } from '@/constants/db';
+
+import useSession from '../useSession';
+import { campsKeys } from '../useCamps';
 import campTicketsKeys from './keys';
 import campTicketsApis from './apis';
-import useSession from '../useSession';
-import { CAMP_REVIEW_STATUS } from '@/constants/db';
 
 const useGetCampTickets = (filters) => {
     return useQuery({
@@ -128,6 +129,7 @@ const useMoveCampTickets = () => {
                     },
                 );
                 queryClient.invalidateQueries(campTicketsKeys.participants());
+                queryClient.invalidateQueries(campsKeys.item());
             },
             onError: () =>
                 toast('분반 변경에 실패했습니다.', {

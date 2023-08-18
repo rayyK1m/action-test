@@ -2,7 +2,7 @@ import axios from 'axios';
 import qs from 'query-string';
 
 const getCamps = async (programId, query, axiosInstance = axios) => {
-    const queryString = qs.stringify(query, { skipNulls: true });
+    const queryString = qs.stringify(query, { skipNull: true });
     const { data } = await axiosInstance.get(
         `${process.env.NEXT_PUBLIC_MAIN_HOST}/api/camps/programs/${programId}?${queryString}`,
     );
@@ -25,7 +25,7 @@ const deleteCamps = async ({ campIds, institutionId }) => {
             institutionId,
             campIds: campIds.join(','),
         },
-        { skipNulls: true },
+        { skipNull: true },
     );
 
     const { data } = await axios.delete(
