@@ -24,9 +24,11 @@ import {
     ALERT_TEXT_MAP,
     BADGE_COLOR_MAP,
     BADGE_TEXT_MAP,
-    BADGE_VIEW_MAP,
+    BADGE_SHOW_MAP,
     CONFIRM_BUTTON_CASE_MAP,
     EDITABLE_MAP,
+    FEEDBACK_SHOW_MAP,
+    FEEDBACK_TITLE,
 } from './SubmitModal.constants';
 
 import FormContent from './FormContent';
@@ -125,7 +127,7 @@ function SubmitModal({ isOpen, toggle }) {
                         <ModalHeader toggle={toggle}>
                             <div className={styles.modalHeader}>
                                 <span>{TEXT_MAP[reviewStatus]}</span>
-                                {BADGE_VIEW_MAP[reviewStatus] && (
+                                {BADGE_SHOW_MAP[reviewStatus] && (
                                     <Badge
                                         size="md"
                                         color={BADGE_COLOR_MAP[reviewStatus]}
@@ -147,11 +149,10 @@ function SubmitModal({ isOpen, toggle }) {
                                 </CustomAlert>
                             )}
 
-                            {reviewStatus ===
-                                REQUIRED_FILE_SUBMIT_STATUS.거절.key && (
+                            {FEEDBACK_SHOW_MAP[reviewStatus] && (
                                 <FormContent.Box>
                                     <FormContent.Box.Title>
-                                        거절 사유
+                                        {FEEDBACK_TITLE[reviewStatus]}
                                     </FormContent.Box.Title>
                                     <FormContent.Box.Summary>
                                         {feedback || '없음'}

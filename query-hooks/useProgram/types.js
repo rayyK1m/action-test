@@ -30,6 +30,7 @@
  * @property {string} [notice] 안내 사항
  * @property {{ name?: string; address?: string }} [educationLocation] 교육 장소
  * @property {{ id: string; name: string; logo?: { url: string; } }} [institution] 기관 정보
+ * @property {keyof typeof import('@/constants/db').PROGRAM_DIFFICULTY} difficulty 프로그램 수준
  */
 
 export default {};

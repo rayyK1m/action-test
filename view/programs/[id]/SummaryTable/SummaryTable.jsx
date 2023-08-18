@@ -39,6 +39,10 @@ const SummaryTable = ({ className, ...props }) => {
                     </td>
                 </tr>
                 <tr>
+                    <th>프로그램 수준</th>
+                    <td>{programData.difficulty}</td>
+                </tr>
+                <tr>
                     <th>총 교육 차시</th>
                     <td>
                         {programData.learningTime}차시 (

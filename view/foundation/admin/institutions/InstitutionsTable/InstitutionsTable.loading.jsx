@@ -30,13 +30,13 @@ const TableSkeleton = () => (
 const getTableColoums = () => [
     {
         accessorKey: 'name',
-        header: <div>운영 기관 명</div>,
+        header: <div>기관 명</div>,
         cell: <TableSkeleton />,
         size: 837,
     },
     {
         accessorKey: 'file',
-        header: <div>필수 자료 제출</div>,
+        header: <div>필수 자료</div>,
         cell: <TableSkeleton />,
         maxSize: 159,
     },

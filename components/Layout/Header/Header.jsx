@@ -18,6 +18,7 @@ import LinkWithRole from './LinkWithRole/LinkWithRole';
 import styles from './Header.module.scss';
 
 import { LOGO_IMAGE } from '@/constants/common';
+import { ROLE } from '@/constants/db';
 
 /**
  *
@@ -30,6 +31,10 @@ const Header = ({ userData, className, children, ...props }) => {
     }
 
     const router = useRouter();
+
+    const isInstitutionsRouteActive =
+        router.pathname === '/institutions' ||
+        router.pathname === '/institutions/[institutionId]';
 
     return (
         <header className={cn(styles.container, className)} {...props}>
@@ -45,16 +50,14 @@ const Header = ({ userData, className, children, ...props }) => {
                     </Link>
                     <div className={styles.leftAreaWrapper}>
                         <Button
-                            className={styles.link}
+                            className={cn(styles.link, {
+                                [styles.link_active]: isInstitutionsRouteActive,
+                            })}
                             tag={Link}
                             color="link"
                             size="lg"
                             href="/institutions"
-                            active={
-                                router.pathname === '/institutions' ||
-                                router.pathname ===
-                                    '/institutions/[institutionId]'
-                            }
+                            active={isInstitutionsRouteActive}
                         >
                             운영 기관
                         </Button>
@@ -70,18 +73,21 @@ const Header = ({ userData, className, children, ...props }) => {
                         >
                             소개
                         </Button>
-                        <Button
-                            className={styles.link}
-                            icon={<SubmitModeIcon />}
-                            iconSide="right"
-                            tag={Link}
-                            color="link"
-                            size="lg"
-                            href="http://xn--2z1bz5tdvbiwlf4j.kr/"
-                            target="_blank"
-                        >
-                            공지사항
-                        </Button>
+                        {(userData.role === ROLE.FOUNDATION ||
+                            userData.role === ROLE.INSTITUTION) && (
+                            <Button
+                                className={styles.link}
+                                icon={<SubmitModeIcon />}
+                                iconSide="right"
+                                tag={Link}
+                                color="link"
+                                size="lg"
+                                href="http://xn--2z1bz5tdvbiwlf4j.kr/"
+                                target="_blank"
+                            >
+                                공지사항
+                            </Button>
+                        )}
                     </div>
                 </div>
                 <div className={styles.rightAreaContainer}>

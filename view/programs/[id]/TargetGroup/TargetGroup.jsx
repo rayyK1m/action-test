@@ -11,18 +11,20 @@ const TargetGroup = ({ targetGroup }) => {
 
     return (
         <ul className={styles.targetGroupList}>
-            {Object.entries(targetGroup).map(([type, gradeList], index) => {
-                return (
-                    <li key={type}>
-                        {!!index && ', '}
-                        <Grade
-                            type={type}
-                            gradeList={gradeList}
-                            hasComma={!!index}
-                        />
-                    </li>
-                );
-            })}
+            {Object.entries(targetGroup)
+                .filter(([_, gradeList]) => !!gradeList.length)
+                .map(([type, gradeList], index) => {
+                    return (
+                        <li key={type}>
+                            {!!index && ', '}
+                            <Grade
+                                type={type}
+                                gradeList={gradeList}
+                                hasComma={!!index}
+                            />
+                        </li>
+                    );
+                })}
         </ul>
     );
 };
