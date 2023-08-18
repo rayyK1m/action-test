@@ -66,11 +66,18 @@ export const getTableColoums = () => {
             cell: cellHelper(({ value: programCount, rowData }) => {
                 const { id: institutionId, submitFileStatus } = rowData;
 
-                const isDisabled =
-                    submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.제출.key ||
-                    submitFileStatus ===
-                        REQUIRED_FILE_SUBMIT_STATUS.미제출.key ||
-                    submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.거절.key;
+                const isDisabled = false;
+                /** NOTE
+                 * 기존에는 원래 필수 자료 승인 이후에 프로그램 등록이 가능하지만,
+                 * 현재 8/21일 오픈과 동시에 바로 기관이 프로그램 등록을 할 수 있어야 하는 이슈로 인해 프로그램 관리는 항상 abled 상태로 사용
+                 *
+                 * revert할 PR 링크
+                 * https://github.com/goorm-dev/swcamp-site/pull/78
+                 */
+                // submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.제출.key ||
+                // submitFileStatus ===
+                //     REQUIRED_FILE_SUBMIT_STATUS.미제출.key ||
+                // submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.거절.key;
 
                 return (
                     <Button

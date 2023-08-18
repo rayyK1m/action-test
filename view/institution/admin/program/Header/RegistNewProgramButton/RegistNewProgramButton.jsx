@@ -21,11 +21,19 @@ function RegistNewProgramButton() {
         reports: { reviewStatus },
     } = instituionAdmin;
 
-    const isDisabled = !(
-        reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key ||
-        reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key ||
-        reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.승인.key
-    );
+    const isDisabled = false;
+    /** NOTE
+     * 기존에는 원래 필수 자료 승인 이후에 프로그램 등록이 가능하지만,
+     * 현재 8/21일 오픈과 동시에 바로 기관이 프로그램 등록을 할 수 있어야 하는 이슈로 인해 프로그램 관리는 항상 abled 상태로 사용
+     *
+     * revert할 PR 링크
+     * https://github.com/goorm-dev/swcamp-site/pull/78
+     */
+    // !(
+    //     reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key ||
+    //     reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key ||
+    //     reviewStatus === REQUIRED_FILE_SUBMIT_STATUS.승인.key
+    // );
 
     return (
         <Dropdown isOpen={isOpenDropdown} toggle={toggleDropdown}>
