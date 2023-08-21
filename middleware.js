@@ -20,7 +20,9 @@ export async function middleware(req) {
         const { isAuthenticated } = await checkAuthentication(req);
 
         if (isAuthenticated) {
-            return NextResponse.redirect('/');
+            return NextResponse.redirect(
+                `${process.env.NEXT_PUBLIC_MAIN_HOST}`,
+            );
         }
 
         /** NOTE: 리다이렉트 이슈 해결될때까지 임시 방어 처리 */
