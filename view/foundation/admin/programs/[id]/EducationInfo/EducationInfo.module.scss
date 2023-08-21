@@ -8,8 +8,4 @@
     & li:not(:first-child) {
         margin-top: 0.75rem /* 12px -> .75rem */;
     }
-
-    & a {
-        display: inline;
-    }
 }

@@ -128,12 +128,11 @@ export const REQUIRED_FILE_SUBMIT_STATUS = /** @type {const} */ ({
 });
 
 export const PROGRAM_CATEGORIES = /** @type {const} */ ([
-    '드론',
-    '메타버스',
-    '인공지능 로봇',
     '프로그램 언어',
-    '해커톤 대회',
-    'VR',
+    'AR/VR/메타버스',
+    '인공지능//로봇',
+    '피지컬컴퓨팅',
+    '드론',
     '기타',
 ]);
 

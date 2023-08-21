@@ -52,12 +52,9 @@
     cursor: pointer;
 }
 
-.name {
-    color: var(--gray-900);
-}
-
 .dropdownMenu {
     width: 15.5rem /* 248px -> 15.5rem */;
+
     & > * {
         display: flex;
         align-items: center;
@@ -68,5 +65,17 @@
 }
 
 .nameAvatarItem {
-    border-bottom: 1px solid var(--gray-100);
+    padding: 7px 1rem;
+
+    &:hover {
+        background-color: transparent;
+        cursor: auto;
+    }
+}
+
+.dropdownMenuDivider {
+    height: 1px;
+    width: 100%;
+    background-color: var(--gray-100);
+    margin: 0.25rem 0;
 }

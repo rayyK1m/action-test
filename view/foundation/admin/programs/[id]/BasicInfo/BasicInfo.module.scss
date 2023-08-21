@@ -6,6 +6,7 @@
 
 .thumbnailImage {
     border-radius: 0.5rem /* 8px -> .5rem */;
+    object-fit: cover;
 }
 
 .badges {

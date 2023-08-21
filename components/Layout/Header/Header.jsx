@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import cn from 'classnames';
@@ -5,7 +7,7 @@ import cn from 'classnames';
 import {
     Avatar,
     Button,
-    UncontrolledDropdown,
+    Dropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
@@ -31,10 +33,13 @@ const Header = ({ userData, className, children, ...props }) => {
     }
 
     const router = useRouter();
+    const [open, setOpen] = useState(false);
 
     const isInstitutionsRouteActive =
         router.pathname === '/institutions' ||
         router.pathname === '/institutions/[institutionId]';
+
+    const handleToggle = () => setOpen((prev) => !prev);
 
     return (
         <header className={cn(styles.container, className)} {...props}>
@@ -96,7 +101,7 @@ const Header = ({ userData, className, children, ...props }) => {
                     {userData && (
                         <>
                             <LinkWithRole role={userData.role} />
-                            <UncontrolledDropdown>
+                            <Dropdown isOpen={open} toggle={handleToggle}>
                                 <DropdownToggle tag="span">
                                     <Avatar
                                         className={styles.avatar}
@@ -112,9 +117,7 @@ const Header = ({ userData, className, children, ...props }) => {
                                     right
                                     className={styles.dropdownMenu}
                                 >
-                                    <DropdownItem
-                                        className={styles.nameAvatarItem}
-                                    >
+                                    <div className={styles.nameAvatarItem}>
                                         <Avatar
                                             name={userData.name}
                                             size="md"
@@ -122,10 +125,13 @@ const Header = ({ userData, className, children, ...props }) => {
                                             maxInitials={2}
                                             round
                                         />
-                                        <span className={styles.name}>
+                                        <p className="subtitle-1 m-0 text-gray-900">
                                             {userData.name}
-                                        </span>
-                                    </DropdownItem>
+                                        </p>
+                                    </div>
+                                    <div
+                                        className={styles.dropdownMenuDivider}
+                                    />
                                     <DropdownItem tag="a" href="/change_info">
                                         <SettingIcon className="text-gray-700" />
                                         <span className="text-gray-900">
@@ -137,7 +143,7 @@ const Header = ({ userData, className, children, ...props }) => {
                                         로그아웃
                                     </DropdownItem>
                                 </DropdownMenu>
-                            </UncontrolledDropdown>
+                            </Dropdown>
                         </>
                     )}
                     {!userData && (
