@@ -10,7 +10,7 @@ import {
     DropdownMenu,
     DropdownItem,
 } from '@goorm-dev/gds-components';
-import { OutIcon, SubmitModeIcon } from '@goorm-dev/gds-icons';
+import { OutIcon, SettingIcon, SubmitModeIcon } from '@goorm-dev/gds-icons';
 import { useRouter } from 'next/router';
 
 import LinkWithRole from './LinkWithRole/LinkWithRole';
@@ -112,7 +112,9 @@ const Header = ({ userData, className, children, ...props }) => {
                                     right
                                     className={styles.dropdownMenu}
                                 >
-                                    <DropdownItem tag="a" href="/change_info">
+                                    <DropdownItem
+                                        className={styles.nameAvatarItem}
+                                    >
                                         <Avatar
                                             name={userData.name}
                                             size="md"
@@ -122,6 +124,12 @@ const Header = ({ userData, className, children, ...props }) => {
                                         />
                                         <span className={styles.name}>
                                             {userData.name}
+                                        </span>
+                                    </DropdownItem>
+                                    <DropdownItem tag="a" href="/change_info">
+                                        <SettingIcon className="text-gray-700" />
+                                        <span className="text-gray-900">
+                                            내 정보 수정
                                         </span>
                                     </DropdownItem>
                                     <DropdownItem tag="a" href="/logout">
