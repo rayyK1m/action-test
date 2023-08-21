@@ -76,7 +76,7 @@ const FormFileInputWithImage = ({
 
         await uploadFile.mutateAsync({ url, file });
 
-        const fullUrl = `${process.env.SWCAMP_THUMBNAIL_DOMAIN}/path}`;
+        const fullUrl = `${process.env.SWCAMP_THUMBNAIL_DOMAIN}/${path}`;
 
         onChange({
             filename: file?.name,
