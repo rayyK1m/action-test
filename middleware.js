@@ -5,8 +5,13 @@ import { checkAuth } from './server/middlewares/auth';
 
 /** @type {import('next/server').NextMiddleware}*/
 export async function middleware(req) {
+    /** NOTE: 리다이렉트 이슈 해결될때까지 임시 방어 처리 */
+    if (req.nextUrl.pathname.startsWith('/rjkz%7BCjW')) {
+        return NextResponse.redirect('/');
+    }
+
     // ping check
-    if(req.nextUrl.pathname.startsWith('/ping')) {
+    if (req.nextUrl.pathname.startsWith('/ping')) {
         return NextResponse.json({ result: true });
     }
 
@@ -85,5 +90,7 @@ export const config = {
         '/auth/goorm/callback',
         '/foundation/admin/:path*',
         '/change_info',
+        /** NOTE: 리다이렉트 이슈 해결될때까지 임시 방어 처리 */
+        '/rjkz%7BCjW',
     ],
 };
