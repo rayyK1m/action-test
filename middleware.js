@@ -6,7 +6,7 @@ import { checkAuth } from './server/middlewares/auth';
 /** @type {import('next/server').NextMiddleware}*/
 export async function middleware(req) {
     /** NOTE: 리다이렉트 이슈 해결될때까지 임시 방어 처리 */
-    if (req.nextUrl.pathname.startsWith('/rjkz%7BCjW')) {
+    if (req.nextUrl.pathname.endsWith('rjkz%7BCjW')) {
         return NextResponse.redirect('/');
     }
 
