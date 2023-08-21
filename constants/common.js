@@ -33,5 +33,5 @@ export const NEWSAC_LINK = {
 
 export const EMAIL_LIST = {
     kofac: 'kofac@kfo.or.kr',
-    newsac: 'newsac@goorm.io',
+    newsac: 'contact@newsac.io',
 };
