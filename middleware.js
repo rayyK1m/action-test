@@ -6,8 +6,8 @@ import { checkAuth } from './server/middlewares/auth';
 /** @type {import('next/server').NextMiddleware}*/
 export async function middleware(req) {
     /** NOTE: 리다이렉트 이슈 해결될때까지 임시 방어 처리 */
-    if (req.nextUrl.pathname.endsWith('rjkz%7BCjW')) {
-        return NextResponse.redirect('/');
+    if (req.nextUrl.pathname.startsWith('/rjkz%7BCjW')) {
+        return NextResponse.redirect(process.env.NEXT_PUBLIC_MAIN_HOST);
     }
 
     // ping check
@@ -23,9 +23,10 @@ export async function middleware(req) {
             return NextResponse.redirect('/');
         }
 
-        const returnUrl =
-            req.nextUrl.searchParams.get('return_url') ||
-            req.headers.get('referer');
+        /** NOTE: 리다이렉트 이슈 해결될때까지 임시 방어 처리 */
+        const returnUrl = process.env.NEXT_PUBLIC_MAIN_HOST;
+        // req.nextUrl.searchParams.get('return_url') ||
+        // req.headers.get('referer');
 
         return expireAllCookies(
             `${process.env.ACCOUNT_HOST}/login?return_url=${btoa(returnUrl)}`,
