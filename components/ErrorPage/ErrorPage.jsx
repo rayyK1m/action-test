@@ -24,7 +24,7 @@ const ERROR_CONTENTS = {
             '방문하시려는 페이지는 권한이 있는 회원만 사용할 수 있습니다.\n서비스 이용 및 사용 권한에 관련한 사항은 고객센터 이메일로 문의하여 주시기 바랍니다.',
         children: (
             <div>
-                <p>∙ 고객센터 이메일 : newsac@goorm.io</p>
+                <p>∙ 고객센터 이메일 : contact@newsac.io</p>
                 <p>∙ 상담 시간 : 10:00 ~ 17:00</p>
             </div>
         ),
@@ -59,7 +59,7 @@ const ERROR_CONTENTS = {
                     </a>
                     해 주세요.
                 </p>
-                <p>∙ 고객센터 이메일 : newsac@goorm.io</p>
+                <p>∙ 고객센터 이메일 : contact@newsac.io</p>
                 <p>∙ 상담 시간 : 10:00 ~ 17:00</p>
             </div>
         ),
@@ -76,7 +76,7 @@ const ERROR_CONTENTS = {
                     ∙ <b>페이지 새로고침</b>을 하거나 잠시 후 다시 시도해
                     주세요.
                 </p>
-                <p>∙ 고객센터 이메일 : newsac@goorm.io</p>
+                <p>∙ 고객센터 이메일 : contact@newsac.io</p>
                 <p>∙ 상담 시간 : 10:00 ~ 17:00</p>
             </div>
         ),
