@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import qs from 'query-string';
 
 import { HScrollTable, HScrollTablePagination } from '@goorm-dev/gds-tables';
 
 import styles from './CampManageTable.module.scss';
-import { useEffect } from 'react';
 
 function CampManageTable({ getTableProps, getPaginationProps }) {
     const router = useRouter();

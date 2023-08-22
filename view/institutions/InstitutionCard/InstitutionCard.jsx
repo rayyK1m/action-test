@@ -57,9 +57,7 @@ function InstitutionCard({ institutionId, logoUrl, name, programCount }) {
 
                 <span className={styles.contents}>
                     <h6 className={cn(styles.title, 'mb-1')}>{name}</h6>
-                    <p className="text-hint">
-                        모집 중인 프로그램 {programCount}개
-                    </p>
+                    <p className="text-hint">프로그램 {programCount}개</p>
                 </span>
             </div>
         </>

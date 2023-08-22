@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -31,14 +31,14 @@ import { useGetProgramAdmin } from '@/query-hooks/usePrograms';
 
 import CampDeleteModal from '../CampDeleteModal';
 import CampManageTable from '../CampManageTable';
-import { getCampsBreadcrumbs } from './CampManageContainer.utils';
+import {
+    getCampsBreadcrumbs,
+    getTableHeader,
+    getTableData,
+} from './CampManageContainer.utils';
 
 import { PROGRAM_DIVISION, ROLE } from '@/constants/db';
-import {
-    TABLE_DATA,
-    TABLE_HEADER,
-    DELETE_TYPE,
-} from './CampManageContainer.constants';
+import { DELETE_TYPE } from './CampManageContainer.constants';
 
 import styles from './CampManageContainer.module.scss';
 
@@ -50,37 +50,36 @@ function CampManageContainer() {
     const basePath = asPath.substring(0, asPath.lastIndexOf('?')); // 쿼리 스트링을 제외한 basePath
     const itemLimit = limit * 1;
 
-    /** 지역 상태 */
+    /** [state] 지역 상태 */
     const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
     const [deleteCamp, setDeleteCamp] = useState({
         classNumberStr: '',
         campId: '',
     });
+    const classRoomRef = useRef([]);
+    const [isShowTooltips, setIsShowTooltips] = useState([]);
+    const [sorting, setSorting] = useState([]);
 
-    /** server(전역) 상태 */
+    /** [state] server(전역) 상태 */
     const { data: program } = useGetProgramAdmin(programId);
     const campsDeleteMutation = useDeleteCamps();
     const campCopyMutation = useCopyCamp();
     const { data: userData } = useSession.GET();
-
     const institutionId = userData.institutionId || router.query.institutionId;
-    const { data } = useGetProgramCamps(programId, {
+    const { data: camps } = useGetProgramCamps(programId, {
         institutionId,
         page: page,
         limit: limit,
         sort,
         division,
     });
-    const { items = [], total } = data;
+    const { items = [], total } = camps;
 
-    /** 삭제 모달 토글 */
+    /** [handler] 삭제 모달 토글 */
     const onToggleModal = () => setIsOpenDeleteModal((prev) => !prev);
 
-    /**
-     * HScrollTable 데이터 핸들링
-     */
+    /** [handler] 테이블 더보기 Button의 DropdownItem 클릭 이벤트 handler */
     const onClickMoreButton = async (e) => {
-        /** 테이블 더보기 Button의 DropdownItem 클릭 이벤트 handler */
         const { id, campId, classNumberStr } = e.target.dataset;
         resetRowSelection();
 
@@ -94,43 +93,7 @@ function CampManageContainer() {
             campCopyMutation.mutate({ campId, institutionId });
         }
     };
-    const memoizationColumns = useMemo(
-        () => TABLE_HEADER(division, userData.role),
-        [division, userData.role],
-    );
-    const memoizationData = useMemo(
-        () =>
-            TABLE_DATA({
-                items,
-                onClickMoreButton,
-            }),
-        [items],
-    );
-
-    const [sorting, setSorting] = useState([]);
-    const {
-        getTableProps,
-        getPaginationProps,
-        state: { sorting: selectedSorting },
-    } = useHScrollTable({
-        data: memoizationData,
-        columns: memoizationColumns,
-        usePagination: true,
-        manualPagination: true,
-        extraColumnType:
-            userData.role === ROLE.INSTITUTION
-                ? TYPES.EXTRA_COLUMN_TYPE.CHECK_INDEX
-                : undefined,
-        pageCount: Math.ceil(total / itemLimit),
-        pageIndex: page * 1 - 1,
-        pageSize: itemLimit,
-        sorting,
-        setSorting,
-    });
-    const { selectedRows, selectedRowCount, resetRowSelection } =
-        useRowSelections(getTableProps().table);
-
-    /** 삭제 모달 내의 삭제하기 버튼 클릭 */
+    /** [handler] 삭제 모달 내의 삭제하기 버튼 클릭 */
     const handleDeleteCamp = async () => {
         const queryString = qs.stringify({ division, page: 1, limit, sort });
         const deleteType =
@@ -185,9 +148,57 @@ function CampManageContainer() {
         onToggleModal();
     };
 
-    /**
-     * sorting 핸들링
-     */
+    /** HScrollTable */
+    const memoizationColumns = useMemo(
+        () => getTableHeader(division, userData.role),
+        [division, userData.role],
+    );
+    const memoizationData = useMemo(() => {
+        return getTableData({
+            items,
+            onClickMoreButton,
+            classRoomRef,
+            isShowTooltips,
+            page,
+        });
+    }, [items, isShowTooltips]);
+    const {
+        getTableProps,
+        getPaginationProps,
+        state: { sorting: selectedSorting },
+    } = useHScrollTable({
+        data: memoizationData,
+        columns: memoizationColumns,
+        usePagination: true,
+        manualPagination: true,
+        extraColumnType:
+            userData.role === ROLE.INSTITUTION
+                ? TYPES.EXTRA_COLUMN_TYPE.CHECK_INDEX
+                : undefined,
+        pageCount: Math.ceil(total / itemLimit),
+        pageIndex: page * 1 - 1,
+        pageSize: itemLimit,
+        sorting,
+        setSorting,
+    });
+    const { selectedRows, selectedRowCount, resetRowSelection } =
+        useRowSelections(getTableProps().table);
+
+    /** 교육장소 말줄임 처리 */
+    useEffect(() => {
+        if (!classRoomRef.current) return;
+
+        const temp = [];
+        classRoomRef.current.forEach((element, index) => {
+            temp.push({
+                index,
+                isShow: element.scrollWidth > element.clientWidth,
+            });
+        });
+        setIsShowTooltips(temp);
+    }, [page]);
+
+    /** sorting 처리 */
     useEffect(() => {
         if (selectedSorting.length === 0) return;
 

@@ -38,6 +38,10 @@ export const checkAuthentication = async (request) => {
         userId,
     });
 
+    if (!userData) {
+        return { isAuthenticated: false };
+    }
+
     const sessionData = {
         id: userData.id,
         name: userData.name,

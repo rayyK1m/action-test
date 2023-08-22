@@ -69,7 +69,9 @@ function PostReport() {
 
                             {userData.role === ROLE.FOUNDATION &&
                             !postReportValues?.[POST_INPUTS[item].id] ? (
-                                <p className="text-gray-600">없음</p>
+                                <p className="text-gray-600">
+                                    입력된 정보가 없습니다.
+                                </p>
                             ) : (
                                 <Input
                                     readOnly={userData.role === ROLE.FOUNDATION}

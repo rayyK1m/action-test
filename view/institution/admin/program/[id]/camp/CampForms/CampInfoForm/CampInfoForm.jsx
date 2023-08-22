@@ -118,7 +118,7 @@ const ReadOnlyCampForm = ({ onClickEdit, division, isFoundationPage }) => {
     return (
         <div className={styles.form}>
             <div className="d-flex justify-content-between align-items-center">
-                <h5>캠프 정보</h5>
+                <h5 className="text-gray-700">캠프 정보</h5>
                 {!isFoundationPage && (
                     <Button
                         icon={<EditIcon />}
@@ -180,7 +180,7 @@ const ReadOnlyManagerForm = ({ division }) => {
     } = CAMP_INFO_KEYS;
     return (
         <div className={styles.form}>
-            <h5>담당자 정보</h5>
+            <h5 className="text-gray-700">담당자 정보</h5>
             <div className={styles.divideRow}>
                 <InputItem
                     label="현장 담당자 명"
@@ -243,7 +243,7 @@ const ReadOnlyTeacherForm = ({ isFoundationPage }) => {
     const { mainEducatorKey, subEducatorKey } = CAMP_INFO_KEYS;
     return (
         <div className={styles.form}>
-            <h5>강사 정보</h5>
+            <h5 className="text-gray-700">강사 정보</h5>
             <div>
                 <div className={styles.divideRow}>
                     <InputItem
@@ -276,7 +276,7 @@ const ReadOnlyTargetForm = ({ programTargetGroup, isFoundationPage }) => {
     const { applicantCountKey, classKey } = CAMP_INFO_KEYS;
     return (
         <div className={styles.form}>
-            <h5>신청 대상 정보</h5>
+            <h5 className="text-gray-700">신청 대상 정보</h5>
             <ApplyTargetInput programTargetGroup={programTargetGroup} />
             <div className={styles.divideRow}>
                 <InputItem
@@ -310,9 +310,9 @@ const ReadOnlyEducationForm = ({ division, isFoundationPage }) => {
     return (
         <div className={styles.form}>
             {division === PROGRAM_DIVISION.집합형 ? (
-                <h5>교육 정보</h5>
+                <h5 className="text-gray-700">교육 정보</h5>
             ) : (
-                <h5>교육 시간</h5>
+                <h5 className="text-gray-700">교육 시간</h5>
             )}
             <InputItem
                 label="총 교육 차시"

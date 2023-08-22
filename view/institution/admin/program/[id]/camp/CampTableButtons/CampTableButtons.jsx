@@ -90,7 +90,7 @@ function CampTableButtons({
                         >
                             <MoreCommonIcon />
                         </DropdownToggle>
-                        <CustomDropdownMenu>
+                        <CustomDropdownMenu right>
                             <CustomDropdownItem
                                 data-id="copy"
                                 data-camp-id={campId}
