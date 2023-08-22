@@ -8,6 +8,7 @@ import { useGetProgramAdmin } from '@/query-hooks/usePrograms';
 
 import styles from './BackButton.module.scss';
 import Image from 'next/image';
+import { DEFAULT_AVATAR_IMAGE } from '@/constants/common';
 
 function BackButton() {
     const router = useRouter();
@@ -27,7 +28,9 @@ function BackButton() {
                 <h3>{program.name}</h3>
                 <div className={styles.institutionWrapper}>
                     <Image
-                        src={program.institution.logo.url}
+                        src={
+                            program.institution.logo.url || DEFAULT_AVATAR_IMAGE
+                        }
                         alt="institution"
                         width={24}
                         height={24}
