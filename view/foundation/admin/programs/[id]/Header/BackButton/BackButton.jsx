@@ -29,7 +29,8 @@ function BackButton() {
                 <div className={styles.institutionWrapper}>
                     <Image
                         src={
-                            program.institution.logo.url || DEFAULT_AVATAR_IMAGE
+                            program.institution?.logo?.url ||
+                            DEFAULT_AVATAR_IMAGE
                         }
                         alt="institution"
                         width={24}
