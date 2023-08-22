@@ -10,7 +10,7 @@ export const DEFAULT_AVATAR_IMAGE =
 export const DEFAULT_AVATAR_IMAGE_LG =
     'https://statics.goorm.io/images/newsac/newsac_avatar_150_150.svg';
 export const BANNER_IAMGE =
-    'https://statics.goorm.io/images/newsac/newsac_main_banner.svg';
+    'https://statics.goorm.io/images/newsac/newsac_main_banner.jpg';
 
 export const LOGO_LINK = process.env.NEXT_PUBLIC_MAIN_HOST;
 
