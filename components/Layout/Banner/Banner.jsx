@@ -21,7 +21,13 @@ const Banner = ({
             )}
             {...props}
         >
-            {imgSrc && <Image src={imgSrc} alt="배너 이미지" fill />}
+            {imgSrc && (
+                <img
+                    src={imgSrc}
+                    alt="배너 이미지"
+                    className={styles.bannerImage}
+                />
+            )}
         </div>
     );
 };
