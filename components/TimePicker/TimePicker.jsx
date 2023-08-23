@@ -27,18 +27,16 @@ const { ampm: AMPM, hours: HOURS, minutes: MINUTES } = generateTimeList();
 const ListItem = ({ value, style, isFocus, onClick }) => {
     return (
         <DropdownItem
-            className={isFocus ? styles.active : ''}
+            className={isFocus ? cn(styles.item, styles.active) : styles.item}
             style={style}
-            onClick={() => {
-                onClick(value);
-            }}
+            onClick={() => onClick(value)}
         >
             {value}
         </DropdownItem>
     );
 };
 
-const ListContainer = ({ items, selectedItem, onClickItem }) => {
+const ListContainer = ({ items, selectedItem, onClickItem, ...listProps }) => {
     return (
         <div className={cn(styles.listWrapper, styles.divider)}>
             <List
@@ -48,6 +46,7 @@ const ListContainer = ({ items, selectedItem, onClickItem }) => {
                 itemSize={(idx) => (idx === 0 ? 36 : 32)}
                 itemCount={items.length}
                 className={styles.list}
+                {...listProps}
             >
                 {({ index, style }) => (
                     <ListItem
@@ -62,7 +61,8 @@ const ListContainer = ({ items, selectedItem, onClickItem }) => {
     );
 };
 
-const TIME_FORMAT = 'hh:mm a';
+const TIME_FORMAT = 'hh:mm A';
+const TIME_FORMAT_24 = 'HH:mm:00';
 
 /**
  * 
@@ -85,6 +85,7 @@ const TimePicker = forwardRef(
             time,
             placeholderTime = { ampm: '오전', hour: '01', minute: '00' },
             onChange,
+            onBlur,
             disabled,
         },
         ref,
@@ -92,7 +93,6 @@ const TimePicker = forwardRef(
         const [isOpen, setIsOpen] = useState(false);
         const [isDirty, setIsDirty] = useState(time ? true : false);
         const [innerTime, setInnerTime] = useState(placeholderTime);
-        const { onBlur, ...restProps } = inputProps;
 
         const menuRef = useRef(null);
 
@@ -129,12 +129,13 @@ const TimePicker = forwardRef(
             });
 
             const selectedTime = { ...innerTime, [itemKey]: itemValue };
-
             onChange(
                 dayjs(
-                    `${selectedTime.hour}:${selectedTime.minute} ${selectedTime.ampm}`,
+                    `${selectedTime.hour}:${selectedTime.minute} ${
+                        selectedTime.ampm === '오후' ? 'PM' : 'AM'
+                    }`,
                     TIME_FORMAT,
-                    'ko',
+                    'en',
                 ).format(),
             );
         };
@@ -168,7 +169,7 @@ const TimePicker = forwardRef(
                                 : `${innerTime.ampm} ${innerTime.hour}:${innerTime.minute}`
                         }
                         onBlur={handleBlur}
-                        {...restProps}
+                        {...inputProps}
                     />
                     <TimeIcon
                         className={cn(
@@ -178,36 +179,29 @@ const TimePicker = forwardRef(
                     />
                 </DropdownToggle>
 
-                <DropdownMenu>
-                    <div
-                        ref={menuRef}
-                        className={cn(
-                            isOpen ? 'd-flex' : 'd-none',
-                            styles.dropdownMenu,
-                        )}
-                    >
-                        <ListContainer
-                            items={AMPM}
-                            onClickItem={(value) =>
-                                handleClickItem('ampm', value)
-                            }
-                            selectedItem={innerTime.ampm}
-                        />
-                        <ListContainer
-                            items={HOURS}
-                            onClickItem={(value) =>
-                                handleClickItem('hour', value)
-                            }
-                            selectedItem={innerTime.hour}
-                        />
-                        <ListContainer
-                            items={MINUTES}
-                            onClickItem={(value) =>
-                                handleClickItem('minute', value)
-                            }
-                            selectedItem={innerTime.minute}
-                        />
-                    </div>
+                <DropdownMenu
+                    className={cn(
+                        isOpen ? 'd-flex' : 'd-none',
+                        styles.dropdownMenu,
+                    )}
+                >
+                    <ListContainer
+                        items={AMPM}
+                        onClickItem={(value) => handleClickItem('ampm', value)}
+                        selectedItem={innerTime.ampm}
+                    />
+                    <ListContainer
+                        items={HOURS}
+                        onClickItem={(value) => handleClickItem('hour', value)}
+                        selectedItem={innerTime.hour}
+                    />
+                    <ListContainer
+                        items={MINUTES}
+                        onClickItem={(value) =>
+                            handleClickItem('minute', value)
+                        }
+                        selectedItem={innerTime.minute}
+                    />
                 </DropdownMenu>
             </Dropdown>
         );

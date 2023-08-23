@@ -308,9 +308,9 @@ export const TimePickerItem = ({
                             ref={ref}
                             time={value}
                             onChange={onChange}
+                            onBlur={onBlur}
                             inputProps={{
                                 invalid: !!errors[timePickerKey],
-                                onBlur,
                                 ...props,
                             }}
                             disabled={disabled}
