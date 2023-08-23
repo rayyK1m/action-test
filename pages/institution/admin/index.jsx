@@ -29,6 +29,7 @@ export default function InstitutionAdminPage({ isSubmitted }) {
                 <ProgramManageList isSubmitted={isSubmitted} />
             </Layout.Main>
 
+            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );

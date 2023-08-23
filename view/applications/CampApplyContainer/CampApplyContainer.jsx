@@ -204,6 +204,7 @@ function CampApplyContainer({ userData, programId }) {
                         </FormProvider>
                     </GridContainer>
                 </Layout.Main>
+                <Layout.ContributorBanner />
                 <Layout.Footer />
             </Layout>
 

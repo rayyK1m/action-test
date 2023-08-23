@@ -34,7 +34,7 @@ function BasicInfo() {
                         src={thumbnail.url}
                         alt="thumbnail"
                         width={319}
-                        height={167}
+                        height={179}
                         className={styles.thumbnailImage}
                     />
                     <DownloadButton

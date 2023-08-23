@@ -15,6 +15,7 @@ function Institutions() {
             <Layout.Main>
                 <InstitutionsContainer />
             </Layout.Main>
+            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );

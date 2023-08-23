@@ -26,6 +26,7 @@ export default function FoundationAdminProgramsPage() {
             <Layout.Main>
                 <FoundationAdminPrograms />
             </Layout.Main>
+            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );

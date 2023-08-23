@@ -19,6 +19,7 @@ export default function Programs() {
                     <ProgramsContainer />
                 </SSRSuspense>
             </Layout.Main>
+            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );
