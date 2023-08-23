@@ -5,8 +5,9 @@ import { WarningIcon, BackPageIcon } from '@goorm-dev/gds-icons';
 
 import styles from './ErrorBoundary.module.scss';
 
-const ErrorFallback = () => {
+const ErrorFallback = ({ resetErrorBoundary }) => {
     const handleClick = () => {
+        resetErrorBoundary();
         window.history.back();
     };
 
@@ -32,8 +33,8 @@ const isExpectedError = (error) => {
         return false;
     }
     const { err } = error.response.data;
-    // NOTE: err.code 가 존재한다면 예상했던 에러로 판단
-    if (!err?.code) {
+    // NOTE: err에 직접 넣은 속성(code, meta, statusCode)가 존재한다면 예상했던 에러로 판단
+    if (!err?.code || !err?.meta || err?.statusCode) {
         return false;
     }
     return true;
