@@ -131,9 +131,6 @@ const useSubmitReportReview = () => {
             await queryClient.invalidateQueries(
                 institutionsKeys.itemsFoundation(),
             );
-            toast('제출이 완료되었습니다.', {
-                type: toast.TYPE.SUCCESS,
-            });
         },
     });
 };

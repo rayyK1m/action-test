@@ -7,6 +7,7 @@ import { Button } from '@goorm-dev/gds-components';
 import { CheckCircleIcon, ErrorCircleIcon } from '@goorm-dev/gds-icons';
 import { REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
 import { useSubmitReportReview } from '@/query-hooks/useInstitutions';
+import { toast } from '@goorm-dev/gds-toastify';
 
 function ButtonGroup() {
     const {
@@ -14,6 +15,7 @@ function ButtonGroup() {
         toggle,
         rowData,
         formData,
+        validate,
         requiredFeedback,
         setRequiredFeedback,
     } = useContext(ConfirmModalContext);
@@ -24,12 +26,19 @@ function ButtonGroup() {
     const showFeedback = () => {
         setRequiredFeedback(true);
     };
+    const hideFeedback = () => {
+        setRequiredFeedback(false);
+    };
 
     const requireExtraReport = async () => {
         await submitReportReview.mutateAsync({
             institutionId,
             feedback: formData.feedback,
             reviewStatus: REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key,
+        });
+
+        toast('추가 자료를 요청했습니다.', {
+            type: toast.TYPE.SUCCESS,
         });
         toggle();
     };
@@ -39,40 +48,38 @@ function ButtonGroup() {
             institutionId,
             reviewStatus: REQUIRED_FILE_SUBMIT_STATUS.승인.key,
         });
+        toast('필수 자료를 승인했습니다.', {
+            type: toast.TYPE.SUCCESS,
+        });
         toggle();
     };
 
     const reject = async () => {
+        if (!validate.feedback) return;
+
         await submitReportReview.mutateAsync({
             institutionId,
             feedback: formData.feedback,
             reviewStatus: REQUIRED_FILE_SUBMIT_STATUS.거절.key,
         });
+        toast('필수 자료 수정 요청이 완료되었습니다.', {
+            type: toast.TYPE.SUCCESS,
+        });
         toggle();
     };
 
-    switch (submitFileStatus) {
-        case REQUIRED_FILE_SUBMIT_STATUS.제출.key:
-        case REQUIRED_FILE_SUBMIT_STATUS.거절.key:
-            return requiredFeedback ? (
-                <Button
-                    size="lg"
-                    color="primary"
-                    type="button"
-                    onClick={reject}
-                >
-                    수정 요청하기
-                </Button>
-            ) : (
+    switch (true) {
+        case submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.제출.key &&
+            !requiredFeedback:
+            return (
                 <>
                     <Button
                         size="lg"
-                        icon={<ErrorCircleIcon />}
                         color="danger"
                         type="button"
                         onClick={showFeedback}
                     >
-                        거절하기
+                        거절 사유 작성하기
                     </Button>
                     <Button
                         size="lg"
@@ -85,8 +92,57 @@ function ButtonGroup() {
                     </Button>
                 </>
             );
-        case REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key:
-        case REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key:
+        case submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.제출.key &&
+            requiredFeedback:
+            return (
+                <div className={styles.feedbackWrapper}>
+                    <Button
+                        size="lg"
+                        color="link"
+                        type="button"
+                        onClick={hideFeedback}
+                    >
+                        이전
+                    </Button>
+                    <Button
+                        size="lg"
+                        color="primary"
+                        type="button"
+                        disabled={requiredFeedback && !validate.feedback}
+                        onClick={reject}
+                    >
+                        수정 요청하기
+                    </Button>
+                </div>
+            );
+        case submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.승인.key &&
+            requiredFeedback:
+            return (
+                <div className={styles.feedbackWrapper}>
+                    <Button
+                        size="lg"
+                        color="link"
+                        type="button"
+                        onClick={hideFeedback}
+                    >
+                        이전
+                    </Button>
+                    <Button
+                        size="lg"
+                        color="primary"
+                        type="button"
+                        disabled={requiredFeedback && !validate.feedback}
+                        onClick={requireExtraReport}
+                    >
+                        추가 자료 요청하기
+                    </Button>
+                </div>
+            );
+        case submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.거절.key:
+        case submitFileStatus ===
+            REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key:
+        case submitFileStatus ===
+            REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key:
             return (
                 <Button
                     size="lg"
@@ -96,19 +152,6 @@ function ButtonGroup() {
                     onClick={approve}
                 >
                     승인하기
-                </Button>
-            );
-        case REQUIRED_FILE_SUBMIT_STATUS.승인.key:
-            return (
-                <Button
-                    size="lg"
-                    color="primary"
-                    type="button"
-                    onClick={
-                        requiredFeedback ? requireExtraReport : showFeedback
-                    }
-                >
-                    추가 자료 요청하기
                 </Button>
             );
         default:

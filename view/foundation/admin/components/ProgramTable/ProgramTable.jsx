@@ -134,7 +134,7 @@ function ProgramTable({ columnsOption }) {
                 <form onSubmit={searchTable}>
                     <SearchInput
                         className={styles.searchInput}
-                        placeholder="프로그램 검색"
+                        placeholder="프로그램 명으로 검색"
                         size="lg"
                         value={searchText}
                         onChange={(e) => {
