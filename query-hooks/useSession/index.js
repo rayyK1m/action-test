@@ -26,6 +26,7 @@ const GET = () => {
 
     return useQuery(sessionKeys.all(), () => data, {
         cacheTime: Infinity,
+        staleTime: Infinity,
         enabled: !!data,
     });
 };
