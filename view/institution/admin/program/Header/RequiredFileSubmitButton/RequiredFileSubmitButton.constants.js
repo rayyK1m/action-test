@@ -28,8 +28,12 @@ export const TOOLTIP_ISSHOW_MAP = /** @type {const} */ ({
 });
 
 export const TOOLTIP_TEXT_MAP = /** @type {const} */ ({
+    /** NOTE
+     * 현재 임시 정책으로 필수 자료를 제출하지 않아도 돼서 문구 변경,
+     * 추후 다시 변경될 예정
+     */
     [REQUIRED_FILE_SUBMIT_STATUS.미제출.key]:
-        '필수 자료 제출 후 승인되면 프로그램을 등록할 수 있어요.',
+        '2학기에는 필수 자료 제출 없이 프로그램 등록할 수 있습니다.',
     [REQUIRED_FILE_SUBMIT_STATUS.거절.key]:
         '자료를 수정해서 다시 제출해주세요.',
     [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key]:

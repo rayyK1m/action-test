@@ -10,6 +10,7 @@ const useKakaoMap = () => {
     return useQuery(mapKeys.kakaoMap(), () => mapApis.getKaKaoMapScript(), {
         enabled: isMounted,
         cacheTime: Infinity,
+        staleTime: Infinity,
         suspense: false,
     });
 };
@@ -28,6 +29,7 @@ const useDaumSearchMap = ({ onComplete } = {}) => {
         {
             enabled: isMounted,
             cacheTime: Infinity,
+            staleTime: Infinity,
             suspense: false,
         },
     );
