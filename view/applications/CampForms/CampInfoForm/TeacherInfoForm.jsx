@@ -139,7 +139,7 @@ export const ReadOnlyManagerForm = ({ isFoundationPage }) => {
                     value={getValues(emailKey)}
                     readOnly
                 />
-                <FormInput
+                <FormDropdown
                     label="소속 학교(교육 장소)"
                     placeholder="소속 학교"
                     value={getValues(schoolNameKey)}
@@ -152,13 +152,9 @@ export const ReadOnlyManagerForm = ({ isFoundationPage }) => {
                     value={getValues(operateLocationKey)}
                     readOnly
                 />
-                <FormInput
+                <FormDropdown
                     label="학교 유형"
                     placeholder="예) 늘봄 학교"
-                    formText={
-                        !isFoundationPage &&
-                        '미 입력시 일반 학교로 자동 등록됩니다.'
-                    }
                     value={getValues(schoolTypeKey) || '일반 학교'}
                     readOnly
                 />

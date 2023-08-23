@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import ProgramApplyContainer from '@/view/institution/admin/program/ProgramApplyContainer';
 
-import { checkAuthSsr, withSessionSsr } from '@/server/utils/auth';
+import { checkAuthSsr } from '@/server/utils/auth';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { sessionKeys } from '@/query-hooks/useSession';
 import { ROLE } from '@/constants/db';

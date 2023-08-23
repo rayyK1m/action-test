@@ -117,6 +117,7 @@ const SearchSchoolInput = ({ userId, schoolKey }) => {
 
     const {
         control,
+        trigger,
         formState: { errors },
         setValue,
     } = useFormContext();
@@ -132,21 +133,25 @@ const SearchSchoolInput = ({ userId, schoolKey }) => {
                 rules={{
                     required: '필수 항목을 선택해주세요.',
                 }}
-                render={({ field: { ref, value, onChange, onBlur } }) => {
+                render={({ field: { value, onChange, onBlur } }) => {
                     const debouncedName = useDebounce(value, 500);
                     const { data = { items: [], total: 0 } } = useGetSchools({
                         userId,
                         name: debouncedName,
                     });
 
+                    const handleChange = (value) => {
+                        onChange(value);
+                        trigger(schoolNameKey);
+                    };
+
                     return (
                         <SearchSchoolDropdown
-                            ref={ref}
                             schoolList={data.items}
                             isOpenDropdown={isOpen}
                             schoolName={value}
                             toggle={toggle}
-                            onChangeSchoolName={onChange}
+                            onChangeSchoolName={handleChange}
                             onClickDropdownItem={handleClick}
                             onBlur={onBlur}
                             errors={errors[schoolNameKey]}

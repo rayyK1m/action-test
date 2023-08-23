@@ -57,8 +57,6 @@ function PostFileReport() {
         });
     };
 
-    console.log(postFileReportValues);
-
     return (
         <div className="d-flex flex-column">
             <h5 className="mb-4 text-gray-700">종료 제출</h5>

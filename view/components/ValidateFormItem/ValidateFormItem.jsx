@@ -235,7 +235,6 @@ export const DatePickerItem = ({
 }) => {
     const {
         control,
-        trigger,
         formState: { errors },
     } = useFormContext();
 
@@ -251,17 +250,12 @@ export const DatePickerItem = ({
                     : {}),
             }}
             render={({ field: { ref, value, onChange, onBlur } }) => {
-                const handleChange = (value) => {
-                    onChange(value);
-                    trigger(datePickerKey);
-                };
-
                 return (
                     <div className="d-flex flex-column" style={{ flex: 1 }}>
                         <CustomDatePicker
                             ref={ref}
                             date={value}
-                            onChange={handleChange}
+                            onChange={onChange}
                             inputProps={{
                                 invalid: !!errors[datePickerKey],
                                 onBlur,
@@ -307,29 +301,31 @@ export const TimePickerItem = ({
                       }
                     : {}),
             }}
-            render={({ field: { ref, value, onChange, onBlur } }) => (
-                <div className="d-flex flex-column" style={{ flex: 1 }}>
-                    <TimePicker
-                        ref={ref}
-                        time={value}
-                        onChange={onChange}
-                        inputProps={{
-                            invalid: !!errors[timePickerKey],
-                            onBlur,
-                            ...props,
-                        }}
-                        disabled={disabled}
-                    />
-                    {errors[timePickerKey] && (
-                        <div className="d-flex align-items-center mt-1 text-danger">
-                            <NoticeCircleIcon />
-                            <span className="ml-1">
-                                {errors[timePickerKey]?.message}
-                            </span>
-                        </div>
-                    )}
-                </div>
-            )}
+            render={({ field: { ref, value, onChange, onBlur } }) => {
+                return (
+                    <div className="d-flex flex-column" style={{ flex: 1 }}>
+                        <TimePicker
+                            ref={ref}
+                            time={value}
+                            onChange={onChange}
+                            inputProps={{
+                                invalid: !!errors[timePickerKey],
+                                onBlur,
+                                ...props,
+                            }}
+                            disabled={disabled}
+                        />
+                        {errors[timePickerKey] && (
+                            <div className="d-flex align-items-center mt-1 text-danger">
+                                <NoticeCircleIcon />
+                                <span className="ml-1">
+                                    {errors[timePickerKey]?.message}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                );
+            }}
         />
     );
 };

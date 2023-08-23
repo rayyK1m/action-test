@@ -112,7 +112,7 @@ const FormFileInputWithImage = ({
                 <div className={cn(styles.fileInput, 'd-flex flex-column')}>
                     <FileInput
                         {...fileInputProps}
-                        className={disabled && styles.disabledInput}
+                        className={disabled ? styles.disabledInput : ''}
                         size="lg"
                         accept="image/png, image/jpeg, image/gif, image/webp"
                         badgeMaxWidth={160}

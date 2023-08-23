@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef, useRef } from 'react';
 import cn from 'classnames';
 import dayjs from 'dayjs';
 
@@ -43,13 +43,24 @@ const CustomDatePicker = forwardRef(
         },
         ref,
     ) => {
+        const calendarRef = useRef(null);
         const [isOpen, setIsOpen] = useState(false);
         const toggle = () => {
             setIsOpen((prev) => !prev);
         };
+        const { onBlur, ...restProps } = inputProps;
 
         const handleChange = (date) => {
             onChange(date);
+        };
+
+        const handleBlur = (e) => {
+            if (
+                calendarRef.current &&
+                !calendarRef.current.contains(e.relatedTarget)
+            ) {
+                onBlur();
+            }
         };
 
         return (
@@ -73,8 +84,8 @@ const CustomDatePicker = forwardRef(
                             value={
                                 !date ? '' : dayjs(date).format('YYYY.MM.DD')
                             }
-                            onFocus={() => document.activeElement.blur()}
-                            {...inputProps}
+                            onBlur={handleBlur}
+                            {...restProps}
                         />
                         <CalendarIcon
                             className={cn(
@@ -85,11 +96,13 @@ const CustomDatePicker = forwardRef(
                     </DropdownToggle>
 
                     <DropdownMenu>
-                        <Calendar
-                            locale="ko"
-                            onClickDay={handleChange}
-                            {...calendarProps}
-                        />
+                        <div ref={calendarRef}>
+                            <Calendar
+                                locale="ko"
+                                onClickDay={handleChange}
+                                {...calendarProps}
+                            />
+                        </div>
                     </DropdownMenu>
                 </Dropdown>
             </>

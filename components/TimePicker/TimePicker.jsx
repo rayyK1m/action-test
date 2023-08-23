@@ -1,4 +1,10 @@
-import React, { forwardRef, useCallback, useEffect, useState } from 'react';
+import React, {
+    forwardRef,
+    useCallback,
+    useEffect,
+    useState,
+    useRef,
+} from 'react';
 import cn from 'classnames';
 import { VariableSizeList as List } from 'react-window';
 import dayjs from 'dayjs';
@@ -23,7 +29,9 @@ const ListItem = ({ value, style, isFocus, onClick }) => {
         <DropdownItem
             className={isFocus ? styles.active : ''}
             style={style}
-            onClick={() => onClick(value)}
+            onClick={() => {
+                onClick(value);
+            }}
         >
             {value}
         </DropdownItem>
@@ -84,6 +92,9 @@ const TimePicker = forwardRef(
         const [isOpen, setIsOpen] = useState(false);
         const [isDirty, setIsDirty] = useState(time ? true : false);
         const [innerTime, setInnerTime] = useState(placeholderTime);
+        const { onBlur, ...restProps } = inputProps;
+
+        const menuRef = useRef(null);
 
         useEffect(() => {
             if (disabled) setIsDirty(true);
@@ -128,6 +139,12 @@ const TimePicker = forwardRef(
             );
         };
 
+        const handleBlur = (e) => {
+            if (menuRef.current && !menuRef.current.contains(e.relatedTarget)) {
+                onBlur();
+            }
+        };
+
         return (
             <Dropdown
                 isOpen={isOpen}
@@ -150,8 +167,8 @@ const TimePicker = forwardRef(
                                 ? ''
                                 : `${innerTime.ampm} ${innerTime.hour}:${innerTime.minute}`
                         }
-                        onFocus={() => document.activeElement.blur()}
-                        {...inputProps}
+                        onBlur={handleBlur}
+                        {...restProps}
                     />
                     <TimeIcon
                         className={cn(
@@ -161,29 +178,36 @@ const TimePicker = forwardRef(
                     />
                 </DropdownToggle>
 
-                <DropdownMenu
-                    className={cn(
-                        isOpen ? 'd-flex' : 'd-none',
-                        styles.dropdownMenu,
-                    )}
-                >
-                    <ListContainer
-                        items={AMPM}
-                        onClickItem={(value) => handleClickItem('ampm', value)}
-                        selectedItem={innerTime.ampm}
-                    />
-                    <ListContainer
-                        items={HOURS}
-                        onClickItem={(value) => handleClickItem('hour', value)}
-                        selectedItem={innerTime.hour}
-                    />
-                    <ListContainer
-                        items={MINUTES}
-                        onClickItem={(value) =>
-                            handleClickItem('minute', value)
-                        }
-                        selectedItem={innerTime.minute}
-                    />
+                <DropdownMenu>
+                    <div
+                        ref={menuRef}
+                        className={cn(
+                            isOpen ? 'd-flex' : 'd-none',
+                            styles.dropdownMenu,
+                        )}
+                    >
+                        <ListContainer
+                            items={AMPM}
+                            onClickItem={(value) =>
+                                handleClickItem('ampm', value)
+                            }
+                            selectedItem={innerTime.ampm}
+                        />
+                        <ListContainer
+                            items={HOURS}
+                            onClickItem={(value) =>
+                                handleClickItem('hour', value)
+                            }
+                            selectedItem={innerTime.hour}
+                        />
+                        <ListContainer
+                            items={MINUTES}
+                            onClickItem={(value) =>
+                                handleClickItem('minute', value)
+                            }
+                            selectedItem={innerTime.minute}
+                        />
+                    </div>
                 </DropdownMenu>
             </Dropdown>
         );

@@ -5,8 +5,9 @@ import styles from './ProgramInfoCard.module.scss';
 function ProgramInfoCardLoading({ className }) {
     return (
         <div className={cn(styles.info, className)}>
-            <Skeleton width="7.5rem" height="1.25rem" className="mb-2" />
-            <Skeleton width="20rem" height="1.25rem" />
+            <Skeleton width="20rem" height="1.25rem" className="mb-4" />
+            <Skeleton width="12.5rem" height="1.25rem" className="mb-1" />
+            <Skeleton width="12.5rem" height="1.25rem" className="mb-1" />
         </div>
     );
 }

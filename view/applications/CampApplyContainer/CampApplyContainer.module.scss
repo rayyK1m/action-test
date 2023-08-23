@@ -7,3 +7,26 @@
 .infoCard {
     margin-top: 2.5rem;
 }
+
+.pageHeader {
+    margin-bottom: 2.5rem;
+}
+
+.divideRow {
+    display: flex;
+    flex-basis: 50%;
+    gap: 1rem;
+}
+
+.skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.skeletons {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+    margin-top: 2.5rem;
+}

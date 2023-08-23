@@ -344,13 +344,26 @@ const EducationForm = ({ division }) => {
         applyEndDateKey,
     } = PROGRAM_APPLY_KEYS;
 
-    const [educationStartDate, educationEndDate, applyEndDate, learningTime] =
-        watch([
-            educationStartDateKey,
-            educationEndDateKey,
-            applyEndDateKey,
-            learningTimeKey,
-        ]);
+    const [
+        educationStartDate,
+        educationStartTime,
+        educationEndDate,
+        educationEndTime,
+        applyEndDate,
+        learningTime,
+    ] = watch([
+        educationStartDateKey,
+        educationStartTimeKey,
+        educationEndDateKey,
+        educationEndTimeKey,
+        applyEndDateKey,
+        learningTimeKey,
+    ]);
+    const isEducationDateDirty =
+        educationStartDate ||
+        educationStartTime ||
+        educationEndDate ||
+        educationEndTime;
 
     const { data: mapSearch } = useDaumSearchMap({
         onComplete: (data) => {
@@ -394,7 +407,7 @@ const EducationForm = ({ division }) => {
             <div className={styles.divideRow}>
                 <FormDatePicker
                     isRequired
-                    label="교육 시작일"
+                    label="교육 가능 시작일"
                     datePickerKey={educationStartDateKey}
                     timePickerKey={educationStartTimeKey}
                     calendarProps={{
@@ -409,10 +422,14 @@ const EducationForm = ({ division }) => {
                               }
                             : {}),
                     }}
+                    formText={
+                        !isEducationDateDirty &&
+                        '프로그램의 교육이 가능한 전체 기간을 선택해 주세요.'
+                    }
                 />
                 <FormDatePicker
                     isRequired
-                    label="교육 종료일"
+                    label="교육 가능 종료일"
                     datePickerKey={educationEndDateKey}
                     timePickerKey={educationEndTimeKey}
                     calendarProps={{

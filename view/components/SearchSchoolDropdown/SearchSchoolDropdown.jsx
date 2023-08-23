@@ -1,6 +1,12 @@
-import React, { forwardRef, useState, useRef } from 'react';
-import styles from './SearchSchoolDropdown.module.scss';
-import { NoticeCircleIcon } from '@goorm-dev/gds-icons';
+import React, { useRef } from 'react';
+import cn from 'classnames';
+import {
+    ChevronDownIcon,
+    ChevronUpIcon,
+    ErrorCircleIcon,
+    NoticeCircleIcon,
+    SearchIcon,
+} from '@goorm-dev/gds-icons';
 import {
     Input,
     Dropdown,
@@ -8,79 +14,110 @@ import {
     DropdownItem,
     DropdownToggle,
 } from '@goorm-dev/gds-components';
+import styles from './SearchSchoolDropdown.module.scss';
 
-const SearchSchoolDropdown = forwardRef(
-    (
-        {
-            isOpenDropdown = false,
-            schoolList,
-            schoolName,
-            onClickDropdownItem = () => {},
-            onChangeSchoolName,
-            errors,
-            toggle,
-        },
-        ref,
-    ) => {
-        const sectionRef = useRef(null);
-        const dropdownMenuRef = useRef(null);
-        const [isFocus, setIsFocus] = useState(false);
+const SearchSchoolDropdown = ({
+    isOpenDropdown = false,
+    schoolList,
+    schoolName,
+    onClickDropdownItem = () => {},
+    onChangeSchoolName,
+    errors,
+    toggle,
+}) => {
+    const dropdownMenuRef = useRef(null);
+    const inputRef = useRef(null);
 
-        const handleBlur = (e) => {
-            if (
-                dropdownMenuRef.current &&
-                !dropdownMenuRef.current.contains(e.relatedTarget)
-            ) {
-                onChangeSchoolName('');
-                setIsFocus(false);
-            }
-        };
+    const handleBlur = (e) => {
+        if (
+            dropdownMenuRef.current &&
+            !dropdownMenuRef.current.contains(e.relatedTarget)
+        ) {
+            onChangeSchoolName('');
+        }
+    };
 
-        const handlePressEnter = (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-            }
-        };
+    const handlePressEnter = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    };
 
-        return (
-            <div ref={sectionRef}>
-                <Dropdown isOpen={isOpenDropdown} toggle={toggle}>
-                    <DropdownToggle tag="div" onKeyDown={handlePressEnter}>
+    const handleErase = () => {
+        onChangeSchoolName('');
+        inputRef.current.focus();
+        toggle(true);
+    };
+
+    return (
+        <div>
+            <Dropdown isOpen={isOpenDropdown} toggle={toggle}>
+                <DropdownToggle tag="div" onKeyDown={handlePressEnter}>
+                    <div className={styles.inputContainer}>
+                        {isOpenDropdown && (
+                            <SearchIcon
+                                width="1.25rem"
+                                height="1.25rem"
+                                className={styles.searchIcon}
+                            />
+                        )}
                         <Input
-                            ref={ref}
-                            className={styles.input}
+                            ref={inputRef}
+                            className={cn(
+                                styles.input,
+                                isOpenDropdown && styles.input__open,
+                            )}
                             bsSize="lg"
                             type="text"
                             value={schoolName}
                             onChange={onChangeSchoolName}
-                            onKey
                             onBlur={handleBlur}
-                            onFocus={() => setIsFocus(true)}
                             placeholder="소속 학교"
                             invalid={!!errors}
                         />
-                        {!!errors && !isFocus && (
-                            <div className="d-flex align-items-center text-danger mt-1">
-                                <NoticeCircleIcon />
-                                <p className="ml-1">{errors.message}</p>
+                        {isOpenDropdown ? (
+                            <div className={styles.rightIcon}>
+                                <ErrorCircleIcon
+                                    width="1.25rem"
+                                    height="1.25rem"
+                                    className="mr-2 text-gray-600"
+                                    onClick={handleErase}
+                                />
+                                <ChevronUpIcon
+                                    width="1.25rem"
+                                    height="1.25rem"
+                                    className="text-alternative"
+                                />
                             </div>
-                        )}
-                    </DropdownToggle>
-                    <DropdownMenu className={styles.dropdownMenu}>
-                        <div ref={dropdownMenuRef}>
-                            <SearchDropdown
-                                schoolList={schoolList}
-                                onClickDropdownItem={onClickDropdownItem}
-                                onChangeSchoolName={onChangeSchoolName}
-                                dropdownMenuRef={dropdownMenuRef}
+                        ) : (
+                            <ChevronDownIcon
+                                className={styles.rightIcon}
+                                width="1.25rem"
+                                height="1.25rem"
                             />
-                        </div>
-                    </DropdownMenu>
-                </Dropdown>
-            </div>
-        );
-    },
-);
+                        )}
+                    </div>
+                </DropdownToggle>
+                <DropdownMenu className={styles.dropdownMenu}>
+                    <div ref={dropdownMenuRef}>
+                        <SearchDropdown
+                            schoolList={schoolList}
+                            onClickDropdownItem={onClickDropdownItem}
+                            onChangeSchoolName={onChangeSchoolName}
+                            dropdownMenuRef={dropdownMenuRef}
+                        />
+                    </div>
+                </DropdownMenu>
+            </Dropdown>
+            {!!errors && !isOpenDropdown && (
+                <div className="d-flex align-items-center text-danger mt-1">
+                    <NoticeCircleIcon />
+                    <p className="ml-1">{errors.message}</p>
+                </div>
+            )}
+        </div>
+    );
+};
 
 /**
  * 학교 이름 드롭다운

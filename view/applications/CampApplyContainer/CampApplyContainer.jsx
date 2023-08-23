@@ -104,6 +104,7 @@ function CampApplyContainer({ userData, programId }) {
             programName,
             learningTime,
             type,
+            difficulty,
             ...rest
         } = data;
 
@@ -161,10 +162,13 @@ function CampApplyContainer({ userData, programId }) {
                                 <div className="d-flex align-items-center">
                                     <Button
                                         icon={<BackPageIcon />}
-                                        tag={Link}
                                         className="mr-2"
                                         color="link"
-                                        href={`/programs/${programId}`}
+                                        onClick={() =>
+                                            router.push(
+                                                `/programs/${programId}`,
+                                            )
+                                        }
                                     />
                                     <h3>{title}</h3>
                                 </div>
