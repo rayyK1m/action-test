@@ -128,7 +128,7 @@ export const REQUIRED_FILE_SUBMIT_STATUS = /** @type {const} */ ({
 });
 
 export const PROGRAM_CATEGORIES = /** @type {const} */ ([
-    '프로그램 언어',
+    '프로그래밍 언어',
     'AR/VR/메타버스',
     '인공지능/로봇',
     '피지컬컴퓨팅',
