@@ -59,7 +59,7 @@ export const BADGE_TEXT_MAP = /** @type {const} */ ({
     [REQUIRED_FILE_SUBMIT_STATUS.제출.key]: '제출됨',
     [REQUIRED_FILE_SUBMIT_STATUS.승인.key]: '승인됨',
     [REQUIRED_FILE_SUBMIT_STATUS.거절.key]: '거절됨',
-    [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key]: '자료 추가 요청됨',
+    [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key]: '추가 자료 요청됨',
 });
 
 export const BADGE_ICON_MAP = /** @type {const} */ ({
@@ -68,7 +68,7 @@ export const BADGE_ICON_MAP = /** @type {const} */ ({
 
 export const FEEDBACK_TITLE = {
     [REQUIRED_FILE_SUBMIT_STATUS.거절.key]: '거절 사유',
-    [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key]: '자료 추가 요청 사유',
+    [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key]: '추가 자료 요청 사유',
 };
 
 export const FEEDBACK_SHOW_MAP = {

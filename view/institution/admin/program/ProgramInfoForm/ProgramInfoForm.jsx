@@ -222,14 +222,14 @@ const ReadOnlyEducationForm = ({ division }) => {
             />
             <div className={styles.divideRow}>
                 <FormDatePicker
-                    label="교육 시작일"
+                    label="교육 가능 시작일"
                     isRequired
                     datePickerKey={educationStartDateKey}
                     timePickerKey={educationStartTimeKey}
                     disabled
                 />
                 <FormDatePicker
-                    label="교육 종료일"
+                    label="교육 가능 종료일"
                     isRequired
                     datePickerKey={educationEndDateKey}
                     timePickerKey={educationEndTimeKey}

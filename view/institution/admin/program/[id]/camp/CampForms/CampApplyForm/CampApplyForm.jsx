@@ -22,11 +22,7 @@ import {
     PROGRAM_OPERATION_LOCATIONS,
     PROGRAM_SCHOOL_TYPE,
 } from '@/constants/db';
-import {
-    formatNumberInput,
-    formatPhoneNumberInput,
-    numberMaxLength,
-} from '@/utils';
+import { formatNumberInput, formatPhoneNumberInput } from '@/utils';
 import { useGetSchools } from '@/query-hooks/useSchool';
 import SearchSchoolDropdown from '@/view/components/SearchSchoolDropdown/SearchSchoolDropdown';
 import { useDaumSearchMap } from '@/query-hooks/useMap';
@@ -309,7 +305,7 @@ const TeacherForm = () => {
     const { mainEducatorKey, subEducatorKey } = CAMP_KEYS;
     return (
         <div className={styles.form}>
-            <h5>강사 정보</h5>
+            <h5 className="text-gray-700">강사 정보</h5>
             <div>
                 <div className={styles.divideRow}>
                     <InputItem
@@ -353,7 +349,7 @@ const TargetEditForm = ({ programTargetGroup }) => {
 
     return (
         <div className={styles.form}>
-            <h5>신청 대상 정보</h5>
+            <h5 className="text-gray-700">신청 대상 정보</h5>
             <ApplyTargetInput programTargetGroup={programTargetGroup} />
             <div className={styles.divideRow}>
                 <InputItem

@@ -1,0 +1,25 @@
+.alert {
+    font-size: 0.75rem /* 12px -> .75rem */;
+    font-weight: 500;
+    line-height: 1.125rem /* 18px -> 1.125rem */;
+    background-color: var(--gray-50);
+    color: var(--hint);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem /* 8px -> .5rem */;
+    padding: 0.75rem /* 12px -> .75rem */;
+    border-radius: 0.5rem /* 8px -> .5rem */;
+    word-break: keep-all;
+}
+
+.alertIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.125rem /* 18px -> 1.125rem */;
+    min-width: 1rem /* 16px -> 1rem */;
+}
+
+.alertBox {
+    width: 100%;
+}

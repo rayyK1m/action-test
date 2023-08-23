@@ -32,7 +32,6 @@ function PreFileReport() {
         data: { role },
     } = useSession.GET();
     const preFileReportValues = preFileReport[0];
-    console.log(preFileReportValues);
 
     /** 지역 state */
     const forms = useForm({

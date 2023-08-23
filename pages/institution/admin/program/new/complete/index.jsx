@@ -7,6 +7,7 @@ import { checkAuthSsr } from '@/server/utils/auth';
 import CompleteView from '@/view/components/CompleteView/CompleteView';
 
 import { Button } from '@goorm-dev/gds-components';
+import { ROLE } from '@/constants/db';
 
 function Page() {
     const router = useRouter();
@@ -36,6 +37,7 @@ export default Page;
 
 export const getServerSideProps = checkAuthSsr({
     shouldLogin: true,
+    roles: [ROLE.INSTITUTION],
 })(async (context) => {
     const queryClient = new QueryClient();
 

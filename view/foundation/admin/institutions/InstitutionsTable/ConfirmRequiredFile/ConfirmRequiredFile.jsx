@@ -22,11 +22,14 @@ function ConfirmRequiredFile({ rowData }) {
             <Button color="link" onClick={toggle} disabled={isDisabled}>
                 필수 자료 확인
             </Button>
-            <ConfirmModal
-                isOpen={isOpenModal}
-                toggle={toggle}
-                rowData={rowData}
-            />
+            {/* NOTE: 내부 상태 초기화를 위해 단축 평가 사용 */}
+            {isOpenModal && (
+                <ConfirmModal
+                    isOpen={isOpenModal}
+                    toggle={toggle}
+                    rowData={rowData}
+                />
+            )}
         </>
     );
 }

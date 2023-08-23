@@ -211,9 +211,9 @@ const ReadOnlyManagerForm = ({ division }) => {
                             placeholder="예) goormee@goorm.io"
                             readOnly
                         />
-                        <InputItem
+                        <DropdownInputItem
                             label="소속 학교(교육 장소)"
-                            inputKey={schoolNameKey}
+                            dropdownKey={schoolNameKey}
                             placeholder="소속 학교"
                             readOnly
                         />
@@ -225,11 +225,10 @@ const ReadOnlyManagerForm = ({ division }) => {
                             placeholder="지역 선택"
                             readOnly
                         />
-                        <InputItem
+                        <DropdownInputItem
                             label="학교 유형"
-                            inputKey={schoolTypeKey}
-                            value={getValues(schoolTypeKey) || '일반 학교'}
-                            placeholder="예) 늘봄 학교"
+                            dropdownKey={schoolTypeKey}
+                            placeholder="학교 유형 선택"
                             readOnly
                         />
                     </div>

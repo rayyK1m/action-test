@@ -101,6 +101,7 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                         <div className={styles.schoolGrade}>
                             {school.value.map((_, idx) => (
                                 <Controller
+                                    key={idx}
                                     control={control}
                                     name={key}
                                     render={({ ref }) => {
@@ -109,7 +110,6 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                                         ].includes(idx + 1);
                                         return (
                                             <div
-                                                key={idx}
                                                 className={cn(
                                                     'd-flex',
                                                     disabled
@@ -162,10 +162,9 @@ const SearchSchoolInput = ({ userId, schoolKey }) => {
                 rules={{
                     required: '필수 항목을 선택해주세요.',
                 }}
-                render={({ field: { ref, value, onChange } }) => {
+                render={({ field: { value, onChange, onBlur } }) => {
                     const debouncedName = useDebounce(value, 500);
                     const { data = { items: [], total: 0 } } = useGetSchools({
-                        userId,
                         name: debouncedName,
                     });
 
@@ -176,13 +175,13 @@ const SearchSchoolInput = ({ userId, schoolKey }) => {
 
                     return (
                         <SearchSchoolDropdown
-                            ref={ref}
                             schoolList={data.items}
                             isOpenDropdown={isInputOpen}
                             schoolName={value}
                             toggle={toggleInput}
                             onChangeSchoolName={handleChange}
                             onClickDropdownItem={handleClick}
+                            onBlur={onBlur}
                             errors={errors[schoolNameKey]}
                         />
                     );

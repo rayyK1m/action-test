@@ -144,7 +144,7 @@ export const ReadOnlyApplyForm = ({ programTarget }) => {
                     readOnly
                 />
             </div>
-            <FormInput
+            <FormDropdown
                 label="소속 학교"
                 value={getValues(schoolNameKey)}
                 readOnly

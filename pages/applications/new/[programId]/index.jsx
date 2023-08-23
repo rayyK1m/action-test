@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { checkAuthSsr } from '@/server/utils/auth';
 import useSession, { sessionKeys } from '@/query-hooks/useSession';
 import { PROGRAM_DIVISION, ROLE } from '@/constants/db';
+import CampApplyContainerLoading from '@/view/applications/CampApplyContainer/CampApplyContainer.loading';
 
 function Page() {
     const router = useRouter();
@@ -19,7 +20,10 @@ function Page() {
             <Head>
                 <title>디지털새싹</title>
             </Head>
-            <SSRSuspense fallback={<p>loading...</p>} key={router.asPath}>
+            <SSRSuspense
+                fallback={<CampApplyContainerLoading userData={userData} />}
+                key={router.asPath}
+            >
                 <CampApplyContainer programId={programId} userData={userData} />
             </SSRSuspense>
         </>

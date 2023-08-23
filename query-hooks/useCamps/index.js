@@ -140,8 +140,10 @@ const useDeleteCampParticipants = () => {
                 }
                 toast(`${data.userName} 참가자가 퇴장되었습니다.`, {
                     type: toast.TYPE.DEFAULT,
+                    icon: false,
                 });
                 queryClient.invalidateQueries(campTicketsKeys.participants());
+                queryClient.invalidateQueries(campsKeys.item());
             },
             onError: () =>
                 toast('참가자 퇴장에 실패했습니다.', {

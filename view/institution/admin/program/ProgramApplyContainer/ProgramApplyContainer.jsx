@@ -25,7 +25,7 @@ function ProgramApplyContainer({ division }) {
     const createProgram = useCreateProgram();
 
     const methods = useForm({
-        mode: 'onTouched',
+        mode: 'all',
         defaultValues: {
             [PROGRAM_APPLY_KEYS.durationKey]: PROGRAM_DURATION.지속,
             [PROGRAM_APPLY_KEYS.elementaryTargetKey]: [],

@@ -8,7 +8,7 @@ import DownloadButton from '@/components/DownloadButton/DownloadButton';
 
 import styles from './RequireFiles.module.scss';
 import { Input } from '@goorm-dev/gds-components';
-import { REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
+import { FEEDBACK_SHOW_MAP, FEEDBACK_TITLE } from './RequireFiles.constants';
 
 function RequireFiles() {
     const { isOpen, rowData } = useContext(ConfirmModalContext);
@@ -28,12 +28,10 @@ function RequireFiles() {
                 .filter(([_, { filename, url }]) => !!(filename && url))
                 .map(([key, { label, filename, url }]) => (
                     <FormContent.Box key={`${key}-readonly`}>
-                        <FormContent.Box.Title isRequired>
-                            {label}
-                        </FormContent.Box.Title>
+                        <FormContent.Box.Title>{label}</FormContent.Box.Title>
                         <div>
                             <DownloadButton
-                                size="lg"
+                                size="md"
                                 href={url}
                                 filename={filename}
                             >
@@ -42,13 +40,11 @@ function RequireFiles() {
                         </div>
                     </FormContent.Box>
                 ))}
-            {(submitFileStatus === REQUIRED_FILE_SUBMIT_STATUS.거절.key ||
-                submitFileStatus ===
-                    REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key ||
-                submitFileStatus ===
-                    REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key) && (
+            {FEEDBACK_SHOW_MAP[submitFileStatus] && (
                 <FormContent.Box>
-                    <FormContent.Box.Title>거절 사유</FormContent.Box.Title>
+                    <FormContent.Box.Title>
+                        {FEEDBACK_TITLE[submitFileStatus]}
+                    </FormContent.Box.Title>
                     <Input
                         type="textarea"
                         size="lg"
