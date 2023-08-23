@@ -20,6 +20,7 @@ const FormInput = forwardRef(
                     ref={ref}
                     bsSize={size}
                     className={cn(className, styles.input)}
+                    autoComplete="off"
                     {...props}
                 />
             </FormWrapper>
