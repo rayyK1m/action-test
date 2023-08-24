@@ -349,14 +349,12 @@ const EducationForm = ({ division }) => {
         educationStartTime,
         educationEndDate,
         educationEndTime,
-        applyEndDate,
         learningTime,
     ] = watch([
         educationStartDateKey,
         educationStartTimeKey,
         educationEndDateKey,
         educationEndTimeKey,
-        applyEndDateKey,
         learningTimeKey,
     ]);
     const isEducationDateDirty =
@@ -414,11 +412,6 @@ const EducationForm = ({ division }) => {
                         ...(educationEndDate
                             ? {
                                   maxDate: new Date(educationEndDate),
-                              }
-                            : {}),
-                        ...(applyEndDate
-                            ? {
-                                  minDate: new Date(addDay(applyEndDate, 1)),
                               }
                             : {}),
                     }}

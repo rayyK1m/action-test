@@ -35,6 +35,16 @@ export const formatPhoneNumberInput = (e) => {
         .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
 };
 
+export const formatPhoneNumber = (value) => {
+    return value
+        .replace(/[^0-9]/g, '')
+        .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+};
+
+export const removePhoneNumberHyphen = (value) => {
+    return value.replace(/-/g, '');
+};
+
 /**
  * @param {String} sort -name,reviewStatus
  * @returns {{ id: String, desc: Boolean }[]} [{ id: name, desc: true }, { id: reviewStatus, desc: fales }]

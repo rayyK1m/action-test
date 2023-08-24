@@ -203,7 +203,9 @@ export const getTableColums = (camp, isFoundationPage) => {
         {
             accessorKey: 'phoneNumber',
             header: <div>연락처</div>,
-            cell: cellHelper(({ value }) => <div>{value}</div>),
+            cell: cellHelper(({ value }) => (
+                <div>{formatPhoneNumber(value)}</div>
+            )),
             size: 145,
         },
         {

@@ -5,18 +5,9 @@ import styles from './InstitutionCards.module.scss';
 function InstitutionCardsLoading() {
     return (
         <div className={styles.container}>
-            <InstitutionCardLoading />
-            <InstitutionCardLoading />
-            <InstitutionCardLoading />
-            <InstitutionCardLoading />
-            <InstitutionCardLoading />
-            <InstitutionCardLoading />
-            <InstitutionCardLoading />
-            <InstitutionCardLoading />
-            <InstitutionCardLoading />
-            <InstitutionCardLoading />
-            <InstitutionCardLoading />
-            <InstitutionCardLoading />
+            {Array.from({ length: 11 }, (_, index) => index).map((i) => (
+                <InstitutionCardLoading key={i} />
+            ))}
         </div>
     );
 }
