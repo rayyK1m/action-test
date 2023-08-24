@@ -5,18 +5,22 @@ import {
     CAMP_KEYS,
 } from '../../../CampForms/CampForms.constants';
 import { matchedKey, relationField } from './Info.constants';
-import { setDateWithTime } from '@/utils';
+import { formatPhoneNumber, setDateWithTime } from '@/utils';
 
 export const getDefaultValues = ({ isEdit, data }) => {
     const { program, camp } = data;
 
-    if (!isEdit)
+    if (!isEdit) {
+        const { managerPhoneNumber = '', ...restCampInfo } = camp;
         return {
-            ...camp,
+            ...restCampInfo,
+            [CAMP_INFO_KEYS.managerPhoneNumberKey]:
+                formatPhoneNumber(managerPhoneNumber),
             [CAMP_INFO_KEYS.programNameKey]: program.name,
             [CAMP_KEYS.categoryKey]: camp.category || program.category,
             [CAMP_KEYS.difficultyKey]: program.difficulty,
         };
+    }
 
     const {
         type: { division },
@@ -33,7 +37,9 @@ export const getDefaultValues = ({ isEdit, data }) => {
         [CAMP_KEYS.operateLocationKey]: camp.operateLocationKey,
         [CAMP_KEYS.managerNameKey]: camp?.managerName,
         [CAMP_KEYS.managerEmailKey]: camp?.managerEmail,
-        [CAMP_KEYS.managerPhoneNumberKey]: camp?.managerPhoneNumber,
+        [CAMP_KEYS.managerPhoneNumberKey]: formatPhoneNumber(
+            camp?.managerPhoneNumber,
+        ),
         [CAMP_KEYS.mainEducatorKey]: camp?.educator.main,
         [CAMP_KEYS.subEducatorKey]: camp?.educator.sub,
         [CAMP_KEYS.elementaryTargetKey]: camp?.targetGroup.elementarySchool,
