@@ -1,4 +1,5 @@
 import { useMemo, useEffect, useState } from 'react';
+import Image from 'next/image';
 import cn from 'classnames';
 
 import { FileInput } from '@goorm-dev/gds-components';
@@ -9,9 +10,6 @@ import useFileInput from '@/hooks/useFileInput';
 import FormWrapper from '../../FormWrapper';
 import styles from './FormFileInputWithImage.module.scss';
 import { useUploadFile, fileApis } from '@/query-hooks/useFile';
-// 임시 기본 썸네일 : 확정 후 변경 예정
-const DEFAULT_THUMBNAIL =
-    'https://s3.ap-northeast-2.amazonaws.com/statics.goorm.io/images/newsac/default_thumbnail.svg';
 
 const FormFileInputWithImage = ({
     label,
@@ -47,12 +45,7 @@ const FormFileInputWithImage = ({
         [fileSize],
     );
 
-    const backgroundImage = useMemo(() => {
-        if (imageUrl) {
-            return `url(${imageUrl})`;
-        }
-        return `url(${DEFAULT_THUMBNAIL})`;
-    }, [imageUrl]);
+    const backgroundImage = imageUrl && `url(${imageUrl})`;
 
     const uploadFile = useUploadFile();
     const handleChange = async (file) => {
@@ -98,16 +91,24 @@ const FormFileInputWithImage = ({
                 <div
                     className={cn(
                         styles.thumbnailContainer,
-                        'mr-lg-4 mr-0 mb-lg-0 mb-3',
-                        imageUrl && styles.thumbnailContainer__border,
+                        'd-flex align-items-center justify-content-center mr-lg-4 mr-0 mb-lg-0 mb-3',
                     )}
                 >
-                    <div
-                        className={styles.thumbnail}
-                        style={{
-                            backgroundImage,
-                        }}
-                    />
+                    {backgroundImage ? (
+                        <div
+                            className={styles.thumbnail}
+                            style={{
+                                backgroundImage,
+                            }}
+                        />
+                    ) : (
+                        <Image
+                            width={57}
+                            height={30}
+                            src="https://s3.ap-northeast-2.amazonaws.com/statics.goorm.io/images/newsac/default_thumbnail_logo.svg"
+                            alt="default thumbnail logo"
+                        />
+                    )}
                 </div>
                 <div className={cn(styles.fileInput, 'd-flex flex-column')}>
                     <FileInput
@@ -134,7 +135,7 @@ const FormFileInputWithImage = ({
                     )}
                     <div className="d-flex align-items-center form-text text-default">
                         <InfoCircleIcon className="mr-1" />
-                        320*136px 이미지 사용을 권장합니다.
+                        436*244px 이미지 사용을 권장합니다.
                     </div>
                 </div>
             </div>

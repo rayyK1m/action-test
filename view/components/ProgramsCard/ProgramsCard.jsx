@@ -49,7 +49,6 @@ export default function ProgramsCard({
                             alt={thumbnailName}
                             fill
                             priority
-                            sizes="500px"
                         />
                     )}
                 </div>

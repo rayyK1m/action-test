@@ -32,6 +32,7 @@ body {
 :root {
     --newsac-primary: #b6cf52;
     --newsac-banner-bg: #f1f1f1;
+    --newsac-thumbnail-bg: #f2f3f7;
 }
 
 /** reactQuill Editor style*/

@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Badge, Button } from '@goorm-dev/gds-components';
+
 import { CAMP_REVIEW_STATUS } from '@/constants/db';
 import { formatDate } from '@/utils';
+
+import TicketInfoPannel from '../TicketInfoPannel/TicketInfoPannel';
+
 import { STATUS_BADGE } from './ListItem.constants';
 
 import styles from './ListItem.module.scss';
-import TicketInfoPannel from '../TicketInfoPannel/TicketInfoPannel';
-import Link from 'next/link';
 
 function ListItem({ data }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +38,7 @@ function ListItem({ data }) {
                     src={thumbnail.url}
                     alt="camp-thumbnail"
                     width={320}
-                    height={136}
+                    height={180}
                     className={styles.image}
                 />
             </Link>
