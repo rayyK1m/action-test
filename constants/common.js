@@ -27,7 +27,7 @@ export const POLICY_AND_TERMS_LINK = {
 };
 
 export const NEWSAC_LINK = {
-    홈페이지: 'https://newsac.co.kr/',
+    홈페이지: 'http://xn--2z1bz5tdvbiwlf4j.com/',
     블로그: 'https://blog.naver.com/PostList.naver?blogId=new_sac',
 };
 

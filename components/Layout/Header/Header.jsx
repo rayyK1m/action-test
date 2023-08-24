@@ -19,7 +19,7 @@ import LinkWithRole from './LinkWithRole/LinkWithRole';
 
 import styles from './Header.module.scss';
 
-import { LOGO_IMAGE, LOGO_LINK } from '@/constants/common';
+import { LOGO_IMAGE, LOGO_LINK, NEWSAC_LINK } from '@/constants/common';
 import { ROLE } from '@/constants/db';
 
 /**
@@ -73,10 +73,10 @@ const Header = ({ userData, className, children, ...props }) => {
                             tag={Link}
                             color="link"
                             size="lg"
-                            href="https://newsac.co.kr/"
+                            href={NEWSAC_LINK.홈페이지}
                             target="_blank"
                         >
-                            소개
+                            사업 소개
                         </Button>
                         {userData &&
                             (userData.role === ROLE.FOUNDATION ||
