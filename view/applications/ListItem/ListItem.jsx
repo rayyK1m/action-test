@@ -25,7 +25,6 @@ function ListItem({ data }) {
 
     const { start: applyStart, end: applyEnd } = applyDate;
     const { start: educationStart, end: educationEnd } = educationDate;
-
     const formattedApplyStart = formatDate(applyStart);
     const formattedApplyEnd = formatDate(applyEnd);
     const formattedEducationStart = formatDate(educationStart);
@@ -84,7 +83,9 @@ function ListItem({ data }) {
                     size="lg"
                     color="primary"
                     onClick={() =>
-                        window.open(`https://${channelIndex}.goorm.io`)
+                        window.open(
+                            `https://${channelIndex}${process.env.SWCAMP_CHANNEL_DOMAIN}`,
+                        )
                     }
                     disabled={disableChannelLink}
                 >

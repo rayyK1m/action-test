@@ -25,7 +25,7 @@ export const getTableColums = () => {
                 return (
                     <>
                         <div className="d-flex" ref={nameRef}>
-                            {ellipsisedString(value, 5)}
+                            {ellipsisedString(value, 8)}
                         </div>
                         <Tooltip
                             target={nameRef}
