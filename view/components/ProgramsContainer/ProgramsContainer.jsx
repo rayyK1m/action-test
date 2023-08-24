@@ -83,7 +83,7 @@ export default function ProgramsContainer() {
     const handleNavLink = (e) => {
         const { id } = e.target.dataset;
         setCampType(id);
-        setPage(1);
+        setPage(PROGRAMS_DEFAULT_QUERY.page);
     };
     /** 운영지역 Dropdown 핸들러 */
     const handleLocation = (e) => {
@@ -143,6 +143,16 @@ export default function ProgramsContainer() {
         } else {
             /** 운영지역 뱃지 클릭 */
             setSelectedLocation('');
+        }
+    };
+    /** 검색 핸들러 */
+    const handleSearchInput = (e) => {
+        const { value } = e.target;
+        setInputValue(value);
+
+        if (e.key === 'Enter') {
+            setSearchValue(e.target.value);
+            setPage(PROGRAMS_DEFAULT_QUERY.page);
         }
     };
 
@@ -224,14 +234,12 @@ export default function ProgramsContainer() {
                         size="lg"
                         placeholder="프로그램 이름을 검색해보세요."
                         value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter')
-                                setSearchValue(e.target.value);
-                        }}
+                        onChange={handleSearchInput}
+                        onKeyDown={handleSearchInput}
                         onCancelClick={() => {
                             setInputValue('');
                             setSearchValue('');
+                            setPage(PROGRAMS_DEFAULT_QUERY.page);
                         }}
                         className={styles.searchInput}
                     />

@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 
 import {
-    Avatar,
     Button,
     Modal,
     ModalBody,
@@ -53,7 +53,13 @@ function InstitutionCard({ institutionId, logoUrl, name, programCount }) {
                 )}
                 onClick={handleCard}
             >
-                <Avatar size="xl" name={name} src={avatarImageUrl} />
+                <Image
+                    width={52}
+                    height={52}
+                    alt="운영기관 로고"
+                    src={avatarImageUrl}
+                    className={styles.logo}
+                />
 
                 <span className={styles.contents}>
                     <h6 className={cn(styles.title, 'mb-1')}>{name}</h6>

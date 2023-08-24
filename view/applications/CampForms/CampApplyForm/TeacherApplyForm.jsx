@@ -25,7 +25,7 @@ import {
     PROGRAM_SCHOOL_TYPE,
 } from '@/constants/db';
 import FormDatePicker from '@/components/FormItem/FormDatePicker/FormDatePicker';
-import { formatNumberInput } from '@/utils';
+import { formatNumberInput, formatPhoneNumber } from '@/utils';
 
 import useToggle from '@/hooks/useToggle';
 import useDebounce from '@/hooks/useDebounce';
@@ -253,7 +253,7 @@ export const ManagerForm = ({ userId }) => {
                 />
                 <FormInput
                     label="담당자 연락처"
-                    value={getValues(phoneNumberKey)}
+                    value={formatPhoneNumber(getValues(phoneNumberKey))}
                     disabled
                 />
             </div>

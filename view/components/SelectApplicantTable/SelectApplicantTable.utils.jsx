@@ -1,7 +1,11 @@
 import { cellHelper } from '@goorm-dev/gds-tables';
 import { Button, Tooltip } from '@goorm-dev/gds-components';
 
-import { getTargetGroupString, ellipsisedString } from '@/utils';
+import {
+    getTargetGroupString,
+    ellipsisedString,
+    formatPhoneNumber,
+} from '@/utils';
 
 import useHover from '@/hooks/useHover';
 import useToggle from '@/hooks/useToggle';
@@ -88,7 +92,9 @@ export const getTableColums = () => {
         {
             accessorKey: 'phoneNumber',
             header: <div>연락처</div>,
-            cell: cellHelper(({ value }) => <div>{value}</div>),
+            cell: cellHelper(({ value }) => (
+                <div>{formatPhoneNumber(value)}</div>
+            )),
             size: 145,
         },
         {

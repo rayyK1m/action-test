@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import cn from 'classnames';
 
-import { Avatar } from '@goorm-dev/gds-components';
 import { useGetInstitution } from '@/query-hooks/useInstitutions';
 
 import styles from './InstitutionInfo.module.scss';
@@ -27,7 +27,13 @@ function InstitutionInfo() {
             )}
         >
             <div className="mb-4">
-                <Avatar customSize="11.25rem" name={name} src={avatarImage} />
+                <Image
+                    width={180}
+                    height={180}
+                    alt="운영기관 로고"
+                    src={avatarImage}
+                    className={cn('position-relative', styles.logo)}
+                />
             </div>
 
             <h2 className={cn('mb-2', styles.name)}>{name}</h2>

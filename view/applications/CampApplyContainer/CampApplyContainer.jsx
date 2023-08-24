@@ -41,6 +41,7 @@ import Link from 'next/link';
 import useToggle from '@/hooks/useToggle';
 import { useRouter } from 'next/router';
 import { useGetUserInfo } from '@/query-hooks/useUserInfo';
+import { removePhoneNumberHyphen } from '@/utils';
 
 function CampApplyContainer({ userData, programId }) {
     const router = useRouter();
@@ -100,6 +101,7 @@ function CampApplyContainer({ userData, programId }) {
             elementarySchool,
             middleSchool,
             highSchool,
+            phoneNumber,
             institution,
             programName,
             learningTime,
@@ -110,6 +112,7 @@ function CampApplyContainer({ userData, programId }) {
 
         const formatData = {
             targetGroup: { elementarySchool, middleSchool, highSchool },
+            phoneNumber: removePhoneNumberHyphen(phoneNumber),
             ...rest,
         };
 
