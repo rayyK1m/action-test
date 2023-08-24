@@ -29,7 +29,6 @@ function InstitutionCards({
     if (total === 0)
         return (
             <EmptyTableCard
-                useBg
                 text="검색 결과가 없습니다."
                 imageSrc={EMPTY_IMAGE_TYPE.SEARCH}
             />

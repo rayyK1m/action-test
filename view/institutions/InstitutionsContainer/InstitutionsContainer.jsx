@@ -24,19 +24,29 @@ function InstitutionsContainer() {
     /** Pagination 관련 */
     const [page, setPage] = useState(INSTITUTIONS_DEFAULT_QUERY.page);
 
+    /** 검색 */
+    const handleSearch = (e) => {
+        const { value } = e.target;
+        setInputValue(value);
+
+        if (e.key === 'Enter') {
+            setSearchValue(e.target.value);
+            setPage(INSTITUTIONS_DEFAULT_QUERY.page);
+        }
+    };
+
     return (
         <GridContainer className="d-flex flex-column">
             <SearchInput
                 size="lg"
                 placeholder="기관 이름을 검색해보세요."
                 value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') setSearchValue(e.target.value);
-                }}
+                onChange={handleSearch}
+                onKeyDown={handleSearch}
                 onCancelClick={() => {
                     setInputValue('');
                     setSearchValue('');
+                    setPage(INSTITUTIONS_DEFAULT_QUERY.page);
                 }}
                 className={cn(styles.searchInput, 'mb-4')}
             />
