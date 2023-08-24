@@ -5,7 +5,7 @@ import useToggle from '@/hooks/useToggle';
 
 import { FormDatePicker, FormInput, FormWrapper } from '@/components/FormItem';
 import Divider from '@/components/Divider';
-import { Button, Checkbox } from '@goorm-dev/gds-components';
+import { Button, Checkbox, Input } from '@goorm-dev/gds-components';
 import { ChevronDownIcon, InfoCircleIcon } from '@goorm-dev/gds-icons';
 import styles from '../CampForms.module.scss';
 
@@ -129,6 +129,43 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                         </div>
                     </div>
                 ))}
+            </div>
+        </FormWrapper>
+    );
+};
+
+const EducationAddress = ({ addressKey }) => {
+    const { register, setValue } = useFormContext();
+    const { data: mapSearch } = useDaumSearchMap({
+        onComplete: (data) => {
+            console.log(data.address);
+            setValue(addressKey, data.address, {
+                shouldDirty: true,
+            });
+        },
+    });
+
+    const mapPopupKey = useId();
+    const handleOpen = () => {
+        mapSearch?.open({
+            popupKey: mapPopupKey,
+            left: window.screen.width / 2 - mapSearch.width / 2,
+            top: window.screen.height / 2 - mapSearch.height / 2,
+        });
+    };
+    return (
+        <FormWrapper label="교육 주소" isRequired>
+            <div className={styles.addressForm}>
+                <Input
+                    placeholder="교육 주소"
+                    bsSize="lg"
+                    className={styles.addressForm_input}
+                    {...register(addressKey)}
+                    readOnly
+                />
+                <Button outline color="basic" size="lg" onClick={handleOpen}>
+                    검색하기
+                </Button>
             </div>
         </FormWrapper>
     );
@@ -364,7 +401,6 @@ const TargetEditForm = ({ programTargetGroup }) => {
 };
 
 const EducationForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
-    const { setValue } = useFormContext();
     const {
         learningTimeKey,
         educationStartDateKey,
@@ -374,23 +410,6 @@ const EducationForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
         educationLocationNameKey,
         educationLocationAddressKey,
     } = CAMP_KEYS;
-
-    const { data: mapSearch } = useDaumSearchMap({
-        onComplete: (data) => {
-            setValue(educationLocationAddressKey, data.address, {
-                shouldDirty: true,
-            });
-        },
-    });
-
-    const mapPopupKey = useId();
-    const handleOpen = () => {
-        mapSearch?.open({
-            popupKey: mapPopupKey,
-            left: window.screen.width / 2 - mapSearch.width / 2,
-            top: window.screen.height / 2 - mapSearch.height / 2,
-        });
-    };
 
     return (
         <div className={styles.form}>
@@ -421,23 +440,9 @@ const EducationForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
                         placeholder="예) 구름 타운홀"
                         inputKey={educationLocationNameKey}
                     />
-                    <div className={styles.location}>
-                        <InputItem
-                            label="교육 주소"
-                            placeholder="교육 주소"
-                            inputKey={educationLocationAddressKey}
-                            readOnly
-                        />
-                        <Button
-                            outline
-                            color="basic"
-                            size="lg"
-                            onClick={handleOpen}
-                            className={styles.searchButton}
-                        >
-                            검색하기
-                        </Button>
-                    </div>
+                    <EducationAddress
+                        addressKey={educationLocationAddressKey}
+                    />
                 </div>
             )}
         </div>

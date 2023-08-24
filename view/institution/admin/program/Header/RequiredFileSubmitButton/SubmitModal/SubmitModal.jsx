@@ -37,7 +37,10 @@ import Files from './Files';
 import styles from './SubmitModal.module.scss';
 
 import { TEXT_MAP } from '../RequiredFileSubmitButton.constants';
-import { REQUIRED_FILE_SUBMIT_STATUS } from '@/constants/db';
+import {
+    DEFAULT_FILE_OBJECT,
+    REQUIRED_FILE_SUBMIT_STATUS,
+} from '@/constants/db';
 import useSession from '@/query-hooks/useSession';
 
 function SubmitModal({ isOpen, toggle }) {
@@ -106,7 +109,11 @@ function SubmitModal({ isOpen, toggle }) {
     };
 
     useEffect(() => {
-        if (!isOpen) setIsEditable(EDITABLE_MAP[reviewStatus]);
+        if (!isOpen) {
+            /** 모달 닫히면 파일 초기화 */
+            setIsEditable(EDITABLE_MAP[reviewStatus]);
+            methods.reset();
+        }
     }, [isOpen]);
 
     const buttonCommonProps = {
@@ -115,16 +122,19 @@ function SubmitModal({ isOpen, toggle }) {
         type: 'button',
     };
 
-    const fileValues = Object.values(methods.getValues());
+    const formFileValues = methods.getValues() || {};
 
-    const isDisabled = fileValues.length
-        ? !fileValues.every(({ filename, url }) => filename && url)
-        : true;
+    const isEdited = !Object.keys(DEFAULT_FILE_OBJECT).every((key) => {
+        return (
+            fileObject?.[key]?.filename === formFileValues[key]?.filename &&
+            fileObject?.[key]?.url === formFileValues[key]?.url
+        );
+    });
 
     return (
         <>
             <FormProvider {...methods}>
-                <Modal isOpen={isOpen} toggle={toggle} centered>
+                <Modal isOpen={isOpen} centered>
                     <Form onSubmit={methods.handleSubmit(onSubmit)}>
                         <ModalHeader toggle={toggle}>
                             <div className={styles.modalHeader}>
@@ -191,7 +201,7 @@ function SubmitModal({ isOpen, toggle }) {
                                 isEditable && (
                                     <Button
                                         {...buttonCommonProps}
-                                        disabled={isDisabled}
+                                        disabled={!isEdited}
                                         type="submit"
                                     >
                                         제출하기

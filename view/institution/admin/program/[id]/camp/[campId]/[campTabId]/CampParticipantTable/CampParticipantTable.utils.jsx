@@ -11,7 +11,11 @@ import {
 } from '@goorm-dev/gds-components';
 import { InfoCircleIcon, OutIcon } from '@goorm-dev/gds-icons';
 
-import { getTargetGroupString, ellipsisedString } from '@/utils';
+import {
+    getTargetGroupString,
+    ellipsisedString,
+    formatPhoneNumber,
+} from '@/utils';
 
 import useHover from '@/hooks/useHover';
 
@@ -137,7 +141,7 @@ export const getTableColums = (camp, isFoundationPage) => {
                 return (
                     <>
                         <div className="d-flex" ref={nameRef}>
-                            {ellipsisedString(value, 5)}
+                            {ellipsisedString(value, 8)}
                         </div>
                         <Tooltip
                             target={nameRef}

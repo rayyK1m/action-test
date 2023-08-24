@@ -43,7 +43,7 @@ const ListContainer = ({ items, selectedItem, onClickItem, ...listProps }) => {
                 height={200}
                 width={52}
                 estimatedItemSize={32}
-                itemSize={(idx) => (idx === 0 ? 36 : 32)}
+                itemSize={() => 32}
                 itemCount={items.length}
                 className={styles.list}
                 {...listProps}
@@ -62,7 +62,6 @@ const ListContainer = ({ items, selectedItem, onClickItem, ...listProps }) => {
 };
 
 const TIME_FORMAT = 'hh:mm A';
-const TIME_FORMAT_24 = 'HH:mm:00';
 
 /**
  * 
@@ -83,7 +82,7 @@ const TimePicker = forwardRef(
             inputClassName,
             inputProps,
             time,
-            placeholderTime = { ampm: '오전', hour: '01', minute: '00' },
+            placeholderTime = { ampm: '오전', hour: '09', minute: '00' },
             onChange,
             onBlur,
             disabled,
