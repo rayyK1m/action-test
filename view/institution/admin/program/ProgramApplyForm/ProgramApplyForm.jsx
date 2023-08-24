@@ -21,6 +21,7 @@ import {
     DropdownItem,
     Button,
     Checkbox,
+    Input,
 } from '@goorm-dev/gds-components';
 import { ChevronDownIcon } from '@goorm-dev/gds-icons';
 import Divider from '@/components/Divider';
@@ -194,6 +195,42 @@ const ApplyTargetInput = () => {
     );
 };
 
+const EducationAddress = ({ addressKey }) => {
+    const { register, setValue } = useFormContext();
+    const { data: mapSearch } = useDaumSearchMap({
+        onComplete: (data) => {
+            setValue(addressKey, data.address, {
+                shouldDirty: true,
+            });
+        },
+    });
+
+    const mapPopupKey = useId();
+    const handleOpen = () => {
+        mapSearch?.open({
+            popupKey: mapPopupKey,
+            left: window.screen.width / 2 - mapSearch.width / 2,
+            top: window.screen.height / 2 - mapSearch.height / 2,
+        });
+    };
+    return (
+        <FormWrapper label="교육 주소" isRequired>
+            <div className={styles.addressForm}>
+                <Input
+                    placeholder="교육 주소"
+                    bsSize="lg"
+                    {...register(addressKey)}
+                    className={styles.addressForm_input}
+                    readOnly
+                />
+                <Button outline color="basic" size="lg" onClick={handleOpen}>
+                    검색하기
+                </Button>
+            </div>
+        </FormWrapper>
+    );
+};
+
 const BasicForm = ({ division }) => {
     const {
         thumbnailKey,
@@ -257,13 +294,10 @@ const BasicForm = ({ division }) => {
                 placeholder="예) 프로그래밍의 순차와 반복에 대해 학습하며 컴퓨팅 사고력을 키운다."
                 editorKey={descriptionKey}
             />
-            <InputItem
-                isRequired
-                type="textarea"
+            <EditorInputItem
                 label="문의처(기관)"
                 placeholder="프로그램 관련 문의할 수 있는 연락처나 이메일을 입력해주세요."
-                inputKey={contactKey}
-                className={styles.textarea}
+                editorKey={contactKey}
             />
         </div>
     );
@@ -445,13 +479,10 @@ const EducationForm = ({ division }) => {
                 maxFileSize={30}
                 fileKey={attachedFilesKey}
             />
-            <InputItem
-                isRequired
-                type="textarea"
+            <EditorInputItem
                 label="안내사항"
                 placeholder="안내 사항이나 주의 사항을 입력해주세요."
-                className={styles.textarea}
-                inputKey={noticeKey}
+                editorKey={noticeKey}
             />
             {division === PROGRAM_DIVISION.집합형 && (
                 <div className={styles.divideRow}>
@@ -461,24 +492,9 @@ const EducationForm = ({ division }) => {
                         placeholder="예) 구름 타운홀"
                         inputKey={educationLocationNameKey}
                     />
-                    <div className={styles.location}>
-                        <InputItem
-                            isRequired
-                            label="교육 주소"
-                            placeholder="교육 주소"
-                            inputKey={educationLocationAddressKey}
-                            readOnly
-                        />
-                        <Button
-                            outline
-                            color="basic"
-                            size="lg"
-                            onClick={handleOpen}
-                            className={styles.searchButton}
-                        >
-                            검색하기
-                        </Button>
-                    </div>
+                    <EducationAddress
+                        addressKey={educationLocationAddressKey}
+                    />
                 </div>
             )}
         </div>

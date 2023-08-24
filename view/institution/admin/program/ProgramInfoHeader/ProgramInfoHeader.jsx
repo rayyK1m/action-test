@@ -38,6 +38,8 @@ function ProgramInfoHeader({ program, isEdit, setIsEdit }) {
         router.push(`${currentPath}/camp?division=${program.type.division}`);
     };
 
+    const isReviewInProgress =
+        program.reviewStatus === PROGRAM_REVIEW_STATUS.심사중.value;
     const isReviewApprove =
         program.reviewStatus === PROGRAM_REVIEW_STATUS.승인.value;
 
@@ -132,11 +134,11 @@ function ProgramInfoHeader({ program, isEdit, setIsEdit }) {
                                 </div>
                                 <Tooltip
                                     target={buttonRef}
-                                    isOpen={!isReviewApprove && isHover}
+                                    isOpen={isReviewInProgress && isHover}
                                     placement="top"
                                 >
                                     심사 중인 프로그램은 내용 수정이
-                                    불가능합니다
+                                    불가능합니다.
                                 </Tooltip>
                             </>
                         )}

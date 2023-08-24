@@ -152,10 +152,8 @@ const ReadOnlyBasicForm = ({ division }) => {
                 isRequired
                 readOnly
             />
-            <FormInput
-                type="textarea"
+            <FormEditor
                 label="문의처(기관)"
-                className={styles.textarea}
                 value={getValues(contactKey)}
                 isRequired
                 readOnly
@@ -250,11 +248,9 @@ const ReadOnlyEducationForm = ({ division }) => {
                 fileKey={attachedFilesKey}
                 disabled
             />
-            <FormInput
-                type="textarea"
+            <FormEditor
                 label="안내사항"
                 value={getValues(noticeKey)}
-                className={styles.textarea}
                 isRequired
                 readOnly
             />
