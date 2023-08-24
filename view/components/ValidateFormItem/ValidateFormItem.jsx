@@ -306,7 +306,12 @@ export const TimePickerItem = ({
                     <div className="d-flex flex-column" style={{ flex: 1 }}>
                         <TimePicker
                             ref={ref}
-                            time={value}
+                            placeholderTime={{
+                                ampm: '오전',
+                                hour: '09',
+                                minute: '00',
+                            }}
+                            time={value || new Date('2023-02-18 09:00')}
                             onChange={onChange}
                             onBlur={onBlur}
                             inputProps={{
