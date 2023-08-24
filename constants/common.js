@@ -10,7 +10,7 @@ export const DEFAULT_AVATAR_IMAGE =
 export const DEFAULT_AVATAR_IMAGE_LG =
     'https://statics.goorm.io/images/newsac/newsac_avatar_150_150.svg';
 export const BANNER_IAMGE =
-    'https://statics.goorm.io/images/newsac/newsac_main_banner.jpg';
+    'https://statics.goorm.io/images/newsac/newsac_main_banner.svg';
 
 export const LOGO_LINK = process.env.NEXT_PUBLIC_MAIN_HOST;
 
@@ -27,7 +27,7 @@ export const POLICY_AND_TERMS_LINK = {
 };
 
 export const NEWSAC_LINK = {
-    홈페이지: 'https://newsac.co.kr/',
+    홈페이지: 'http://xn--2z1bz5tdvbiwlf4j.com/',
     블로그: 'https://blog.naver.com/PostList.naver?blogId=new_sac',
 };
 

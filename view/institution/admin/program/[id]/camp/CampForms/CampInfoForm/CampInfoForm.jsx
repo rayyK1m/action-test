@@ -324,15 +324,13 @@ const ReadOnlyEducationForm = ({ division, isFoundationPage }) => {
                     label="교육 시작일"
                     datePickerKey={educationStartDateKey}
                     timePickerKey={educationStartTimeKey}
-                    disabled={!isFoundationPage}
-                    readOnly={isFoundationPage}
+                    disabled
                 />
                 <FormDatePicker
                     label="교육 종료일"
                     datePickerKey={educationEndDateKey}
                     timePickerKey={educationEndTimeKey}
-                    disabled={!isFoundationPage}
-                    readOnly={isFoundationPage}
+                    disabled
                 />
             </div>
             {division === PROGRAM_DIVISION.집합형 && (

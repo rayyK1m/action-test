@@ -34,6 +34,8 @@ const useGetProgramAdmin = (id) => {
 };
 
 const usePatchProgramAdmin = () => {
+    const queryClient = useQueryClient();
+    const router = useRouter();
     return useMutation(
         ({ programId, formData }) =>
             programsApis.patchProgramAdmin({
@@ -45,6 +47,9 @@ const usePatchProgramAdmin = () => {
                 toast('승인 요청이 완료되었습니다.', {
                     type: toast.TYPE.SUCCESS,
                 });
+                queryClient.invalidateQueries(
+                    programsKeys.itemAdminDetail(router.query.id),
+                );
             },
             onError: () =>
                 toast('프로그램 수정에 실패했습니다.', {

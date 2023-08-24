@@ -261,3 +261,36 @@ export const numberMaxLength = (e) => {
         e.target.value = e.target.value.slice(0, e.target.maxLength);
     }
 };
+
+/**
+ * ## 한글을 유니코드 자모음 조합으로 변환해주는 함수
+ * - 한글명 파일의 경우 한글로 저장되는게 아닌 유니코드 자모음 조합으로 저장되기 때문에 겉으로는 같아보여도 표현방식이 다름.
+ * - 한글과 유니코드의 차이를 알고 싶으면 아래 코드를 복사해서 console을 찍어보면 됨.
+ * ```console.log('강원특별자치도교육청' === '강원특별자치도교육청') // false (유니코드 자모음 !== 한글)```
+ * @param {string} 한글
+ * @returns {string} 유니코드 자모음
+ */
+export const createHangulJamoCombination = (한글) => {
+    const baseCode = 0xac00; // "가"의 유니코드 코드 포인트
+    let result = '';
+
+    for (const char of 한글) {
+        if (/[\uAC00-\uD7AF]/.test(char)) {
+            const offset = char.charCodeAt(0) - baseCode;
+            const 종성 = offset % 28;
+            const 중성 = ((offset - 종성) / 28) % 21;
+            const 초성 = ((offset - 종성) / 28 - 중성) / 21;
+
+            result +=
+                String.fromCharCode(0x1100 + 초성) +
+                String.fromCharCode(0x1161 + 중성);
+
+            if (종성 > 0) {
+                result += String.fromCharCode(0x11a7 + 종성);
+            }
+        } else {
+            result += char;
+        }
+    }
+    return result;
+};

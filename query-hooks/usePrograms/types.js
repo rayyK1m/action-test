@@ -33,6 +33,7 @@
  * @property {{ name?: string; address?: string }} [educationLocation] 교육 장소 (집합형에만 존재)
  * @property {{ id: string; name: string; logo?: { filename: string; url: string; } }} [institution] 기관 정보
  * @property {number} campCount
+ * @property {keyof typeof import('@/constants/db').PROGRAM_DIFFICULTY} difficulty 프로그램 수준
  */
 
 /**

@@ -22,6 +22,7 @@ export default function InstitutionAdminApplicantPage() {
             <Layout.Main>
                 <ApplicantManageList />
             </Layout.Main>
+            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );

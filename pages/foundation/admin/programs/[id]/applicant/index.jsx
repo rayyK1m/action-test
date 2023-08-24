@@ -18,6 +18,7 @@ export default function FoundationAdminApplicantPage() {
             <Layout.Main>
                 <ApplicantManageList />
             </Layout.Main>
+            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );

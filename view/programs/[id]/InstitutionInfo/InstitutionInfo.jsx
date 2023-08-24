@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import styles from './InstitutionInfo.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
+import { DEFAULT_AVATAR_IMAGE_LG } from '@/constants/common';
 
 function InstitutionInfo() {
     const router = useRouter();
@@ -20,18 +21,16 @@ function InstitutionInfo() {
 
     return (
         <div className={styles.container}>
-            {programData.institution.logo?.url ? (
-                <Image
-                    className={styles.image}
-                    src={programData.institution.logo?.url}
-                    width={80}
-                    height={80}
-                    alt={programData.institution.name}
-                    loading="lazy"
-                />
-            ) : (
-                <div className={styles.image} />
-            )}
+            <Image
+                className={styles.image}
+                src={
+                    programData.institution.logo?.url || DEFAULT_AVATAR_IMAGE_LG
+                }
+                width={80}
+                height={80}
+                alt={programData.institution.name}
+                loading="lazy"
+            />
             <div className={styles.content}>
                 <h5>{programData.institution.name}</h5>
                 <Button

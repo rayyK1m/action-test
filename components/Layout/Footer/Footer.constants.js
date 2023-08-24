@@ -6,7 +6,7 @@ import {
 
 export const MENU_LIST = [
     {
-        menuHeader: '재단 소개',
+        menuHeader: '사업 소개',
         menuListGroup: [
             {
                 content: '디지털 새싹 홈페이지',

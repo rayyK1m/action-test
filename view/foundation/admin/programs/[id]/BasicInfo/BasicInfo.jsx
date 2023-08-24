@@ -22,6 +22,7 @@ function BasicInfo() {
         operateLocation,
         description,
         contact,
+        difficulty,
     } = program;
 
     return (
@@ -34,7 +35,7 @@ function BasicInfo() {
                         src={thumbnail.url}
                         alt="thumbnail"
                         width={319}
-                        height={167}
+                        height={179}
                         className={styles.thumbnailImage}
                     />
                     <DownloadButton
@@ -54,6 +55,12 @@ function BasicInfo() {
                         <Content.Box.Summary>{category}</Content.Box.Summary>
                     </Content.Box>
                     <Content.Wrapper isRow>
+                        <Content.Box>
+                            <Content.Box.Title>프로그램 수준</Content.Box.Title>
+                            <Content.Box.Summary>
+                                {difficulty}
+                            </Content.Box.Summary>
+                        </Content.Box>
                         <Content.Box>
                             <Content.Box.Title>프로그램 유형</Content.Box.Title>
                             <div className={styles.badges}>

@@ -33,6 +33,7 @@ export default function ApplicationsPage() {
                 </SSRSuspense>
             </Layout.Main>
 
+            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );
