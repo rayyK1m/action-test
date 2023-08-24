@@ -18,7 +18,6 @@ import styles from '../CampForms.module.scss';
 import { CAMP_INFO_KEYS, SCHOOL } from '../CampForms.constants';
 import { PROGRAM_DIVISION } from '@/constants/db';
 import CustomAlert from '@/components/CustomAlert/CustomAlert';
-import { formatPhoneNumber } from '@/utils';
 
 const ProgramTypeInput = ({ division, duration, isFoundationPage }) => {
     return (
@@ -189,9 +188,9 @@ const ReadOnlyManagerForm = ({ division }) => {
                     placeholder="예) 김구름"
                     readOnly
                 />
-                <FormInput
+                <InputItem
                     label="담당자 연락처"
-                    value={formatPhoneNumber(managerPhoneNumberKey)}
+                    inputKey={managerPhoneNumberKey}
                     placeholder="예) 010-1234-5678"
                     readOnly
                 />

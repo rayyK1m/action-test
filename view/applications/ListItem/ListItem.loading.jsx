@@ -7,7 +7,11 @@ import styles from './ListItem.module.scss';
 function ListItemLoading() {
     return (
         <div className={styles.container}>
-            <Skeleton width="20rem" height="8.5rem" className={styles.image} />
+            <Skeleton
+                width="20rem"
+                height="11.25rem"
+                className={styles.image}
+            />
 
             <div className={styles.contents}>
                 <Skeleton

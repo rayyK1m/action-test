@@ -1,9 +1,10 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import classNames from 'classnames';
 
 import { Button, Card, CardBody } from '@goorm-dev/gds-components';
+
+import { EMAIL_LIST } from '@/constants/common';
 
 import styles from './ErrorPage.module.scss';
 
@@ -24,7 +25,7 @@ const ERROR_CONTENTS = {
             '방문하시려는 페이지는 권한이 있는 회원만 사용할 수 있습니다.\n서비스 이용 및 사용 권한에 관련한 사항은 고객센터 이메일로 문의하여 주시기 바랍니다.',
         children: (
             <div>
-                <p>∙ 고객센터 이메일 : contact@newsac.io</p>
+                <p>∙ 고객센터 이메일 : {EMAIL_LIST.newsac}</p>
                 <p>∙ 상담 시간 : 10:00 ~ 17:00</p>
             </div>
         ),
@@ -59,7 +60,7 @@ const ERROR_CONTENTS = {
                     </a>
                     해 주세요.
                 </p>
-                <p>∙ 고객센터 이메일 : contact@newsac.io</p>
+                <p>∙ 고객센터 이메일 : {EMAIL_LIST.newsac}</p>
                 <p>∙ 상담 시간 : 10:00 ~ 17:00</p>
             </div>
         ),
@@ -69,14 +70,14 @@ const ERROR_CONTENTS = {
         imageSrc: 'https://statics.goorm.io/images/gds/error_500.svg',
         title: '현재 페이지를 이용할 수 없습니다.',
         description:
-            '문의사항은 아래의 이메일 주소로 언제든지 연락주시길 바라며,\n저희가 개발한 서비스가 여러분들께 유용하게 쓰여지길 다시 한 번 소망합니다!',
+            '기술적인 문제로 페이지를 일시적으로 이용할 수 없습니다.\n다음의 내용을 확인하시고, 해결되지 않을 시 고객센터 이메일로 연락해 주시기 바랍니다.',
         children: (
             <div>
                 <p>
                     ∙ <b>페이지 새로고침</b>을 하거나 잠시 후 다시 시도해
                     주세요.
                 </p>
-                <p>∙ 고객센터 이메일 : contact@newsac.io</p>
+                <p>∙ 고객센터 이메일 : {EMAIL_LIST.newsac}</p>
                 <p>∙ 상담 시간 : 10:00 ~ 17:00</p>
             </div>
         ),
@@ -122,11 +123,12 @@ function ErrorPage({ statusCode, message }) {
                         </Button>
                         <Button
                             size="xl"
-                            color="link"
+                            color="basic"
                             className="ml-3"
                             onClick={() => {
                                 router.back();
                             }}
+                            outline
                         >
                             이전 페이지로
                         </Button>

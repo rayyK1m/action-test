@@ -11,7 +11,7 @@ function BasicInfoLoading() {
             <Content.Wrapper isRow>
                 <Content.Box>
                     <Content.Box.Title>프로그램 썸네일</Content.Box.Title>
-                    <Skeleton width="319px" height="167px" />
+                    <Skeleton width="319px" height="179px" />
                     <Skeleton height="32px" />
                 </Content.Box>
                 <Content.Wrapper>
