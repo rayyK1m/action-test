@@ -4,7 +4,11 @@ import { cellHelper } from '@goorm-dev/gds-tables';
 import { Button, Tooltip } from '@goorm-dev/gds-components';
 
 import { PROGRAM_DIVISION } from '@/constants/db';
-import { ellipsisedString, getTargetGroupString } from '@/utils';
+import {
+    ellipsisedString,
+    formatPhoneNumber,
+    getTargetGroupString,
+} from '@/utils';
 import { CAMP_TICKET_STATUS_TEXT } from './ApplicantTable.constants';
 import useHover from '@/hooks/useHover';
 
@@ -146,7 +150,9 @@ export const getTableColoums = (division) => {
         {
             accessorKey: 'phoneNumber',
             header: <div>연락처</div>,
-            cell: cellHelper(({ value }) => <div>{value}</div>),
+            cell: cellHelper(({ value }) => (
+                <div>{formatPhoneNumber(value)}</div>
+            )),
             size: 140,
         },
         {

@@ -1,4 +1,4 @@
-import { ellipsisedString } from '@/utils';
+import { ellipsisedString, removePhoneNumberHyphen } from '@/utils';
 import ProgramTypeBadge from '@/view/components/ProgramTypeBadge';
 import { setDateWithTime } from '@/utils';
 import { CAMP_KEYS } from '../../CampForms/CampForms.constants';
@@ -48,6 +48,7 @@ const formatData = (data) => {
         educationLocationAddress,
         mainEducator = '',
         subEducator,
+        managerPhoneNumber = '',
         /** programName, learningTime은 body에 포함되지 않음. */
         programName,
         learningTime,
@@ -79,6 +80,7 @@ const formatData = (data) => {
             main: mainEducator,
             sub: subEducator ? [subEducator] : [],
         },
+        managerPhoneNumber: removePhoneNumberHyphen(managerPhoneNumber),
         ...rest,
     };
     return formData;

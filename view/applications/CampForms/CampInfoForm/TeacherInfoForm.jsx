@@ -20,6 +20,7 @@ import {
     PROGRAM_KEYS,
     USER_KEYS,
 } from '../CampForms.constants';
+import { formatPhoneNumber } from '@/utils';
 
 // 방문형 프로그램 캠프 신청 폼
 
@@ -129,7 +130,7 @@ export const ReadOnlyManagerForm = ({ isFoundationPage }) => {
                 />
                 <FormInput
                     label="담당자 연락처"
-                    value={getValues(phoneNumberKey)}
+                    value={formatPhoneNumber(getValues(phoneNumberKey))}
                     readOnly
                 />
             </div>

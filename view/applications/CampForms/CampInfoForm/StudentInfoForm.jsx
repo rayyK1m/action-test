@@ -15,6 +15,7 @@ import {
     SCHOOL,
     USER_KEYS,
 } from '../CampForms.constants';
+import { formatPhoneNumber } from '@/utils';
 
 // 집합형 프로그램 캠프 신청 폼
 
@@ -128,7 +129,7 @@ export const ReadOnlyApplyForm = ({ programTarget }) => {
                 />
                 <FormInput
                     label="연락처"
-                    value={getValues(phoneNumberKey)}
+                    value={formatPhoneNumber(getValues(phoneNumberKey))}
                     readOnly
                 />
             </div>
