@@ -30,13 +30,15 @@ function ListItem({ data }) {
     const disableChannelLink = reviewStatus !== CAMP_REVIEW_STATUS.승인.value;
     return (
         <div className={styles.container}>
-            <Image
-                src={thumbnail.url}
-                alt="camp-thumbnail"
-                width={320}
-                height={136}
-                className={styles.image}
-            />
+            <Link href={`/programs/${programId}`}>
+                <Image
+                    src={thumbnail.url}
+                    alt="camp-thumbnail"
+                    width={320}
+                    height={136}
+                    className={styles.image}
+                />
+            </Link>
 
             <div className={styles.contents}>
                 <Badge
