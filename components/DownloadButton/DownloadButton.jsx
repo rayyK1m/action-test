@@ -7,7 +7,11 @@ import axios from 'axios';
 import { useState } from 'react';
 
 import cn from 'classnames';
+
+import { EMAIL_LIST } from '@/constants/common';
+
 import styles from './DownloadButton.module.scss';
+
 
 /**
  *
@@ -172,7 +176,7 @@ const DownloadButton = ({
                         파일 다운로드 중 오류가 발생했습니다.
                     </span>
                     <span className="d-block">
-                        다운로드를 원하실 경우, contact@goorm.io로 문의해주세요.
+                        다운로드를 원하실 경우, {EMAIL_LIST.newsac}로 문의해주세요.
                     </span>
                 </>,
                 {
