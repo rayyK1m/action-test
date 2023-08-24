@@ -148,7 +148,7 @@ const getCamps = async (req, res) => {
             channelUrl:
                 process.env.NODE_ENV === 'development'
                     ? `https://${channelIndex}.dev.goorm.io`
-                    : `https://${channelIndex}.goorm.io`,
+                    : `https://${channelIndex}${process.env.SWCAMP_CHANNEL_DOMAIN}`,
         };
     });
 
