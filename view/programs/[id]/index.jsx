@@ -18,6 +18,8 @@ import ApplyButton from './ApplyButton';
 import Nav from './Nav/Nav';
 import InstitutionInfo from './InstitutionInfo';
 
+import { EMAIL_LIST } from '@/constants/common';
+
 const ProgramDetail = () => {
     const router = useRouter();
     const { id } = router.query;
@@ -98,7 +100,7 @@ const ProgramDetail = () => {
                                         </span>
                                         <span className="d-block">
                                             ※ 다운로드에 이상이 있을 경우
-                                            contact@goorm.io로 문의해주세요.
+                                            {EMAIL_LIST.newsac}로 문의해주세요.
                                         </span>
                                     </div>
                                 </ContentWrapper>
