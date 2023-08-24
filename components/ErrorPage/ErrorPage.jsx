@@ -69,7 +69,7 @@ const ERROR_CONTENTS = {
         imageSrc: 'https://statics.goorm.io/images/gds/error_500.svg',
         title: '현재 페이지를 이용할 수 없습니다.',
         description:
-            '문의사항은 아래의 이메일 주소로 언제든지 연락주시길 바라며,\n저희가 개발한 서비스가 여러분들께 유용하게 쓰여지길 다시 한 번 소망합니다!',
+            '기술적인 문제로 페이지를 일시적으로 이용할 수 없습니다.\n다음의 내용을 확인하시고, 해결되지 않을 시 고객센터 이메일로 연락해 주시기 바랍니다.',
         children: (
             <div>
                 <p>
@@ -122,11 +122,12 @@ function ErrorPage({ statusCode, message }) {
                         </Button>
                         <Button
                             size="xl"
-                            color="link"
+                            color="basic"
                             className="ml-3"
                             onClick={() => {
                                 router.back();
                             }}
+                            outline
                         >
                             이전 페이지로
                         </Button>
