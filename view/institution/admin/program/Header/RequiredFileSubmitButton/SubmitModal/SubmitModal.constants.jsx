@@ -20,10 +20,17 @@ export const CONFIRM_BUTTON_CASE_MAP = /** @type {const} */ ({
 });
 
 export const ALERT_TEXT_MAP = /** @type {const} */ ({
-    [REQUIRED_FILE_SUBMIT_STATUS.제출.key]:
-        '재단이 자료를 검토 중입니다. 승인이 완료되면 프로그램을 등록할 수 있습니다.',
+    /** NOTE
+     * 기존에는 원래 필수 자료 승인 이후에 프로그램 등록이 가능하지만,
+     * 현재 8/21일 오픈과 동시에 바로 기관이 프로그램 등록을 할 수 있어야 하는 이슈로 인해 안내 문구 변경
+     */
+    [REQUIRED_FILE_SUBMIT_STATUS.제출.key]: '재단이 자료를 검토 중입니다.',
+    /** NOTE
+     * 기존에는 원래 필수 자료 승인 이후에 프로그램 등록이 가능하지만,
+     * 현재 8/21일 오픈과 동시에 바로 기관이 프로그램 등록을 할 수 있어야 하는 이슈로 인해 안내 문구 변경
+     */
     [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_제출.key]:
-        '재단이 자료를 검토 중입니다. 승인이 완료되면 프로그램을 등록할 수 있습니다.',
+        '재단이 자료를 검토 중입니다.',
     [REQUIRED_FILE_SUBMIT_STATUS.미제출.key]:
         '선정된 운영 기관은 사업 추진을 위해 아래 자료를 필수로 한국과학창의재단에 제출해야 합니다. ',
     [REQUIRED_FILE_SUBMIT_STATUS.거절.key]: (
@@ -32,7 +39,11 @@ export const ALERT_TEXT_MAP = /** @type {const} */ ({
                 운영 기관은 하단의 거절 사유를 토대로 자료를 수정하여 다시
                 제출해야 합니다.
             </div>
-            <div>제출한 자료가 승인되면 프로그램을 등록할 수 있습니다.</div>
+            {/** NOTE
+             * 기존에는 원래 필수 자료 승인 이후에 프로그램 등록이 가능하지만,
+             * 현재 8/21일 오픈과 동시에 바로 기관이 프로그램 등록을 할 수 있어야 하는 이슈로 인해 안내 문구 변경
+             */}
+            {/* <div>제출한 자료가 승인되면 프로그램을 등록할 수 있습니다.</div> */}
         </>
     ),
     [REQUIRED_FILE_SUBMIT_STATUS.추가_자료_요청.key]:
