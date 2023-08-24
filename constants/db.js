@@ -259,8 +259,12 @@ export const DEFAULT_FILE_KEY = /** @type {const} */ ({
 export const DEFAULT_FILE_OBJECT = /** @type {const} */ ({
     'institution-A': {
         label: DEFAULT_FILE_KEY.참여_인력_업무_분장,
+        filename: String(),
+        url: String(),
     },
     'institution-B': {
         label: DEFAULT_FILE_KEY.안전_관리_계획서,
+        filename: String(),
+        url: String(),
     },
 });

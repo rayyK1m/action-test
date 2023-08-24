@@ -21,7 +21,7 @@
  * @typedef Reports
  * @property {ReviewStatus} reviewStatus
  * @property {string} feedback
- * @property {{ [key: string]: FileObject }} fileObject
+ * @property {typeof import('@/constants/db').DEFAULT_FILE_OBJECT} fileObject
  */
 
 /**
