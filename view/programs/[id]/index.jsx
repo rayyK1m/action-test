@@ -107,15 +107,15 @@ const ProgramDetail = () => {
                             </div>
                             <div>
                                 <h6 className="subtitle-1">안내 사항</h6>
-                                <ContentWrapper>
+                                <QuillViewer tag={ContentWrapper}>
                                     {programData.notice}
-                                </ContentWrapper>
+                                </QuillViewer>
                             </div>
                             <div>
                                 <h6 className="subtitle-1">문의처</h6>
-                                <ContentWrapper>
+                                <QuillViewer tag={ContentWrapper}>
                                     {programData.contact}
-                                </ContentWrapper>
+                                </QuillViewer>
                             </div>
                         </ContentContainer>
                         <div ref={getNavRef('교육 장소')}>

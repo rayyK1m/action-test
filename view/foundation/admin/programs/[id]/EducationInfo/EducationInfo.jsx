@@ -87,7 +87,9 @@ function EducationInfo() {
                 </Content.Box>
                 <Content.Box>
                     <Content.Box.Title>안내 사항</Content.Box.Title>
-                    <div className={styles.content}>{program.notice}</div>
+                    <QuillViewer className={styles.content}>
+                        {program.notice}
+                    </QuillViewer>
                 </Content.Box>
             </Content.Wrapper>
         </Content.Container>

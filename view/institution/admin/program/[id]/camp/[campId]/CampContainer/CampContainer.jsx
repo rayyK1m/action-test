@@ -18,6 +18,7 @@ import { getCampBreadcrumbs } from './CampContainer.utils';
 import { checkIsFoundationPage } from '@/utils';
 
 import styles from './CampContainer.module.scss';
+import { DEFAULT_AVATAR_IMAGE } from '@/constants/common';
 
 function CampContainer() {
     const router = useRouter();
@@ -70,8 +71,9 @@ function CampContainer() {
                                             >
                                                 <Image
                                                     src={
-                                                        program.institution.logo
-                                                            .url
+                                                        program.institution
+                                                            ?.logo?.url ||
+                                                        DEFAULT_AVATAR_IMAGE
                                                     }
                                                     alt="institution"
                                                     width={24}
