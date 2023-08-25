@@ -108,10 +108,10 @@ const ApplyButton = () => {
     };
 
     const 학생이_방문형_신청 =
-        userData.role === ROLE.STUDENT &&
+        userData?.role === ROLE.STUDENT &&
         programData.type.division === PROGRAM_DIVISION.방문형;
     const 선생님이_집합형_신청 =
-        userData.role === ROLE.TEACHER &&
+        userData?.role === ROLE.TEACHER &&
         programData.type.division === PROGRAM_DIVISION.집합형;
     const isDisabledApplyButton =
         programData.applyStatus === '모집_예정' ||
