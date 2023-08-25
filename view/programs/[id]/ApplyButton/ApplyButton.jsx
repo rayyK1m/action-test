@@ -21,7 +21,7 @@ import {
 import { DENYED_PROGRAM_TYPE } from './ApplyButton.constants';
 import useProgram from '@/query-hooks/useProgram';
 import { useQueryClient } from '@tanstack/react-query';
-import { PROGRAM_DIVISION } from '@/constants/db';
+import { PROGRAM_DIVISION, ROLE } from '@/constants/db';
 
 const ApplyButton = () => {
     const queryClient = useQueryClient();
@@ -107,11 +107,19 @@ const ApplyButton = () => {
         }
     };
 
+    const 학생이_방문형_신청 =
+        userData.role === ROLE.STUDENT &&
+        programData.type.division === PROGRAM_DIVISION.방문형;
+    const 선생님이_집합형_신청 =
+        userData.role === ROLE.TEACHER &&
+        programData.type.division === PROGRAM_DIVISION.집합형;
     const isDisabledApplyButton =
         programData.applyStatus === '모집_예정' ||
         programData.applyStatus === '모집_종료' ||
         /** 이미 신청한 프로그램 */
-        !!campTicketHistoryData?.item;
+        !!campTicketHistoryData?.item ||
+        학생이_방문형_신청 ||
+        선생님이_집합형_신청;
 
     const applyButtonText = (() => {
         switch (true) {
@@ -120,6 +128,11 @@ const ApplyButton = () => {
             case programData.applyStatus === '모집_예정':
                 return '모집 예정인 프로그램입니다.';
             case programData.applyStatus === '모집_중':
+                if (학생이_방문형_신청) {
+                    return '선생님만 신청할 수 있는 프로그램입니다.';
+                } else if (선생님이_집합형_신청) {
+                    return '학생·학부모만 신청할 수 있는 프로그램입니다.';
+                }
                 return '신청하기';
             case programData.applyStatus === '모집_종료':
                 return '모집이 마감된 프로그램입니다.';
