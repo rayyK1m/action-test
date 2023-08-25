@@ -79,9 +79,10 @@ const useChangeProgramReviewStatus = () => {
     return useMutation({
         mutationFn: programsApis.changeProgramReviewStatus,
         onSuccess: () => {
-            queryClient.invalidateQueries(
-                programsKeys.itemAdminDetail(router.query.id),
-            );
+            // queryClient.invalidateQueries(
+            //     programsKeys.itemAdminDetail(router.query.id),
+            // );
+            toast('상태 변경이 완료되었습니다.');
         },
     });
 };
