@@ -82,7 +82,7 @@ const TimePicker = forwardRef(
             inputClassName,
             inputProps,
             time,
-            placeholderTime = { ampm: '오전', hour: '09', minute: '00' },
+            placeholderTime = { ampm: '오전', hour: '01', minute: '00' },
             onChange,
             onBlur,
             disabled,

@@ -91,7 +91,9 @@ function BasicInfo() {
                     </Content.Box>
                     <Content.Box>
                         <Content.Box.Title>문의처</Content.Box.Title>
-                        <div className={styles.content}>{contact}</div>
+                        <QuillViewer className={styles.content}>
+                            {contact}
+                        </QuillViewer>
                     </Content.Box>
                 </Content.Wrapper>
             </Content.Wrapper>
