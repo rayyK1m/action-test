@@ -163,12 +163,7 @@ const ReadOnlyBasicForm = ({ division }) => {
 };
 
 const ReadOnlyApplyForm = () => {
-    const {
-        applyStartDateKey,
-        applyStartTimeKey,
-        applyEndDateKey,
-        applyEndTimeKey,
-    } = PROGRAM_APPLY_KEYS;
+    const { applyStartDateKey, applyEndDateKey } = PROGRAM_APPLY_KEYS;
     return (
         <div className={styles.form}>
             <h5>신청 정보</h5>
@@ -177,14 +172,12 @@ const ReadOnlyApplyForm = () => {
                     label="신청 시작일"
                     isRequired
                     datePickerKey={applyStartDateKey}
-                    timePickerKey={applyStartTimeKey}
                     disabled
                 />
                 <FormDatePicker
                     label="신청 종료일"
                     isRequired
                     datePickerKey={applyEndDateKey}
-                    timePickerKey={applyEndTimeKey}
                     disabled
                 />
             </div>
@@ -203,9 +196,7 @@ const ReadOnlyEducationForm = ({ division }) => {
         educationLocationNameKey,
         educationLocationAddressKey,
         educationStartDateKey,
-        educationStartTimeKey,
         educationEndDateKey,
-        educationEndTimeKey,
     } = PROGRAM_APPLY_KEYS;
 
     return (
@@ -223,14 +214,12 @@ const ReadOnlyEducationForm = ({ division }) => {
                     label="교육 가능 시작일"
                     isRequired
                     datePickerKey={educationStartDateKey}
-                    timePickerKey={educationStartTimeKey}
                     disabled
                 />
                 <FormDatePicker
                     label="교육 가능 종료일"
                     isRequired
                     datePickerKey={educationEndDateKey}
-                    timePickerKey={educationEndTimeKey}
                     disabled
                 />
             </div>

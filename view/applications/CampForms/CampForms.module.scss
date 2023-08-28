@@ -20,6 +20,19 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    input {
+        position: relative !important;
+        margin-left: 0 !important;
+        cursor: pointer;
+    }
+    label {
+        font-size: 0.875rem !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+        margin-left: 0.5rem !important;
+        margin-bottom: 0 !important;
+        cursor: pointer;
+    }
 }
 
 .readOnly {
@@ -28,9 +41,7 @@
 
 .disabled {
     pointer-events: none;
-    > span {
-        opacity: 0.3;
-    }
+    opacity: 0.3;
 }
 
 .school {

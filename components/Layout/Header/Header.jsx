@@ -78,22 +78,6 @@ const Header = ({ userData, className, children, ...props }) => {
                         >
                             사업 소개
                         </Button>
-                        {userData &&
-                            (userData.role === ROLE.FOUNDATION ||
-                                userData.role === ROLE.INSTITUTION) && (
-                                <Button
-                                    className={styles.link}
-                                    icon={<SubmitModeIcon />}
-                                    iconSide="right"
-                                    tag={Link}
-                                    color="link"
-                                    size="lg"
-                                    href="http://xn--2z1bz5tdvbiwlf4j.kr/"
-                                    target="_blank"
-                                >
-                                    공지사항
-                                </Button>
-                            )}
                     </div>
                 </div>
                 <div className={styles.rightAreaContainer}>

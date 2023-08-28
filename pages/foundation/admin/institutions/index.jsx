@@ -25,7 +25,6 @@ export default function FoundationAdminInstitutionsPage() {
             <Layout.Main>
                 <FoundationAdminInstitutions />
             </Layout.Main>
-            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );

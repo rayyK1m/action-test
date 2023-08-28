@@ -31,7 +31,6 @@ function CampManageContainerLoading() {
                 </GridContainer>
             </Layout.Main>
 
-            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );

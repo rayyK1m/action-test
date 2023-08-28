@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import { Checkbox, TextButton } from '@goorm-dev/gds-components';
+import { Checkbox, Input, TextButton } from '@goorm-dev/gds-components';
 import { ChevronRightIcon } from '@goorm-dev/gds-icons';
 
 import styles from '../CampForms.module.scss';
@@ -9,18 +9,18 @@ import { POLICY_AND_TERMS_LINK } from '@/constants/common';
 export const TermsForm = ({ terms, setTerms }) => {
     const { thirdPartyInfoTerm, personalInfoTerm } = terms;
 
-    const handleChange = (target) => {
-        if (target.checked) {
-            if (target.name === 'all')
+    const handleChange = (e) => {
+        if (e.target.checked) {
+            if (e.target.id === 'all')
                 setTerms({ thirdPartyInfoTerm: true, personalInfoTerm: true });
-            setTerms((terms) => ({ ...terms, [target.name]: true }));
+            setTerms((terms) => ({ ...terms, [e.target.id]: true }));
         } else {
-            if (target.name === 'all')
+            if (e.target.id === 'all')
                 setTerms({
                     thirdPartyInfoTerm: false,
                     personalInfoTerm: false,
                 });
-            setTerms((terms) => ({ ...terms, [target.name]: false }));
+            setTerms((terms) => ({ ...terms, [e.target.id]: false }));
         }
     };
 
@@ -38,25 +38,29 @@ export const TermsForm = ({ terms, setTerms }) => {
 
     return (
         <div className={styles.form}>
-            <h5>약관 동의</h5>
+            <h5 className="text-gray-700">약관 동의</h5>
             <div className={styles.checkForm}>
                 <div className="d-flex">
-                    <Checkbox
-                        name="all"
+                    <Input
+                        type="checkbox"
+                        id="all"
                         checked={thirdPartyInfoTerm && personalInfoTerm}
-                        onChange={(e) => handleChange(e.target)}
+                        onChange={handleChange}
                     />
-                    <span>전체 동의</span>
+                    <label for="all" className={styles.label}>
+                        전체 동의
+                    </label>
                 </div>
                 <div className="d-flex align-items-center">
-                    <div className="d-flex mr-4">
-                        <Checkbox
-                            name="personalInfoTerm"
-                            checked={personalInfoTerm}
-                            onChange={(e) => handleChange(e.target)}
-                        />
-                        <span>[필수] 개인정보 수집 및 이용 동의</span>
-                    </div>
+                    <Input
+                        type="checkbox"
+                        id="personalInfoTerm"
+                        checked={personalInfoTerm}
+                        onChange={handleChange}
+                    />
+                    <label for="personalInfoTerm" className="mr-4">
+                        [필수] 개인정보 수집 및 이용 동의
+                    </label>
                     <TextButton
                         color="link"
                         size="sm"
@@ -69,14 +73,15 @@ export const TermsForm = ({ terms, setTerms }) => {
                     </TextButton>
                 </div>
                 <div className="d-flex align-items-center">
-                    <div className="d-flex mr-4">
-                        <Checkbox
-                            name="thirdPartyInfoTerm"
-                            checked={thirdPartyInfoTerm}
-                            onChange={(e) => handleChange(e.target)}
-                        />
-                        <span>[필수] 개인정보 제3자 제공 동의</span>
-                    </div>
+                    <Input
+                        type="checkbox"
+                        id="thirdPartyInfoTerm"
+                        checked={thirdPartyInfoTerm}
+                        onChange={handleChange}
+                    />
+                    <label for="thirdPartyInfoTerm" className="mr-4">
+                        [필수] 개인정보 제3자 제공 동의
+                    </label>
                     <TextButton
                         color="link"
                         size="sm"
@@ -108,7 +113,7 @@ export const ReadOnlyTermsForm = () => {
 
     return (
         <div className={styles.form}>
-            <h5>약관 동의</h5>
+            <h5 className="text-gray-700">약관 동의</h5>
             <div className={styles.checkForm}>
                 <Checkbox
                     label="전체 동의"

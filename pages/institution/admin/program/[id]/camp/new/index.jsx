@@ -28,7 +28,6 @@ export default function InstitutionAdminCampNewPage() {
                 </CreateCampContextProvider>
             </Layout.Main>
 
-            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );

@@ -52,8 +52,7 @@ function ProgramInfo() {
             {program.reviewStatus === PROGRAM_REVIEW_STATUS.거절.key && (
                 <Badge
                     size="lg"
-                    /** color link 없어서 커스텀함 */
-                    color="link"
+                    color="danger"
                     className={styles.badge_link}
                     leftIcon={ErrorCircleIcon}
                 >

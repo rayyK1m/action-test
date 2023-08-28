@@ -97,7 +97,6 @@ function ProgramInfoContainer({ programId, userData }) {
                     )}
                 </GridContainer>
             </Layout.Main>
-            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );

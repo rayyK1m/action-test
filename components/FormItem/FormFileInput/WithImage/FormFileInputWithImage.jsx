@@ -55,6 +55,7 @@ const FormFileInputWithImage = ({
                 type: toast.TYPE.ERROR,
             });
             deleteFiles();
+            setImageUrl('');
             uploadFile.reset();
             return;
         }
@@ -115,7 +116,7 @@ const FormFileInputWithImage = ({
                         {...fileInputProps}
                         className={disabled ? styles.disabledInput : ''}
                         size="lg"
-                        accept="image/png, image/jpeg, image/gif, image/webp"
+                        accept="image/*"
                         badgeMaxWidth={160}
                         captionText={errors && errors?.message}
                         isError={errors}

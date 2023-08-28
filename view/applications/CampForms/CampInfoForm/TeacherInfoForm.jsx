@@ -164,48 +164,13 @@ export const ReadOnlyManagerForm = ({ isFoundationPage }) => {
     );
 };
 
-export const ReadOnlyTeacherForm = ({ isFoundationPage }) => {
-    const { getValues } = useFormContext();
-
-    const { mainEducatorKey, subEducatorKey } = CAMP_APPLY_KEYS;
-
-    return (
-        <div className={styles.form}>
-            <h5 className="text-gray-700">강사 정보</h5>
-            <div>
-                <div className={styles.divideRow}>
-                    <FormInput
-                        label="강사 명"
-                        value={getValues(mainEducatorKey)}
-                        readOnly
-                    />
-                    <FormInput
-                        label="보조 강사 명"
-                        value={getValues(subEducatorKey)}
-                        readOnly
-                    />
-                </div>
-                {!isFoundationPage && (
-                    <CustomAlert
-                        leftIcon={NoticeCircleIcon}
-                        className={styles.alert}
-                    >
-                        강사 혹은 보조 강사를 기재하지 않을 경우, 운영 기관에서
-                        배정할 수 있습니다.
-                    </CustomAlert>
-                )}
-            </div>
-        </div>
-    );
-};
-
 export const ReadOnlyTargetForm = ({ programTarget }) => {
     const { getValues } = useFormContext();
     const { applicantCountKey } = CAMP_APPLY_KEYS;
 
     return (
         <div className={styles.form}>
-            <h5>신청 대상 정보</h5>
+            <h5 className="text-gray-700">신청 대상 정보</h5>
             <ApplyTargetInput programTarget={programTarget} />
             <FormInput
                 label="신청 인원"
@@ -219,8 +184,7 @@ export const ReadOnlyTargetForm = ({ programTarget }) => {
 export const ReadOnlyLearningTimeForm = () => {
     const { getValues } = useFormContext();
     const { learningTimeKey } = PROGRAM_KEYS;
-    const { startDateKey, startTimeKey, endDateKey, endTimeKey } =
-        CAMP_APPLY_KEYS;
+    const { startDateKey, endDateKey } = CAMP_APPLY_KEYS;
 
     return (
         <div className={styles.form}>
@@ -235,13 +199,11 @@ export const ReadOnlyLearningTimeForm = () => {
                 <FormDatePicker
                     label="교육 이수 시작일"
                     datePickerKey={startDateKey}
-                    timePickerKey={startTimeKey}
                     disabled
                 />
                 <FormDatePicker
                     label="교육 이수 종료일"
                     datePickerKey={endDateKey}
-                    timePickerKey={endTimeKey}
                     disabled
                 />
             </div>

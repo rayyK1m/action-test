@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import cn from 'classnames';
 
 import { Badge, Button } from '@goorm-dev/gds-components';
 
@@ -51,7 +52,7 @@ function ListItem({ data }) {
                 >
                     {STATUS_BADGE[reviewStatus].text}
                 </Badge>
-                <h5 className="mb-2">
+                <h5 className={cn('mb-2', styles.name)}>
                     <Link href={`/programs/${programId}`}>{name}</Link>
                 </h5>
                 <div className="subtitle-2 mb-1">

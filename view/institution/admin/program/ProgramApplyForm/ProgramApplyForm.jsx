@@ -173,8 +173,10 @@ const ApplyTargetInput = () => {
                         <div className={styles.schoolGrade}>
                             {school.value.map((_, idx) => (
                                 <div className="d-flex" key={idx}>
-                                    <Checkbox
+                                    <Input
+                                        type="checkbox"
                                         key={idx}
+                                        id={`${key}-${idx}`}
                                         defaultChecked={targetFields[
                                             index
                                         ]?.includes(idx + 1)}
@@ -184,7 +186,9 @@ const ApplyTargetInput = () => {
                                             idx: index,
                                         })}
                                     />
-                                    <span>{idx + 1}학년</span>
+                                    <label for={`${key}-${idx}`}>
+                                        {idx + 1}학년
+                                    </label>
                                 </div>
                             ))}
                         </div>
@@ -305,13 +309,8 @@ const BasicForm = ({ division }) => {
 
 const ApplyForm = () => {
     const { watch } = useFormContext();
-    const {
-        applyStartDateKey,
-        applyStartTimeKey,
-        applyEndDateKey,
-        applyEndTimeKey,
-        educationStartDateKey,
-    } = PROGRAM_APPLY_KEYS;
+    const { applyStartDateKey, applyEndDateKey, educationStartDateKey } =
+        PROGRAM_APPLY_KEYS;
 
     const [applyStartDate, applyEndDate, educationStartDate] = watch([
         applyStartDateKey,
@@ -327,7 +326,6 @@ const ApplyForm = () => {
                     isRequired
                     label="신청 시작일"
                     datePickerKey={applyStartDateKey}
-                    timePickerKey={applyStartTimeKey}
                     calendarProps={{
                         ...(applyEndDate
                             ? {
@@ -340,7 +338,6 @@ const ApplyForm = () => {
                     isRequired
                     label="신청 종료일"
                     datePickerKey={applyEndDateKey}
-                    timePickerKey={applyEndTimeKey}
                     calendarProps={{
                         ...(applyStartDate
                             ? {
@@ -372,47 +369,15 @@ const EducationForm = ({ division }) => {
         educationLocationNameKey,
         educationLocationAddressKey,
         educationStartDateKey,
-        educationStartTimeKey,
         educationEndDateKey,
-        educationEndTimeKey,
-        applyEndDateKey,
     } = PROGRAM_APPLY_KEYS;
 
-    const [
-        educationStartDate,
-        educationStartTime,
-        educationEndDate,
-        educationEndTime,
-        learningTime,
-    ] = watch([
+    const [educationStartDate, educationEndDate, learningTime] = watch([
         educationStartDateKey,
-        educationStartTimeKey,
         educationEndDateKey,
-        educationEndTimeKey,
         learningTimeKey,
     ]);
-    const isEducationDateDirty =
-        educationStartDate ||
-        educationStartTime ||
-        educationEndDate ||
-        educationEndTime;
-
-    const { data: mapSearch } = useDaumSearchMap({
-        onComplete: (data) => {
-            setValue(educationLocationAddressKey, data.address, {
-                shouldDirty: true,
-            });
-        },
-    });
-
-    const mapPopupKey = useId();
-    const handleOpen = () => {
-        mapSearch?.open({
-            popupKey: mapPopupKey,
-            left: window.screen.width / 2 - mapSearch.width / 2,
-            top: window.screen.height / 2 - mapSearch.height / 2,
-        });
-    };
+    const isEducationDateDirty = educationStartDate || educationEndDate;
 
     const validateLearningTime = learningTime <= 36;
 
@@ -441,7 +406,6 @@ const EducationForm = ({ division }) => {
                     isRequired
                     label="교육 가능 시작일"
                     datePickerKey={educationStartDateKey}
-                    timePickerKey={educationStartTimeKey}
                     calendarProps={{
                         ...(educationEndDate
                             ? {
@@ -458,7 +422,6 @@ const EducationForm = ({ division }) => {
                     isRequired
                     label="교육 가능 종료일"
                     datePickerKey={educationEndDateKey}
-                    timePickerKey={educationEndTimeKey}
                     calendarProps={{
                         ...(educationStartDate
                             ? {

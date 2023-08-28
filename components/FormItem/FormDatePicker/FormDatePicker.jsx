@@ -23,19 +23,17 @@ const FormDatePicker = ({
             feedback={feedback}
             formText={formText}
         >
-            <div className={styles.body}>
-                <DatePickerItem
-                    isRequired={isRequired}
-                    datePickerKey={datePickerKey}
-                    disabled={disabled}
-                    calendarProps={calendarProps}
-                />
-                <TimePickerItem
+            <DatePickerItem
+                isRequired={isRequired}
+                datePickerKey={datePickerKey}
+                disabled={disabled}
+                calendarProps={calendarProps}
+            />
+            {/* <TimePickerItem
                     isRequired={isRequired}
                     timePickerKey={timePickerKey}
                     disabled={disabled}
-                />
-            </div>
+                /> */}
         </FormWrapper>
     );
 };

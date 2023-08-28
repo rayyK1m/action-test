@@ -6,8 +6,6 @@ export const CAMP_APPLY_KEYS = {
     operateLocationKey: 'operateLocation',
     schoolTypeKey: 'schoolType',
     // educator: {main, sub}
-    mainEducatorKey: 'mainEducator',
-    subEducatorKey: 'subEducator',
     // targetGroup: {elementarySchool, middleSchool, highSchool}
     elementaryTargetKey: 'elementarySchool',
     middleTargetKey: 'middleSchool',
@@ -15,9 +13,7 @@ export const CAMP_APPLY_KEYS = {
     applicantCountKey: 'applicantCount',
     phoneNumberKey: 'phoneNumber', // 집합형 : 신청인 정보 - 연락처
     startDateKey: 'startDate',
-    startTimeKey: 'startTime',
     endDateKey: 'endDate',
-    endTimeKey: 'endTime',
 };
 
 export const PROGRAM_KEYS = {

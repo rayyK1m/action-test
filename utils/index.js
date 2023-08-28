@@ -21,6 +21,10 @@ export const setDateWithTime = (date, time) => {
     return dayjs(date).set('hour', h).set('minute', m).format();
 };
 
+export const setDateWithHourAndMinute = (date, hour, minute) => {
+    return dayjs(date).set('hour', hour).set('minute', minute).format();
+};
+
 /** Input 입력 시 Number 외의 값이 입력되는 것을 방지하기 위한 유틸함수 */
 export const formatNumberInput = (e) => {
     e.target.value = e.target.value

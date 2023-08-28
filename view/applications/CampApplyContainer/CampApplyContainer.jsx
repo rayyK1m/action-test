@@ -37,7 +37,6 @@ import { PROGRAM_DIVISION } from '@/constants/db';
 
 import { formatTeacherData } from './CampApplyContainer.utils';
 import { TermsForm } from '../CampForms/TermForm/TermForm';
-import Link from 'next/link';
 import useToggle from '@/hooks/useToggle';
 import { useRouter } from 'next/router';
 import { useGetUserInfo } from '@/query-hooks/useUserInfo';
@@ -207,7 +206,6 @@ function CampApplyContainer({ userData, programId }) {
                         </FormProvider>
                     </GridContainer>
                 </Layout.Main>
-                <Layout.ContributorBanner />
                 <Layout.Footer />
             </Layout>
 

@@ -104,24 +104,33 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                                             index
                                         ].includes(idx + 1);
                                         return (
-                                            <Checkbox
-                                                className={
+                                            <div
+                                                className={cn(
+                                                    'd-flex',
                                                     disabled
                                                         ? styles.disabled
-                                                        : ''
-                                                }
-                                                defaultChecked={targetFields[
-                                                    index
-                                                ]?.includes(idx + 1)}
-                                                ref={ref}
-                                                label={`${idx + 1}학년`}
-                                                disabled={disabled}
-                                                onChange={handleChange({
-                                                    schoolKey: key,
-                                                    value: idx,
-                                                    idx: index,
-                                                })}
-                                            />
+                                                        : '',
+                                                )}
+                                                key={idx}
+                                            >
+                                                <Input
+                                                    type="checkbox"
+                                                    id={`${key}-${idx}`}
+                                                    defaultChecked={targetFields[
+                                                        index
+                                                    ]?.includes(idx + 1)}
+                                                    ref={ref}
+                                                    disabled={disabled}
+                                                    onChange={handleChange({
+                                                        schoolKey: key,
+                                                        value: idx,
+                                                        idx: index,
+                                                    })}
+                                                />
+                                                <label
+                                                    for={`${key}-${idx}`}
+                                                >{`${idx + 1}학년`}</label>
+                                            </div>
                                         );
                                     }}
                                 />
@@ -404,9 +413,7 @@ const EducationForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
     const {
         learningTimeKey,
         educationStartDateKey,
-        educationStartTimeKey,
         educationEndDateKey,
-        educationEndTimeKey,
         educationLocationNameKey,
         educationLocationAddressKey,
     } = CAMP_KEYS;
@@ -425,12 +432,10 @@ const EducationForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
                 <FormDatePicker
                     label="교육 시작일"
                     datePickerKey={educationStartDateKey}
-                    timePickerKey={educationStartTimeKey}
                 />
                 <FormDatePicker
                     label="교육 종료일"
                     datePickerKey={educationEndDateKey}
-                    timePickerKey={educationEndTimeKey}
                 />
             </div>
             {division === PROGRAM_DIVISION.집합형 && (

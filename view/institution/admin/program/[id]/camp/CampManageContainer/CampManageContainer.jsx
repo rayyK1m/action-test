@@ -344,7 +344,6 @@ function CampManageContainer() {
                     </GridContainer>
                 </Layout.Main>
 
-                <Layout.ContributorBanner />
                 <Layout.Footer />
             </Layout>
 
