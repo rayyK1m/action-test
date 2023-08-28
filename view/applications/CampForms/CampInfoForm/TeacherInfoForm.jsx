@@ -184,7 +184,8 @@ export const ReadOnlyTargetForm = ({ programTarget }) => {
 export const ReadOnlyLearningTimeForm = () => {
     const { getValues } = useFormContext();
     const { learningTimeKey } = PROGRAM_KEYS;
-    const { startDateKey, endDateKey } = CAMP_APPLY_KEYS;
+    const { startDateKey, startTimeKey, endDateKey, endTimeKey } =
+        CAMP_APPLY_KEYS;
 
     return (
         <div className={styles.form}>
@@ -199,11 +200,13 @@ export const ReadOnlyLearningTimeForm = () => {
                 <FormDatePicker
                     label="교육 이수 시작일"
                     datePickerKey={startDateKey}
+                    timePickerKey={startTimeKey}
                     disabled
                 />
                 <FormDatePicker
                     label="교육 이수 종료일"
                     datePickerKey={endDateKey}
+                    timePickerKey={endTimeKey}
                     disabled
                 />
             </div>

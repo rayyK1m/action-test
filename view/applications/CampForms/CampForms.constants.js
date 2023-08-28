@@ -13,7 +13,9 @@ export const CAMP_APPLY_KEYS = {
     applicantCountKey: 'applicantCount',
     phoneNumberKey: 'phoneNumber', // 집합형 : 신청인 정보 - 연락처
     startDateKey: 'startDate',
+    startTimeKey: 'startTime',
     endDateKey: 'endDate',
+    endTimeKey: 'endTime',
 };
 
 export const PROGRAM_KEYS = {

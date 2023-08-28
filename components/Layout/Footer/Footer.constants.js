@@ -63,7 +63,7 @@ export const COMPANY_INFO_LIST = [
         `디지털새싹 캠프 문의 이메일 ${EMAIL_LIST.kofac}`,
     ],
     [
-        '사업관리시스템 문의 전화 031-600-8586',
+        '사업관리시스템 문의 전화 031-600-8534',
         `사업관리시스템 문의 이메일 ${EMAIL_LIST.newsac}`,
     ],
     ['Powered by goorm'],

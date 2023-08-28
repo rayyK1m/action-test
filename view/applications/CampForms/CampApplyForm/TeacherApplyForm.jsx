@@ -319,14 +319,23 @@ export const LearningTimeForm = ({ educationDate }) => {
         formState: { errors },
         watch,
     } = useFormContext();
-    const { startDateKey, endDateKey } = CAMP_APPLY_KEYS;
+    const { startDateKey, startTimeKey, endDateKey, endTimeKey } =
+        CAMP_APPLY_KEYS;
     const { learningTimeKey } = PROGRAM_KEYS;
 
-    const isDateError = !!errors[startDateKey] || !!errors[endDateKey];
+    const isDateError =
+        !!errors[startDateKey] ||
+        !!errors[startTimeKey] ||
+        !!errors[endDateKey] ||
+        !!errors[endTimeKey];
+    const [startDate, startTime, endDate, endTime] = watch([
+        startDateKey,
+        startTimeKey,
+        endDateKey,
+        endTimeKey,
+    ]);
 
-    const [startDate, endDate] = watch([startDateKey, endDateKey]);
-
-    const validDate = startDate || endDate;
+    const validDate = startDate || startTime || endDate || endTime;
 
     return (
         <div className={styles.form}>
@@ -342,6 +351,7 @@ export const LearningTimeForm = ({ educationDate }) => {
                         isRequired
                         label="교육 이수 시작일"
                         datePickerKey={startDateKey}
+                        timePickerKey={startTimeKey}
                         calendarProps={{
                             minDate: new Date(educationDate.start),
                             ...(!!endDate
@@ -368,6 +378,7 @@ export const LearningTimeForm = ({ educationDate }) => {
                             maxDate: new Date(educationDate.end),
                         }}
                         datePickerKey={endDateKey}
+                        timePickerKey={endTimeKey}
                     />
                 </div>
             </div>

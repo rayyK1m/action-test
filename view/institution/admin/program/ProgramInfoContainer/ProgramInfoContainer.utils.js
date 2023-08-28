@@ -1,5 +1,5 @@
 import { PROGRAM_APPLY_KEYS } from '../program.contants';
-import { setDateWithHourAndMinute } from '@/utils';
+import { setDateWithTime } from '@/utils';
 import { PROGRAM_DIVISION } from '@/constants/db';
 
 export const getDefaultValues = (program) => {
@@ -13,9 +13,13 @@ export const getDefaultValues = (program) => {
         [PROGRAM_APPLY_KEYS.operateLocationKey]: program.operateLocation,
         [PROGRAM_APPLY_KEYS.contactKey]: program.contact,
         [PROGRAM_APPLY_KEYS.applyStartDateKey]: program.applyDate.start,
+        [PROGRAM_APPLY_KEYS.applyStartTimeKey]: program.applyDate.start,
         [PROGRAM_APPLY_KEYS.applyEndDateKey]: program.applyDate.end,
+        [PROGRAM_APPLY_KEYS.applyEndTimeKey]: program.applyDate.end,
         [PROGRAM_APPLY_KEYS.educationStartDateKey]: program.educationDate.start,
+        [PROGRAM_APPLY_KEYS.educationStartTimeKey]: program.educationDate.start,
         [PROGRAM_APPLY_KEYS.educationEndDateKey]: program.educationDate.end,
+        [PROGRAM_APPLY_KEYS.educationEndTimeKey]: program.educationDate.end,
         [PROGRAM_APPLY_KEYS.elementaryTargetKey]:
             program.targetGroup.elementarySchool,
         [PROGRAM_APPLY_KEYS.middleTargetKey]: program.targetGroup.middleSchool,
@@ -35,9 +39,13 @@ export const formatProgramData = (data, division) => {
     const {
         duration,
         applyStartDate,
+        applyStartTime,
         applyEndDate,
+        applyEndTime,
         educationStartDate,
+        educationStartTime,
         educationEndDate,
+        educationEndTime,
         elementarySchool,
         middleSchool,
         highSchool,
@@ -47,6 +55,14 @@ export const formatProgramData = (data, division) => {
         ...rest
     } = data;
 
+    const applyStart = setDateWithTime(applyStartDate, applyStartTime);
+    const applyEnd = setDateWithTime(applyEndDate, applyEndTime);
+    const educationStart = setDateWithTime(
+        educationStartDate,
+        educationStartTime,
+    );
+    const educationEnd = setDateWithTime(educationEndDate, educationEndTime);
+
     const formData = {
         type: { duration },
         targetGroup: {
@@ -55,12 +71,12 @@ export const formatProgramData = (data, division) => {
             highSchool,
         },
         applyDate: {
-            start: applyStartDate,
-            end: setDateWithHourAndMinute(applyEndDate, 23, 59),
+            start: applyStart,
+            end: applyEnd,
         },
         educationDate: {
-            start: educationStartDate,
-            end: setDateWithHourAndMinute(educationEndDate, 23, 59),
+            start: educationStart,
+            end: educationEnd,
         },
         attachedFiles: [attachedFiles],
         ...(division === PROGRAM_DIVISION.집합형

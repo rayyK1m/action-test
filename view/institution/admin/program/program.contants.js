@@ -19,10 +19,14 @@ export const PROGRAM_APPLY_KEYS = {
     educationLocationAddressKey: 'educationLocationAddress',
     // 신청 기간
     applyStartDateKey: 'applyStartDate',
+    applyStartTimeKey: 'applyStartTime',
     applyEndDateKey: 'applyEndDate',
+    applyEndTimeKey: 'applyEndTime',
     // 교육 일정
     educationStartDateKey: 'educationStartDate',
+    educationStartTimeKey: 'educationStartTime',
     educationEndDateKey: 'educationEndDate',
+    educationEndTimeKey: 'educationEndTime',
 };
 
 export const SCHOOL = {

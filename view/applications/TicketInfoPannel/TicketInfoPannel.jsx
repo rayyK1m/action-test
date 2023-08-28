@@ -67,7 +67,9 @@ function TicketInfoPannel({ isOpen, onClose, ticketId }) {
             [CAMP_APPLY_KEYS.middleTargetKey]: ticket?.targetGroup.middleSchool,
             [CAMP_APPLY_KEYS.highTargetKey]: ticket?.targetGroup.highSchool,
             [CAMP_APPLY_KEYS.startDateKey]: ticket?.educationDate?.start,
+            [CAMP_APPLY_KEYS.startTimeKey]: ticket?.educationDate?.start,
             [CAMP_APPLY_KEYS.endDateKey]: ticket?.educationDate?.end,
+            [CAMP_APPLY_KEYS.endTimeKey]: ticket?.educationDate?.end,
         },
     });
 

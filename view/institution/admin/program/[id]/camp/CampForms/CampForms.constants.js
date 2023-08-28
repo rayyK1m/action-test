@@ -18,7 +18,9 @@ export const CAMP_KEYS = {
     classKey: 'class', // 분반
     learningTimeKey: 'learningTime',
     educationStartDateKey: 'educationStartDate',
+    educationStartTimeKey: 'educationStartTime',
     educationEndDateKey: 'educationEndDate',
+    educationEndTimeKey: 'educationEndTime',
     educationLocationNameKey: 'educationLocationName',
     educationLocationAddressKey: 'educationLocationAddress',
     /** 프로그램 관련 정보 */
@@ -44,7 +46,9 @@ export const CAMP_INFO_KEYS = {
     classKey: 'class', // 분반
     learningTimeKey: 'learningTime',
     educationStartDateKey: 'educationDate.start',
+    educationStartTimeKey: 'educationDate.start',
     educationEndDateKey: 'educationDate.end',
+    educationEndTimeKey: 'educationDate.end',
     educationLocationNameKey: 'educationLocation.name',
     educationLocationAddressKey: 'educationLocation.address',
     /** 프로그램 관련 정보 */

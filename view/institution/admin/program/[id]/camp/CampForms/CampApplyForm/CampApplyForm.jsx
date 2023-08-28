@@ -413,7 +413,9 @@ const EducationForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
     const {
         learningTimeKey,
         educationStartDateKey,
+        educationStartTimeKey,
         educationEndDateKey,
+        educationEndTimeKey,
         educationLocationNameKey,
         educationLocationAddressKey,
     } = CAMP_KEYS;
@@ -432,10 +434,12 @@ const EducationForm = ({ division = PROGRAM_DIVISION.집합형 }) => {
                 <FormDatePicker
                     label="교육 시작일"
                     datePickerKey={educationStartDateKey}
+                    timePickerKey={educationStartTimeKey}
                 />
                 <FormDatePicker
                     label="교육 종료일"
                     datePickerKey={educationEndDateKey}
+                    timePickerKey={educationEndTimeKey}
                 />
             </div>
             {division === PROGRAM_DIVISION.집합형 && (
