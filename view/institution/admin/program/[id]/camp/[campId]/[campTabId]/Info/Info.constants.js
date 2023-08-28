@@ -3,13 +3,20 @@ export const relationField = {
     middleSchool: 'targetGroup',
     highSchool: 'targetGroup',
     educationStartDate: 'educationDate',
+    educationStartTime: 'educationDate',
     educationEndDate: 'educationDate',
+    educationEndTime: 'educationDate',
     educationLocationName: 'educationLocation',
     educationLocationAddress: 'educationLocation',
 };
 
 export const matchedKey = {
     targetGroup: ['elementarySchool', 'middleSchool', 'highSchool'],
-    educationDate: ['educationStartDate', 'educationEndDate'],
+    educationDate: [
+        'educationStartDate',
+        'educationStartTime',
+        'educationEndDate',
+        'educationEndTime',
+    ],
     educationLocation: ['educationLocationName', 'educationLocationAddress'],
 };

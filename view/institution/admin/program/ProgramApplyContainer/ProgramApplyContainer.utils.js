@@ -1,11 +1,13 @@
 import { PROGRAM_DIVISION } from '@/constants/db';
-import { setDateWithHourAndMinute } from '@/utils';
+import { setDateWithTime } from '@/utils';
 
 export const formatData = (data, division) => {
     const {
         duration,
         applyStartDate,
+        applyStartTime,
         applyEndDate,
+        applyEndTime,
         educationStartDate,
         educationStartTime,
         educationEndDate,
@@ -19,6 +21,14 @@ export const formatData = (data, division) => {
         ...rest
     } = data;
 
+    const applyStart = setDateWithTime(applyStartDate, applyStartTime);
+    const applyEnd = setDateWithTime(applyEndDate, applyEndTime);
+    const educationStart = setDateWithTime(
+        educationStartDate,
+        educationStartTime,
+    );
+    const educationEnd = setDateWithTime(educationEndDate, educationEndTime);
+
     const formData = {
         type: { division, duration },
         targetGroup: {
@@ -27,12 +37,12 @@ export const formatData = (data, division) => {
             highSchool,
         },
         applyDate: {
-            start: applyStartDate,
-            end: setDateWithHourAndMinute(applyEndDate, 23, 59),
+            start: applyStart,
+            end: applyEnd,
         },
         educationDate: {
-            start: educationStartDate,
-            end: setDateWithHourAndMinute(educationEndDate, 23, 59),
+            start: educationStart,
+            end: educationEnd,
         },
         attachedFiles: [attachedFiles],
         ...(division === PROGRAM_DIVISION.집합형

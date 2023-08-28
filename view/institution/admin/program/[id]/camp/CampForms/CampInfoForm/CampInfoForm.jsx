@@ -299,7 +299,9 @@ const ReadOnlyEducationForm = ({ division, isFoundationPage }) => {
     const {
         learningTimeKey,
         educationStartDateKey,
+        educationStartTimeKey,
         educationEndDateKey,
+        educationEndTimeKey,
         educationLocationNameKey,
         educationLocationAddressKey,
     } = CAMP_INFO_KEYS;
@@ -321,11 +323,13 @@ const ReadOnlyEducationForm = ({ division, isFoundationPage }) => {
                 <FormDatePicker
                     label="교육 시작일"
                     datePickerKey={educationStartDateKey}
+                    timePickerKey={educationStartTimeKey}
                     disabled
                 />
                 <FormDatePicker
                     label="교육 종료일"
                     datePickerKey={educationEndDateKey}
+                    timePickerKey={educationEndTimeKey}
                     disabled
                 />
             </div>
