@@ -21,7 +21,7 @@ import {
 import { DENYED_PROGRAM_TYPE } from './ApplyButton.constants';
 import useProgram from '@/query-hooks/useProgram';
 import { useQueryClient } from '@tanstack/react-query';
-import { PROGRAM_DIVISION, ROLE } from '@/constants/db';
+import { CAMP_REVIEW_STATUS, PROGRAM_DIVISION, ROLE } from '@/constants/db';
 
 const ApplyButton = () => {
     const queryClient = useQueryClient();
@@ -117,26 +117,41 @@ const ApplyButton = () => {
         programData.applyStatus === '모집_예정' ||
         programData.applyStatus === '모집_종료' ||
         /** 이미 신청한 프로그램 */
-        !!campTicketHistoryData?.item ||
+        campTicketHistoryData?.item?.reviewStatus ===
+            CAMP_REVIEW_STATUS.심사중.key ||
+        campTicketHistoryData?.item?.reviewStatus ===
+            CAMP_REVIEW_STATUS.승인.key ||
+        campTicketHistoryData?.item?.reviewStatus ===
+            CAMP_REVIEW_STATUS.거절.key ||
         학생이_방문형_신청 ||
         선생님이_집합형_신청;
 
     const applyButtonText = (() => {
+        const textMap = {
+            모집_예정: '모집 예정인 프로그램입니다.',
+            모집_중: '신청하기',
+            모집_종료: '모집이 마감된 프로그램입니다.',
+        };
+
         switch (true) {
-            case !!campTicketHistoryData?.item:
-                return '이미 신청한 프로그램입니다.';
-            case programData.applyStatus === '모집_예정':
-                return '모집 예정인 프로그램입니다.';
-            case programData.applyStatus === '모집_중':
-                if (학생이_방문형_신청) {
-                    return '선생님만 신청할 수 있는 프로그램입니다.';
-                } else if (선생님이_집합형_신청) {
-                    return '학생·학부모만 신청할 수 있는 프로그램입니다.';
-                }
-                return '신청하기';
-            case programData.applyStatus === '모집_종료':
-                return '모집이 마감된 프로그램입니다.';
+            case campTicketHistoryData?.item?.reviewStatus ===
+                CAMP_REVIEW_STATUS.심사중.key:
+            case campTicketHistoryData?.item?.reviewStatus ===
+                CAMP_REVIEW_STATUS.승인.key:
+            case campTicketHistoryData?.item?.reviewStatus ===
+                CAMP_REVIEW_STATUS.거절.key:
+                textMap['모집_중'] = '이미 신청한 프로그램입니다.';
+                break;
+            case 학생이_방문형_신청:
+                textMap['모집_중'] = '선생님만 신청할 수 있는 프로그램입니다.';
+                break;
+            case 선생님이_집합형_신청:
+                textMap['모집_중'] =
+                    '학생·학부모만 신청할 수 있는 프로그램입니다.';
+                break;
         }
+
+        return textMap[programData.applyStatus];
     })();
 
     return (
