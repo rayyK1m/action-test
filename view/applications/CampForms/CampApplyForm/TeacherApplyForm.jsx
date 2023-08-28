@@ -11,7 +11,7 @@ import { FormInput, FormWrapper } from '@/components/FormItem';
 
 import Divider from '@/components/Divider/Divider';
 
-import { Checkbox } from '@goorm-dev/gds-components';
+import { Input } from '@goorm-dev/gds-components';
 import styles from '../CampForms.module.scss';
 
 import {
@@ -117,16 +117,20 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                                                         : '',
                                                 )}
                                             >
-                                                <Checkbox
+                                                <Input
+                                                    type="checkbox"
                                                     ref={ref}
+                                                    id={`${key}-${idx}`}
                                                     disabled={disabled}
-                                                    onChange={handleChange({
+                                                    onClick={handleChange({
                                                         schoolKey: key,
                                                         value: idx,
                                                         idx: index,
                                                     })}
                                                 />
-                                                <span>{idx + 1}학년</span>
+                                                <label for={`${key}-${idx}`}>
+                                                    {idx + 1}학년
+                                                </label>
                                             </div>
                                         );
                                     }}
@@ -296,7 +300,7 @@ export const TargetForm = ({ programTargetGroup }) => {
 
     return (
         <div className={styles.form}>
-            <h5>신청 대상 정보</h5>
+            <h5 className="text-gray-700">신청 대상 정보</h5>
             <ApplyTargetInput programTargetGroup={programTargetGroup} />
             <InputItem
                 isRequired
@@ -315,23 +319,14 @@ export const LearningTimeForm = ({ educationDate }) => {
         formState: { errors },
         watch,
     } = useFormContext();
-    const { startDateKey, startTimeKey, endDateKey, endTimeKey } =
-        CAMP_APPLY_KEYS;
+    const { startDateKey, endDateKey } = CAMP_APPLY_KEYS;
     const { learningTimeKey } = PROGRAM_KEYS;
 
-    const isDateError =
-        !!errors[startDateKey] ||
-        !!errors[startTimeKey] ||
-        !!errors[endDateKey] ||
-        !!errors[endTimeKey];
-    const [startDate, startTime, endDate, endTime] = watch([
-        startDateKey,
-        startTimeKey,
-        endDateKey,
-        endTimeKey,
-    ]);
+    const isDateError = !!errors[startDateKey] || !!errors[endDateKey];
 
-    const validDate = startDate || startTime || endDate || endTime;
+    const [startDate, endDate] = watch([startDateKey, endDateKey]);
+
+    const validDate = startDate || endDate;
 
     return (
         <div className={styles.form}>
@@ -353,9 +348,8 @@ export const LearningTimeForm = ({ educationDate }) => {
                                 ? {
                                       maxDate: new Date(endDate),
                                   }
-                                : {}),
+                                : { maxDate: new Date(educationDate.end) }),
                         }}
-                        timePickerKey={startTimeKey}
                         formText={
                             !isDateError && !validDate
                                 ? '안내된 교육 기간 중 실제로 진행하실 기간을 선택해주세요.'
@@ -370,11 +364,10 @@ export const LearningTimeForm = ({ educationDate }) => {
                                 ? {
                                       minDate: new Date(startDate),
                                   }
-                                : {}),
+                                : { minDate: new Date(educationDate.start) }),
                             maxDate: new Date(educationDate.end),
                         }}
                         datePickerKey={endDateKey}
-                        timePickerKey={endTimeKey}
                     />
                 </div>
             </div>

@@ -1,24 +1,13 @@
-import { setDateWithTime } from '@/utils';
+import { setDateWithHourAndMinute } from '@/utils';
 
 export const formatTeacherData = (data) => {
-    const {
-        schoolType,
-        startDate,
-        startTime,
-        endDate,
-        endTime,
-        applicantCount,
-        ...rest
-    } = data;
-
-    const start = setDateWithTime(startDate, startTime);
-    const end = setDateWithTime(endDate, endTime);
+    const { schoolType, startDate, endDate, applicantCount, ...rest } = data;
 
     const formData = {
         ...(schoolType ? { schoolType } : {}),
         educationDate: {
-            start,
-            end,
+            start: startDate,
+            end: setDateWithHourAndMinute(endDate, 23, 59),
         },
         applicantCount: Number(applicantCount),
         ...rest,

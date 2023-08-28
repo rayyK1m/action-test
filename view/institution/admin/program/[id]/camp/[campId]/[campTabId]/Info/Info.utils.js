@@ -5,7 +5,7 @@ import {
     CAMP_KEYS,
 } from '../../../CampForms/CampForms.constants';
 import { matchedKey, relationField } from './Info.constants';
-import { formatPhoneNumber, setDateWithTime } from '@/utils';
+import { formatPhoneNumber, setDateWithHourAndMinute } from '@/utils';
 
 export const getDefaultValues = ({ isEdit, data }) => {
     const { program, camp } = data;
@@ -47,9 +47,7 @@ export const getDefaultValues = ({ isEdit, data }) => {
         [CAMP_KEYS.highTargetKey]: camp?.targetGroup.highSchool,
         [CAMP_KEYS.applicantCountKey]: camp?.applicantCount,
         [CAMP_KEYS.educationStartDateKey]: camp.educationDate.start,
-        [CAMP_KEYS.educationStartTimeKey]: camp.educationDate.start,
         [CAMP_KEYS.educationEndDateKey]: camp.educationDate.end,
-        [CAMP_KEYS.educationEndTimeKey]: camp.educationDate.end,
     };
     return division === PROGRAM_DIVISION.집합형
         ? {
@@ -88,11 +86,8 @@ const formatData = (data) => {
         ...(educationDate
             ? {
                   educationDate: {
-                      start: setDateWithTime(
-                          educationDate[0],
-                          educationDate[1],
-                      ),
-                      end: setDateWithTime(educationDate[2], educationDate[3]),
+                      start: educationDate[0],
+                      end: setDateWithHourAndMinute(educationDate[1], 23, 59),
                   },
               }
             : {}),

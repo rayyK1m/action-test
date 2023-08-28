@@ -1,7 +1,6 @@
 import {
     ReadOnlyProgramForm,
     ReadOnlyManagerForm,
-    ReadOnlyTeacherForm,
     ReadOnlyTargetForm,
     ReadOnlyLearningTimeForm,
 } from './TeacherInfoForm';
@@ -21,7 +20,6 @@ export const TeacherInfoForm = ({
     <div className={styles.forms}>
         <ReadOnlyProgramForm />
         <ReadOnlyManagerForm isFoundationPage={isFoundationPage} />
-        <ReadOnlyTeacherForm isFoundationPage={isFoundationPage} />
         <ReadOnlyTargetForm programTarget={programTarget} />
         <ReadOnlyLearningTimeForm />
         {!isAdmin && <ReadOnlyTermsForm />}

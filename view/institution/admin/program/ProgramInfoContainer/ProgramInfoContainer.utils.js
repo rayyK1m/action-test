@@ -1,80 +1,6 @@
 import { PROGRAM_APPLY_KEYS } from '../program.contants';
-import { setDateWithTime } from '@/utils';
-import { PARSE_PROGRAM_KEY } from './ProgramInfoContainer.constant';
+import { setDateWithHourAndMinute } from '@/utils';
 import { PROGRAM_DIVISION } from '@/constants/db';
-
-const parseKey = (keys, data) => {
-    const {
-        applyStartDateKey,
-        applyStartTimeKey,
-        applyEndDateKey,
-        applyEndTimeKey,
-        educationStartDateKey,
-        educationStartTimeKey,
-        educationEndDateKey,
-        educationEndTimeKey,
-    } = PROGRAM_APPLY_KEYS;
-
-    const matchedDateWithTime = {
-        [applyStartDateKey]: applyStartTimeKey,
-        [applyEndDateKey]: applyEndTimeKey,
-        [educationStartDateKey]: educationStartTimeKey,
-        [educationEndDateKey]: educationEndTimeKey,
-    };
-
-    const matchedTimeWithDate = {
-        [applyStartTimeKey]: applyStartDateKey,
-        [applyEndTimeKey]: applyEndDateKey,
-        [educationStartTimeKey]: educationStartDateKey,
-        [educationEndTimeKey]: educationEndDateKey,
-    };
-
-    return keys.map((key) => {
-        if (Object.keys(matchedDateWithTime).includes(key)) {
-            const date = setDateWithTime(
-                data[key],
-                data[matchedDateWithTime[key]],
-            );
-
-            return [PARSE_PROGRAM_KEY[key], date];
-        }
-        if (Object.keys(matchedTimeWithDate).includes(key)) {
-            const date = setDateWithTime(
-                data[matchedTimeWithDate[key]],
-                data[key],
-            );
-            return [PARSE_PROGRAM_KEY[key], date];
-        }
-        return PARSE_PROGRAM_KEY[key] ? PARSE_PROGRAM_KEY[key] : key;
-    });
-};
-
-export const formatData = (keys, values, data) => {
-    const parsedKeys = parseKey(keys, data);
-    const parsedObject = parsedKeys.reduce((acc, cur, idx) => {
-        if (Array.isArray(cur)) {
-            acc[cur[0]] = cur[1];
-        } else {
-            acc[cur] = values[idx];
-        }
-        return acc;
-    }, {});
-
-    const formattedObject = {};
-
-    for (const key in parsedObject) {
-        const [parentKey, childKey] = key.split('.');
-        if (!childKey) {
-            formattedObject[parentKey] = parsedObject[key];
-        } else {
-            if (!formattedObject[parentKey]) {
-                formattedObject[parentKey] = {};
-            }
-            formattedObject[parentKey][childKey] = parsedObject[key];
-        }
-    }
-    return formattedObject;
-};
 
 export const getDefaultValues = (program) => {
     return {
@@ -87,13 +13,9 @@ export const getDefaultValues = (program) => {
         [PROGRAM_APPLY_KEYS.operateLocationKey]: program.operateLocation,
         [PROGRAM_APPLY_KEYS.contactKey]: program.contact,
         [PROGRAM_APPLY_KEYS.applyStartDateKey]: program.applyDate.start,
-        [PROGRAM_APPLY_KEYS.applyStartTimeKey]: program.applyDate.start,
         [PROGRAM_APPLY_KEYS.applyEndDateKey]: program.applyDate.end,
-        [PROGRAM_APPLY_KEYS.applyEndTimeKey]: program.applyDate.end,
         [PROGRAM_APPLY_KEYS.educationStartDateKey]: program.educationDate.start,
-        [PROGRAM_APPLY_KEYS.educationStartTimeKey]: program.educationDate.start,
         [PROGRAM_APPLY_KEYS.educationEndDateKey]: program.educationDate.end,
-        [PROGRAM_APPLY_KEYS.educationEndTimeKey]: program.educationDate.end,
         [PROGRAM_APPLY_KEYS.elementaryTargetKey]:
             program.targetGroup.elementarySchool,
         [PROGRAM_APPLY_KEYS.middleTargetKey]: program.targetGroup.middleSchool,
@@ -113,13 +35,9 @@ export const formatProgramData = (data, division) => {
     const {
         duration,
         applyStartDate,
-        applyStartTime,
         applyEndDate,
-        applyEndTime,
         educationStartDate,
-        educationStartTime,
         educationEndDate,
-        educationEndTime,
         elementarySchool,
         middleSchool,
         highSchool,
@@ -129,13 +47,6 @@ export const formatProgramData = (data, division) => {
         ...rest
     } = data;
 
-    const applyStart = setDateWithTime(applyStartDate, applyStartTime);
-    const applyEnd = setDateWithTime(applyEndDate, applyEndTime);
-    const educationStart = setDateWithTime(
-        educationStartDate,
-        educationStartTime,
-    );
-    const educationEnd = setDateWithTime(educationEndDate, educationEndTime);
     const formData = {
         type: { duration },
         targetGroup: {
@@ -144,12 +55,12 @@ export const formatProgramData = (data, division) => {
             highSchool,
         },
         applyDate: {
-            start: applyStart,
-            end: applyEnd,
+            start: applyStartDate,
+            end: setDateWithHourAndMinute(applyEndDate, 23, 59),
         },
         educationDate: {
-            start: educationStart,
-            end: educationEnd,
+            start: educationStartDate,
+            end: setDateWithHourAndMinute(educationEndDate, 23, 59),
         },
         attachedFiles: [attachedFiles],
         ...(division === PROGRAM_DIVISION.집합형

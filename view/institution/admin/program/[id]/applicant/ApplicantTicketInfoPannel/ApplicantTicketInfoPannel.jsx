@@ -71,12 +71,8 @@ function ApplicantTicketInfoPannel({ isOpen, onClose, ticketId, title }) {
                 ticket?.targetGroup.elementarySchool,
             [CAMP_APPLY_KEYS.middleTargetKey]: ticket?.targetGroup.middleSchool,
             [CAMP_APPLY_KEYS.highTargetKey]: ticket?.targetGroup.highSchool,
-            [CAMP_APPLY_KEYS.mainEducatorKey]: ticket?.educator?.main,
-            [CAMP_APPLY_KEYS.subEducatorKey]: ticket?.educator?.sub,
             [CAMP_APPLY_KEYS.startDateKey]: ticket?.educationDate?.start,
-            [CAMP_APPLY_KEYS.startTimeKey]: ticket?.educationDate?.start,
             [CAMP_APPLY_KEYS.endDateKey]: ticket?.educationDate?.end,
-            [CAMP_APPLY_KEYS.endTimeKey]: ticket?.educationDate?.end,
         },
     });
 

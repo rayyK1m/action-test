@@ -1,6 +1,9 @@
-import { ellipsisedString, removePhoneNumberHyphen } from '@/utils';
+import {
+    ellipsisedString,
+    removePhoneNumberHyphen,
+    setDateWithHourAndMinute,
+} from '@/utils';
 import ProgramTypeBadge from '@/view/components/ProgramTypeBadge';
-import { setDateWithTime } from '@/utils';
 import { CAMP_KEYS } from '../../CampForms/CampForms.constants';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -38,9 +41,7 @@ export const getBreadcrumbs = (program) => {
 const formatData = (data) => {
     const {
         educationStartDate,
-        educationStartTime,
         educationEndDate,
-        educationEndTime,
         elementarySchool = [],
         middleSchool = [],
         highSchool = [],
@@ -56,12 +57,6 @@ const formatData = (data) => {
         ...rest
     } = data;
 
-    const educationStart = setDateWithTime(
-        educationStartDate,
-        educationStartTime,
-    );
-    const educationEnd = setDateWithTime(educationEndDate, educationEndTime);
-
     const formData = {
         targetGroup: {
             elementarySchool,
@@ -69,8 +64,8 @@ const formatData = (data) => {
             highSchool,
         },
         educationDate: {
-            start: educationStart,
-            end: educationEnd,
+            start: educationStartDate,
+            end: setDateWithHourAndMinute(educationEndDate, 23, 59),
         },
         educationLocation: {
             name: educationLocationName,

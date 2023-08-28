@@ -38,7 +38,6 @@ body {
 /** reactQuill Editor style*/
 /** placholder*/
 .quill > .ql-container > .ql-editor.ql-blank::before {
-    font-size: 0.875rem;
     font-style: normal;
     color: var(--hint);
 }

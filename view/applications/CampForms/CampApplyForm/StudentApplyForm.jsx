@@ -11,7 +11,7 @@ import { FormInput, FormWrapper } from '@/components/FormItem';
 
 import Divider from '@/components/Divider/Divider';
 
-import { Radio } from '@goorm-dev/gds-components';
+import { Input } from '@goorm-dev/gds-components';
 import styles from '../CampForms.module.scss';
 
 import { PROGRAM_OPERATION_LOCATIONS } from '@/constants/db';
@@ -87,8 +87,10 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                                             disabled ? styles.disabled : '',
                                         )}
                                     >
-                                        <Radio
-                                            name={index}
+                                        <Input
+                                            type="radio"
+                                            name="studentApply"
+                                            id={`${index}-${idx}`}
                                             disabled={disabled}
                                             defaultChecked={targetFields[
                                                 index
@@ -99,7 +101,9 @@ const ApplyTargetInput = ({ programTargetGroup }) => {
                                                 })
                                             }
                                         />
-                                        <span>{`${idx + 1}학년`}</span>
+                                        <label for={`${index}-${idx}`}>
+                                            {`${idx + 1}학년`}
+                                        </label>
                                     </div>
                                 );
                             })}
