@@ -25,7 +25,6 @@ function CompleteView({ title, description, children: buttons }) {
                     </div>
                 </FormContainer>
             </Layout.Main>
-            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );

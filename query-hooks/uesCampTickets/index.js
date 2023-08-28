@@ -155,10 +155,10 @@ const useChangeCampTicketStatus = () => {
                 if (status === CAMP_REVIEW_STATUS.거절.value) {
                     toast('신청자 승인이 거절되었습니다.');
                 }
-                // queryClient.invalidateQueries(campTicketsKeys.itemDetail());
-                // queryClient.invalidateQueries(
-                //     campTicketsKeys.itemsAdminDetail(),
-                // );
+                queryClient.invalidateQueries(campTicketsKeys.itemDetail());
+                queryClient.invalidateQueries(
+                    campTicketsKeys.itemsAdminDetail(),
+                );
             },
             onError: () =>
                 toast('승인 상태 변경에 실패했습니다.', {

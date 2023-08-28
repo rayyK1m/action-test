@@ -108,7 +108,6 @@ function ProgramApplyContainer({ division }) {
                     </FormProvider>
                 </GridContainer>
             </Layout.Main>
-            <Layout.ContributorBanner />
             <Layout.Footer />
         </Layout>
     );
