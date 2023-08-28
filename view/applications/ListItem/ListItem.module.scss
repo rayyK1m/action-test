@@ -1,3 +1,5 @@
+@import '@/styles/utils.scss';
+
 @mixin contents-margin {
     margin: 0.75rem 0;
 }
@@ -26,4 +28,9 @@
     object-fit: cover;
     border-radius: 0.5rem;
     border: 0.0625rem solid var(--gray-300);
+}
+
+.name {
+    @include truncate();
+    max-width: 34.4375rem /* 551px -> 34.4375rem */;
 }
