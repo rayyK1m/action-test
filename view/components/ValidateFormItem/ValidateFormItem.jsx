@@ -311,7 +311,7 @@ export const TimePickerItem = ({
                                 hour: '09',
                                 minute: '00',
                             }}
-                            time={value || new Date('2023-02-18 09:00')}
+                            time={value}
                             onChange={onChange}
                             onBlur={onBlur}
                             inputProps={{

@@ -99,7 +99,7 @@ function ProgramApplyContainer({ division }) {
                             <Button
                                 type="submit"
                                 size="xl"
-                                disabled={!methods.formState.isValid}
+                                //disabled={!methods.formState.isValid}
                                 color="primary"
                             >
                                 승인 요청하기

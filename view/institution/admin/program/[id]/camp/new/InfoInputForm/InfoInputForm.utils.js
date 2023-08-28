@@ -15,7 +15,9 @@ export const getDefaultValues = (campInfo, program) => {
             [CAMP_KEYS.highTargetKey]: [],
             [CAMP_KEYS.learningTimeKey]: program.learningTime,
             [CAMP_KEYS.educationStartDateKey]: program.educationDate.start,
+            [CAMP_KEYS.educationStartTimeKey]: program.educationDate.start,
             [CAMP_KEYS.educationEndDateKey]: program.educationDate.end,
+            [CAMP_KEYS.educationEndTimeKey]: program.educationDate.end,
             [CAMP_KEYS.educationLocationNameKey]:
                 program.educationLocation?.name,
             [CAMP_KEYS.educationLocationAddressKey]:
