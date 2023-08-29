@@ -2,4 +2,13 @@
     width: 100%;
     height: 16rem;
     border-radius: 0.5rem;
+    border: 1px solid var(--gray-300);
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    height: 16.125rem /* 258px -> 16.125rem */;
+    border-radius: 0.5rem;
+    border: 1px solid var(--gray-300);
 }

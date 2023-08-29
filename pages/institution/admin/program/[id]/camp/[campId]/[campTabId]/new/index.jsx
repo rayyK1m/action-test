@@ -8,6 +8,7 @@ import { createServerAxios } from '@/utils';
 import { programsKeys, programsApis } from '@/query-hooks/usePrograms';
 
 import AddCampParticipant from '@/view/institution/admin/program/[id]/camp/[campId]/[campTabId]/new/AddCampParticipant';
+import CreateParticipantsContextProvider from '@/view/institution/admin/program/[id]/camp/[campId]/[campTabId]/new/AddCampParticipant/context';
 import { campTicketsKeys, campTicketsApis } from '@/query-hooks/uesCampTickets';
 
 export default function Page() {
@@ -16,7 +17,9 @@ export default function Page() {
             <Head>
                 <title>디지털새싹</title>
             </Head>
-            <AddCampParticipant />
+            <CreateParticipantsContextProvider>
+                <AddCampParticipant />
+            </CreateParticipantsContextProvider>
         </>
     );
 }
