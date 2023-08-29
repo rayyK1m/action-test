@@ -1,13 +1,12 @@
 {
     "name": "swcamp-site",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "prepare": "husky install",
         "prettier": "prettier --write --ignore-unknown"
     },
     "dependencies": {
@@ -15,7 +14,9 @@
         "@goorm-dev/gds-icons": "^1.11.0",
         "@goorm-dev/gds-tables": "^1.11.0",
         "@goorm-dev/gds-toastify": "^1.11.0",
+        "@hookform/devtools": "^4.3.1",
         "@tanstack/react-query": "^4.29.13",
+        "@tanstack/react-query-devtools": "^4.29.13",
         "aws-sdk": "^2.1404.0",
         "axios": "^1.4.0",
         "classnames": "^2.3.2",
@@ -36,15 +37,13 @@
         "react-quill": "^2.0.0",
         "react-window": "^1.8.9",
         "sass": "^1.63.4",
-        "uuid": "^9.0.0",
-        "@hookform/devtools": "^4.3.1",
-        "@tanstack/react-query-devtools": "^4.29.13",
-        "husky": "^8.0.0"
+        "uuid": "^9.0.0"
     },
     "devDependencies": {
         "eslint-config-prettier": "^8.8.0",
         "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-react": "^7.32.2",
+        "husky": "^8.0.3",
         "hygen": "^6.2.11",
         "lint-staged": "^13.2.2",
         "prettier": "^2.8.8"

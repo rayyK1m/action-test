@@ -32,7 +32,7 @@ import SelectApplicantTableLoading from './SelectApplicantTable.loading';
 import styles from './SelectApplicantTable.module.scss';
 
 const Table = forwardRef(function Table(
-    { setSelectedCount, onSelectedRowChange },
+    { setSelectedCount, onSelectedRowChange, onApplicantCountChange },
     ref,
 ) {
     const router = useRouter();
@@ -77,6 +77,9 @@ const Table = forwardRef(function Table(
     const { selectedRows, selectedRowCount, resetRowSelection } =
         useRowSelections(getTableProps().table);
 
+    const isEmptyData = useMemo(() => totalCount === 0, [totalCount]);
+    const isFiltered = useMemo(() => !!search, [search]);
+
     useEffect(() => {
         setPagination((prev) => ({
             ...prev,
@@ -106,8 +109,11 @@ const Table = forwardRef(function Table(
         }));
     }, [pageIndex, selectedRows, campApplicants, onSelectedRowChange]);
 
-    const isEmptyData = useMemo(() => totalCount === 0, [totalCount]);
-    const isFiltered = useMemo(() => !!search, [search]);
+    useEffect(() => {
+        if (!isFiltered) {
+            onApplicantCountChange(totalCount);
+        }
+    }, [isFiltered, totalCount, onApplicantCountChange]);
     return (
         <>
             {isEmptyData ? (
@@ -139,7 +145,7 @@ const Table = forwardRef(function Table(
     );
 });
 
-function SelectApplicantTable({ onSelectedRowChange }) {
+function SelectApplicantTable({ onSelectedRowChange, onApplicantCountChange }) {
     const router = useRouter();
     const memoizedRouter = useMemo(() => router, []);
 
@@ -216,6 +222,7 @@ function SelectApplicantTable({ onSelectedRowChange }) {
                 <Table
                     ref={tableRef}
                     onSelectedRowChange={onSelectedRowChange}
+                    onApplicantCountChange={onApplicantCountChange}
                     setSelectedCount={setSelectedCount}
                 />
             </SSRSuspense>

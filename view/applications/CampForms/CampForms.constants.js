@@ -5,8 +5,6 @@ export const CAMP_APPLY_KEYS = {
     schoolCodeKey: 'schoolCode',
     operateLocationKey: 'operateLocation',
     schoolTypeKey: 'schoolType',
-    // educator: {main, sub}
-    // targetGroup: {elementarySchool, middleSchool, highSchool}
     elementaryTargetKey: 'elementarySchool',
     middleTargetKey: 'middleSchool',
     highTargetKey: 'highSchool',

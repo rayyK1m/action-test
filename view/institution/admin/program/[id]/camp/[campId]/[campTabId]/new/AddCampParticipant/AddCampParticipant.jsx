@@ -16,6 +16,7 @@ import {
 
 import useSession from '@/query-hooks/useSession';
 import { useGetProgramAdmin } from '@/query-hooks/usePrograms';
+import { useAddCampParticipants } from '@/query-hooks/useCamps';
 import useToggle from '@/hooks/useToggle';
 import Layout from '@/components/Layout/Layout';
 import GridContainer from '@/components/GridContainer';
@@ -23,8 +24,9 @@ import PageHeader from '@/components/PageHeader';
 import SelectApplicantTable from '@/view/components/SelectApplicantTable';
 
 import { getBreadcrumbs } from './AddCampParticipant.utils';
+import { useParticipantsContext } from './context';
+
 import styles from './AddCampParticipant.module.scss';
-import { useAddCampParticipants } from '@/query-hooks/useCamps';
 
 function AddCampParticipant() {
     const router = useRouter();
@@ -38,6 +40,8 @@ function AddCampParticipant() {
     const addParticipants = useAddCampParticipants(
         `/institution/admin/program/${programId}/camp/${campId}/participants`,
     );
+    const { participantsCount, updateParticipantsCount } =
+        useParticipantsContext();
 
     const handleAddParticipants = () => {
         toggleModal();
@@ -83,18 +87,23 @@ function AddCampParticipant() {
                             <CardBody>
                                 <SelectApplicantTable
                                     onSelectedRowChange={setSelectedStudents}
+                                    onApplicantCountChange={
+                                        updateParticipantsCount
+                                    }
                                 />
                             </CardBody>
-                            <CardFooter className="d-flex">
-                                <Button
-                                    size="xl"
-                                    color="primary"
-                                    className="ml-auto"
-                                    onClick={toggleModal}
-                                >
-                                    추가하기
-                                </Button>
-                            </CardFooter>
+                            {participantsCount !== 0 && (
+                                <CardFooter className="d-flex">
+                                    <Button
+                                        size="xl"
+                                        color="primary"
+                                        className="ml-auto"
+                                        onClick={toggleModal}
+                                    >
+                                        추가하기
+                                    </Button>
+                                </CardFooter>
+                            )}
                         </Card>
                     </GridContainer>
                 </Layout.Main>

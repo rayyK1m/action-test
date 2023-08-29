@@ -231,6 +231,7 @@ export const DatePickerItem = ({
     disabled,
     date,
     calendarProps,
+    isInvalid,
     ...props
 }) => {
     const {
@@ -257,7 +258,7 @@ export const DatePickerItem = ({
                             date={value}
                             onChange={onChange}
                             inputProps={{
-                                invalid: !!errors[datePickerKey],
+                                invalid: !!errors[datePickerKey] || isInvalid,
                                 onBlur,
                                 ...props,
                             }}
@@ -283,6 +284,7 @@ export const TimePickerItem = ({
     isRequired,
     timePickerKey,
     disabled,
+    isInvalid,
     ...props
 }) => {
     const {
@@ -315,7 +317,7 @@ export const TimePickerItem = ({
                             onChange={onChange}
                             onBlur={onBlur}
                             inputProps={{
-                                invalid: !!errors[timePickerKey],
+                                invalid: !!errors[timePickerKey] || isInvalid,
                                 ...props,
                             }}
                             disabled={disabled}

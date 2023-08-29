@@ -91,6 +91,7 @@ export const ReadOnlyProgramForm = () => {
                 <FormInput
                     label="프로그램 명"
                     value={getValues(nameKey)}
+                    className={styles.input}
                     readOnly
                 />
             </div>

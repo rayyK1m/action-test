@@ -3,8 +3,10 @@ import { Skeleton } from '@goorm-dev/gds-components';
 
 import styles from './Map.module.scss';
 import { useKakaoMap } from '@/query-hooks/useMap';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import ErrorBox from '../ErrorBox';
 
-const Map = ({ address }) => {
+const MapComponent = ({ address }) => {
     const { data: maps, isLoading } = useKakaoMap();
 
     const mapRef = useRef(null);
@@ -34,5 +36,26 @@ const Map = ({ address }) => {
 
     return <div ref={mapRef} className={styles.map} />;
 };
+
+const MapErrorFallback = () => {
+    return (
+        <div className={styles.wrapper}>
+            <ErrorBox
+                devFeedback={
+                    'KAKAO_MAP_APP_KEY가 잘 설정되어 있고 사용중인 도메인이 등록되어 있는지 확인해주세요.'
+                }
+                useRetry={false}
+            />
+        </div>
+    );
+};
+
+function Map() {
+    return (
+        <ErrorBoundary fallbackRender={MapErrorFallback}>
+            <MapComponent />
+        </ErrorBoundary>
+    );
+}
 
 export default Map;

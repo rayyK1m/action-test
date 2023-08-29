@@ -16,6 +16,7 @@ import { formatData } from './ProgramApplyContainer.utils';
 
 import { PROGRAM_DIVISION, PROGRAM_DURATION } from '@/constants/db';
 import { PROGRAM_APPLY_KEYS } from '@/view/institution/admin/program/program.contants';
+import { setDateWithHourAndMinute } from '@/utils';
 
 function ProgramApplyContainer({ division }) {
     const router = useRouter();
@@ -31,6 +32,13 @@ function ProgramApplyContainer({ division }) {
             [PROGRAM_APPLY_KEYS.elementaryTargetKey]: [],
             [PROGRAM_APPLY_KEYS.middleTargetKey]: [],
             [PROGRAM_APPLY_KEYS.highTargetKey]: [],
+            [PROGRAM_APPLY_KEYS.educationStartTimeKey]:
+                setDateWithHourAndMinute(new Date(), 0, 0),
+            [PROGRAM_APPLY_KEYS.educationEndTimeKey]: setDateWithHourAndMinute(
+                new Date(),
+                23,
+                55,
+            ),
         },
     });
 
@@ -99,7 +107,7 @@ function ProgramApplyContainer({ division }) {
                             <Button
                                 type="submit"
                                 size="xl"
-                                //disabled={!methods.formState.isValid}
+                                disabled={!methods.formState.isValid}
                                 color="primary"
                             >
                                 승인 요청하기

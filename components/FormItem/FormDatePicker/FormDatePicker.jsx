@@ -29,11 +29,13 @@ const FormDatePicker = ({
                     datePickerKey={datePickerKey}
                     disabled={disabled}
                     calendarProps={calendarProps}
+                    isInvalid={!!feedback}
                 />
                 <TimePickerItem
                     isRequired={isRequired}
                     timePickerKey={timePickerKey}
                     disabled={disabled}
+                    isInvalid={!!feedback}
                 />
             </div>
         </FormWrapper>

@@ -33,7 +33,7 @@ import {
     useCreateCampTicket,
     useGetCampTicketsCount,
 } from '@/query-hooks/uesCampTickets';
-import { PROGRAM_DIVISION } from '@/constants/db';
+import { PROGRAM_DIVISION, ROLE } from '@/constants/db';
 
 import { formatTeacherData } from './CampApplyContainer.utils';
 import { TermsForm } from '../CampForms/TermForm/TermForm';
@@ -41,24 +41,54 @@ import useToggle from '@/hooks/useToggle';
 import { useRouter } from 'next/router';
 import { useGetUserInfo } from '@/query-hooks/useUserInfo';
 import { removePhoneNumberHyphen } from '@/utils';
+import { MODAL_CONTENTS } from './CampApplyContainer.constants';
 
 function CampApplyContainer({ userData, programId }) {
     const router = useRouter();
     const [isOpen, toggle] = useToggle(false);
     const { data: userInfo } = useGetUserInfo();
+    const [modalCase, setModalCase] = useState('default');
 
     const {
         data: { count },
     } = useGetCampTicketsCount({ userId: userData?.id });
 
-    const handleModalClose = () => {
+    const handleModalClose = (modalCase) => {
         toggle(false);
-        router.push('/');
+        if (modalCase === 'noUserInfo') {
+            router.push('/change_info');
+        } else {
+            router.push('/');
+        }
     };
-    /** 신청한 프로그램이 3개 이상일 경우 다른 페이지로 안내하기 전 모달 띄워주기 위한 처리 */
+
     useEffect(() => {
-        if (count >= 3) toggle(true);
+        /** 필수 유저 정보가 빠져 있는 경우  */
+        if (
+            !userInfo.swcampUserData?.schoolCode ||
+            !userInfo.swcampUserData?.schoolName ||
+            !userInfo.userCertificateData?.phoneNumber
+        ) {
+            setModalCase('noUserInfo');
+            toggle(true);
+            return;
+        }
+        /** 신청한 프로그램이 3개 이상일 경우  */
+        if (userInfo.swcampUserData.role === ROLE.TEACHER && count >= 3) {
+            setModalCase('default');
+            toggle(true);
+            return;
+        }
     }, []);
+
+    const 없는_필수_정보 = [
+        !userInfo.userCertificateData?.phoneNumber && '휴대폰',
+        (!userInfo.swcampUserData?.schoolCode ||
+            !userInfo.swcampUserData?.schoolName) &&
+            '소속학교',
+    ]
+        .filter(Boolean)
+        .join(', ');
 
     const [{ thirdPartyInfoTerm, personalInfoTerm }, setTerms] = useState({
         thirdPartyInfoTerm: false,
@@ -86,7 +116,8 @@ function CampApplyContainer({ userData, programId }) {
             [CAMP_APPLY_KEYS.elementaryTargetKey]: [],
             [CAMP_APPLY_KEYS.middleTargetKey]: [],
             [CAMP_APPLY_KEYS.highTargetKey]: [],
-            /** 유저 데이터 연결 안해서 임시로 지정해둔 상태, 수정 예정 */
+            [CAMP_APPLY_KEYS.startTimeKey]: program.educationDate.start,
+            [CAMP_APPLY_KEYS.endTimeKey]: program.educationDate.end,
             [CAMP_APPLY_KEYS.schoolNameKey]:
                 userInfo.swcampUserData?.schoolName || '',
             [CAMP_APPLY_KEYS.schoolCodeKey]:
@@ -215,16 +246,21 @@ function CampApplyContainer({ userData, programId }) {
                 size="md"
                 backdrop="static"
                 centered
+                className={styles.modal}
             >
-                <ModalHeader>프로그램 신청 안내</ModalHeader>
-                <ModalBody>프로그램은 최대 3개까지 신청 가능합니다.</ModalBody>
+                <ModalHeader>{MODAL_CONTENTS[modalCase].header}</ModalHeader>
+                <ModalBody>
+                    {MODAL_CONTENTS[modalCase].body(
+                        modalCase === 'noUserInfo' && 없는_필수_정보,
+                    )}
+                </ModalBody>
                 <ModalFooter>
                     <Button
                         color="primary"
                         size="lg"
-                        onClick={handleModalClose}
+                        onClick={() => handleModalClose(modalCase)}
                     >
-                        확인
+                        {MODAL_CONTENTS[modalCase].footer}
                     </Button>
                 </ModalFooter>
             </Modal>
