@@ -2,33 +2,78 @@
 
 ## :desktop_computer: Environment Support
 
--   `node` : >=16
+-   `node`: 18.17.1
+-   `npm`: >= 8.15.0
+
+<br/>
 
 ## :package: Quick Start
 
-#### GDS 세팅
+### 1. GDS 세팅
 
 [gds docs](https://gds.goorm.io/?path=/story/readme--page#-install)
 
-#### 세팅 및 실행
+### 2. 세팅 및 실행
 
 ```shell
 # git-flow 설치 (ubuntu)
 $ apt-get install git-flow
+
 # git-flow 설치 (mac)
 $ brew install git-flow-avh
+
+# git-flow init
+$ git flow init -d
+
 # 패키지 설치 및 실행
 $ npm install
 $ npm run dev
 ```
 
-## Info
+<br/>
 
--   [개발 wiki](https://www.notion.so/goorm/LMS-SWCAMP-ebfcc7c0b7ca4fbf86820556efc7bad4)
+## :information_desk_person: Info
 
-## 디렉토리 구조
+> ref. [노션 개발 위키](https://www.notion.so/goorm/LMS-SWCAMP-ebfcc7c0b7ca4fbf86820556efc7bad4)
 
-구조를 설명하기 위해 중요하지 않는 파일은 생략해서 나타냄
+### 1. 브랜치 전략
+
+> git flow 브랜치 전략에 의거함.
+
+**릴리즈**
+
+```shell
+$ git flow release start -F [날짜]-[index]
+$ git flow release finish -Fp [날짜]-[index]
+
+# ex. git flow release start -F 20230815-1
+```
+
+-   첫번째 commit
+    -   hotfix -> main merge
+    -   그냥 그대로 저장
+-   두번째 commit
+    -   tag 생성 commit
+    -   commit message: `release/[날짜]-[index]`
+-   세번째 commit
+    -   main -> develop merge
+    -   그냥 그대로 저장
+
+**핫픽스**
+
+```shell
+$ git flow hotfix start -F [날짜]-[index]
+$ git flow hotfix finish -Fp [날짜]-[index]
+
+# ex. git flow hotfix start -F 20230815-2
+```
+
+-   같은 날 release 브랜치가 이미 따져 있었으면, release 브랜치 index+1
+-   commit message는 release와 동일
+
+### 2. 디렉토리 구조
+
+> 구조를 설명하기 위해 중요하지 않는 파일은 생략해서 나타냄
 
 ```
 📦swcamp-site
@@ -72,3 +117,7 @@ $ npm run dev
  ┣ 📜next.config.js
  ┗ 📜package.json
 ```
+
+### 3. 환경 변수 설정
+
+-   `.env.example` 파일을 참고하여 각자 개발 환경에 `.env` 파일을 생성 후, [개발 문서 - .env](https://www.notion.so/goorm/LMS-SWCAMP-ebfcc7c0b7ca4fbf86820556efc7bad4?pvs=4#100a18f3692e48e9a430ba230a97a7d0) 참고하여 값 추가
