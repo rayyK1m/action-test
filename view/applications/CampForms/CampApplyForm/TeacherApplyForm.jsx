@@ -25,7 +25,7 @@ import {
     PROGRAM_SCHOOL_TYPE,
 } from '@/constants/db';
 import FormDatePicker from '@/components/FormItem/FormDatePicker/FormDatePicker';
-import { formatNumberInput, formatPhoneNumber } from '@/utils';
+import { formatNumberInput, formatPhoneNumber, setDateWithTime } from '@/utils';
 
 import useToggle from '@/hooks/useToggle';
 import useDebounce from '@/hooks/useDebounce';
@@ -336,6 +336,16 @@ export const LearningTimeForm = ({ educationDate }) => {
     ]);
 
     const validDate = startDate || startTime || endDate || endTime;
+    const isBeforeStartDate =
+        startDate &&
+        startTime &&
+        dayjs(setDateWithTime(startDate, startTime)).isBefore(
+            educationDate.start,
+        );
+    const isAfterEndDate =
+        endDate &&
+        endTime &&
+        dayjs(setDateWithTime(endDate, endTime)).isAfter(educationDate.end);
 
     return (
         <div className={styles.form}>
@@ -365,6 +375,9 @@ export const LearningTimeForm = ({ educationDate }) => {
                                 ? '안내된 교육 기간 중 실제로 진행하실 기간을 선택해주세요.'
                                 : ''
                         }
+                        feedback={
+                            isBeforeStartDate && '교육 기간 내에 입력해주세요.'
+                        }
                     />
                     <FormDatePicker
                         isRequired
@@ -379,6 +392,7 @@ export const LearningTimeForm = ({ educationDate }) => {
                         }}
                         datePickerKey={endDateKey}
                         timePickerKey={endTimeKey}
+                        feedback={isAfterEndDate && '교육 기간 내 입력해주세요'}
                     />
                 </div>
             </div>

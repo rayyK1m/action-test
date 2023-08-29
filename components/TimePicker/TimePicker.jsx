@@ -178,29 +178,36 @@ const TimePicker = forwardRef(
                     />
                 </DropdownToggle>
 
-                <DropdownMenu
-                    className={cn(
-                        isOpen ? 'd-flex' : 'd-none',
-                        styles.dropdownMenu,
-                    )}
-                >
-                    <ListContainer
-                        items={AMPM}
-                        onClickItem={(value) => handleClickItem('ampm', value)}
-                        selectedItem={innerTime.ampm}
-                    />
-                    <ListContainer
-                        items={HOURS}
-                        onClickItem={(value) => handleClickItem('hour', value)}
-                        selectedItem={innerTime.hour}
-                    />
-                    <ListContainer
-                        items={MINUTES}
-                        onClickItem={(value) =>
-                            handleClickItem('minute', value)
-                        }
-                        selectedItem={innerTime.minute}
-                    />
+                <DropdownMenu>
+                    <div
+                        ref={menuRef}
+                        className={cn(
+                            isOpen ? 'd-flex' : 'd-none',
+                            styles.dropdownMenu,
+                        )}
+                    >
+                        <ListContainer
+                            items={AMPM}
+                            onClickItem={(value) =>
+                                handleClickItem('ampm', value)
+                            }
+                            selectedItem={innerTime.ampm}
+                        />
+                        <ListContainer
+                            items={HOURS}
+                            onClickItem={(value) =>
+                                handleClickItem('hour', value)
+                            }
+                            selectedItem={innerTime.hour}
+                        />
+                        <ListContainer
+                            items={MINUTES}
+                            onClickItem={(value) =>
+                                handleClickItem('minute', value)
+                            }
+                            selectedItem={innerTime.minute}
+                        />
+                    </div>
                 </DropdownMenu>
             </Dropdown>
         );
