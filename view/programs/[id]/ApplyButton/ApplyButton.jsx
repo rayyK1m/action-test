@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import {
     Button,
     Col,
@@ -20,6 +22,7 @@ import {
 } from '@/query-hooks/uesCampTickets';
 import { DENYED_PROGRAM_TYPE } from './ApplyButton.constants';
 import useProgram from '@/query-hooks/useProgram';
+import { useGetUserInfo } from '@/query-hooks/useUserInfo';
 import { useQueryClient } from '@tanstack/react-query';
 import { CAMP_REVIEW_STATUS, PROGRAM_DIVISION, ROLE } from '@/constants/db';
 
@@ -29,6 +32,8 @@ const ApplyButton = () => {
     const { id } = router.query;
 
     const { data: userData } = useSession.GET();
+    const { data: userInfo } = useGetUserInfo();
+
     const [{ isOpen, type }, setModal] = useState({
         isOpen: false,
         type: null,
@@ -53,6 +58,18 @@ const ApplyButton = () => {
         programId: id,
     });
 
+    const 휴대폰_정보_없음 = !userInfo?.userCertificateData?.phoneNumber;
+    const 학교_정보_없음 =
+        !userInfo.swcampUserData?.schoolName ||
+        !userInfo.swcampUserData?.schoolCode;
+
+    const 없는_필수_정보 = [
+        휴대폰_정보_없음 && '휴대폰',
+        학교_정보_없음 && '소속학교',
+    ]
+        .filter(Boolean)
+        .join(', ');
+
     const checkAuth = () => {
         if (!userData) {
             /** 게스트일 경우 로그인창으로 이동 */
@@ -70,6 +87,14 @@ const ApplyButton = () => {
             return false;
         }
 
+        if (휴대폰_정보_없음 || 학교_정보_없음) {
+            /** 필수 정보가 없는 유저는 신청 불가 */
+            setModal({
+                isOpen: true,
+                type: DENYED_PROGRAM_TYPE.필수_정보_누락,
+            });
+            return false;
+        }
         /** 신청 가능한 계정 */
         return true;
     };
@@ -180,11 +205,36 @@ const ApplyButton = () => {
                         '프로그램 신청은 일반 회원만 진행이 가능합니다.'}
                     {type === DENYED_PROGRAM_TYPE.신청_갯수_초과 &&
                         '프로그램은 최대 3개까지 신청 가능합니다.'}
+                    {type === DENYED_PROGRAM_TYPE.필수_정보_누락 && (
+                        <>
+                            <div>
+                                필수 정보({없는_필수_정보})가 입력되지
+                                않았습니다.
+                            </div>
+                            <div>
+                                내 정보 수정 페이지에서 필수 정보를
+                                입력해주세요.
+                            </div>
+                        </>
+                    )}
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" size="lg" onClick={toggleModal}>
-                        확인
-                    </Button>
+                    {(type === DENYED_PROGRAM_TYPE.관리자_계정 ||
+                        type === DENYED_PROGRAM_TYPE.신청_갯수_초과) && (
+                        <Button color="primary" size="lg" onClick={toggleModal}>
+                            확인
+                        </Button>
+                    )}
+                    {type === DENYED_PROGRAM_TYPE.필수_정보_누락 && (
+                        <Button
+                            tag={Link}
+                            href="/change_info"
+                            color="primary"
+                            size="lg"
+                        >
+                            내 정보 수정하기
+                        </Button>
+                    )}
                 </ModalFooter>
             </Modal>
         </div>
