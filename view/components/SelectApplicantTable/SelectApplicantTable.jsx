@@ -5,6 +5,7 @@ import React, {
     useRef,
     useCallback,
     forwardRef,
+    useContext,
 } from 'react';
 import { useRouter } from 'next/router';
 
@@ -31,6 +32,7 @@ import SelectApplicantTableLoading from './SelectApplicantTable.loading';
 
 import styles from './SelectApplicantTable.module.scss';
 
+const public = null;
 const Table = forwardRef(function Table(
     { setSelectedCount, onSelectedRowChange, onApplicantCountChange },
     ref,
