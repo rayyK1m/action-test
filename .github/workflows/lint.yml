@@ -1,0 +1,22 @@
+name: check-lint
+on:
+    workflow_dispatch:
+    pull_request:
+        types: [opened, synchronize]
+    push:
+        branches:
+            - main
+            - develop
+
+jobs:
+  check-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 
+
+      - name: run lint-staged
+        run: npx lint-staged -c ./.lintstagedrc --diff="origin/${GITHUB_BASE_REF}...origin/${GITHUB_HEAD_REF}"
