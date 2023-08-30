@@ -50,10 +50,10 @@ const MapErrorFallback = () => {
     );
 };
 
-function Map() {
+function Map({ ...props }) {
     return (
         <ErrorBoundary fallbackRender={MapErrorFallback}>
-            <MapComponent />
+            <MapComponent {...props} />
         </ErrorBoundary>
     );
 }
