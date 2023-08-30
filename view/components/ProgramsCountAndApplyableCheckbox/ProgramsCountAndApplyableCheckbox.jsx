@@ -6,7 +6,7 @@ import { Checkbox } from '@goorm-dev/gds-components';
 import { useGetPrograms } from '@/query-hooks/usePrograms';
 
 import { PROGRAMS_DEFAULT_QUERY } from '@/pages';
-
+const public = null;
 function ProgramsCountAndApplyableCheckbox({
     campType,
     page,
