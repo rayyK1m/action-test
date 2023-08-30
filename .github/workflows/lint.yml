@@ -23,9 +23,12 @@ jobs:
         with: 
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
+    
+      - name: Authenticate with GitHub package registry
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
       - name: install packages
-        run: npm install
+        run: npm i
         
       - name: run lint-staged
         run: npx lint-staged -c ./.lintstagedrc --diff="origin/${GITHUB_BASE_REF}...origin/${GITHUB_HEAD_REF}"
