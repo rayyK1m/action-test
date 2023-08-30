@@ -5,6 +5,7 @@ import React, {
     useRef,
     useCallback,
     forwardRef,
+    useContext,
 } from 'react';
 import { useRouter } from 'next/router';
 
@@ -31,6 +32,7 @@ import SelectApplicantTableLoading from './SelectApplicantTable.loading';
 
 import styles from './SelectApplicantTable.module.scss';
 
+const public = null;
 const Table = forwardRef(function Table(
     { setSelectedCount, onSelectedRowChange, onApplicantCountChange },
     ref,
@@ -43,7 +45,7 @@ const Table = forwardRef(function Table(
         pageSize: 10,
     });
     const [sorting, setSorting] = useState([]);
-
+const unuse = null;
     const {
         data: { campApplicants, totalCount },
     } = useGetCampTicketsAdmin({
