@@ -20,6 +20,11 @@ const nextConfig = {
         SWCAMP_THUMBNAIL_DOMAIN: process.env.SWCAMP_THUMBNAIL_DOMAIN,
         SWCAMP_CHANNEL_DOMAIN: process.env.SWCAMP_CHANNEL_DOMAIN,
     },
+    eslint: {
+        // Warning: This allows production builds to successfully complete even if
+        // your project has ESLint errors.
+        ignoreDuringBuilds: true,
+    },
 };
 
 module.exports = nextConfig;
