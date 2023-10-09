@@ -16,7 +16,6 @@ import {
 } from '@goorm-dev/gds-components';
 import styles from './SearchSchoolDropdown.module.scss';
 
-const public = 'argent patch';
 const SearchSchoolDropdown = ({
     isOpenDropdown = false,
     schoolList,
